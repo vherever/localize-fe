@@ -13,8 +13,12 @@ const routes: Routes = [
         loadChildren: 'app/home/home.module#HomeModule',
       },
       {
+        path: 'auth',
+        loadChildren: 'app/auth/auth.module#AuthModule',
+      },
+      {
         path: '404',
-        loadChildren: 'app/error404/error404.module#Error404Module'
+        loadChildren: 'app/error404/error404.module#Error404Module',
       },
       {
         path: '**',

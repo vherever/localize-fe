@@ -1,12 +1,12 @@
 import {RouterModule, Routes} from '@angular/router';
 import {NgModule} from '@angular/core';
 // app imports
-import {Error404Component} from './error404.component';
+import {TokenExpiredComponent} from './token-expired.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: Error404Component,
+    component: TokenExpiredComponent,
   },
 ];
 
@@ -14,4 +14,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class Error404RoutingModule {}
+export class TokenExpiredRoutingModule {}

@@ -1,17 +1,17 @@
 import {RouterModule, Routes} from '@angular/router';
 import {NgModule} from '@angular/core';
 // app imports
-import {Error404Component} from './error404.component';
+import {ResetPasswordComponent} from './reset-password.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: Error404Component,
-  },
+    component: ResetPasswordComponent,
+  }
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class Error404RoutingModule {}
+export class ResetPasswordRoutingModule {}

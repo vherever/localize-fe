@@ -2,18 +2,18 @@ import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {MatButtonModule, MatCardModule, MatInputModule} from '@angular/material';
 // app imports
-import {RegisterComponent} from './register.component';
-import {RegisterRoutingModule} from './register-routing.module';
+import {ResetPasswordComponent} from './reset-password.component';
+import {ResetPasswordRoutingModule} from './reset-password-routing.module';
 
 @NgModule({
   imports: [
     CommonModule,
-    RegisterRoutingModule,
+    ResetPasswordRoutingModule,
 
     MatCardModule,
     MatInputModule,
     MatButtonModule,
   ],
-  declarations: [RegisterComponent],
+  declarations: [ResetPasswordComponent],
 })
-export class RegisterModule {}
+export class ResetPasswordModule {}

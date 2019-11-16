@@ -1,6 +1,7 @@
 import {RouterModule, Routes} from '@angular/router';
-import {RegisterComponent} from './register.component';
 import {NgModule} from '@angular/core';
+// app imports
+import {RegisterComponent} from './register.component';
 
 const routes: Routes = [
   {

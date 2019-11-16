@@ -1,1 +1,27 @@
-register
+<mat-card>
+  <h2>Register</h2>
+  <div>Already have an account? <a href="javascript:;" routerLink="/auth/login">Log in</a></div>
+  <form>
+    <div>
+      <mat-form-field>
+        <input matInput placeholder="Email">
+      </mat-form-field>
+    </div>
+
+    <div>
+      <mat-form-field>
+        <input matInput placeholder="Password">
+      </mat-form-field>
+    </div>
+
+    <div>
+      <mat-form-field>
+        <input matInput placeholder="Repeat password">
+      </mat-form-field>
+    </div>
+
+    <div>
+      <button type="button" mat-button>REGISTER</button>
+    </div>
+  </form>
+</mat-card>

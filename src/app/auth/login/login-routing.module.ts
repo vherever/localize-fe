@@ -1,6 +1,7 @@
 import {Route, RouterModule, Routes} from '@angular/router';
-import {LoginComponent} from './login.component';
 import {NgModule} from '@angular/core';
+// app imports
+import {LoginComponent} from './login.component';
 
 const routes: Routes = [
   {

@@ -5,12 +5,21 @@
     <div>
       <mat-form-field>
         <input matInput placeholder="Email" formControlName="email">
+        <mat-error *ngIf="loginForm.controls['email'].hasError('required')">
+          Email is required.
+        </mat-error>
+        <mat-error *ngIf="loginForm.controls['email'].hasError('pattern')">
+          Email is not valid.
+        </mat-error>
       </mat-form-field>
     </div>
 
     <div>
       <mat-form-field>
         <input matInput placeholder="Password" formControlName="password">
+        <mat-error *ngIf="loginForm.controls['password'].hasError('required')">
+          Password is required.
+        </mat-error>
       </mat-form-field>
     </div>
 
@@ -20,7 +29,7 @@
 
     <br>
     <div>
-      <button type="button" mat-button (click)="submitForm()">LOG IN</button>
+      <button type="button" mat-button (click)="submitForm()" [disabled]="!loginForm.valid">LOG IN</button>
     </div>
 
     <br>

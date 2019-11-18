@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import {untilComponentDestroyed} from '@w11k/ngx-componentdestroyed';
 // app imports
 import { LoginService } from './login.service';
+import { RegexpPatterns } from '../../core/helpers/regexp-patterns';
 
 @Component({
   templateUrl: 'login.component.html',
@@ -10,6 +11,7 @@ import { LoginService } from './login.service';
 })
 export class LoginComponent implements OnInit, OnDestroy {
   loginForm: FormGroup;
+  private patterns = new RegexpPatterns();
 
   constructor(
     private fb: FormBuilder,
@@ -18,8 +20,8 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.loginForm = this.fb.group({
-      email: ['', Validators.required],
-      password: ['',  Validators.required],
+      email: ['', [Validators.required, Validators.pattern(this.patterns.emailPattern)]],
+      password: ['', [Validators.required]],
     });
   }
 

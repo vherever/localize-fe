@@ -8,6 +8,9 @@ import {AppRoutingModule} from './app-routing.module';
 import {AppRouteRootComponent} from './app-route-root/app-route-root.component';
 import {HeaderModule} from './header/header.module';
 import { ErrorHandlerInterceptor } from './core/services/interceptors/error-handler-interceptor';
+import { AuthGuardService } from './core/services/guards/auth-guard.service';
+import { AuthService } from './core/api/services/auth.service';
+import { JwtModule } from '@auth0/angular-jwt';
 
 @NgModule({
   declarations: [
@@ -18,12 +21,19 @@ import { ErrorHandlerInterceptor } from './core/services/interceptors/error-hand
     BrowserModule,
     BrowserAnimationsModule,
     HttpClientModule,
+    JwtModule.forRoot({
+      config: {
+        tokenGetter: null
+      }
+    }),
 
     AppRoutingModule,
     HeaderModule,
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: ErrorHandlerInterceptor, multi: true},
+    AuthGuardService,
+    AuthService,
   ],
   bootstrap: [AppComponent]
 })

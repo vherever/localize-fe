@@ -4,12 +4,13 @@ import * as _ from 'lodash';
 // app imports
 import { ObjectLocalStorageService } from '../storage/object-local-storage.service';
 import { UserConfigModel } from './user-config.model';
+import { AppVariables } from '../../static/app-variables';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserConfigService {
-  private userConfigLsKey = '_localize_user_config_';
+  private userConfigLsKey = AppVariables.LOCAL_STORAGE_USER_CONFIG;
 
   constructor(
     private objectLocalStorageService: ObjectLocalStorageService,
@@ -30,19 +31,5 @@ export class UserConfigService {
 
   private setConfig(config: UserConfigModel) {
     this.objectLocalStorageService.setItem(this.userConfigLsKey, config);
-  }
-
-  onLogIn(token: string): string {
-    let config: UserConfigModel = this.getConf();
-
-    if (config && this.isConfigCorrect(config)) {
-      this.setConfig(config);
-    } else {
-      config = this.getConfigEmpty();
-    }
-    config.accessToken = token;
-    this.setConfig(config);
-
-    return 'success';
   }
 }

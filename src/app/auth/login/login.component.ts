@@ -4,6 +4,7 @@ import {untilComponentDestroyed} from '@w11k/ngx-componentdestroyed';
 // app imports
 import { LoginService } from './login.service';
 import { RegexpPatterns } from '../../core/helpers/regexp-patterns';
+import { Router } from '@angular/router';
 
 @Component({
   templateUrl: 'login.component.html',
@@ -15,6 +16,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   constructor(
     private fb: FormBuilder,
+    private router: Router,
     private loginService: LoginService,
   ) {}
 
@@ -30,6 +32,8 @@ export class LoginComponent implements OnInit, OnDestroy {
   submitForm(): any {
     this.loginService.login(this.loginForm.value)
       .pipe(untilComponentDestroyed(this))
-      .subscribe();
+      .subscribe(() => {
+        this.router.navigate(['/']);
+      });
   }
 }

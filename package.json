@@ -5,7 +5,7 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
-    "lint": "ng lint",
+    "lint": "ng lint"
   },
   "private": true,
   "dependencies": {
@@ -20,8 +20,11 @@
     "@angular/platform-browser": "^6.1.0",
     "@angular/platform-browser-dynamic": "^6.1.0",
     "@angular/router": "^6.1.0",
+    "@pscoped/ngx-pub-sub": "^2.0.3",
+    "@w11k/ngx-componentdestroyed": "^4.1.4",
     "core-js": "^2.5.4",
     "hammerjs": "^2.0.8",
+    "lodash": "^4.17.15",
     "rxjs": "~6.2.0",
     "zone.js": "~0.8.26"
   },

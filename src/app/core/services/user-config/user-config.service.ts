@@ -1,0 +1,48 @@
+import { Injectable } from '@angular/core';
+import { Observable, of, Subject } from 'rxjs';
+import * as _ from 'lodash';
+// app imports
+import { ObjectLocalStorageService } from '../storage/object-local-storage.service';
+import { UserConfigModel } from './user-config.model';
+
+@Injectable({
+  providedIn: 'root',
+})
+export class UserConfigService {
+  private userConfigLsKey = '_localize_user_config_';
+
+  constructor(
+    private objectLocalStorageService: ObjectLocalStorageService,
+  ) {}
+
+  private getConf(): UserConfigModel {
+    return this.objectLocalStorageService.getItem(this.userConfigLsKey);
+  }
+
+  private isConfigCorrect(userConfig: UserConfigModel): boolean {
+    const configKeys = _.keys(userConfig);
+    return configKeys.every((key) => configKeys.indexOf(key) >= 0);
+  }
+
+  private getConfigEmpty(): UserConfigModel {
+    return Object.create({});
+  }
+
+  private setConfig(config: UserConfigModel) {
+    this.objectLocalStorageService.setItem(this.userConfigLsKey, config);
+  }
+
+  onLogIn(token: string): string {
+    let config: UserConfigModel = this.getConf();
+
+    if (config && this.isConfigCorrect(config)) {
+      this.setConfig(config);
+    } else {
+      config = this.getConfigEmpty();
+    }
+    config.accessToken = token;
+    this.setConfig(config);
+
+    return 'success';
+  }
+}

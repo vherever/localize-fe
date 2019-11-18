@@ -1,16 +1,16 @@
 <mat-card>
   <h2>Log In</h2>
   <div>Don't have account yet? <a href="javascript:;" routerLink="/auth/register">Register</a></div>
-  <form>
+  <form [formGroup]="loginForm" (submit)="submitForm()">
     <div>
       <mat-form-field>
-        <input matInput placeholder="Email">
+        <input matInput placeholder="Email" formControlName="email">
       </mat-form-field>
     </div>
 
     <div>
       <mat-form-field>
-        <input matInput placeholder="Password">
+        <input matInput placeholder="Password" formControlName="password">
       </mat-form-field>
     </div>
 
@@ -20,7 +20,7 @@
 
     <br>
     <div>
-      <button type="button" mat-button>LOG IN</button>
+      <button type="button" mat-button (click)="submitForm()">LOG IN</button>
     </div>
 
     <br>

@@ -1,27 +1,45 @@
 <mat-card>
   <h2>Register</h2>
   <div>Already have an account? <a href="javascript:;" routerLink="/auth/login">Log in</a></div>
-  <form>
+  <form [formGroup]="registerForm" (submit)="submitForm()">
     <div>
       <mat-form-field>
-        <input matInput placeholder="Email">
+        <input matInput placeholder="Email" formControlName="email">
+        <mat-error *ngIf="registerForm.controls['email'].hasError('required')">
+          Email is required.
+        </mat-error>
+        <mat-error *ngIf="registerForm.controls['email'].hasError('pattern')">
+          Email is not valid.
+        </mat-error>
       </mat-form-field>
     </div>
 
     <div>
       <mat-form-field>
-        <input matInput placeholder="Password">
+        <input matInput placeholder="Password" formControlName="password">
+        <mat-error *ngIf="registerForm.controls['password'].hasError('required')">
+          Password is required.
+        </mat-error>
+        <mat-error *ngIf="registerForm.controls['password'].hasError('pattern')">
+          Password is too weak.
+        </mat-error>
       </mat-form-field>
     </div>
 
     <div>
       <mat-form-field>
-        <input matInput placeholder="Repeat password">
+        <input matInput placeholder="Repeat password" formControlName="repeat_password">
+        <mat-error *ngIf="registerForm.controls['repeat_password'].hasError('required')">
+          Password is required.
+        </mat-error>
+        <mat-error *ngIf="registerForm.controls['repeat_password'].hasError('pattern')">
+          Password is too weak.
+        </mat-error>
       </mat-form-field>
     </div>
 
     <div>
-      <button type="button" mat-button>REGISTER</button>
+      <button type="button" mat-button (click)="submitForm()" [disabled]="!registerForm.valid">REGISTER</button>
     </div>
   </form>
 </mat-card>

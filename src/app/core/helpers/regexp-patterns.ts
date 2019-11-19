@@ -6,4 +6,8 @@ export class RegexpPatterns {
       '(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$',
     ].join('');
   }
+
+  get passwordPattern(): string {
+    return '^((?=.*\\d)|(?=.*\\W+))(?![.\\n])(?=.*[A-Z])(?=.*[a-z]).*$';
+  }
 }

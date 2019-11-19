@@ -1,12 +1,13 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {MatButtonModule, MatCardModule, MatInputModule} from '@angular/material';
+import { MatButtonModule, MatCardModule, MatInputModule, MatSnackBarModule } from '@angular/material';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 // app imports
 import {RegisterComponent} from './register.component';
 import {RegisterRoutingModule} from './register-routing.module';
 import { RegisterService } from './register.service';
 import { RegisterApiService } from '../../core/api/services/register-api.service';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { LoadingSpinnerForButtonModule } from '../../core/shared/loading-spinner-for-button.module';
 
 @NgModule({
   imports: [
@@ -18,6 +19,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     MatCardModule,
     MatInputModule,
     MatButtonModule,
+    MatSnackBarModule,
+
+    LoadingSpinnerForButtonModule,
   ],
   declarations: [RegisterComponent],
   providers: [

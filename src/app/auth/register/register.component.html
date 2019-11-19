@@ -4,7 +4,7 @@
   <form [formGroup]="registerForm" (submit)="submitForm()">
     <div>
       <mat-form-field>
-        <input matInput placeholder="Email" formControlName="email">
+        <input matInput placeholder="Email" formControlName="email" autocomplete="off">
         <mat-error *ngIf="registerForm.controls['email'].hasError('required')">
           Email is required.
         </mat-error>
@@ -38,13 +38,17 @@
         <mat-error *ngIf="registerForm.controls['confirm_password'].value &&
         registerForm.controls['confirm_password'].hasError('notMatched') &&
         !registerForm.controls['confirm_password'].hasError('required')">
-          Password are not matching.
+          Passwords are not matching.
         </mat-error>
       </mat-form-field>
     </div>
 
     <div>
-      <button type="button" mat-button (click)="submitForm()" [disabled]="!registerForm.valid">REGISTER</button>
+      <button type="button" mat-button mat-flat-button
+              (click)="submitForm()" [disabled]="!registerForm.valid || isLoading">
+        <app-loading-spinner-for-button
+          [isLoading]="isLoading" [text]="'REGISTER'"></app-loading-spinner-for-button>
+      </button>
     </div>
   </form>
 </mat-card>

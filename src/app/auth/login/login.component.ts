@@ -17,6 +17,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   private patterns = new RegexpPatterns();
 
   loginForm: FormGroup;
+  isLoading: boolean;
 
   constructor(
     private fb: FormBuilder,
@@ -35,20 +36,23 @@ export class LoginComponent implements OnInit, OnDestroy {
   ngOnDestroy() {}
 
   submitForm(): any {
+    this.isLoading = true;
     this.loginService.login(this.loginForm.value)
       .pipe(
         // @ts-ignore
         catchError((error: ErrorModel) => {
+          this.isLoading = false;
           this.snackBar.open(
             `${error.error}. ${error.message}`,
             'Okay',
             { duration: 5000 }
             );
-          return error;
+          return false;
         }),
         untilComponentDestroyed(this)
       )
       .subscribe(() => {
+        this.isLoading = false;
         this.router.navigate(['/']);
       });
   }

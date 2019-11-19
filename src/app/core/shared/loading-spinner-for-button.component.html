@@ -1,0 +1,9 @@
+<mat-progress-spinner
+  *ngIf="isLoading"
+  [color]='"c_lightgray"'
+  [mode]='"indeterminate"'
+  [diameter]="25"
+>
+</mat-progress-spinner>
+<span *ngIf="!isLoading">{{ text }}</span>
+<span *ngIf="isLoading">&nbsp;</span>

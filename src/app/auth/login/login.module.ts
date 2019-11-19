@@ -1,12 +1,20 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import { MatButtonModule, MatCardModule, MatCheckboxModule, MatInputModule, MatSnackBarModule } from '@angular/material';
+import {
+  MatButtonModule,
+  MatCardModule,
+  MatCheckboxModule,
+  MatInputModule,
+  MatProgressSpinnerModule,
+  MatSnackBarModule,
+} from '@angular/material';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 // app imports
 import {LoginComponent} from './login.component';
 import {LoginRoutingModule} from './login-routing.module';
 import { LoginService } from './login.service';
 import { LoginApiService } from '../../core/api/services/login-api.service';
+import { LoadingSpinnerForButtonModule } from '../../core/shared/loading-spinner-for-button.module';
 
 @NgModule({
   imports: [
@@ -20,6 +28,9 @@ import { LoginApiService } from '../../core/api/services/login-api.service';
     MatButtonModule,
     MatCheckboxModule,
     MatSnackBarModule,
+    MatProgressSpinnerModule,
+
+    LoadingSpinnerForButtonModule,
   ],
   declarations: [LoginComponent],
   providers: [

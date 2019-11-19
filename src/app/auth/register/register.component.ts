@@ -5,6 +5,9 @@ import { RegexpPatterns } from '../../core/helpers/regexp-patterns';
 import { Router } from '@angular/router';
 import { RegisterService } from './register.service';
 import { matchOtherValidator } from '../../core/helpers/validators';
+import { catchError } from 'rxjs/operators';
+import { ErrorModel } from '../../core/models/error.model';
+import { MatSnackBar } from '@angular/material';
 
 @Component({
   templateUrl: 'register.component.html',
@@ -14,11 +17,13 @@ export class RegisterComponent implements OnInit, OnDestroy {
   private patterns = new RegexpPatterns();
 
   registerForm: FormGroup;
+  isLoading: boolean;
 
   constructor(
     private fb: FormBuilder,
     private router: Router,
     private registerService: RegisterService,
+    private snackBar: MatSnackBar,
   ) {}
 
   ngOnInit() {
@@ -44,9 +49,23 @@ export class RegisterComponent implements OnInit, OnDestroy {
   ngOnDestroy() {}
 
   submitForm(): any {
+    this.isLoading = true;
     this.registerService.register(this.registerForm.value)
-      .pipe(untilComponentDestroyed(this))
+      .pipe(
+        // @ts-ignore
+        catchError((error: ErrorModel) => {
+          this.isLoading = false;
+          this.snackBar.open(
+            `${error}`,
+            'Okay',
+            { duration: 5000 }
+          );
+          return false;
+        }),
+        untilComponentDestroyed(this)
+      )
       .subscribe(() => {
+        this.isLoading = false;
         this.router.navigate(['/auth/login']);
       });
   }

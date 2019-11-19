@@ -1,10 +1,10 @@
 <mat-card>
   <h2>Log In</h2>
   <div>Don't have account yet? <a href="javascript:;" routerLink="/auth/register">Register</a></div>
-  <form [formGroup]="loginForm" (submit)="submitForm()" autocomplete="off">
+  <form [formGroup]="loginForm" (submit)="submitForm()">
     <div>
       <mat-form-field>
-        <input matInput placeholder="Email" formControlName="email">
+        <input matInput placeholder="Email" formControlName="email" autocomplete="off">
         <mat-error *ngIf="loginForm.controls['email'].hasError('required')">
           Email is required.
         </mat-error>
@@ -31,7 +31,11 @@
     -->
 
     <div>
-      <button type="button" mat-button (click)="submitForm()" [disabled]="!loginForm.valid">LOG IN</button>
+      <button type="button" mat-button mat-flat-button
+              (click)="submitForm()" [disabled]="!loginForm.valid || isLoading">
+        <app-loading-spinner-for-button
+          [isLoading]="isLoading" [text]="'LOG IN'"></app-loading-spinner-for-button>
+      </button>
     </div>
 
     <br>

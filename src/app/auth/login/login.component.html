@@ -1,7 +1,7 @@
 <mat-card>
   <h2>Log In</h2>
   <div>Don't have account yet? <a href="javascript:;" routerLink="/auth/register">Register</a></div>
-  <form [formGroup]="loginForm" (submit)="submitForm()">
+  <form [formGroup]="loginForm" (submit)="submitForm()" autocomplete="off">
     <div>
       <mat-form-field>
         <input matInput placeholder="Email" formControlName="email">
@@ -16,18 +16,20 @@
 
     <div>
       <mat-form-field>
-        <input matInput placeholder="Password" formControlName="password">
+        <input matInput placeholder="Password" formControlName="password" type="password" autocomplete="off">
         <mat-error *ngIf="loginForm.controls['password'].hasError('required')">
           Password is required.
         </mat-error>
       </mat-form-field>
     </div>
 
+    <!--
     <div>
       <mat-checkbox>Keep me logged in</mat-checkbox>
     </div>
-
     <br>
+    -->
+
     <div>
       <button type="button" mat-button (click)="submitForm()" [disabled]="!loginForm.valid">LOG IN</button>
     </div>

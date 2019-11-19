@@ -4,14 +4,16 @@ import {untilComponentDestroyed} from '@w11k/ngx-componentdestroyed';
 import { RegexpPatterns } from '../../core/helpers/regexp-patterns';
 import { Router } from '@angular/router';
 import { RegisterService } from './register.service';
+import { matchOtherValidator } from '../../core/helpers/validators';
 
 @Component({
   templateUrl: 'register.component.html',
   styleUrls: ['register.component.scss'],
 })
 export class RegisterComponent implements OnInit, OnDestroy {
-  registerForm: FormGroup;
   private patterns = new RegexpPatterns();
+
+  registerForm: FormGroup;
 
   constructor(
     private fb: FormBuilder,
@@ -21,9 +23,21 @@ export class RegisterComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.registerForm = this.fb.group({
-      email: ['', [Validators.required, Validators.pattern(this.patterns.emailPattern)]],
-      password: ['', [Validators.required, Validators.pattern(this.patterns.passwordPattern)]],
-      repeat_password: ['', [Validators.required, Validators.pattern(this.patterns.passwordPattern)]],
+      email: ['', [
+        Validators.required,
+        Validators.pattern(this.patterns.emailPattern),
+      ]],
+      password: ['', [
+        Validators.required,
+        Validators.minLength(8),
+        Validators.pattern(this.patterns.passwordPattern),
+      ]],
+      confirm_password: ['', [
+        Validators.required,
+        Validators.minLength(8),
+        Validators.pattern(this.patterns.passwordPattern),
+        matchOtherValidator('password'),
+      ]],
     });
   }
 

@@ -4,5 +4,9 @@ mat-card {
   margin: 0 auto;
   mat-form-field {
     width: 100%;
+    mat-error {
+      display: inline-block;
+      margin-right: 1px;
+    }
   }
 }

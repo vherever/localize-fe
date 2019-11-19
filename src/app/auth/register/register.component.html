@@ -16,24 +16,29 @@
 
     <div>
       <mat-form-field>
-        <input matInput placeholder="Password" formControlName="password">
+        <input matInput placeholder="Password" formControlName="password" type="password" autocomplete="off">
         <mat-error *ngIf="registerForm.controls['password'].hasError('required')">
           Password is required.
         </mat-error>
         <mat-error *ngIf="registerForm.controls['password'].hasError('pattern')">
           Password is too weak.
         </mat-error>
+        <mat-error *ngIf="registerForm.controls['password'].hasError('minlength')">
+          Password should have at least 8 characters.
+        </mat-error>
       </mat-form-field>
     </div>
 
     <div>
       <mat-form-field>
-        <input matInput placeholder="Repeat password" formControlName="repeat_password">
-        <mat-error *ngIf="registerForm.controls['repeat_password'].hasError('required')">
+        <input matInput placeholder="Repeat password" formControlName="confirm_password" type="password" autocomplete="off">
+        <mat-error *ngIf="registerForm.controls['confirm_password'].hasError('required')">
           Password is required.
         </mat-error>
-        <mat-error *ngIf="registerForm.controls['repeat_password'].hasError('pattern')">
-          Password is too weak.
+        <mat-error *ngIf="registerForm.controls['confirm_password'].value &&
+        registerForm.controls['confirm_password'].hasError('notMatched') &&
+        !registerForm.controls['confirm_password'].hasError('required')">
+          Password are not matching.
         </mat-error>
       </mat-form-field>
     </div>

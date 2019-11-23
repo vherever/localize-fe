@@ -7,6 +7,12 @@ const routes: Routes = [
   {
     path: '',
     component: DashboardComponent,
+    children: [
+      {
+        path: '',
+        loadChildren: 'app/home/dashboard/user-info/user-info.module#UserInfoModule',
+      }
+    ],
   },
 ];
 

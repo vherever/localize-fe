@@ -1,0 +1,10 @@
+<div *ngIf="userData">
+  <div class="name">{{ userData.name }}</div>
+  <div class="email">{{ userData.email}}</div>
+  <div class="projects">
+    <a href="javascript:;" style="display: block"
+       *ngFor="let project of userData.projects">
+      {{ project.title }}
+    </a>
+  </div>
+</div>

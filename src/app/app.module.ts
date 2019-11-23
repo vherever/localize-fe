@@ -11,6 +11,7 @@ import { ErrorHandlerInterceptor } from './core/services/interceptors/error-hand
 import { AuthGuardService } from './core/services/guards/auth-guard.service';
 import { AuthService } from './core/api/services/auth.service';
 import { JwtModule } from '@auth0/angular-jwt';
+import { TokenInterceptor } from './core/services/interceptors/token-interceptor';
 
 @NgModule({
   declarations: [
@@ -31,9 +32,18 @@ import { JwtModule } from '@auth0/angular-jwt';
     HeaderModule,
   ],
   providers: [
-    {provide: HTTP_INTERCEPTORS, useClass: ErrorHandlerInterceptor, multi: true},
     AuthGuardService,
     AuthService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ErrorHandlerInterceptor,
+      multi: true,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptor,
+      multi: true,
+    },
   ],
   bootstrap: [AppComponent]
 })

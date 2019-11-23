@@ -44,7 +44,7 @@
     </div>
 
     <div>
-      <button type="button" mat-button mat-flat-button
+      <button type="submit" mat-button mat-flat-button
               (click)="submitForm()" [disabled]="!registerForm.valid || isLoading">
         <app-loading-spinner-for-button
           [isLoading]="isLoading" [text]="'REGISTER'"></app-loading-spinner-for-button>

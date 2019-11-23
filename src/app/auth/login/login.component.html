@@ -31,7 +31,7 @@
     -->
 
     <div>
-      <button type="button" mat-button mat-flat-button
+      <button type="submit" mat-button mat-flat-button
               (click)="submitForm()" [disabled]="!loginForm.valid || isLoading">
         <app-loading-spinner-for-button
           [isLoading]="isLoading" [text]="'LOG IN'"></app-loading-spinner-for-button>

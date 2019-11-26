@@ -1,24 +1,32 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
+// app imports
 import { UserInfoService } from './user-info.service';
-import { UserApiResponseModel } from '../../../core/api/models/user-api-response.model';
+import { UserModel } from '../../../core/models/user.model';
+import { AuthService } from '../../../core/api/services/auth.service';
 
 @Component({
   templateUrl: 'user-info.component.html',
 })
-export class UserInfoComponent implements OnInit {
-  userData: UserApiResponseModel;
+export class UserInfoComponent implements OnInit, OnDestroy {
+  userData: UserModel;
 
   constructor(
     private userInfoService: UserInfoService,
+    private authService: AuthService,
   ) {}
 
   ngOnInit() {
-    this.getUserData(1);
+    this.getUserData();
   }
 
-  private getUserData(id: number): void {
-    this.userInfoService.getUserData(id)
-      .subscribe((res: UserApiResponseModel) => {
+  ngOnDestroy() {}
+
+  private getUserData(): void {
+    const userId = this.authService.decodeToken().id;
+    this.userInfoService.getUserData(userId)
+      .pipe(untilComponentDestroyed(this))
+      .subscribe((res: UserModel) => {
         this.userData = res;
       });
   }

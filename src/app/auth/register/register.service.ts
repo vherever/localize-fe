@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AuthService } from '../../core/api/services/auth.service';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { RegisterCredentialsModel } from '../../core/api/models/register-credentials.model';
+import { RegisterCredentialsModel } from '../../core/models/register-credentials.model';
 import { Observable, throwError } from 'rxjs';
 import { RegisterApiService } from '../../core/api/services/register-api.service';
 import { catchError, map } from 'rxjs/operators';

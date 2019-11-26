@@ -16,6 +16,10 @@ const routes: Routes = [
         path: 'dashboard',
         loadChildren: 'app/home/dashboard/dashboard.module#DashboardModule',
       },
+      {
+        path: 'project/:id',
+        loadChildren: 'app/home/project/project.module#ProjectModule',
+      },
     ],
   },
 ];

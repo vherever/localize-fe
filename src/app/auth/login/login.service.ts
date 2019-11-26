@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 // app imports
 import { LoginApiService } from '../../core/api/services/login-api.service';
-import { LoginCredentialsModel } from '../../core/api/models/login-credentials.model';
+import { LoginCredentialsModel } from '../../core/models/login-credentials.model';
 import { catchError, map } from 'rxjs/operators';
 import { AuthService } from '../../core/api/services/auth.service';
 import { ErrorModel } from '../../core/models/error.model';

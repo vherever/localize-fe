@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { UserApiService } from '../../../core/api/services/user-api.service';
 import { Observable } from 'rxjs';
-import { UserApiResponseModel } from '../../../core/api/models/user-api-response.model';
+// app imports
+import { UserModel } from '../../../core/models/user.model';
 
 @Injectable()
 export class UserInfoService {
@@ -9,7 +10,7 @@ export class UserInfoService {
     private userApiService: UserApiService,
   ) {}
 
-  getUserData(id: number): Observable<UserApiResponseModel> {
+  getUserData(id: number): Observable<UserModel> {
     return this.userApiService.getUserData(id);
   }
 }

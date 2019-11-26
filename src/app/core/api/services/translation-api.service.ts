@@ -3,15 +3,14 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 // app imports
 import { environment } from '../../../../environments/environment';
-import { UserModel } from '../../models/user.model';
 
 @Injectable()
-export class UserApiService {
+export class TranslationApiService {
   constructor(
     private http: HttpClient,
   ) {}
 
-  getUserData(id: number): Observable<UserModel> {
-    return this.http.get(`${environment.apiUrl}/users/${id}`) as Observable<UserModel>;
+  getTranslationsById(id: number): Observable<any> {
+    return this.http.get(`${environment.apiUrl}/projects/${id}/translations`) as Observable<any>;
   }
 }

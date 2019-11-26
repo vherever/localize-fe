@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
-import { RegisterCredentialsModel } from '../models/register-credentials.model';
+import { RegisterCredentialsModel } from '../../models/register-credentials.model';
 import { Observable } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 

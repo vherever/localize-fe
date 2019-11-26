@@ -18,7 +18,7 @@ export class AuthService {
     return !this.jwtHelperService.isTokenExpired(this.token);
   }
 
-  private decodeToken(): any {
+  decodeToken(): { email: string, id: number } {
     return this.jwtHelperService.decodeToken(this.token);
   }
 

@@ -2,6 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { JwtModule } from '@auth0/angular-jwt';
 // app imports
 import { AppComponent } from './app.component';
 import {AppRoutingModule} from './app-routing.module';
@@ -10,7 +11,6 @@ import {HeaderModule} from './header/header.module';
 import { ErrorHandlerInterceptor } from './core/services/interceptors/error-handler-interceptor';
 import { AuthGuardService } from './core/services/guards/auth-guard.service';
 import { AuthService } from './core/api/services/auth.service';
-import { JwtModule } from '@auth0/angular-jwt';
 import { TokenInterceptor } from './core/services/interceptors/token-interceptor';
 
 @NgModule({

@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+// app imports
 import { ProjectComponent } from './project.component';
 import { ProjectRoutingModule } from './project-routing.module';
 import { TranslationApiService } from '../../core/api/services/translation-api.service';

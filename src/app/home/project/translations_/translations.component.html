@@ -1,4 +1,5 @@
 <div *ngFor="let translation of translations">
-  <div>sourceText: {{ translation.sourceText }}</div>
-  <div>assetCode: {{ translation.assetCode }}</div>
+  <select name="" id="">
+    <option value="" *ngFor="let item of translation.translations | keyvalue">{{ item.key }} : {{ item.value | json }}</option>
+  </select>
 </div>

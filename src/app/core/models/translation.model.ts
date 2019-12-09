@@ -1,11 +1,18 @@
 export interface TranslationModel {
   id: number;
-  sourceText: string;
+  created: Date;
+  updated: Date;
+  translations: Translations;
   assetCode: string;
-  context?: string;
-  labels?: string;
-  notes?: string;
-  language: string;
-  projectId: string;
-  authorId: string;
+  assetProjectCode: string;
+  context: string;
+  notes: string;
+  status: string;
+  projectId: number;
+  authorId?: number;
+  labels: string;
+}
+
+interface Translations {
+  [key: string]: string;
 }

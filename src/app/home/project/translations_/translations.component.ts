@@ -1,14 +1,16 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { TranslationsService } from './translations.service';
-import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
 import { ActivatedRoute } from '@angular/router';
+import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
+// app imports
+import { TranslationsService } from './translations.service';
+import { TranslationModel } from '../../../core/models/translation.model';
 
 @Component({
   selector: 'app-translations',
   templateUrl: 'translations.component.html',
 })
 export class TranslationsComponent implements OnInit, OnDestroy {
-  translations: any[];
+  translations: TranslationModel[];
 
   constructor(
     private route: ActivatedRoute,
@@ -28,7 +30,7 @@ export class TranslationsComponent implements OnInit, OnDestroy {
   getTranslationsById(id: number): void {
     this.translationService.getTranslationsById(id)
       .pipe(untilComponentDestroyed(this))
-      .subscribe((res) => {
+      .subscribe((res: TranslationModel[]) => {
         this.translations = res;
       });
   }

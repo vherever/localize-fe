@@ -1,4 +1,4 @@
-import { BrowserModule } from '@angular/platform-browser';
+import { BrowserModule, TransferState } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
@@ -12,6 +12,18 @@ import { ErrorHandlerInterceptor } from './core/services/interceptors/error-hand
 import { AuthGuardService } from './core/services/guards/auth-guard.service';
 import { AuthService } from './core/api/services/auth.service';
 import { TokenInterceptor } from './core/services/interceptors/token-interceptor';
+import { CACHE, CacheLoader, CacheModule, CacheStaticLoader } from '@ngx-cache/core';
+import { BrowserCacheModule, MemoryCacheService } from '@ngx-cache/platform-browser';
+
+export function cacheFactory(): CacheLoader {
+  return new CacheStaticLoader({
+    key: 'NGX_CACHE',
+    lifeSpan: {
+      expiry: Number.MAX_VALUE,
+      TTL: Number.MAX_VALUE,
+    },
+  });
+}
 
 @NgModule({
   declarations: [
@@ -22,6 +34,13 @@ import { TokenInterceptor } from './core/services/interceptors/token-interceptor
     BrowserModule,
     BrowserAnimationsModule,
     HttpClientModule,
+    CacheModule.forRoot(),
+    BrowserCacheModule.forRoot([
+      {
+        provide: CACHE,
+        useClass: MemoryCacheService, // or, LocalStorageCacheService
+      },
+    ]),
     JwtModule.forRoot({
       config: {
         tokenGetter: null,
@@ -32,6 +51,7 @@ import { TokenInterceptor } from './core/services/interceptors/token-interceptor
     HeaderModule,
   ],
   providers: [
+    TransferState,
     AuthGuardService,
     AuthService,
     {

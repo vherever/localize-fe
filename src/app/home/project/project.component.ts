@@ -4,5 +4,6 @@ import { Component } from '@angular/core';
   templateUrl: 'project.component.html',
 })
 export class ProjectComponent {
-  constructor() {}
+  constructor() {
+  }
 }

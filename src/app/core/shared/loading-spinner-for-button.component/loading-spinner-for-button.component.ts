@@ -9,5 +9,6 @@ export class LoadingSpinnerForButtonComponent {
   @Input() isLoading: boolean;
   @Input() text: string;
 
-  constructor() {}
+  constructor() {
+  }
 }

@@ -1,9 +1,9 @@
-import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
-import {MatButtonModule, MatCardModule, MatInputModule} from '@angular/material';
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { MatButtonModule, MatCardModule, MatInputModule } from '@angular/material';
 // app imports
-import {ResetPasswordComponent} from './reset-password.component';
-import {ResetPasswordRoutingModule} from './reset-password-routing.module';
+import { ResetPasswordComponent } from './reset-password.component';
+import { ResetPasswordRoutingModule } from './reset-password-routing.module';
 
 @NgModule({
   imports: [
@@ -16,4 +16,5 @@ import {ResetPasswordRoutingModule} from './reset-password-routing.module';
   ],
   declarations: [ResetPasswordComponent],
 })
-export class ResetPasswordModule {}
+export class ResetPasswordModule {
+}

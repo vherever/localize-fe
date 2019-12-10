@@ -8,7 +8,8 @@ import { environment } from '../../../../environments/environment';
 export class TranslationApiService {
   constructor(
     private http: HttpClient,
-  ) {}
+  ) {
+  }
 
   getTranslationsById(id: number): Observable<any> {
     return this.http.get(`${environment.apiUrl}/projects/${id}/translations`) as Observable<any>;

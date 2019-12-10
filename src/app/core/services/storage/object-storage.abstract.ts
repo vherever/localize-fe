@@ -3,7 +3,8 @@ import { ObjectStorageModel } from './object-storage.model';
 export abstract class ObjectStorageAbstract implements ObjectStorageModel {
   protected constructor(
     private storage: Storage,
-  ) {}
+  ) {
+  }
 
   setItem<T>(key: string, data: T): void {
     this.storage.setItem(key, JSON.stringify(data));
@@ -15,7 +16,7 @@ export abstract class ObjectStorageAbstract implements ObjectStorageModel {
 
   updateItem<T>(key: string, data: object): void {
     const item = JSON.parse(this.storage.getItem(key));
-    this.storage.setItem(key, JSON.stringify({item, ...data}));
+    this.storage.setItem(key, JSON.stringify({ item, ...data }));
   }
 
   removeItem(key: string): void {

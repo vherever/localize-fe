@@ -1,9 +1,9 @@
-import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
-import {RouterModule} from '@angular/router';
-import {MatButtonModule, MatToolbarModule} from '@angular/material';
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
+import { MatButtonModule, MatToolbarModule } from '@angular/material';
 // app imports
-import {HeaderComponent} from './header.component';
+import { HeaderComponent } from './header.component';
 
 @NgModule({
   imports: [
@@ -16,4 +16,5 @@ import {HeaderComponent} from './header.component';
   declarations: [HeaderComponent],
   exports: [HeaderComponent],
 })
-export class HeaderModule {}
+export class HeaderModule {
+}

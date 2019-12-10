@@ -1,12 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import {untilComponentDestroyed} from '@w11k/ngx-componentdestroyed';
-// app imports
-import { LoginService } from './login.service';
-import { RegexpPatterns } from '../../core/helpers/regexp-patterns';
+import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material';
 import { catchError } from 'rxjs/operators';
+// app imports
+import { LoginService } from './login.service';
+import { RegexpPatterns } from '../../core/helpers/regexp-patterns';
 import { ErrorModel } from '../../core/models/error.model';
 
 @Component({
@@ -24,7 +24,8 @@ export class LoginComponent implements OnInit, OnDestroy {
     private router: Router,
     private loginService: LoginService,
     private snackBar: MatSnackBar,
-  ) {}
+  ) {
+  }
 
   ngOnInit() {
     this.loginForm = this.fb.group({
@@ -33,7 +34,8 @@ export class LoginComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnDestroy() {}
+  ngOnDestroy() {
+  }
 
   submitForm(): any {
     this.isLoading = true;
@@ -45,11 +47,11 @@ export class LoginComponent implements OnInit, OnDestroy {
           this.snackBar.open(
             `${error.error}. ${error.message}`,
             'Okay',
-            { duration: 5000 }
-            );
+            { duration: 5000 },
+          );
           return false;
         }),
-        untilComponentDestroyed(this)
+        untilComponentDestroyed(this),
       )
       .subscribe(() => {
         this.isLoading = false;

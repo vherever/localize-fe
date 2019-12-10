@@ -6,11 +6,13 @@ import { ProjectRoutingModule } from './project-routing.module';
 import { TranslationApiService } from '../../core/api/services/translation-api.service';
 import { TranslationsService } from './translations_/translations.service';
 import { TranslationsComponent } from './translations_/translations.component';
+import { ErrorMessageModule } from '../../core/shared/error-message/error-message.module';
 
 @NgModule({
   imports: [
     CommonModule,
     ProjectRoutingModule,
+    ErrorMessageModule,
   ],
   declarations: [
     ProjectComponent,
@@ -21,4 +23,5 @@ import { TranslationsComponent } from './translations_/translations.component';
     TranslationsService,
   ],
 })
-export class ProjectModule {}
+export class ProjectModule {
+}

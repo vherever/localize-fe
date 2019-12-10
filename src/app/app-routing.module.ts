@@ -1,7 +1,7 @@
-import {RouterModule, Routes} from '@angular/router';
-import {NgModule} from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { NgModule } from '@angular/core';
 // app imports
-import {AppRouteRootComponent} from './app-route-root/app-route-root.component';
+import { AppRouteRootComponent } from './app-route-root/app-route-root.component';
 import { AuthGuardService } from './core/services/guards/auth-guard.service';
 
 const routes: Routes = [
@@ -25,7 +25,7 @@ const routes: Routes = [
       {
         path: '**',
         redirectTo: '404',
-      }
+      },
     ],
   },
 ];
@@ -34,4 +34,5 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
 })
-export class AppRoutingModule {}
+export class AppRoutingModule {
+}

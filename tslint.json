@@ -1,9 +1,12 @@
 {
+  "extends": ["tslint:recommended"],
   "rulesDirectory": [
     "node_modules/codelyzer",
     "node_modules/rxjs-tslint"
   ],
   "rules": {
+    "interface-name": false,
+    "ordered-imports": false,
     "arrow-return-shorthand": true,
     "callable-types": true,
     "class-name": true,

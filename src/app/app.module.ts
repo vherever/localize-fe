@@ -5,9 +5,9 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { JwtModule } from '@auth0/angular-jwt';
 // app imports
 import { AppComponent } from './app.component';
-import {AppRoutingModule} from './app-routing.module';
-import {AppRouteRootComponent} from './app-route-root/app-route-root.component';
-import {HeaderModule} from './header/header.module';
+import { AppRoutingModule } from './app-routing.module';
+import { AppRouteRootComponent } from './app-route-root/app-route-root.component';
+import { HeaderModule } from './header/header.module';
 import { ErrorHandlerInterceptor } from './core/services/interceptors/error-handler-interceptor';
 import { AuthGuardService } from './core/services/guards/auth-guard.service';
 import { AuthService } from './core/api/services/auth.service';
@@ -24,8 +24,8 @@ import { TokenInterceptor } from './core/services/interceptors/token-interceptor
     HttpClientModule,
     JwtModule.forRoot({
       config: {
-        tokenGetter: null
-      }
+        tokenGetter: null,
+      },
     }),
 
     AppRoutingModule,
@@ -45,6 +45,7 @@ import { TokenInterceptor } from './core/services/interceptors/token-interceptor
       multi: true,
     },
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule {
+}

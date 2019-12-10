@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
-import { AuthService } from '../../core/api/services/auth.service';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { RegisterCredentialsModel } from '../../core/models/register-credentials.model';
 import { Observable, throwError } from 'rxjs';
-import { RegisterApiService } from '../../core/api/services/register-api.service';
 import { catchError, map } from 'rxjs/operators';
+// app imports
+import { AuthService } from '../../core/api/services/auth.service';
+import { RegisterCredentialsModel } from '../../core/models/register-credentials.model';
+import { RegisterApiService } from '../../core/api/services/register-api.service';
 
 @Injectable()
 export class RegisterService {
@@ -12,7 +13,8 @@ export class RegisterService {
     private http: HttpClient,
     private authService: AuthService,
     private registerApiService: RegisterApiService,
-  ) {}
+  ) {
+  }
 
   register(req: RegisterCredentialsModel): Observable<any> {
     return this.registerApiService.register(req)
@@ -20,7 +22,7 @@ export class RegisterService {
         catchError((err: HttpErrorResponse) => {
           return throwError(err);
         }),
-        map(res => 'success'),
+        map(() => 'success'),
       );
   }
 }

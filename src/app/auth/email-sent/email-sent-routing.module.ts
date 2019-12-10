@@ -1,7 +1,7 @@
-import {RouterModule, Routes} from '@angular/router';
-import {NgModule} from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { NgModule } from '@angular/core';
 // app imports
-import {EmailSentComponent} from './email-sent.component';
+import { EmailSentComponent } from './email-sent.component';
 
 const routes: Routes = [
   {
@@ -14,4 +14,5 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class EmailSentRoutingModule {}
+export class EmailSentRoutingModule {
+}

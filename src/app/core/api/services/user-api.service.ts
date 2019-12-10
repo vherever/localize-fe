@@ -9,7 +9,8 @@ import { UserModel } from '../../models/user.model';
 export class UserApiService {
   constructor(
     private http: HttpClient,
-  ) {}
+  ) {
+  }
 
   getUserData(id: number): Observable<UserModel> {
     return this.http.get(`${environment.apiUrl}/users/${id}`) as Observable<UserModel>;

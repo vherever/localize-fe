@@ -8,7 +8,8 @@ import { TranslationModel } from '../../../core/models/translation.model';
 export class TranslationsService {
   constructor(
     private translationApiService: TranslationApiService,
-  ) {}
+  ) {
+  }
 
   getTranslationsById(id: number): Observable<TranslationModel[]> {
     return this.translationApiService.getTranslationsById(id);

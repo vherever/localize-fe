@@ -1,9 +1,9 @@
-import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
-import {MatCardModule} from '@angular/material';
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { MatCardModule } from '@angular/material';
 // app imports
-import {TokenExpiredComponent} from './token-expired.component';
-import {TokenExpiredRoutingModule} from './token-expired-routing.module';
+import { TokenExpiredComponent } from './token-expired.component';
+import { TokenExpiredRoutingModule } from './token-expired-routing.module';
 
 @NgModule({
   imports: [
@@ -14,4 +14,5 @@ import {TokenExpiredRoutingModule} from './token-expired-routing.module';
   ],
   declarations: [TokenExpiredComponent],
 })
-export class TokenExpiredModule {}
+export class TokenExpiredModule {
+}

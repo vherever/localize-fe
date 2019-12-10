@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Observable, of, Subject } from 'rxjs';
 import * as _ from 'lodash';
 // app imports
 import { ObjectLocalStorageService } from '../storage/object-local-storage.service';
@@ -14,7 +13,8 @@ export class UserConfigService {
 
   constructor(
     private objectLocalStorageService: ObjectLocalStorageService,
-  ) {}
+  ) {
+  }
 
   private getConf(): UserConfigModel {
     return this.objectLocalStorageService.getItem(this.userConfigLsKey);

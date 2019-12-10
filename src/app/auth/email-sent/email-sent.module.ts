@@ -1,9 +1,9 @@
-import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
-import {MatCardModule} from '@angular/material';
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { MatCardModule } from '@angular/material';
 // app imports
-import {EmailSentComponent} from './email-sent.component';
-import {EmailSentRoutingModule} from './email-sent-routing.module';
+import { EmailSentComponent } from './email-sent.component';
+import { EmailSentRoutingModule } from './email-sent-routing.module';
 
 @NgModule({
   imports: [
@@ -14,4 +14,5 @@ import {EmailSentRoutingModule} from './email-sent-routing.module';
   ],
   declarations: [EmailSentComponent],
 })
-export class EmailSentModule {}
+export class EmailSentModule {
+}

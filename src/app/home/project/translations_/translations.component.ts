@@ -15,22 +15,25 @@ export class TranslationsComponent implements OnInit, OnDestroy {
   constructor(
     private route: ActivatedRoute,
     private translationService: TranslationsService,
-  ) {}
+  ) {
+  }
 
   ngOnInit() {
     this.route.params
       .pipe(untilComponentDestroyed(this))
-      .subscribe(params => {
+      .subscribe((params) => {
         this.getTranslationsById(+params['id']);
       });
   }
 
-  ngOnDestroy() {}
+  ngOnDestroy() {
+  }
 
   getTranslationsById(id: number): void {
     this.translationService.getTranslationsById(id)
       .pipe(untilComponentDestroyed(this))
       .subscribe((res: TranslationModel[]) => {
+        console.log('___ res', res); // todo
         this.translations = res;
       });
   }

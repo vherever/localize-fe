@@ -1,13 +1,14 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import {untilComponentDestroyed} from '@w11k/ngx-componentdestroyed';
-import { RegexpPatterns } from '../../core/helpers/regexp-patterns';
 import { Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material';
+import { catchError } from 'rxjs/operators';
+import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
+// app imports
+import { RegexpPatterns } from '../../core/helpers/regexp-patterns';
 import { RegisterService } from './register.service';
 import { matchOtherValidator } from '../../core/helpers/validators';
-import { catchError } from 'rxjs/operators';
 import { ErrorModel } from '../../core/models/error.model';
-import { MatSnackBar } from '@angular/material';
 
 @Component({
   templateUrl: 'register.component.html',
@@ -24,7 +25,8 @@ export class RegisterComponent implements OnInit, OnDestroy {
     private router: Router,
     private registerService: RegisterService,
     private snackBar: MatSnackBar,
-  ) {}
+  ) {
+  }
 
   ngOnInit() {
     this.registerForm = this.fb.group({
@@ -46,7 +48,8 @@ export class RegisterComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnDestroy() {}
+  ngOnDestroy() {
+  }
 
   submitForm(): any {
     this.isLoading = true;
@@ -58,11 +61,11 @@ export class RegisterComponent implements OnInit, OnDestroy {
           this.snackBar.open(
             `${error}`,
             'Okay',
-            { duration: 5000 }
+            { duration: 5000 },
           );
           return false;
         }),
-        untilComponentDestroyed(this)
+        untilComponentDestroyed(this),
       )
       .subscribe(() => {
         this.isLoading = false;

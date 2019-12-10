@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { JwtHelperService } from '@auth0/angular-jwt';
+// app imports
 import { ObjectLocalStorageService } from '../../services/storage/object-local-storage.service';
 import { AppVariables } from '../../static/app-variables';
 
@@ -8,7 +9,8 @@ export class AuthService {
   constructor(
     private jwtHelperService: JwtHelperService,
     private objectLocalStorageService: ObjectLocalStorageService,
-  ) {}
+  ) {
+  }
 
   get token(): string {
     return this.objectLocalStorageService.getItem(AppVariables.LOCAL_STORAGE_USER_ACCESS_TOKEN);

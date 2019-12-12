@@ -1,6 +1,6 @@
 <div *ngFor="let translation of translations; let i = index" class="lz_translation"
-     (click)="onTranslationEditClick($event, translation, i);"
-     [ngClass]="{'lz_opened': currentClickedElementId === i}">
-  <div class="lz_assetCode">{{ translation.assetCode }}</div>
+     (click)="onTranslationEditClick($event, translation, i);">
+  <div class="lz_assetCode"
+       [ngClass]="{'lz_opened': currentClickedElementId === i}">{{ translation.assetCode }}</div>
   <ng-container #translationEditor></ng-container>
 </div>

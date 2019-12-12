@@ -1,9 +1,6 @@
 .lz_translation {
   cursor: pointer;
-  &.lz_opened {
-    background-color: lightgrey;
-  }
-  &:hover {
+  .lz_opened {
     background-color: lightgrey;
   }
   &:not(:last-child) {
@@ -11,5 +8,8 @@
   }
   .lz_assetCode {
     padding: 15px 15px;
+    &:hover:not(.lz_opened) {
+      background-color: #f5f5f5;
+    }
   }
 }

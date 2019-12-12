@@ -3,6 +3,7 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 // app imports
 import { ObjectLocalStorageService } from '../../services/storage/object-local-storage.service';
 import { AppVariables } from '../../static/app-variables';
+import { TokenPayloadModel } from '../../models/token-payload.model';
 
 @Injectable()
 export class AuthService {
@@ -20,7 +21,7 @@ export class AuthService {
     return !this.jwtHelperService.isTokenExpired(this.token);
   }
 
-  decodeToken(): { email: string, id: number } {
+  decodeToken(): TokenPayloadModel {
     return this.jwtHelperService.decodeToken(this.token);
   }
 

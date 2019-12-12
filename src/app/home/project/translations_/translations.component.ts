@@ -1,4 +1,4 @@
-import { Component, ComponentFactoryResolver, OnDestroy, OnInit, QueryList, TemplateRef, ViewChild, ViewChildren, ViewContainerRef } from '@angular/core';
+import { Component, ComponentFactoryResolver, ComponentRef, OnDestroy, OnInit, QueryList, ViewChildren, ViewContainerRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
 // app imports
@@ -9,15 +9,17 @@ import { TranslateEditorComponent } from './translate-editor/translate-editor.co
 @Component({
   selector: 'app-translations',
   templateUrl: 'translations.component.html',
+  styleUrls: ['translations.component.scss'],
 })
 export class TranslationsComponent implements OnInit, OnDestroy {
-  @ViewChild('templateTranslationEditor') templateTranslationEditor: TemplateRef<any>;
-  @ViewChildren('translationEditor', { read: ViewContainerRef }) divs: QueryList<ViewContainerRef>;
+  @ViewChildren('translationEditor', { read: ViewContainerRef }) translationContainers: QueryList<ViewContainerRef>;
 
   private previousElement: ViewContainerRef;
+  private previousClickedElementId: number;
 
   translations: TranslationModel[];
-  componentRef: any;
+  componentRef: ComponentRef<TranslateEditorComponent>;
+  currentClickedElementId: number;
 
   constructor(
     private route: ActivatedRoute,
@@ -38,11 +40,23 @@ export class TranslationsComponent implements OnInit, OnDestroy {
     if (this.componentRef) { this.componentRef.destroy(); }
   }
 
-  onTranslationEditClick(translation: TranslationModel, index: number): void {
-    if (this.previousElement) {
-      this.previousElement.clear();
+  onTranslationEditClick(event: any, translation: TranslationModel, index: number): void {
+    if (event.srcElement.className.search('lz_translation') > -1 || event.srcElement.className.search('lz_assetCode') > -1) {
+
+      this.currentClickedElementId = null;
+      if (this.previousElement) {
+        this.previousElement.clear();
+      }
+      if (this.previousClickedElementId === index) {
+        this.previousElement.clear();
+        this.previousClickedElementId = null; // reset value to make checking again
+      } else {
+        this.currentClickedElementId = index;
+        this.previousClickedElementId = index;
+        this.createComponent(translation, index);
+      }
+
     }
-    this.createComponent(translation, index);
   }
 
   private getTranslationsById(id: number): void {
@@ -55,7 +69,7 @@ export class TranslationsComponent implements OnInit, OnDestroy {
   }
 
   private createComponent(translation: TranslationModel, index: number) {
-    const nativeEl = this.divs.toArray()[index];
+    const nativeEl = this.translationContainers.toArray()[index];
     this.previousElement = nativeEl;
     const factory = this.resolver.resolveComponentFactory(TranslateEditorComponent);
     this.componentRef = nativeEl.createComponent(factory);

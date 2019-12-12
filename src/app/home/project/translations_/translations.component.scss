@@ -1,0 +1,15 @@
+.lz_translation {
+  cursor: pointer;
+  &.lz_opened {
+    background-color: lightgrey;
+  }
+  &:hover {
+    background-color: lightgrey;
+  }
+  &:not(:last-child) {
+    border-bottom: 1px solid #e4e4e4;
+  }
+  .lz_assetCode {
+    padding: 15px 15px;
+  }
+}

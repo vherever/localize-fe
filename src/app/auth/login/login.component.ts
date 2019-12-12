@@ -1,9 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
-import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material';
 import { catchError } from 'rxjs/operators';
+import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
+import { NgxPubSubService } from '@pscoped/ngx-pub-sub';
 // app imports
 import { LoginService } from './login.service';
 import { RegexpPatterns } from '../../core/helpers/regexp-patterns';
@@ -21,9 +21,9 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   constructor(
     private fb: FormBuilder,
-    private router: Router,
     private loginService: LoginService,
     private snackBar: MatSnackBar,
+    private pubSubService: NgxPubSubService,
   ) {
   }
 
@@ -55,7 +55,7 @@ export class LoginComponent implements OnInit, OnDestroy {
       )
       .subscribe(() => {
         this.isLoading = false;
-        this.router.navigate(['/']);
+        this.pubSubService.publishEvent('isAuthenticated', true);
       });
   }
 }

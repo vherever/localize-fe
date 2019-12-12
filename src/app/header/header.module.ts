@@ -4,6 +4,7 @@ import { RouterModule } from '@angular/router';
 import { MatButtonModule, MatToolbarModule } from '@angular/material';
 // app imports
 import { HeaderComponent } from './header.component';
+import { AuthService } from '../core/api/services/auth.service';
 
 @NgModule({
   imports: [
@@ -15,6 +16,7 @@ import { HeaderComponent } from './header.component';
   ],
   declarations: [HeaderComponent],
   exports: [HeaderComponent],
+  providers: [AuthService],
 })
 export class HeaderModule {
 }

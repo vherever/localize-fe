@@ -18,14 +18,14 @@ export class ErrorHandlerInterceptor implements HttpInterceptor {
       .pipe(catchError((err: HttpErrorResponse) => this.handleError(err)));
   }
 
-  private async handleError(err: HttpErrorResponse): Promise<any> {
+  private handleError(err: HttpErrorResponse): Observable<any> {
     const error: ErrorModel | any = err.error;
     if (error.message && error.message.length) {
       if (error.statusCode === 404) {
-        await this.router.navigate(['404']);
+        this.router.navigate(['404']);
       }
-      return await throwError(error);
+      return throwError(error);
     }
-    return await throwError(err.message);
+    return throwError(err.message);
   }
 }

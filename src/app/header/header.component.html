@@ -1,7 +1,12 @@
 <mat-toolbar>
   <button mat-button routerLink="">Home</button>
   <div>
-    <button mat-button routerLink="/auth/login">Login</button>
-    <button mat-button routerLink="/auth/register">Register</button>
+    <ng-container *ngIf="!isAuthenticated">
+      <button mat-button routerLink="/auth/login">Login</button>
+      <button mat-button routerLink="/auth/register">Register</button>
+    </ng-container>
+    <ng-container *ngIf="isAuthenticated">
+      <button mat-button (click)="onLogOutClick()">Log Out</button>
+    </ng-container>
   </div>
 </mat-toolbar>

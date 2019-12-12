@@ -7,11 +7,13 @@ import { TranslationApiService } from '../../core/api/services/translation-api.s
 import { TranslationsService } from './translations_/translations.service';
 import { TranslationsComponent } from './translations_/translations.component';
 import { ErrorMessageModule } from '../../core/shared/error-message/error-message.module';
+import { TranslateEditorModule } from './translations_/translate-editor/translate-editor.module';
 
 @NgModule({
   imports: [
     CommonModule,
     ProjectRoutingModule,
+    TranslateEditorModule,
     ErrorMessageModule,
   ],
   declarations: [

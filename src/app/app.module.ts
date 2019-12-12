@@ -14,6 +14,8 @@ import { AuthService } from './core/api/services/auth.service';
 import { TokenInterceptor } from './core/services/interceptors/token-interceptor';
 import { CACHE, CacheLoader, CacheModule, CacheStaticLoader } from '@ngx-cache/core';
 import { BrowserCacheModule, MemoryCacheService } from '@ngx-cache/platform-browser';
+import { AppRouteRootModule } from './app-route-root/app-route-root.module';
+import { NgxPubSubModule } from '@pscoped/ngx-pub-sub';
 
 export function cacheFactory(): CacheLoader {
   return new CacheStaticLoader({
@@ -34,6 +36,8 @@ export function cacheFactory(): CacheLoader {
     BrowserModule,
     BrowserAnimationsModule,
     HttpClientModule,
+    AppRouteRootModule,
+    NgxPubSubModule,
     CacheModule.forRoot(),
     BrowserCacheModule.forRoot([
       {

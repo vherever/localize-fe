@@ -1,11 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { NgxPubSubService } from '@pscoped/ngx-pub-sub';
 import { Router } from '@angular/router';
+import { CacheService } from '@ngx-cache/core';
+import { NgxPubSubService } from '@pscoped/ngx-pub-sub';
 // app imports
 import { AuthService } from '../core/api/services/auth.service';
-import { CacheService } from '@ngx-cache/core';
-import { MatDialog } from '@angular/material';
-import { UserInfoDialogComponent } from '../home/user-info-dialog/user-info-dialog.component';
 
 @Component({
   selector: 'app-header',

@@ -11,6 +11,9 @@
       <mat-error *ngIf="userSettingsForm.controls['email'].hasError('required')">
         Email is required.
       </mat-error>
+      <mat-error *ngIf="userSettingsForm.controls['email'].hasError('emailExists')">
+        Email already exists.
+      </mat-error>
     </mat-form-field>
   </div>
 

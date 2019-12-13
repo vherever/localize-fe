@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 // app imports
 import { environment } from '../../../../environments/environment';
 import { UserModel } from '../../models/user.model';
+import { UpdateUserReqModel } from '../../models/req-body/update-user-req.model';
 
 @Injectable()
 export class UserApiService {
@@ -14,5 +15,9 @@ export class UserApiService {
 
   getUserData(id: number): Observable<UserModel> {
     return this.http.get(`${environment.apiUrl}/users/${id}`) as Observable<UserModel>;
+  }
+
+  updateUser(id: number, data: UpdateUserReqModel): Observable<UserModel> {
+    return this.http.put(`${environment.apiUrl}/users/${id}`, data) as Observable<UserModel>;
   }
 }

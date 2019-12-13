@@ -6,6 +6,10 @@
       <button mat-button routerLink="/auth/register">Register</button>
     </ng-container>
     <ng-container *ngIf="isAuthenticated">
+      <button mat-icon-button class="button-settings"
+              (click)="onAccountSettingsClick()">
+        <mat-icon>settings</mat-icon>
+      </button>
       <button mat-button (click)="onLogOutClick()">Log Out</button>
     </ng-container>
   </div>

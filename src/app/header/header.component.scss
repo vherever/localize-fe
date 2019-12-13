@@ -1,4 +1,7 @@
-.mat-toolbar {
+mat-toolbar {
   display: flex;
   place-content: center space-between;
+  .button-settings {
+    margin-right: 5px;
+  }
 }

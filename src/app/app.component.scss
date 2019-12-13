@@ -1,3 +1,11 @@
 .l_app_wrapper {
   padding: 25px;
 }
+
+// Shared styles
+::ng-deep {
+  .lz_row {
+    display: flex;
+    .lz_col {}
+  }
+}

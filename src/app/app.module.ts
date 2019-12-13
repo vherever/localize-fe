@@ -16,6 +16,7 @@ import { CACHE, CacheLoader, CacheModule, CacheStaticLoader } from '@ngx-cache/c
 import { BrowserCacheModule, MemoryCacheService } from '@ngx-cache/platform-browser';
 import { AppRouteRootModule } from './app-route-root/app-route-root.module';
 import { NgxPubSubModule } from '@pscoped/ngx-pub-sub';
+import { PubSubEventsHandlerModule } from './core/shared/pub-sub-events-handler/pub-sub-events-handler.module';
 
 export function cacheFactory(): CacheLoader {
   return new CacheStaticLoader({
@@ -52,6 +53,7 @@ export function cacheFactory(): CacheLoader {
     }),
 
     AppRoutingModule,
+    PubSubEventsHandlerModule,
     HeaderModule,
   ],
   providers: [

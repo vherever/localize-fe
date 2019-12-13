@@ -4,6 +4,8 @@ import { Router } from '@angular/router';
 // app imports
 import { AuthService } from '../core/api/services/auth.service';
 import { CacheService } from '@ngx-cache/core';
+import { MatDialog } from '@angular/material';
+import { UserInfoDialogComponent } from '../home/user-info-dialog/user-info-dialog.component';
 
 @Component({
   selector: 'app-header',
@@ -37,5 +39,9 @@ export class HeaderComponent implements OnInit {
     this.cacheService.set('userData', null);
     this.authService.onLogOut();
     this.pubSubService.publishEvent('isAuthenticated', false);
+  }
+
+  onAccountSettingsClick(): void {
+    this.pubSubService.publishEvent('accountSettingsDialogOpened', true);
   }
 }

@@ -1,10 +1,14 @@
 import { Component, ComponentFactoryResolver, ComponentRef, OnDestroy, OnInit, QueryList, ViewChildren, ViewContainerRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { CacheService } from '@ngx-cache/core';
 import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
+import { NgxPubSubService } from '@pscoped/ngx-pub-sub';
+import { Subscription } from 'rxjs';
 // app imports
 import { TranslationsService } from './translations.service';
 import { TranslationModel } from '../../../core/models/translation.model';
 import { TranslateEditorComponent } from './translate-editor/translate-editor.component';
+import { UserModel } from '../../../core/models/user.model';
 
 @Component({
   selector: 'app-translations',
@@ -16,6 +20,9 @@ export class TranslationsComponent implements OnInit, OnDestroy {
 
   private previousElement: ViewContainerRef;
   private previousClickedElementId: number;
+  private sub1: Subscription;
+  private userData: UserModel;
+  private projectId: number;
 
   translations: TranslationModel[];
   componentRef: ComponentRef<TranslateEditorComponent>;
@@ -25,6 +32,9 @@ export class TranslationsComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private translationService: TranslationsService,
     private resolver: ComponentFactoryResolver,
+    private cacheService: CacheService,
+    private pubSubService: NgxPubSubService,
+    private translationsService: TranslationsService,
   ) {
   }
 
@@ -33,11 +43,21 @@ export class TranslationsComponent implements OnInit, OnDestroy {
       .pipe(untilComponentDestroyed(this))
       .subscribe((params) => {
         this.getTranslationsById(+params['id']);
+        this.projectId = +params['id'];
       });
+
+    this.userData = this.cacheService.get('userData');
+    if (!this.userData) {
+      this.sub1 = this.pubSubService
+        .subscribe('userDataCached', () => {
+          this.userData = this.cacheService.get('userData');
+        });
+    }
   }
 
   ngOnDestroy() {
     if (this.componentRef) { this.componentRef.destroy(); }
+    if (this.sub1) { this.sub1.unsubscribe(); }
   }
 
   onTranslationEditClick(event: any, translation: TranslationModel, index: number): void {
@@ -54,6 +74,7 @@ export class TranslationsComponent implements OnInit, OnDestroy {
         this.currentClickedElementId = index;
         this.previousClickedElementId = index;
         this.createComponent(translation, index);
+        this.updateTranslation(translation.id);
       }
 
     }
@@ -63,7 +84,6 @@ export class TranslationsComponent implements OnInit, OnDestroy {
     this.translationService.getTranslationsById(id)
       .pipe(untilComponentDestroyed(this))
       .subscribe((res: TranslationModel[]) => {
-        console.log('___ translations', res); // todo
         this.translations = res;
       });
   }
@@ -73,6 +93,24 @@ export class TranslationsComponent implements OnInit, OnDestroy {
     this.previousElement = nativeEl;
     const factory = this.resolver.resolveComponentFactory(TranslateEditorComponent);
     this.componentRef = nativeEl.createComponent(factory);
+    this.componentRef.instance.projectId = this.projectId;
     this.componentRef.instance.translation = translation;
+    this.componentRef.instance.userData = this.userData;
+  }
+
+  private updateTranslation(translationId: number): void {
+    this.componentRef.instance.newTranslationData
+      .pipe(untilComponentDestroyed(this))
+      .subscribe((data) => {
+        this.translationsService.updateTranslation(this.projectId, translationId, data)
+          .pipe(untilComponentDestroyed(this))
+          .subscribe((res: TranslationModel[]) => {
+            const updatedTranslation = res[0];
+            const index = this.translations.findIndex((e) => e.id === updatedTranslation.id);
+            this.translations[index] = updatedTranslation;
+            this.previousClickedElementId = null;
+            this.currentClickedElementId = null;
+          });
+      });
   }
 }

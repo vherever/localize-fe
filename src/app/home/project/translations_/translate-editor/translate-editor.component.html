@@ -1,8 +1,11 @@
 <form [formGroup]="translateForm" (submit)="onSaveTranslation()">
   <div style="border: 1px solid">
 
-    <select name="" id="" #t formControlName="editInLanguage" (ngModelChange)="onLanguageEditChange(t.value)">
-      <option *ngFor="let item of translation.translations | keyvalue" [value]="item.key">{{ item.key }}</option>
+    <select #t formControlName="editInLanguage" (ngModelChange)="onLanguageEditChange(t.value)">
+      <option *ngFor="let item of translation.translations | keyvalue"
+              [attr.data-test]="item.value"
+              [ngValue]="item.value"
+              [value]="item.key" [innerHtml]="item.key"></option>
     </select>
 
     <br>

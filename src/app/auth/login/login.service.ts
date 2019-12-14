@@ -23,7 +23,7 @@ export class LoginService {
         catchError((err: ErrorModel) => {
           return throwError(err);
         }),
-        map(res => this.authService.onLogIn(res.body.accessToken)),
+        map((res) => this.authService.onLogIn(res.body.accessToken)),
       );
   }
 }

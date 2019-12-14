@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 // app imports
 import { environment } from '../../../../environments/environment';
+import { TranslationModel } from '../../models/translation.model';
 
 @Injectable()
 export class TranslationApiService {
@@ -11,7 +12,11 @@ export class TranslationApiService {
   ) {
   }
 
-  getTranslationsById(id: number): Observable<any> {
+  getTranslationsById(id: number): Observable<TranslationModel[]> {
     return this.http.get(`${environment.apiUrl}/projects/${id}/translations`) as Observable<any>;
+  }
+
+  updateTranslation(projectId: number, translationId: number, data: any): Observable<TranslationModel[]> {
+    return this.http.put(`${environment.apiUrl}/projects/${projectId}/translations/${translationId}`, data) as Observable<any>;
   }
 }

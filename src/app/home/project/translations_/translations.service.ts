@@ -14,4 +14,8 @@ export class TranslationsService {
   getTranslationsById(id: number): Observable<TranslationModel[]> {
     return this.translationApiService.getTranslationsById(id);
   }
+
+  updateTranslation(projectId: number, translationId: number, data: any): Observable<TranslationModel[]> {
+    return this.translationApiService.updateTranslation(projectId, translationId, data);
+  }
 }

@@ -20,13 +20,13 @@ export class UserInfoComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.userData = this.cacheService.get('userData');
     if (!this.userData) {
       this.sub1 = this.pubSubService
         .subscribe('userDataCached', () => {
           this.userData = this.cacheService.get('userData');
         });
     }
+    this.userData = this.cacheService.get('userData');
   }
 
   ngOnDestroy() {

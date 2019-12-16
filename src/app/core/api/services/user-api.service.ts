@@ -20,4 +20,8 @@ export class UserApiService {
   updateUser(id: number, data: UpdateUserReqModel): Observable<UserModel> {
     return this.http.put(`${environment.apiUrl}/users/${id}`, data) as Observable<UserModel>;
   }
+
+  uploadAvatar(id: number, data: any): Observable<any> {
+    return this.http.post(`${environment.apiUrl}/users/${id}/avatar`, data, {responseType: 'text'}) as Observable<any>;
+  }
 }

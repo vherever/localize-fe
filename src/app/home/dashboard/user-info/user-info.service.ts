@@ -19,4 +19,8 @@ export class UserInfoService {
   updateUser(id: number, data: UpdateUserReqModel): Observable<UserModel> {
     return this.userApiService.updateUser(id, data);
   }
+
+  uploadAvatar(id: number, file: any): Observable<any> {
+    return this.userApiService.uploadAvatar(id, file);
+  }
 }

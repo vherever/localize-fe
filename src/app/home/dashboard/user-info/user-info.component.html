@@ -1,4 +1,8 @@
 <div *ngIf="userData">
+  <div>
+    upload image:
+    <app-image-uploader [userId]="userData.id" [uuid]="userData.uuid"></app-image-uploader>
+  </div>
   <div class="name">{{ userData.name }}</div>
   <div class="email">{{ userData.email}}</div>
   <div class="projects">

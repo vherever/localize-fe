@@ -1,8 +1,10 @@
-import { Component, Input, OnDestroy } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
 import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
 // app imports
 import { UserInfoService } from '../../../home/dashboard/user-info/user-info.service';
 import { ImageUploaderHelper } from './image-uploader-helper';
+import { NgxPubSubService } from '@pscoped/ngx-pub-sub';
+import { CacheService } from '@ngx-cache/core';
 
 @Component({
   selector: 'app-image-uploader',
@@ -12,11 +14,14 @@ import { ImageUploaderHelper } from './image-uploader-helper';
 export class ImageUploaderComponent extends ImageUploaderHelper implements OnDestroy {
   @Input() userId: number;
   @Input() uuid: string;
+  @Output() avatarUpdated: EventEmitter<string> = new EventEmitter();
 
   selectedImage: File = null;
 
   constructor(
     private userInfoService: UserInfoService,
+    private pubSubService: NgxPubSubService,
+    private cacheService: CacheService,
   ) {
     super();
   }
@@ -31,8 +36,8 @@ export class ImageUploaderComponent extends ImageUploaderHelper implements OnDes
       fd.append('image', this.selectedImage, this.getFileName(event, this.uuid));
       this.userInfoService.uploadAvatar(this.userId, fd)
         .pipe(untilComponentDestroyed(this))
-        .subscribe((res) => {
-          console.log('___ res', res); // todo
+        .subscribe((res: {fileName: string}) => {
+          this.avatarUpdated.emit(res.fileName);
         });
     }
   }

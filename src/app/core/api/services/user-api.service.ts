@@ -22,6 +22,6 @@ export class UserApiService {
   }
 
   uploadAvatar(id: number, data: any): Observable<any> {
-    return this.http.post(`${environment.apiUrl}/users/${id}/avatar`, data, {responseType: 'text'}) as Observable<any>;
+    return this.http.post(`${environment.apiUrl}/users/${id}/avatar`, data) as Observable<any>;
   }
 }

@@ -5,5 +5,6 @@ export interface UserModel {
   uuid: string;
   name: string;
   email: string;
+  avatar: string;
   projects: ProjectModel[];
 }

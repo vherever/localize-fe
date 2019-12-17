@@ -1,7 +1,10 @@
 <div *ngIf="userData">
   <div>
     upload image:
-    <app-image-uploader [userId]="userData.id" [uuid]="userData.uuid"></app-image-uploader>
+    <app-image-uploader [userId]="userData.id" [uuid]="userData.uuid" (avatarUpdated)="onAvatarUpdated($event)"></app-image-uploader>
+    <div *ngIf="userData.avatar" class="lz_avatar_wrapper">
+      <img src="{{ uploadsEndpoint }}/{{ userData.avatar }}" alt="">
+    </div>
   </div>
   <div class="name">{{ userData.name }}</div>
   <div class="email">{{ userData.email}}</div>

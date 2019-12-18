@@ -5,7 +5,7 @@ import { catchError } from 'rxjs/operators';
 import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
 import { NgxPubSubService } from '@pscoped/ngx-pub-sub';
 // app imports
-import { LoginService } from './login.service';
+import { LoginService } from '../../core/services/api-interaction/login.service';
 import { RegexpPatterns } from '../../core/helpers/regexp-patterns';
 import { ErrorModel } from '../../core/models/error.model';
 

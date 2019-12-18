@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { JwtHelperService } from '@auth0/angular-jwt';
 // app imports
-import { ObjectLocalStorageService } from '../../services/storage/object-local-storage.service';
+import { ObjectLocalStorageService } from '../storage/object-local-storage.service';
 import { AppVariables } from '../../static/app-variables';
 import { TokenPayloadModel } from '../../models/token-payload.model';
 

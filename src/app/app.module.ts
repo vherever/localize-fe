@@ -10,7 +10,7 @@ import { AppRouteRootComponent } from './app-route-root/app-route-root.component
 import { HeaderModule } from './header/header.module';
 import { ErrorHandlerInterceptor } from './core/services/interceptors/error-handler-interceptor';
 import { AuthGuardService } from './core/services/guards/auth-guard.service';
-import { AuthService } from './core/api/services/auth.service';
+import { AuthService } from './core/services/api/auth.service';
 import { TokenInterceptor } from './core/services/interceptors/token-interceptor';
 import { CACHE, CacheLoader, CacheModule, CacheStaticLoader } from '@ngx-cache/core';
 import { BrowserCacheModule, MemoryCacheService } from '@ngx-cache/platform-browser';

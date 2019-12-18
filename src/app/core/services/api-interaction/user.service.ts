@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 // app imports
-import { UserApiService } from '../../../core/api/services/user-api.service';
-import { UserModel } from '../../../core/models/user.model';
-import { UpdateUserReqModel } from '../../../core/models/req-body/update-user-req.model';
+import { UserApiService } from '../api/user-api.service';
+import { UserModel } from '../../models/user.model';
+import { UpdateUserReqModel } from '../../models/req-body/update-user-req.model';
 
 @Injectable()
-export class UserInfoService {
+export class UserService {
   constructor(
     private userApiService: UserApiService,
   ) {

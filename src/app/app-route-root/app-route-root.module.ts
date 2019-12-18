@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
-import { UserInfoService } from '../home/dashboard/user-info/user-info.service';
-import { UserApiService } from '../core/api/services/user-api.service';
+import { UserService } from '../core/services/api-interaction/user.service';
+import { UserApiService } from '../core/services/api/user-api.service';
 
 @NgModule({
   providers: [
     UserApiService,
-    UserInfoService,
+    UserService,
   ],
 })
 export class AppRouteRootModule {

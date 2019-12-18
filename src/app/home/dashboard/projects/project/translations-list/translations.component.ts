@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
 import { Subscription } from 'rxjs';
 // app imports
-import { TranslationsService } from './translations.service';
+import { TranslationsService } from '../../../../../core/services/api-interaction/translations.service';
 import { TranslationModel } from '../../../../../core/models/translation.model';
 import { TranslationEditorComponent } from './translation-editor/translation-editor.component';
 import { UserModel } from '../../../../../core/models/user.model';

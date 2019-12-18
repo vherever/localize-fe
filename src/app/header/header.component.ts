@@ -4,7 +4,7 @@ import { CacheService } from '@ngx-cache/core';
 import { NgxPubSubService } from '@pscoped/ngx-pub-sub';
 import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
 // app imports
-import { AuthService } from '../core/api/services/auth.service';
+import { AuthService } from '../core/services/api/auth.service';
 import { UserModel } from '../core/models/user.model';
 import { environment } from '../../environments/environment';
 import { AppDataGlobalStorageService } from '../core/services/app-data-global-storage.service';

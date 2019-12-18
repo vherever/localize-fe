@@ -2,11 +2,11 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 // app imports
-import { LoginApiService } from '../../core/api/services/login-api.service';
-import { LoginCredentialsModel } from '../../core/models/login-credentials.model';
+import { LoginApiService } from '../api/login-api.service';
+import { LoginCredentialsModel } from '../../models/login-credentials.model';
 import { catchError, map } from 'rxjs/operators';
-import { AuthService } from '../../core/api/services/auth.service';
-import { ErrorModel } from '../../core/models/error.model';
+import { AuthService } from '../api/auth.service';
+import { ErrorModel } from '../../models/error.model';
 
 @Injectable()
 export class LoginService {

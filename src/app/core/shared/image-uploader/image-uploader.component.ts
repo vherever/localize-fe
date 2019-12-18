@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
 import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
 // app imports
-import { UserInfoService } from '../../../home/dashboard/user-info/user-info.service';
+import { UserService } from '../../services/api-interaction/user.service';
 import { ImageUploaderHelper } from './image-uploader-helper';
 import { NgxPubSubService } from '@pscoped/ngx-pub-sub';
 import { CacheService } from '@ngx-cache/core';
@@ -19,7 +19,7 @@ export class ImageUploaderComponent extends ImageUploaderHelper implements OnDes
   selectedImage: File = null;
 
   constructor(
-    private userInfoService: UserInfoService,
+    private userInfoService: UserService,
     private pubSubService: NgxPubSubService,
     private cacheService: CacheService,
   ) {

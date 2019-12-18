@@ -4,7 +4,7 @@ import { RouterModule } from '@angular/router';
 import { MatButtonModule, MatDialogModule, MatIconModule, MatToolbarModule } from '@angular/material';
 // app imports
 import { HeaderComponent } from './header.component';
-import { AuthService } from '../core/api/services/auth.service';
+import { AuthService } from '../core/services/api/auth.service';
 import { UserInfoDialogModule } from '../home/user-info-dialog/user-info-dialog.module';
 
 @NgModule({

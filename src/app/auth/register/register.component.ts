@@ -6,7 +6,7 @@ import { catchError } from 'rxjs/operators';
 import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
 // app imports
 import { RegexpPatterns } from '../../core/helpers/regexp-patterns';
-import { RegisterService } from './register.service';
+import { RegisterService } from '../../core/services/api-interaction/register.service';
 import { matchOtherValidator } from '../../core/helpers/validators';
 import { ErrorModel } from '../../core/models/error.model';
 

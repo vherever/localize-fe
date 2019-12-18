@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 // app imports
-import { TranslationApiService } from '../../../../../core/api/services/translation-api.service';
-import { TranslationModel } from '../../../../../core/models/translation.model';
+import { TranslationApiService } from '../api/translation-api.service';
+import { TranslationModel } from '../../models/translation.model';
 
 @Injectable()
 export class TranslationsService {

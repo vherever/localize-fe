@@ -6,7 +6,7 @@ import { NgxPubSubService } from '@pscoped/ngx-pub-sub';
 import { catchError } from 'rxjs/operators';
 // app imports
 import { UserModel } from '../../core/models/user.model';
-import { UserInfoService } from '../dashboard/user-info/user-info.service';
+import { UserService } from '../../core/services/api-interaction/user.service';
 import { ErrorModel } from '../../core/models/error.model';
 
 @Component({
@@ -20,7 +20,7 @@ export class UserInfoDialogComponent implements OnInit {
     private fb: FormBuilder,
     private pubSubService: NgxPubSubService,
     private cacheService: CacheService,
-    private userInfoService: UserInfoService,
+    private userInfoService: UserService,
     @Inject(MAT_DIALOG_DATA) public userData: UserModel,
   ) {
   }

@@ -1,0 +1,9 @@
+<div class="projects">
+  <button (click)="onProjectAddClick()">Add project</button>
+  <a href="javascript:;"
+     [routerLink]="'/project/' + project.id"
+     style="display: block"
+     *ngFor="let project of projects">
+    {{ project.title }}
+  </a>
+</div>

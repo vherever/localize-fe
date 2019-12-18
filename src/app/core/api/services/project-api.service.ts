@@ -11,7 +11,11 @@ export class ProjectApiService {
   ) {
   }
 
-  getProjectData(id: number): Observable<any> {
+  getProjectById(id: number): Observable<any> {
     return this.http.get(`${environment.apiUrl}/projects/${id}`) as Observable<any>;
+  }
+
+  createProject(id: number, data: any): Observable<any> {
+    return this.http.post(`${environment.apiUrl}/projects/${id}`, data) as Observable<any>;
   }
 }

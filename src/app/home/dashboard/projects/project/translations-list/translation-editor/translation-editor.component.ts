@@ -1,9 +1,9 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 // app imports
-import { TranslationModel } from '../../../../core/models/translation.model';
-import { UserModel } from '../../../../core/models/user.model';
-import { ProjectModel } from '../../../../core/models/project.model';
+import { TranslationModel } from '../../../../../../core/models/translation.model';
+import { UserModel } from '../../../../../../core/models/user.model';
+import { ProjectModel } from '../../../../../../core/models/project.model';
 
 interface TranslateEditorModel {
   editInLanguage: string;
@@ -11,9 +11,10 @@ interface TranslateEditorModel {
 }
 
 @Component({
-  templateUrl: 'translate-editor.component.html',
+  templateUrl: 'translation-editor.component.html',
+  styleUrls: ['translation-editor.component.scss'],
 })
-export class TranslateEditorComponent implements OnInit {
+export class TranslationEditorComponent implements OnInit {
   @Input() projectId: number;
   @Input() translation: TranslationModel;
   @Input() userData: UserModel;

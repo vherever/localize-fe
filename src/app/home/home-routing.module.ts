@@ -18,7 +18,7 @@ const routes: Routes = [
       },
       {
         path: 'project/:id',
-        loadChildren: 'app/home/project/project.module#ProjectModule',
+        loadChildren: 'app/home/dashboard/projects/project/project.module#ProjectModule',
       },
     ],
   },

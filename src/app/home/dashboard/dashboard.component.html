@@ -1,1 +1,3 @@
-<router-outlet></router-outlet>
+<app-user-info [userData]="userData"></app-user-info>
+<br>
+<app-projects [projects]="userData && userData.projects"></app-projects>

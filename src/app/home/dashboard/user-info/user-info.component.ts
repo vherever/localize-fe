@@ -1,36 +1,25 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { CacheService } from '@ngx-cache/core';
-import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
 // app imports
 import { UserModel } from '../../../core/models/user.model';
 import { environment } from '../../../../environments/environment';
-import { AppDataGlobalStorageService } from '../../../core/services/app-data-global-storage.service';
 
 @Component({
+  selector: 'app-user-info',
   templateUrl: 'user-info.component.html',
   styleUrls: ['user-info.component.scss'],
 })
-export class UserInfoComponent implements OnInit, OnDestroy {
-  userData: UserModel;
+export class UserInfoComponent implements OnInit {
+  @Input() userData: UserModel;
   uploadsEndpoint: string;
 
   constructor(
     private cacheService: CacheService,
-    private appDataGlobalStorageService: AppDataGlobalStorageService,
   ) {
   }
 
   ngOnInit() {
-    this.appDataGlobalStorageService.userData
-      .pipe(untilComponentDestroyed(this))
-      .subscribe((res: UserModel) => {
-        this.userData = res;
-      });
-
     this.uploadsEndpoint = `${environment.apiUrl}/uploads`;
-  }
-
-  ngOnDestroy() {
   }
 
   onAvatarUpdated(fileName: string): void {

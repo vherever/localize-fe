@@ -2,6 +2,7 @@
      (click)="onTranslationEditClick($event, translation, i);">
   <div class="lz_assetCode"
        [ngClass]="{'lz_opened': currentClickedElementId === i}">{{ translation.assetCode }}
+    <pre>{{ translation | json }}</pre>
   </div>
   <ng-container #translationEditor></ng-container>
 </div>

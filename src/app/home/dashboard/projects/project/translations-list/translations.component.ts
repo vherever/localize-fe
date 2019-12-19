@@ -8,6 +8,9 @@ import { TranslationModel } from '../../../../../core/models/translation.model';
 import { TranslationEditorComponent } from './translation-editor/translation-editor.component';
 import { UserModel } from '../../../../../core/models/user.model';
 import { AppDataGlobalStorageService } from '../../../../../core/services/app-data-global-storage.service';
+import { NgxPubSubService } from '@pscoped/ngx-pub-sub';
+import { MatDialog, MatDialogRef } from '@angular/material';
+import { TranslationAddDialogComponent } from '../../../../translation-add-dialog/translation-add-dialog.component';
 
 @Component({
   selector: 'app-translations',
@@ -20,6 +23,7 @@ export class TranslationsComponent implements OnInit, OnDestroy {
   private previousElement: ViewContainerRef;
   private previousClickedElementId: number;
   private sub1: Subscription;
+  private sub2: Subscription;
   private userData: UserModel;
   private projectId: number;
 
@@ -33,6 +37,7 @@ export class TranslationsComponent implements OnInit, OnDestroy {
     private resolver: ComponentFactoryResolver,
     private appDataGlobalStorageService: AppDataGlobalStorageService,
     private translationsService: TranslationsService,
+    private dialog: MatDialog,
   ) {
   }
 
@@ -54,11 +59,11 @@ export class TranslationsComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     if (this.componentRef) { this.componentRef.destroy(); }
     if (this.sub1) { this.sub1.unsubscribe(); }
+    if (this.sub2) { this.sub2.unsubscribe(); }
   }
 
   onTranslationEditClick(event: any, translation: TranslationModel, index: number): void {
     if (event.srcElement.className.search('lz_translation') > -1 || event.srcElement.className.search('lz_assetCode') > -1) {
-
       this.currentClickedElementId = null;
       if (this.previousElement) {
         this.previousElement.clear();
@@ -72,8 +77,26 @@ export class TranslationsComponent implements OnInit, OnDestroy {
         this.createComponent(translation, index);
         this.updateTranslation(translation.id);
       }
-
     }
+  }
+
+  onAddTranslationClick(): void {
+    this.onOpenAddTranslationDialog();
+  }
+
+  private onOpenAddTranslationDialog(): void {
+    const dialogRef: MatDialogRef<TranslationAddDialogComponent> =
+      this.dialog.open(TranslationAddDialogComponent, {
+      width: '500px',
+      data: {projectId: this.projectId},
+    });
+
+    dialogRef.componentInstance.addedTranslation
+      .pipe(untilComponentDestroyed(this))
+      .subscribe((res: TranslationModel) => {
+        this.translations.push(res);
+        dialogRef.close();
+      });
   }
 
   private getTranslationsById(id: number): void {

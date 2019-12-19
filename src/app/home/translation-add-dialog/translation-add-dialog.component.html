@@ -1,0 +1,22 @@
+<form [formGroup]="addTranslationForm" (submit)="onTranslationSave()">
+  <div>
+    <mat-form-field>
+      <input matInput placeholder="Translations" formControlName="translations" autocomplete="off">
+      <mat-error *ngIf="addTranslationForm.controls['translations'].hasError('required')">
+        Translations is required.
+      </mat-error>
+    </mat-form-field>
+  </div>
+
+  <div>
+    <mat-form-field>
+      <input matInput placeholder="assetCode" formControlName="assetCode" autocomplete="off">
+      <mat-error *ngIf="addTranslationForm.controls['assetCode'].hasError('required')">
+        assetCode is required.
+      </mat-error>
+    </mat-form-field>
+  </div>
+
+  <button mat-button mat-flat-button
+          [disabled]="!addTranslationForm.valid">Save</button>
+</form>

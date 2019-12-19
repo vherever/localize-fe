@@ -15,8 +15,7 @@ import { ProjectAddDialogComponent } from '../../../home/project-add-dialog/proj
 })
 export class PubSubEventsHandlerComponent implements OnInit, OnDestroy {
   private userData: UserModel;
-  private sub1: Subscription;
-  private sub2: Subscription;
+  private sub: Subscription;
 
   constructor(
     private pubSubService: NgxPubSubService,
@@ -40,13 +39,12 @@ export class PubSubEventsHandlerComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    if (this.sub1) { this.sub1.unsubscribe(); }
-    if (this.sub2) { this.sub2.unsubscribe(); }
+    if (this.sub) { this.sub.unsubscribe(); }
   }
 
   private onOpenAccountSettingsDialog(): void {
     let dialogRef: MatDialogRef<UserInfoDialogComponent>;
-    this.sub1 = this.pubSubService
+    this.sub = this.pubSubService
       .subscribe('accountSettingsDialogOpened', (state: boolean) => {
         if (state) {
           dialogRef = this.dialog.open(UserInfoDialogComponent, {
@@ -66,7 +64,7 @@ export class PubSubEventsHandlerComponent implements OnInit, OnDestroy {
 
   private onOpenAddProjectDialog(): void {
     let dialogRef: MatDialogRef<ProjectAddDialogComponent>;
-    this.sub2 = this.pubSubService
+    this.sub = this.pubSubService
       .subscribe('addProjectDialogOpened', (state: boolean) => {
         if (state) {
           dialogRef = this.dialog.open(ProjectAddDialogComponent, {

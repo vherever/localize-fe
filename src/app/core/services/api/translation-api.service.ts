@@ -19,4 +19,8 @@ export class TranslationApiService {
   updateTranslation(projectId: number, translationId: number, data: any): Observable<TranslationModel[]> {
     return this.http.put(`${environment.apiUrl}/projects/${projectId}/translations/${translationId}`, data) as Observable<any>;
   }
+
+  createTranslation(projectId: number, data: any): Observable<TranslationModel[]> {
+    return this.http.post(`${environment.apiUrl}/projects/${projectId}/translations/`, data) as Observable<TranslationModel[]>;
+  }
 }

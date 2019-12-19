@@ -1,8 +1,8 @@
+<button (click)="onAddTranslationClick()">Add Translation</button>
 <div *ngFor="let translation of translations; let i = index" class="lz_translation"
      (click)="onTranslationEditClick($event, translation, i);">
   <div class="lz_assetCode"
        [ngClass]="{'lz_opened': currentClickedElementId === i}">{{ translation.assetCode }}
-    <pre>{{ translation | json }}</pre>
   </div>
   <ng-container #translationEditor></ng-container>
 </div>

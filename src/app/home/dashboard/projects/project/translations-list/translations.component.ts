@@ -1,16 +1,15 @@
 import { Component, ComponentFactoryResolver, ComponentRef, OnDestroy, OnInit, QueryList, ViewChildren, ViewContainerRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { MatDialog, MatDialogRef } from '@angular/material';
 import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
-import { Subscription } from 'rxjs';
 // app imports
 import { TranslationsService } from '../../../../../core/services/api-interaction/translations.service';
 import { TranslationModel } from '../../../../../core/models/translation.model';
 import { TranslationEditorComponent } from './translation-editor/translation-editor.component';
 import { UserModel } from '../../../../../core/models/user.model';
 import { AppDataGlobalStorageService } from '../../../../../core/services/app-data-global-storage.service';
-import { NgxPubSubService } from '@pscoped/ngx-pub-sub';
-import { MatDialog, MatDialogRef } from '@angular/material';
 import { TranslationAddDialogComponent } from '../../../../translation-add-dialog/translation-add-dialog.component';
+import { ProjectModel } from '../../../../../core/models/project.model';
 
 @Component({
   selector: 'app-translations',
@@ -22,10 +21,8 @@ export class TranslationsComponent implements OnInit, OnDestroy {
 
   private previousElement: ViewContainerRef;
   private previousClickedElementId: number;
-  private sub1: Subscription;
-  private sub2: Subscription;
-  private userData: UserModel;
   private projectId: number;
+  private projectData: ProjectModel;
 
   translations: TranslationModel[];
   componentRef: ComponentRef<TranslationEditorComponent>;
@@ -52,14 +49,12 @@ export class TranslationsComponent implements OnInit, OnDestroy {
     this.appDataGlobalStorageService.userData
       .pipe(untilComponentDestroyed(this))
       .subscribe((res: UserModel) => {
-        this.userData = res;
+        this.projectData = res && res.projects.find((p: ProjectModel) => p.id === this.projectId);
       });
   }
 
   ngOnDestroy() {
     if (this.componentRef) { this.componentRef.destroy(); }
-    if (this.sub1) { this.sub1.unsubscribe(); }
-    if (this.sub2) { this.sub2.unsubscribe(); }
   }
 
   onTranslationEditClick(event: any, translation: TranslationModel, index: number): void {
@@ -88,7 +83,7 @@ export class TranslationsComponent implements OnInit, OnDestroy {
     const dialogRef: MatDialogRef<TranslationAddDialogComponent> =
       this.dialog.open(TranslationAddDialogComponent, {
       width: '500px',
-      data: {projectId: this.projectId},
+      data: this.projectData,
     });
 
     dialogRef.componentInstance.addedTranslation
@@ -114,7 +109,7 @@ export class TranslationsComponent implements OnInit, OnDestroy {
     this.componentRef = nativeEl.createComponent(factory);
     this.componentRef.instance.projectId = this.projectId;
     this.componentRef.instance.translation = translation;
-    this.componentRef.instance.userData = this.userData;
+    this.componentRef.instance.projectData = this.projectData;
   }
 
   private updateTranslation(translationId: number): void {

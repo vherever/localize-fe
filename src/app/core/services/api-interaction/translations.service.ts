@@ -19,7 +19,7 @@ export class TranslationsService {
     return this.translationApiService.updateTranslation(projectId, translationId, data);
   }
 
-  createTranslation(data: any, projectId: number): Observable<TranslationModel[]> {
-    return this.translationApiService.createTranslation(data, projectId);
+  createTranslation(projectId: number, data: any): Observable<TranslationModel[]> {
+    return this.translationApiService.createTranslation(projectId, data);
   }
 }

@@ -2,7 +2,6 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 // app imports
 import { TranslationModel } from '../../../../../../core/models/translation.model';
-import { UserModel } from '../../../../../../core/models/user.model';
 import { ProjectModel } from '../../../../../../core/models/project.model';
 
 interface TranslateEditorModel {
@@ -17,7 +16,7 @@ interface TranslateEditorModel {
 export class TranslationEditorComponent implements OnInit {
   @Input() projectId: number;
   @Input() translation: TranslationModel;
-  @Input() userData: UserModel;
+  @Input() projectData: ProjectModel;
 
   @Output() newTranslationData: EventEmitter<any> = new EventEmitter();
 
@@ -29,8 +28,7 @@ export class TranslationEditorComponent implements OnInit {
   }
 
   ngOnInit() {
-    const projectData = this.userData.projects.find((p: ProjectModel) => p.id === this.projectId);
-    const projectDefaultLocale = projectData.defaultLocale;
+    const projectDefaultLocale = this.projectData.defaultLocale;
 
     this.translateForm = this.fb.group({
       editInLanguage: [projectDefaultLocale],
@@ -41,7 +39,7 @@ export class TranslationEditorComponent implements OnInit {
   onSaveTranslation(): void {
     const data = {
       assetCode: this.translation.assetCode,
-      translations: JSON.stringify(this.buildFullTranslation(this.translateForm.value.editInLanguage, this.translateForm.value))
+      translations: JSON.stringify(this.buildFullTranslation(this.translateForm.value.editInLanguage, this.translateForm.value)),
     };
 
     this.newTranslationData.emit(data);

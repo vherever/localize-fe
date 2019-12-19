@@ -1,18 +1,23 @@
 <form [formGroup]="addTranslationForm" (submit)="onTranslationSave()">
   <div>
     <mat-form-field>
-      <input matInput placeholder="Translations" formControlName="translations" autocomplete="off">
-      <mat-error *ngIf="addTranslationForm.controls['translations'].hasError('required')">
-        Translations is required.
+      <input matInput placeholder="Source text" formControlName="translationInDefault" autocomplete="off">
+      <mat-hint>initial translation in {{ defaultLocale }}.</mat-hint>
+      <mat-error *ngIf="addTranslationForm.controls['translationInDefault'].hasError('required')">
+        Translation is required.
       </mat-error>
     </mat-form-field>
   </div>
 
   <div>
     <mat-form-field>
-      <input matInput placeholder="assetCode" formControlName="assetCode" autocomplete="off">
+      <input matInput placeholder="Asset ID" formControlName="assetCode" autocomplete="off">
+      <mat-hint>An unique asset identifier.</mat-hint>
       <mat-error *ngIf="addTranslationForm.controls['assetCode'].hasError('required')">
         assetCode is required.
+      </mat-error>
+      <mat-error *ngIf="addTranslationForm.controls['assetCode'].hasError('assetCodeExists')">
+        Another asset exists with this ID.
       </mat-error>
     </mat-form-field>
   </div>

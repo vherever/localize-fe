@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CacheService } from '@ngx-cache/core';
@@ -8,12 +8,13 @@ import { catchError } from 'rxjs/operators';
 import { UserModel } from '../../core/models/user.model';
 import { UserService } from '../../core/services/api-interaction/user.service';
 import { ErrorModel } from '../../core/models/error.model';
+import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
 
 @Component({
   templateUrl: 'user-info-dialog.component.html',
   styleUrls: ['user-info-dialog.component.scss'],
 })
-export class UserInfoDialogComponent implements OnInit {
+export class UserInfoDialogComponent implements OnInit, OnDestroy {
   userSettingsForm: FormGroup;
 
   constructor(
@@ -32,9 +33,13 @@ export class UserInfoDialogComponent implements OnInit {
     });
   }
 
+  ngOnDestroy() {
+  }
+
   onUserSettingsSave(): void {
     this.userInfoService.updateUser(this.userData.id, this.userSettingsForm.value)
       .pipe(
+        untilComponentDestroyed(this),
         // @ts-ignore
         catchError((error: ErrorModel) => {
           if (error.statusCode === 409) {

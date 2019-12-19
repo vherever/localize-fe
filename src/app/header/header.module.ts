@@ -16,8 +16,6 @@ import { UserInfoDialogModule } from '../home/user-info-dialog/user-info-dialog.
     MatButtonModule,
     MatIconModule,
     MatDialogModule,
-
-    UserInfoDialogModule,
   ],
   declarations: [HeaderComponent],
   exports: [HeaderComponent],

@@ -1,0 +1,39 @@
+<form [formGroup]="projectAddForm" (submit)="onProjectAddFormSave()">
+  <div>
+    <mat-form-field>
+      <input matInput placeholder="Project name" formControlName="title" autocomplete="off">
+      <mat-error *ngIf="projectAddForm.controls['title'].hasError('required')">
+        Project name is required.
+      </mat-error>
+    </mat-form-field>
+  </div>
+
+  <div>
+    <mat-form-field>
+      <input matInput placeholder="Project description" formControlName="description" autocomplete="off">
+    </mat-form-field>
+  </div>
+
+  <div>
+    <mat-form-field>
+      <input matInput placeholder="Default locale" formControlName="defaultLocale" autocomplete="off">
+      <mat-error *ngIf="projectAddForm.controls['defaultLocale'].hasError('required')">
+        defaultLocale is required.
+      </mat-error>
+      <mat-hint>The language you are translating from.</mat-hint>
+    </mat-form-field>
+  </div>
+
+  <div>
+    <mat-form-field>
+      <input matInput placeholder="Default locale" formControlName="translationsLocales" autocomplete="off">
+      <mat-error *ngIf="projectAddForm.controls['translationsLocales'].hasError('required')">
+        translationsLocales is required.
+      </mat-error>
+      <mat-hint>The languages you are translating to.</mat-hint>
+    </mat-form-field>
+  </div>
+
+  <button mat-button mat-flat-button
+          [disabled]="!projectAddForm.valid">Save</button>
+</form>

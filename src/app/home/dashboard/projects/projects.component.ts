@@ -1,4 +1,6 @@
 import { Component, Input } from '@angular/core';
+import { NgxPubSubService } from '@pscoped/ngx-pub-sub';
+// app imports
 import { ProjectModel } from '../../../core/models/project.model';
 
 @Component({
@@ -9,10 +11,12 @@ import { ProjectModel } from '../../../core/models/project.model';
 export class ProjectsComponent {
   @Input() projects: ProjectModel[];
 
-  constructor() {
+  constructor(
+    private pubSubService: NgxPubSubService,
+  ) {
   }
 
   onProjectAddClick(): void {
-    console.log('___ onProjectAddClick', ); // todo
+    this.pubSubService.publishEvent('addProjectDialogOpened', true);
   }
 }

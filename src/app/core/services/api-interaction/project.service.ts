@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
-import { ProjectApiService } from '../api/project-api.service';
 import { Observable } from 'rxjs';
+// app imports
+import { ProjectApiService } from '../api/project-api.service';
+import { ProjectModel } from '../../models/project.model';
 
 @Injectable()
 export class ProjectService {
@@ -9,11 +11,11 @@ export class ProjectService {
   ) {
   }
 
-  getProjectById(id: number): Observable<any> {
+  getProjectById(id: number): Observable<ProjectModel> {
     return this.projectApiService.getProjectById(id);
   }
 
-  createProject(id: number, data: any): Observable<any> {
-    return this.projectApiService.createProject(id, data);
+  createProject(data: any): Observable<ProjectModel> {
+    return this.projectApiService.createProject(data);
   }
 }

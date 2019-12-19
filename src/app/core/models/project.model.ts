@@ -5,4 +5,7 @@ export interface ProjectModel {
   defaultLocale: string;
   translationsLocales: string;
   ownerId: number;
+  userId: number;
+  created: Date;
+  updated: Date;
 }

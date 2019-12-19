@@ -53,6 +53,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   onLogOutClick(): void {
     this.cacheService.set('userData', null);
+    this.pubSubService.publishEvent('userDataCached', true);
     this.authService.onLogOut();
     this.pubSubService.publishEvent('isAuthenticated', false);
   }

@@ -1,4 +1,4 @@
-<ng-container *ngIf="userData">
+<div *ngIf="userData" class="lz_account_settings_wrapper">
   <app-image-uploader
     [userId]="userData.id"
     [uuid]="userData.uuid"
@@ -6,4 +6,17 @@
   <div *ngIf="userData.avatar" class="lz_avatar_wrapper">
     <img src="{{ uploadsEndpoint }}/{{ userData.avatar }}" alt="">
   </div>
-</ng-container>
+
+  <form [formGroup]="accountSettingsForm">
+    <h2 class="lz_h2 lz_h_bordered">My profile</h2>
+    <div>
+      <mat-form-field>
+        <input matInput placeholder="Name" formControlName="name" autocomplete="off">
+        <mat-error *ngIf="accountSettingsForm.controls['name'].hasError('required')">
+          Name name is required.
+        </mat-error>
+      </mat-form-field>
+    </div>
+  </form>
+
+</div>

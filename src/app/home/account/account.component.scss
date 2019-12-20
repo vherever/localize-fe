@@ -1,6 +1,13 @@
-.lz_avatar_wrapper {
-  max-width: 150px;
-  img {
-    width: 100%;
+.lz_account_settings_wrapper {
+  background-color: #181922;
+  border-radius: 4px;
+  box-shadow: 0 0 6px rgba(25,25,34,.16);
+  padding: 24px;
+  color: #ffffff;
+  .lz_avatar_wrapper {
+    max-width: 150px;
+    img {
+      width: 100%;
+    }
   }
 }

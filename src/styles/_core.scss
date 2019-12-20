@@ -1,0 +1,14 @@
+@import url('https://fonts.googleapis.com/css?family=Noto+Sans:400,700&display=swap');
+@import "normalize.min.css";
+@import "skeleton.min.css";
+
+* {
+  font-family: 'Noto Sans', sans-serif;
+  font-weight: 400;
+}
+
+.lz_h2 {
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  font-size: 22px;
+}

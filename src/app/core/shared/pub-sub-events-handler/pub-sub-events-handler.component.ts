@@ -7,7 +7,6 @@ import { Subscription } from 'rxjs';
 import { UserInfoDialogComponent } from '../../../home/user-info-dialog/user-info-dialog.component';
 import { UserModel } from '../../models/user.model';
 import { AppDataGlobalStorageService } from '../../services/app-data-global-storage.service';
-import { ProjectAddDialogComponent } from '../../../home/project-add-dialog/project-add-dialog.component';
 
 @Component({
   selector: 'app-pub-sub-events-handler',
@@ -33,9 +32,6 @@ export class PubSubEventsHandlerComponent implements OnInit, OnDestroy {
 
     // Account_Settings_Click Event listen and open dialog
     this.onOpenAccountSettingsDialog();
-
-    // Add_Project_Click Event listen and open dialog
-    this.onOpenAddProjectDialog();
   }
 
   ngOnDestroy() {
@@ -58,26 +54,6 @@ export class PubSubEventsHandlerComponent implements OnInit, OnDestroy {
         dialogRef.afterClosed()
           .subscribe(() => {
             this.pubSubService.publishEvent('accountSettingsDialogOpened', false);
-          });
-      });
-  }
-
-  private onOpenAddProjectDialog(): void {
-    let dialogRef: MatDialogRef<ProjectAddDialogComponent>;
-    this.sub = this.pubSubService
-      .subscribe('addProjectDialogOpened', (state: boolean) => {
-        if (state) {
-          dialogRef = this.dialog.open(ProjectAddDialogComponent, {
-            width: '500px',
-            data: this.userData,
-          });
-        } else {
-          dialogRef.close();
-        }
-
-        dialogRef.afterClosed()
-          .subscribe(() => {
-            this.pubSubService.publishEvent('addProjectDialogOpened', false);
           });
       });
   }

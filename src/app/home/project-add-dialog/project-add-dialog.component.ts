@@ -1,12 +1,9 @@
-import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA } from '@angular/material';
 import { NgxPubSubService } from '@pscoped/ngx-pub-sub';
-import { CacheService } from '@ngx-cache/core';
 import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
 // app imports
 import { ProjectService } from '../../core/services/api-interaction/project.service';
-import { UserModel } from '../../core/models/user.model';
 import { ProjectModel } from '../../core/models/project.model';
 
 @Component({
@@ -14,14 +11,13 @@ import { ProjectModel } from '../../core/models/project.model';
   styleUrls: ['project-add-dialog.component.scss'],
 })
 export class ProjectAddDialogComponent implements OnInit, OnDestroy {
+  @Output() addedProject: EventEmitter<ProjectModel> = new EventEmitter();
   projectAddForm: FormGroup;
 
   constructor(
     private fb: FormBuilder,
     private pubSubService: NgxPubSubService,
     private projectService: ProjectService,
-    private cacheService: CacheService,
-    @Inject(MAT_DIALOG_DATA) public userData: UserModel,
   ) {
   }
 
@@ -41,10 +37,7 @@ export class ProjectAddDialogComponent implements OnInit, OnDestroy {
     this.projectService.createProject(this.projectAddForm.value)
       .pipe(untilComponentDestroyed(this))
       .subscribe((res: ProjectModel) => {
-        this.pubSubService.publishEvent('addProjectDialogOpened', false);
-        this.userData.projects.push(res);
-        this.cacheService.set('userData', this.userData);
-        this.pubSubService.publishEvent('userDataCached', true);
+        this.addedProject.emit(res);
       });
   }
 }

@@ -17,6 +17,10 @@ const routes: Routes = [
         loadChildren: 'app/home/dashboard/dashboard.module#DashboardModule',
       },
       {
+        path: 'account',
+        loadChildren: 'app/home/account/account.module#AccountModule',
+      },
+      {
         path: 'project/:id',
         loadChildren: 'app/home/dashboard/projects/project/project.module#ProjectModule',
       },

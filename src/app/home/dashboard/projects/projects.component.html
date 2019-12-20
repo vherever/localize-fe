@@ -1,9 +1,12 @@
-<div class="projects">
+<div class="lz_projects_wrapper">
   <button (click)="onProjectAddClick()">Add project</button>
-  <a href="javascript:;"
-     [routerLink]="'/project/' + project.id"
-     style="display: block"
-     *ngFor="let project of projects">
-    {{ project.title }}
-  </a>
+  <div *ngFor="let project of projects" class="lz_project">
+    <a href="javascript:;"
+       [routerLink]="'/project/' + project.id"
+       style="display: block">
+      {{ project.title }}
+    </a>
+    <button (click)="onExportClick()">Export</button>
+    <button class="lz_button_remove" (click)="onProjectDeleteClick(project.id)">x</button>
+  </div>
 </div>

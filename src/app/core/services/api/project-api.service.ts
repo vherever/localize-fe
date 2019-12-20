@@ -19,4 +19,8 @@ export class ProjectApiService {
   createProject(data: any): Observable<ProjectModel> {
     return this.http.post(`${environment.apiUrl}/projects`, data) as Observable<ProjectModel>;
   }
+
+  deleteProject(id: number): Observable<any> {
+    return this.http.delete(`${environment.apiUrl}/projects/${id}`, { observe: 'response' }) as Observable<any>;
+  }
 }

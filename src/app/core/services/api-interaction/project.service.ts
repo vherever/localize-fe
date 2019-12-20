@@ -18,4 +18,8 @@ export class ProjectService {
   createProject(data: any): Observable<ProjectModel> {
     return this.projectApiService.createProject(data);
   }
+
+  deleteProject(id: number): Observable<any> {
+    return this.projectApiService.deleteProject(id);
+  }
 }

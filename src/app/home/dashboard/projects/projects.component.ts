@@ -1,10 +1,12 @@
 import { Component, Input, OnDestroy } from '@angular/core';
+import { MatDialog, MatDialogRef } from '@angular/material';
 import { NgxPubSubService } from '@pscoped/ngx-pub-sub';
+import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
+import { HttpResponse } from '@angular/common/http';
 // app imports
 import { ProjectModel } from '../../../core/models/project.model';
-import { MatDialog, MatDialogRef } from '@angular/material';
 import { ProjectAddDialogComponent } from '../../project-add-dialog/project-add-dialog.component';
-import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
+import { ProjectService } from '../../../core/services/api-interaction/project.service';
 
 @Component({
   selector: 'app-projects',
@@ -17,6 +19,7 @@ export class ProjectsComponent implements OnDestroy {
   constructor(
     private pubSubService: NgxPubSubService,
     private dialog: MatDialog,
+    private projectService: ProjectService,
   ) {
   }
 
@@ -36,5 +39,19 @@ export class ProjectsComponent implements OnDestroy {
         this.projects.push(res);
         dialogRef.close();
       });
+  }
+
+  onProjectDeleteClick(projectId: number): void {
+    // add confirm modal
+    this.projectService.deleteProject(projectId)
+      .pipe(untilComponentDestroyed(this))
+      .subscribe((res: HttpResponse<any>) => {
+        if (res.status === 200) {
+          this.projects = this.projects.filter((p: ProjectModel) => p.id !== projectId);
+        }
+      });
+  }
+  onExportClick(): void {
+    console.log('___ onExportClick'); // todo
   }
 }

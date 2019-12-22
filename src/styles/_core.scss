@@ -21,9 +21,7 @@ body {
 button {
   border: 1px solid #72727d;
   padding: 8px 15px;
-  text-transform: uppercase;
   font-size: 13px;
-  letter-spacing: .5px;
   border-radius: 3px;
   color: #72727d;
   cursor: pointer;
@@ -45,25 +43,25 @@ button {
 }
 
 .container {
-  max-width: 1152px;
+  max-width: 960px;
   margin: 0 auto;
 }
 
 .lz_h_bordered {
   border-bottom: 1px solid #dedee3;
-  padding-bottom: 10px;
+  padding-bottom: 7px;
 }
 
 .lz_form_control {
   display: inline-block;
   width: 100%;
   padding-bottom: 10px;
-  max-width: 480px;
   label {
+    padding-top: 9px;
     font-weight: 600;
-    font-size: 13px;
+    font-size: 12px;
     display: inline-block;
-    width: 30%;
+    min-width: 115px;
     text-align: right;
     padding-right: 10px;
   }
@@ -75,7 +73,7 @@ button {
     font-size: 13px;
     padding: 3px 5px;
     color: #72727d;
-    width: 70%;
+    width: 100%;
     &:focus:not([disabled]), &:hover:not([disabled]) {
       border: 1px solid #000000;
       color: #000000;
@@ -87,7 +85,8 @@ button {
 
   .lz_error_message {
     color: #e74c3c;
-    text-align: right;
-    font-size: 12px;
+    font-size: 11px;
+    padding-left: 115px;
+    padding-top: 2px;
   }
 }

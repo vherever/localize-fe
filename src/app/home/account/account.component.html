@@ -1,4 +1,7 @@
-<div *ngIf="userData" class="lz_account_settings_wrapper container" fxLayout fxLayout.xs="column">
+<div *ngIf="userData" class="lz_account_settings_wrapper container">
+  <h2 class="lz_h_bordered">My profile</h2>
+
+  <div fxLayout fxLayout.xs="column">
   <div class="lz_l">
     <app-image-uploader
       [userId]="userData.id"
@@ -11,43 +14,42 @@
   </div>
 
   <div class="lz_r">
-    <form [formGroup]="accountSettingsForm">
-      <h2 class="lz_h_bordered">My profile</h2>
+    <form [formGroup]="accountSettingsForm" (keydown)="onFormChange()"
+          (submit)="onFormSave()">
 
       <div class="lz_form_control">
-        <label for="s_account_name">My Name is:</label>
-        <input type="text" id="s_account_name" formControlName="name" autocomplete="off">
+        <div fxLayout>
+          <label for="s_account_name">My Name:</label>
+          <input type="text" id="s_account_name" formControlName="name" autocomplete="off" #nameFieldRef>
+        </div>
         <div class="lz_error_message" *ngIf="(nameField.dirty || nameField.touched) && nameField.hasError('required')">
           Name name is required.
         </div>
       </div>
 
       <div class="lz_form_control">
-        <label for="s_account_email">My email is:</label>
-        <input type="text" id="s_account_email" disabled>
+        <div fxLayout>
+          <label>My Email:</label>
+          <input type="text" formControlName="email">
+          <button class="change_email">Change</button>
+        </div>
       </div>
-      <button>Change</button>
+
+
+      <div class="lz_form_control">
+        <div fxLayout>
+          <label>My Password:</label>
+          <input type="text" disabled value="**********">
+          <button class="change_password">Change</button>
+        </div>
+      </div>
+
+      <br>
+      <div class="lz_form_control">
+        <label></label>
+        <button type="submit" [disabled]="!accountSettingsForm.valid || !formChanged">SAVE</button>
+      </div>
     </form>
   </div>
-</div>
-
-<div class="container"
-     fxLayout
-     fxLayout.xs="column"
-     fxLayoutAlign="center"
-     fxLayoutGap="10px"
-     fxLayoutGap.xs="0">
-  <div class="item item-1" fxFlex="15%">Item 1</div>
-  <div class="item item-2" fxFlex="20%" fxFlexOrder="3">Item 2</div>
-  <div class="item item-3" fxFlex>Item 3</div>
-</div>
-
-<div class="container"
-     fxLayout
-     fxLayout.xs="column"
-     fxLayoutAlign="center"
-     fxLayoutGap="10px"
-     fxLayoutGap.xs="0">
-  <div class="item item-4" fxFlex fxFlexOffset="50px"  fxFlexOffset.xs="0">Item 4</div>
-  <div class="item item-5" fxFlex="200px">Item 5</div>
+  </div>
 </div>

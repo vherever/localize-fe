@@ -10,7 +10,7 @@
     height: 150px;
     overflow: hidden;
     position: relative;
-    //border-radius: 50%;
+    border-radius: 10px;
     img {
       //border-radius: 50%;
       width: 100%;
@@ -52,7 +52,7 @@
       }
     }
   }
-  button {
+  .change_email, .change_password {
     margin-left: 10px;
   }
   .lz_l {}

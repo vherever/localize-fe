@@ -1,29 +1,32 @@
-import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnDestroy, Output, ViewChild } from '@angular/core';
 import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
 // app imports
 import { UserService } from '../../services/api-interaction/user.service';
 import { ImageUploaderHelper } from './image-uploader-helper';
-import { NgxPubSubService } from '@pscoped/ngx-pub-sub';
-import { CacheService } from '@ngx-cache/core';
 
 @Component({
   selector: 'app-image-uploader',
   templateUrl: 'image-uploader.component.html',
   styleUrls: ['image-uploader.component.scss'],
 })
-export class ImageUploaderComponent extends ImageUploaderHelper implements OnDestroy {
+export class ImageUploaderComponent extends ImageUploaderHelper implements AfterViewInit, OnDestroy {
+  @ViewChild('fileInput') fileInput: ElementRef;
+
   @Input() userId: number;
   @Input() uuid: string;
-  @Output() avatarUpdated: EventEmitter<string> = new EventEmitter();
+  @Output() avatarUpdated: EventEmitter<string> = new EventEmitter<string>();
+  @Output() selectFileInput: EventEmitter<ElementRef> = new EventEmitter<ElementRef>();
 
   selectedImage: File = null;
 
   constructor(
     private userInfoService: UserService,
-    private pubSubService: NgxPubSubService,
-    private cacheService: CacheService,
   ) {
     super();
+  }
+
+  ngAfterViewInit() {
+    this.selectFileInput.emit(this.fileInput);
   }
 
   ngOnDestroy() {

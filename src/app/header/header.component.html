@@ -1,19 +1,27 @@
 <mat-toolbar>
-  <button mat-button routerLink="">Home</button>
+  <button routerLink="">Home</button>
   <div>
     <ng-container *ngIf="!isAuthenticated">
-      <button mat-button routerLink="/auth/login">Login</button>
-      <button mat-button routerLink="/auth/register">Register</button>
+      <button routerLink="/auth/login">Login</button>
+      <button routerLink="/auth/register">Register</button>
     </ng-container>
     <ng-container *ngIf="isAuthenticated">
-      <button mat-icon-button *ngIf="userData && userData.avatar">
-        <img src="{{ uploadsEndpoint }}/{{ userData.avatar }}" alt="" style="max-width: 32px">
+      <button *ngIf="userData && userData.avatar" class="lz_header_avatar"
+        [matMenuTriggerFor]="menu">
+        <img src="{{ uploadsEndpoint }}/{{ userData.avatar }}" alt="">
       </button>
-      <button mat-icon-button class="button-settings"
+      <mat-menu #menu="matMenu">
+        <a mat-menu-item routerLink="/account">
+          <mat-icon>settings</mat-icon>
+          <span>Account settings</span>
+        </a>
+      </mat-menu>
+
+      <button class="button-settings"
               (click)="onAccountSettingsClick()">
         <mat-icon>settings</mat-icon>
       </button>
-      <button mat-button (click)="onLogOutClick()">Log Out</button>
+      <button (click)="onLogOutClick()">Log Out</button>
     </ng-container>
   </div>
 </mat-toolbar>

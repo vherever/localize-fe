@@ -1,11 +1,10 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { MatButtonModule, MatDialogModule, MatIconModule, MatToolbarModule } from '@angular/material';
+import { MatButtonModule, MatDialogModule, MatIconModule, MatMenuModule, MatToolbarModule } from '@angular/material';
 // app imports
 import { HeaderComponent } from './header.component';
 import { AuthService } from '../core/services/api/auth.service';
-import { UserInfoDialogModule } from '../home/user-info-dialog/user-info-dialog.module';
 
 @NgModule({
   imports: [
@@ -16,6 +15,7 @@ import { UserInfoDialogModule } from '../home/user-info-dialog/user-info-dialog.
     MatButtonModule,
     MatIconModule,
     MatDialogModule,
+    MatMenuModule,
   ],
   declarations: [HeaderComponent],
   exports: [HeaderComponent],

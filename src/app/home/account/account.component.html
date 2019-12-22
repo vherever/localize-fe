@@ -1,22 +1,53 @@
-<div *ngIf="userData" class="lz_account_settings_wrapper">
-  <app-image-uploader
-    [userId]="userData.id"
-    [uuid]="userData.uuid"
-    (avatarUpdated)="onAvatarUpdated($event)"></app-image-uploader>
-  <div *ngIf="userData.avatar" class="lz_avatar_wrapper">
-    <img src="{{ uploadsEndpoint }}/{{ userData.avatar }}" alt="">
+<div *ngIf="userData" class="lz_account_settings_wrapper container" fxLayout fxLayout.xs="column">
+  <div class="lz_l">
+    <app-image-uploader
+      [userId]="userData.id"
+      [uuid]="userData.uuid"
+      (avatarUpdated)="onAvatarUpdated($event)" (selectFileInput)="selectFileInputEmitted($event)"
+    ></app-image-uploader>
+    <div class="lz_avatar_wrapper" (click)="fileInput.nativeElement.click()">
+      <img src="{{ uploadsEndpoint }}/{{ userData.avatar }}" alt="">
+    </div>
   </div>
 
-  <form [formGroup]="accountSettingsForm">
-    <h2 class="lz_h2 lz_h_bordered">My profile</h2>
-    <div>
-      <mat-form-field>
-        <input matInput placeholder="Name" formControlName="name" autocomplete="off">
-        <mat-error *ngIf="accountSettingsForm.controls['name'].hasError('required')">
-          Name name is required.
-        </mat-error>
-      </mat-form-field>
-    </div>
-  </form>
+  <div class="lz_r">
+    <form [formGroup]="accountSettingsForm">
+      <h2 class="lz_h_bordered">My profile</h2>
 
+      <div class="lz_form_control">
+        <label for="s_account_name">My Name is:</label>
+        <input type="text" id="s_account_name" formControlName="name" autocomplete="off">
+        <div class="lz_error_message" *ngIf="(nameField.dirty || nameField.touched) && nameField.hasError('required')">
+          Name name is required.
+        </div>
+      </div>
+
+      <div class="lz_form_control">
+        <label for="s_account_email">My email is:</label>
+        <input type="text" id="s_account_email" disabled>
+      </div>
+      <button>Change</button>
+    </form>
+  </div>
+</div>
+
+<div class="container"
+     fxLayout
+     fxLayout.xs="column"
+     fxLayoutAlign="center"
+     fxLayoutGap="10px"
+     fxLayoutGap.xs="0">
+  <div class="item item-1" fxFlex="15%">Item 1</div>
+  <div class="item item-2" fxFlex="20%" fxFlexOrder="3">Item 2</div>
+  <div class="item item-3" fxFlex>Item 3</div>
+</div>
+
+<div class="container"
+     fxLayout
+     fxLayout.xs="column"
+     fxLayoutAlign="center"
+     fxLayoutGap="10px"
+     fxLayoutGap.xs="0">
+  <div class="item item-4" fxFlex fxFlexOffset="50px"  fxFlexOffset.xs="0">Item 4</div>
+  <div class="item item-5" fxFlex="200px">Item 5</div>
 </div>

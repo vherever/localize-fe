@@ -1,13 +1,66 @@
 .lz_account_settings_wrapper {
-  background-color: #181922;
+  color: #72727d;
   border-radius: 4px;
   box-shadow: 0 0 6px rgba(25,25,34,.16);
   padding: 24px;
-  color: #ffffff;
   .lz_avatar_wrapper {
-    max-width: 150px;
+    border: 1px solid #ececec;
+    box-sizing: border-box;
+    width: 150px;
+    height: 150px;
+    overflow: hidden;
+    position: relative;
+    //border-radius: 50%;
     img {
+      //border-radius: 50%;
       width: 100%;
+      height: 100%;
+      object-fit: cover;
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      margin: auto;
     }
+    &:hover {
+      cursor: pointer;
+      &:before {
+        content: '';
+        position: absolute;
+        background-color: #000000;
+        left: 0;
+        top: 0;
+        width: 150px;
+        height: 150px;
+        opacity: .75;
+        z-index: 1;
+      }
+      &:after {
+        content: '';
+        position: absolute;
+        margin: auto;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        background: url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB3aWR0aD0iNTQ5cHgiIGhlaWdodD0iNDc2cHgiIHZpZXdCb3g9IjAgMCA1NDkgNDc2IiB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiPgogICAgPCEtLSBHZW5lcmF0b3I6IFNrZXRjaCA1NC4xICg3NjQ5MCkgLSBodHRwczovL3NrZXRjaGFwcC5jb20gLS0+CiAgICA8dGl0bGU+cGhvdG8tY2FtZXJhPC90aXRsZT4KICAgIDxkZXNjPkNyZWF0ZWQgd2l0aCBTa2V0Y2guPC9kZXNjPgogICAgPGcgaWQ9IlBhZ2UtMSIgc3Ryb2tlPSJub25lIiBzdHJva2Utd2lkdGg9IjEiIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCI+CiAgICAgICAgPGcgaWQ9InBob3RvLWNhbWVyYSIgZmlsbD0iI0ZGRkZGRiIgZmlsbC1ydWxlPSJub256ZXJvIj4KICAgICAgICAgICAgPHBhdGggZD0iTTUyNi43Niw5NS4wNDUgQzUxMi40ODMsODAuNzcxIDQ5NS4yNjIsNzMuNjMyIDQ3NS4wODUsNzMuNjMyIEw0MTEuMTMyLDczLjYzMiBMMzk2LjU3NCwzNC44MDYgQzM5Mi45NTYsMjUuNDgxIDM4Ni4zNDUsMTcuNDM4IDM3Ni43MjgsMTAuNjc4IEMzNjcuMTE1LDMuOTIxIDM1Ny4yNjYsMC41NCAzNDcuMTc3LDAuNTQgTDIwMC45OTYsMC41NCBDMTkwLjkwOCwwLjU0IDE4MS4wNTcsMy45MjEgMTcxLjQ0NCwxMC42NzggQzE2MS44MzEsMTcuNDM4IDE1NS4yMTksMjUuNDgxIDE1MS42MDIsMzQuODA2IEwxMzcuMDQyLDczLjYzMiBMNzMuMDg5LDczLjYzMiBDNTIuOTEsNzMuNjMyIDM1LjY4OCw4MC43NzEgMjEuNDExLDk1LjA0NSBDNy4xMzcsMTA5LjMyIDAsMTI2LjU0NCAwLDE0Ni43MjEgTDAsNDAyLjUzNCBDMCw0MjIuNzEyIDcuMTM3LDQzOS45MzggMjEuNDExLDQ1NC4yMDkgQzM1LjY4OCw0NjguNDg2IDUyLjkxMSw0NzUuNjI1IDczLjA4OSw0NzUuNjI1IEw0NzUuMDc4LDQ3NS42MjUgQzQ5NS4yNTUsNDc1LjYyNSA1MTIuNDc1LDQ2OC40ODYgNTI2Ljc1Myw0NTQuMjA5IEM1NDEuMDI2LDQzOS45MzggNTQ4LjE2NSw0MjIuNzEyIDU0OC4xNjUsNDAyLjUzNCBMNTQ4LjE2NSwxNDYuNzIxIEM1NDguMTY5LDEyNi41NDQgNTQxLjAzLDEwOS4zMiA1MjYuNzYsOTUuMDQ1IFogTTM2NC40NDYsMzY0Ljk5MyBDMzM5LjQxNywzOTAuMDIzIDMwOS4yOTksNDAyLjU0MSAyNzQuMDg0LDQwMi41NDEgQzIzOC44NjksNDAyLjU0MSAyMDguNzUzLDM5MC4wMjMgMTgzLjcyMiwzNjQuOTkzIEMxNTguNjkxLDMzOS45NjcgMTQ2LjE3OCwzMDkuODQyIDE0Ni4xNzgsMjc0LjYzNSBDMTQ2LjE3OCwyMzkuNDE3IDE1OC42OTUsMjA5LjMwMiAxODMuNzIyLDE4NC4yNzEgQzIwOC43NSwxNTkuMjQgMjM4Ljg3LDE0Ni43MjcgMjc0LjA4NCwxNDYuNzI3IEMzMDkuMjk4LDE0Ni43MjcgMzM5LjQxNywxNTkuMjQzIDM2NC40NDYsMTg0LjI3MSBDMzg5LjQ3NiwyMDkuMjk5IDQwMS45OTEsMjM5LjQxNyA0MDEuOTkxLDI3NC42MzUgQzQwMS45OTEsMzA5Ljg0MiAzODkuNDc3LDMzOS45NjQgMzY0LjQ0NiwzNjQuOTkzIFoiIGlkPSJTaGFwZSI+PC9wYXRoPgogICAgICAgICAgICA8cGF0aCBkPSJNMjc0LjA4NCwxOTIuNDAzIEMyNTEuNDMzLDE5Mi40MDMgMjMyLjA2NiwyMDAuNDQ1IDIxNS45ODIsMjE2LjUzMSBDMTk5Ljg5OCwyMzIuNjE1IDE5MS44NTYsMjUxLjk3OSAxOTEuODU2LDI3NC42MzUgQzE5MS44NTYsMjk3LjI4MiAxOTkuODk4LDMxNi42NDkgMjE1Ljk4MiwzMzIuNzMzIEMyMzIuMDY2LDM0OC44MTQgMjUxLjQzMiwzNTYuODU2IDI3NC4wODQsMzU2Ljg1NiBDMjk2LjczMiwzNTYuODU2IDMxNi4xMDEsMzQ4LjgxNCAzMzIuMTg1LDMzMi43MzMgQzM0OC4yNjksMzE2LjY0OSAzNTYuMzEyLDI5Ny4yODMgMzU2LjMxMiwyNzQuNjM1IEMzNTYuMzEyLDI1MS45OCAzNDguMjY5LDIzMi42MTYgMzMyLjE4NSwyMTYuNTMxIEMzMTYuMTAyLDIwMC40NDYgMjk2LjczMiwxOTIuNDAzIDI3NC4wODQsMTkyLjQwMyBaIiBpZD0iUGF0aCI+PC9wYXRoPgogICAgICAgIDwvZz4KICAgIDwvZz4KPC9zdmc+') no-repeat;
+        width: 48px;
+        height: 48px;
+        background-size: 48px 48px;
+        z-index: 2;
+      }
+    }
+  }
+  button {
+    margin-left: 10px;
+  }
+  .lz_l {}
+  .lz_r {
+    width: 100%;
+    padding-left: 25px;
+  }
+  .mat-form-field {
+    width: 100%;
   }
 }

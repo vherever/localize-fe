@@ -34,8 +34,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.appDataGlobalStorageService.userData
       .pipe(untilComponentDestroyed(this))
       .subscribe((res: UserModel) => {
-      this.userData = res;
-    });
+        this.userData = res;
+      });
 
     this.isAuthenticated = this.authService.isAuthenticated();
     this.pubSubService.subscribe('isAuthenticated', (state: boolean) => {
@@ -56,9 +56,5 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.pubSubService.publishEvent('userDataCached', true);
     this.authService.onLogOut();
     this.pubSubService.publishEvent('isAuthenticated', false);
-  }
-
-  onAccountSettingsClick(): void {
-    this.pubSubService.publishEvent('accountSettingsDialogOpened', true);
   }
 }

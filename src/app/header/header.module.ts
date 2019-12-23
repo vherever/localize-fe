@@ -1,21 +1,21 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { MatButtonModule, MatDialogModule, MatIconModule, MatMenuModule, MatToolbarModule } from '@angular/material';
+import { MatToolbarModule } from '@angular/material';
 // app imports
 import { HeaderComponent } from './header.component';
 import { AuthService } from '../core/services/api/auth.service';
+import { MenuModule } from './menu/menu.module';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 @NgModule({
   imports: [
     CommonModule,
     RouterModule,
+    FlexLayoutModule,
 
+    MenuModule,
     MatToolbarModule,
-    MatButtonModule,
-    MatIconModule,
-    MatDialogModule,
-    MatMenuModule,
   ],
   declarations: [HeaderComponent],
   exports: [HeaderComponent],

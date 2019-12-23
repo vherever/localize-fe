@@ -1,27 +1,12 @@
-<mat-toolbar>
+<mat-toolbar fxLayout fxLayoutAlign="space-between center">
   <button routerLink="">Home</button>
   <div>
     <ng-container *ngIf="!isAuthenticated">
       <button routerLink="/auth/login">Login</button>
       <button routerLink="/auth/register">Register</button>
     </ng-container>
-    <ng-container *ngIf="isAuthenticated">
-      <button *ngIf="userData && userData.avatar" class="lz_header_avatar"
-        [matMenuTriggerFor]="menu">
-        <img src="{{ uploadsEndpoint }}/{{ userData.avatar }}" alt="">
-      </button>
-      <mat-menu #menu="matMenu">
-        <a mat-menu-item routerLink="/account">
-          <mat-icon>settings</mat-icon>
-          <span>Account settings</span>
-        </a>
-      </mat-menu>
-
-      <button class="button-settings"
-              (click)="onAccountSettingsClick()">
-        <mat-icon>settings</mat-icon>
-      </button>
-      <button (click)="onLogOutClick()">Log Out</button>
+    <ng-container *ngIf="isAuthenticated && userData">
+      <app-menu [userData]="userData" (logOutClickedEvent)="onLogOutClick()"></app-menu>
     </ng-container>
   </div>
 </mat-toolbar>

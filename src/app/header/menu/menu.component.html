@@ -1,0 +1,30 @@
+<button *ngIf="userData.avatar" class="lz_header_avatar"
+        [matMenuTriggerFor]="menu">
+  <img src="{{ uploadsEndpoint }}/{{ userData.avatar }}" alt="">
+</button>
+
+<mat-menu #menu="matMenu" [overlapTrigger]="false" [backdropClass]="'ddd'">
+  <div class="lz_menu_category_top" (click)="$event.stopPropagation();" fxLayout>
+    <div class="lz_menu_avatar_wrapper">
+      <img src="{{ uploadsEndpoint }}/{{ userData.avatar }}" alt="">
+    </div>
+    <div class="lz_menu_user_name">{{ userData.name }}</div>
+  </div>
+
+  <a mat-menu-item routerLink="/account">
+    <span>Account settings</span>
+  </a>
+
+  <div (click)="$event.stopPropagation();" class="lz_menu_category" fxLayout fxLayoutAlign="space-between center">
+    <div>Dark mode</div>
+    <div>
+      <mat-slide-toggle
+        [color]="">
+      </mat-slide-toggle>
+    </div>
+  </div>
+
+  <a mat-menu-item (click)="onLogOutClick()">
+    <span>Log Out</span>
+  </a>
+</mat-menu>

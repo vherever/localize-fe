@@ -1,8 +1,34 @@
 .lz_projects_wrapper {
-  .lz_project {
-    display: flex;
-    a {
-      width: 100%;
+  .lz_list {
+    margin-top: 15px;
+    .lz_list_item {
+      &.lz_list_item_link {
+        padding: 15px 15px;
+        display: block;
+        width: 100%;
+        color: #5d5d5d;
+        text-decoration: none;
+        &:hover {
+          color: #000000;
+        }
+      }
+      .lz_list_item_controls {
+        display: flex;
+        text-align: right;
+        .lz_download {
+          display: block;
+          margin-right: 10px;
+          img {
+            width: 16px;
+          }
+        }
+        .lz_remove {
+          display: block;
+          img {
+            width: 15px;
+          }
+        }
+      }
     }
   }
 }

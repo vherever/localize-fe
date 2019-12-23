@@ -1,12 +1,22 @@
-<div class="lz_projects_wrapper">
-  <button (click)="onProjectAddClick()">Add project</button>
-  <div *ngFor="let project of projects" class="lz_project">
-    <a href="javascript:;"
-       [routerLink]="'/project/' + project.id"
-       style="display: block">
-      {{ project.title }}
-    </a>
-    <button (click)="onExportClick()">Export</button>
-    <button class="lz_button_remove" (click)="onProjectDeleteClick(project.id)">x</button>
+<div class="container">
+  <div class="lz_projects_wrapper">
+    <h2 class="lz_h_bordered">Projects</h2>
+    <button (click)="onProjectAddClick()">Add new</button>
+
+    <div class="lz_list">
+      <a href="javascript:;" (click)="onProjectClick($event, project.id)"
+         *ngFor="let project of projects"
+         class="lz_list_item lz_list_item_link" fxLayout fxLayoutAlign="space-between center">
+        {{ project.title }}
+        <div class="lz_list_item_controls">
+          <a href="javascript:;" class="lz_download">
+            <img src="/src/assets/icons/download.svg" class="lz_download_img" alt="">
+          </a>
+          <a href="javascript:;" class="lz_remove">
+            <img src="/src/assets/icons/dust-bin.svg" class="lz_remove_img" alt="">
+          </a>
+        </div>
+      </a>
+    </div>
   </div>
 </div>

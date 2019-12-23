@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FlexLayoutModule } from '@angular/flex-layout';
 // app imports
 import { ProjectsComponent } from './projects.component';
 import { ProjectsRoutingModule } from './projects-routing.module';
@@ -11,6 +12,7 @@ import { ProjectApiService } from '../../core/services/api/project-api.service';
   imports: [
     CommonModule,
     ProjectsRoutingModule,
+    FlexLayoutModule,
 
     ProjectAddDialogModule,
   ],

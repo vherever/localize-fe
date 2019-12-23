@@ -68,11 +68,11 @@ button {
   input {
     height: 32px;
     box-sizing: border-box;
-    border: 1px solid #72727d;
+    border: 1px solid #828282;
     border-radius: 3px;
     font-size: 13px;
     padding: 3px 5px;
-    color: #72727d;
+    color: #828282;
     width: 100%;
     &:focus:not([disabled]), &:hover:not([disabled]) {
       border: 1px solid #000000;
@@ -88,5 +88,11 @@ button {
     font-size: 11px;
     padding-left: 115px;
     padding-top: 2px;
+  }
+}
+
+.lz_list {
+  .lz_list_item:not(:last-child) {
+    border-bottom: 1px solid lightgrey;
   }
 }

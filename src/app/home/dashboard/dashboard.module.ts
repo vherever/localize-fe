@@ -5,7 +5,7 @@ import { DashboardComponent } from './dashboard.component';
 import { DashboardRoutingModule } from './dashboard-routing.module';
 import { UserInfoModule } from './user-info/user-info.module';
 import { RouterModule } from '@angular/router';
-import { ProjectsModule } from './projects/projects.module';
+import { ProjectsModule } from '../projects/projects.module';
 
 @NgModule({
   imports: [

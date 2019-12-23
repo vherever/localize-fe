@@ -1,8 +1,8 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 // app imports
-import { TranslationModel } from '../../../../../../core/models/translation.model';
-import { ProjectModel } from '../../../../../../core/models/project.model';
+import { TranslationModel } from '../../../../../core/models/translation.model';
+import { ProjectModel } from '../../../../../core/models/project.model';
 
 interface TranslateEditorModel {
   editInLanguage: string;

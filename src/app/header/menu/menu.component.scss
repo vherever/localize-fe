@@ -22,6 +22,10 @@
 
 ::ng-deep {
   .mat-menu-panel {
+    box-shadow: 0 4px 20px 0 rgba(25,25,34,.24);
+    position: relative;
+    overflow: visible !important;
+    margin-top: 10px;
     border-radius: 4px !important;
     min-width: 280px !important;
     .mat-menu-content {
@@ -37,7 +41,7 @@
         border-top: 1px solid whitesmoke;
         border-bottom: 1px solid whitesmoke;
         font-size: 14px;
-        padding: 12px 18px;
+        padding: 12px 20px;
       }
       .lz_menu_category_top {
         border-bottom: 1px solid whitesmoke;
@@ -64,6 +68,19 @@
           text-overflow: ellipsis;
         }
       }
+    }
+    &:before {
+      content: '';
+      border: 6px solid rgba(0, 0, 0, 0);
+      height: 0;
+      position: absolute;
+      width: 0;
+      border-bottom-color: #fff;
+      border-top-width: 0;
+      margin-bottom: 0;
+      margin-top: 0;
+      top: -6px;
+      right: 10px;
     }
   }
 }

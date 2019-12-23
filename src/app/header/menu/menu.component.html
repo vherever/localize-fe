@@ -3,7 +3,7 @@
   <img src="{{ uploadsEndpoint }}/{{ userData.avatar }}" alt="">
 </button>
 
-<mat-menu #menu="matMenu" [overlapTrigger]="false" [backdropClass]="'ddd'">
+<mat-menu #menu="matMenu" [overlapTrigger]="false" class="TTT_ttt">
   <div class="lz_menu_category_top" (click)="$event.stopPropagation();" fxLayout>
     <div class="lz_menu_avatar_wrapper">
       <img src="{{ uploadsEndpoint }}/{{ userData.avatar }}" alt="">
@@ -19,7 +19,7 @@
     <div>Dark mode</div>
     <div>
       <mat-slide-toggle
-        [color]="">
+        [color]="'accent'">
       </mat-slide-toggle>
     </div>
   </div>

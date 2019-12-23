@@ -4,9 +4,9 @@ import { NgxPubSubService } from '@pscoped/ngx-pub-sub';
 import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
 import { HttpResponse } from '@angular/common/http';
 // app imports
-import { ProjectModel } from '../../../core/models/project.model';
-import { ProjectAddDialogComponent } from '../../project-add-dialog/project-add-dialog.component';
-import { ProjectService } from '../../../core/services/api-interaction/project.service';
+import { ProjectModel } from '../../core/models/project.model';
+import { ProjectAddDialogComponent } from '../project-add-dialog/project-add-dialog.component';
+import { ProjectService } from '../../core/services/api-interaction/project.service';
 
 @Component({
   selector: 'app-projects',

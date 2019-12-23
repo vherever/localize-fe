@@ -3,13 +3,13 @@ import { ActivatedRoute } from '@angular/router';
 import { MatDialog, MatDialogRef } from '@angular/material';
 import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
 // app imports
-import { TranslationsService } from '../../../../../core/services/api-interaction/translations.service';
-import { TranslationModel } from '../../../../../core/models/translation.model';
+import { TranslationsService } from '../../../../core/services/api-interaction/translations.service';
+import { TranslationModel } from '../../../../core/models/translation.model';
 import { TranslationEditorComponent } from './translation-editor/translation-editor.component';
-import { UserModel } from '../../../../../core/models/user.model';
-import { AppDataGlobalStorageService } from '../../../../../core/services/app-data-global-storage.service';
-import { TranslationAddDialogComponent } from '../../../../translation-add-dialog/translation-add-dialog.component';
-import { ProjectModel } from '../../../../../core/models/project.model';
+import { UserModel } from '../../../../core/models/user.model';
+import { AppDataGlobalStorageService } from '../../../../core/services/app-data-global-storage.service';
+import { TranslationAddDialogComponent } from '../../../translation-add-dialog/translation-add-dialog.component';
+import { ProjectModel } from '../../../../core/models/project.model';
 
 @Component({
   selector: 'app-translations',

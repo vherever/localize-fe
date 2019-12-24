@@ -8,6 +8,7 @@ import { HttpResponse } from '@angular/common/http';
 import { ProjectModel } from '../../core/models/project.model';
 import { ProjectAddDialogComponent } from '../project-add-dialog/project-add-dialog.component';
 import { ProjectService } from '../../core/services/api-interaction/project.service';
+import { RemoveDialogConfirmComponent } from '../../core/shared/remove-dialog-confirm/remove-dialog-confirm.component';
 
 @Component({
   selector: 'app-projects',
@@ -76,22 +77,40 @@ export class ProjectsComponent implements OnDestroy {
     }
   }
 
-  onProjectDeleteClick(projectId: number): void {
-    // add confirm modal
-    this.projectService.deleteProject(projectId)
-      .pipe(untilComponentDestroyed(this))
-      .subscribe((res: HttpResponse<any>) => {
-        if (res.status === 200) {
-          this.projects = this.projects.filter((p: ProjectModel) => p.id !== projectId);
-        }
-      });
+  private onProjectDeleteClick(projectId: number): void {
+    const dialogRef = this.dialog.open(RemoveDialogConfirmComponent, {
+      width: '500px',
+      data: `Do you really want to remove the project ${this.getProjectById(projectId).title}?
+      This will delete the entire project permanently including all translations across
+      ${this.getProjectLocalesCount(projectId)} locales.`,
+    });
+
+    dialogRef.afterClosed().subscribe((state: boolean) => {
+      if (state) {
+        this.projectService.deleteProject(projectId)
+          .pipe(untilComponentDestroyed(this))
+          .subscribe((res: HttpResponse<any>) => {
+            if (res.status === 200) {
+              this.projects = this.projects.filter((p: ProjectModel) => p.id !== projectId);
+            }
+          });
+      }
+    });
   }
 
-  onExportClick(id: number): void {
+  private onExportClick(id: number): void {
     console.log('___ onExportClick', id); // todo
   }
 
-  onSettingsClick(id: number): void {
+  private onSettingsClick(id: number): void {
     console.log('___ onSettingsClick', id); // todo
+  }
+
+  private getProjectById(projectId: number): ProjectModel {
+    return this.projects.find((p: ProjectModel) => p.id === projectId);
+  }
+
+  private getProjectLocalesCount(projectId: number): number {
+    return this.getProjectById(projectId).translationsLocales.split(',').length;
   }
 }

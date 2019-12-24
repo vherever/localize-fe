@@ -3,6 +3,8 @@ import { NgModule } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { JwtModule } from '@auth0/angular-jwt';
+import { CACHE, CacheModule } from '@ngx-cache/core';
+import { NgxPubSubModule } from '@pscoped/ngx-pub-sub';
 // app imports
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
@@ -12,21 +14,9 @@ import { ErrorHandlerInterceptor } from './core/services/interceptors/error-hand
 import { AuthGuardService } from './core/services/guards/auth-guard.service';
 import { AuthService } from './core/services/api/auth.service';
 import { TokenInterceptor } from './core/services/interceptors/token-interceptor';
-import { CACHE, CacheLoader, CacheModule, CacheStaticLoader } from '@ngx-cache/core';
 import { BrowserCacheModule, MemoryCacheService } from '@ngx-cache/platform-browser';
 import { AppRouteRootModule } from './app-route-root/app-route-root.module';
-import { NgxPubSubModule } from '@pscoped/ngx-pub-sub';
 import { PubSubEventsHandlerModule } from './core/shared/pub-sub-events-handler/pub-sub-events-handler.module';
-
-export function cacheFactory(): CacheLoader {
-  return new CacheStaticLoader({
-    key: 'NGX_CACHE',
-    lifeSpan: {
-      expiry: Number.MAX_VALUE,
-      TTL: Number.MAX_VALUE,
-    },
-  });
-}
 
 @NgModule({
   declarations: [

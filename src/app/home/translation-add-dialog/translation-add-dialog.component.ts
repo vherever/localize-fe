@@ -24,16 +24,16 @@ export class TranslationAddDialogComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private cacheService: CacheService,
     private translationService: TranslationsService,
-    @Inject(MAT_DIALOG_DATA) private data: ProjectModel,
+    @Inject(MAT_DIALOG_DATA) private projectData: ProjectModel,
   ) {
   }
 
   ngOnInit() {
     this.addTranslationForm = this.fb.group({
-      translationInDefault: ['', Validators.required],
+      defaultLocaleValue: ['', Validators.required],
       assetCode: ['', Validators.required],
     });
-    this.defaultLocale = this.data.defaultLocale;
+    this.defaultLocale = this.projectData.defaultLocale;
   }
 
   ngOnDestroy() {
@@ -41,10 +41,10 @@ export class TranslationAddDialogComponent implements OnInit, OnDestroy {
 
   onTranslationSave(): void {
     const data = {
-      translations: JSON.stringify({ [this.defaultLocale]: this.addTranslationForm.controls['translationInDefault'].value }),
+      translations: this.createTranslations(this.addTranslationForm.controls['defaultLocaleValue'].value),
       assetCode: this.addTranslationForm.controls['assetCode'].value,
     };
-    this.translationService.createTranslation(this.data.id, data)
+    this.translationService.createTranslation(this.projectData.id, data)
       .pipe(
         untilComponentDestroyed(this),
         // @ts-ignore
@@ -57,5 +57,15 @@ export class TranslationAddDialogComponent implements OnInit, OnDestroy {
       .subscribe((res: TranslationModel[]) => {
         this.addedTranslation.emit(res[0]);
       });
+  }
+
+  private createTranslations(defaultLocaleValue: string): string {
+    const localesObj = {};
+    const localesArray = this.projectData.translationsLocales.split(',');
+    localesArray.forEach((l: string) => {
+      localesObj[l] = '';
+    });
+    localesObj[this.projectData.defaultLocale] = defaultLocaleValue;
+    return JSON.stringify(localesObj);
   }
 }

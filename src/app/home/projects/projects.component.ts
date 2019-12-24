@@ -44,12 +44,29 @@ export class ProjectsComponent implements OnDestroy {
   }
 
   onProjectClick(event: MouseEvent, id: number): void {
-    if (event.srcElement.className.search('lz_download_img') > -1 || event.target['className'].search('lz_download') > -1) {
-      this.onExportClick(id);
-    } else if (event.srcElement.className.search('lz_remove_img') > -1 || event.target['className'].search('lz_remove') > -1) {
-      this.onProjectDeleteClick(id);
+    const tagName = event.target['tagName'].toLowerCase();
+    if (tagName === 'svg') {
+      if (event.target['className'].baseVal.search('lz_download_svg') > - 1) {
+        this.onExportClick(id);
+      } else if (event.target['className'].baseVal.search('lz_remove_svg') > - 1) {
+        this.onProjectDeleteClick(id);
+      }
+    } else if (tagName === 'use') {
+      if (event.target['parentElement'].className.baseVal.search('lz_download_svg') > -1) {
+        this.onExportClick(id);
+      } else if (event.target['parentElement'].className.baseVal.search('lz_remove_svg') > -1) {
+        this.onProjectDeleteClick(id);
+      }
+    } else if (tagName === 'a') {
+      if (event.target['className'].search('lz_download') > -1) {
+        this.onExportClick(id);
+      } else if (event.target['className'].search('lz_remove') > -1) {
+        this.onProjectDeleteClick(id);
+      } else {
+        this.router.navigate(['/project', id]);
+      }
     } else {
-      this.router.navigate(['/project', id]);
+      console.log('___ CHECK SVG'); // todo
     }
   }
 

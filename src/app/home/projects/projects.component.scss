@@ -18,14 +18,31 @@
         .lz_download {
           display: block;
           margin-right: 10px;
-          img {
-            width: 16px;
+          svg {
+            width: 18px;
+            height: 18px;
           }
         }
         .lz_remove {
           display: block;
-          img {
-            width: 15px;
+          svg {
+            width: 18px;
+            height: 18px;
+          }
+        }
+        svg {
+          &.lz_download_svg {
+            fill: #B2B2B2;
+            &:hover {
+              fill: #2980b9;
+            }
+          }
+
+          &.lz_remove_svg {
+            fill: #B2B2B2;
+            &:hover {
+              fill: #c0392b;
+            }
           }
         }
       }

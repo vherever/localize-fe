@@ -46,22 +46,28 @@ export class ProjectsComponent implements OnDestroy {
   onProjectClick(event: MouseEvent, id: number): void {
     const tagName = event.target['tagName'].toLowerCase();
     if (tagName === 'svg') {
-      if (event.target['className'].baseVal.search('lz_download_svg') > - 1) {
+      if (event.target['className'].baseVal.search('lz_download_svg') > -1) {
         this.onExportClick(id);
-      } else if (event.target['className'].baseVal.search('lz_remove_svg') > - 1) {
+      } else if (event.target['className'].baseVal.search('lz_remove_svg') > -1) {
         this.onProjectDeleteClick(id);
+      } else if (event.target['className'].baseVal.search('lz_settings_svg') > -1) {
+        this.onSettingsClick(id);
       }
     } else if (tagName === 'use') {
       if (event.target['parentElement'].className.baseVal.search('lz_download_svg') > -1) {
         this.onExportClick(id);
       } else if (event.target['parentElement'].className.baseVal.search('lz_remove_svg') > -1) {
         this.onProjectDeleteClick(id);
+      } else if (event.target['parentElement'].className.baseVal.search('lz_settings_svg') > -1) {
+        this.onSettingsClick(id);
       }
     } else if (tagName === 'a') {
       if (event.target['className'].search('lz_download') > -1) {
         this.onExportClick(id);
       } else if (event.target['className'].search('lz_remove') > -1) {
         this.onProjectDeleteClick(id);
+      } else if (event.target['className'].search('lz_settings') > -1) {
+        this.onSettingsClick(id);
       } else {
         this.router.navigate(['/project', id]);
       }
@@ -81,7 +87,11 @@ export class ProjectsComponent implements OnDestroy {
       });
   }
 
-  onExportClick(id): void {
+  onExportClick(id: number): void {
     console.log('___ onExportClick', id); // todo
+  }
+
+  onSettingsClick(id: number): void {
+    console.log('___ onSettingsClick', id); // todo
   }
 }

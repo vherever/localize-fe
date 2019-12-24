@@ -15,6 +15,14 @@
       .lz_list_item_controls {
         display: flex;
         text-align: right;
+        .lz_settings {
+          display: block;
+          margin-right: 10px;
+          svg {
+            width: 18px;
+            height: 18px;
+          }
+        }
         .lz_download {
           display: block;
           margin-right: 10px;
@@ -31,15 +39,22 @@
           }
         }
         svg {
-          &.lz_download_svg {
-            fill: #B2B2B2;
+          &.lz_settings_svg {
+            fill: #7e7e7e;
             &:hover {
-              fill: #2980b9;
+              fill: #000000;
+            }
+          }
+
+          &.lz_download_svg {
+            fill: #7e7e7e;
+            &:hover {
+              fill: #000000;
             }
           }
 
           &.lz_remove_svg {
-            fill: #B2B2B2;
+            fill: #7e7e7e;
             &:hover {
               fill: #c0392b;
             }

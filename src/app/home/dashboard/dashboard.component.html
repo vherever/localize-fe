@@ -1,3 +1,6 @@
+<!--
 <app-user-info [userData]="userData"></app-user-info>
 <br>
-<app-projects [projects]="userData && userData.projects"></app-projects>
+-->
+<app-projects [projects]="userData && userData.projects"
+              (projectsUpdatedEvent)="onProjectsUpdated($event)"></app-projects>

@@ -6,8 +6,12 @@
     <div class="lz_list">
       <a href="javascript:;" (click)="onProjectClick($event, project.id)"
          *ngFor="let project of projects"
-         class="lz_list_item lz_list_item_link" fxLayout fxLayoutAlign="space-between center">
-        {{ project.title }}
+         class="lz_list_item lz_list_item_link" fxLayout fxLayoutAlign="space-between start">
+        <div class="lz_project_name_description">
+          <div class="lz_p_title">{{ project.title }}</div>
+          <div class="lz_p_description">{{ project.description }}</div>
+          <div class="lz_p_latest_update">{{ project.updated_formatted }}</div>
+        </div>
         <div class="lz_list_item_controls">
           <a href="javascript:;" class="lz_download">
             <svg class="icon lz_download_svg">

@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatDialog, MatDialogRef } from '@angular/material';
 import { NgxPubSubService } from '@pscoped/ngx-pub-sub';
@@ -17,6 +17,7 @@ import { RemoveDialogConfirmComponent } from '../../core/shared/remove-dialog-co
 })
 export class ProjectsComponent implements OnDestroy {
   @Input() projects: ProjectModel[];
+  @Output() projectsUpdatedEvent: EventEmitter<ProjectModel[]> = new EventEmitter<ProjectModel[]>();
 
   constructor(
     private pubSubService: NgxPubSubService,
@@ -73,16 +74,18 @@ export class ProjectsComponent implements OnDestroy {
         this.router.navigate(['/project', id]);
       }
     } else {
-      console.log('___ CHECK SVG'); // todo
+      this.router.navigate(['/project', id]);
     }
   }
 
   private onProjectDeleteClick(projectId: number): void {
     const dialogRef = this.dialog.open(RemoveDialogConfirmComponent, {
       width: '500px',
-      data: `Do you really want to remove the project ${this.getProjectById(projectId).title}?
-      This will delete the entire project permanently including all translations across
-      ${this.getProjectLocalesCount(projectId)} locales.`,
+      data: `Do you really want to remove the project
+      <b>${this.getProjectById(projectId).title}</b>?
+      This will delete the entire project permanently
+      including all translations across
+      <b>${this.getProjectLocalesCount(projectId)}</b> locales.`,
     });
 
     dialogRef.afterClosed().subscribe((state: boolean) => {
@@ -91,7 +94,9 @@ export class ProjectsComponent implements OnDestroy {
           .pipe(untilComponentDestroyed(this))
           .subscribe((res: HttpResponse<any>) => {
             if (res.status === 200) {
+              // update userData after translation updated
               this.projects = this.projects.filter((p: ProjectModel) => p.id !== projectId);
+              this.projectsUpdatedEvent.emit(this.projects);
             }
           });
       }

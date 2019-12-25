@@ -1,6 +1,6 @@
-<button *ngIf="userData.avatar" class="lz_header_avatar"
+<button class="lz_header_avatar"
         [matMenuTriggerFor]="menu">
-  <img src="{{ uploadsEndpoint }}/{{ userData.avatar }}" alt="">
+  <img *ngIf="userData.avatar" src="{{ uploadsEndpoint }}/{{ userData.avatar }}" alt="">
 </button>
 
 <mat-menu #menu="matMenu" [overlapTrigger]="false">

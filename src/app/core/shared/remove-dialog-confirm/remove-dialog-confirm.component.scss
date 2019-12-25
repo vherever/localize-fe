@@ -1,6 +1,13 @@
 .lz_modal_confirm_wrapper {
+  .lz_modal_confirm_message {
+    font-size: 13px;
+    line-height: 20px;
+    color: #c0392b;
+  }
   .lz_modal_confirm_deletion {
     margin-top: 15px;
+    font-size: 14px;
+    text-transform: uppercase;
   }
   .lz_modal_confirm_actions {
     margin-top: 25px;

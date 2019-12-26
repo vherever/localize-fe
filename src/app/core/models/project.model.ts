@@ -8,5 +8,5 @@ export interface ProjectModel {
   userId: number;
   created: Date;
   updated: Date;
-  updated_formatted: string;
+  latestUpdatedAtFormatted: string;
 }

@@ -1,4 +1,4 @@
-import { Component, ComponentFactoryResolver, ComponentRef, OnDestroy, OnInit, QueryList, ViewChildren, ViewContainerRef } from '@angular/core';
+import { Component, ComponentFactoryResolver, ComponentRef, Input, OnChanges, OnDestroy, QueryList, SimpleChanges, ViewChildren, ViewContainerRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MatDialog, MatDialogRef } from '@angular/material';
 import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
@@ -6,23 +6,20 @@ import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
 import { TranslationsService } from '../../../../core/services/api-interaction/translations.service';
 import { TranslationModel } from '../../../../core/models/translation.model';
 import { TranslationEditorComponent } from './translation-editor/translation-editor.component';
-import { UserModel } from '../../../../core/models/user.model';
 import { AppDataGlobalStorageService } from '../../../../core/services/app-data-global-storage.service';
 import { TranslationAddDialogComponent } from '../../../translation-add-dialog/translation-add-dialog.component';
 import { ProjectModel } from '../../../../core/models/project.model';
-
 @Component({
   selector: 'app-translations',
   templateUrl: 'translations.component.html',
   styleUrls: ['translations.component.scss'],
 })
-export class TranslationsComponent implements OnInit, OnDestroy {
+export class TranslationsComponent implements OnChanges, OnDestroy {
   @ViewChildren('translationEditor', { read: ViewContainerRef }) translationContainers: QueryList<ViewContainerRef>;
+  @Input() projectData: ProjectModel;
 
   private previousElement: ViewContainerRef;
   private previousClickedElementId: number;
-  private projectId: number;
-  private projectData: ProjectModel;
 
   translations: TranslationModel[];
   componentRef: ComponentRef<TranslationEditorComponent>;
@@ -37,20 +34,11 @@ export class TranslationsComponent implements OnInit, OnDestroy {
     private dialog: MatDialog,
   ) {
   }
-
-  ngOnInit() {
-    this.route.params
-      .pipe(untilComponentDestroyed(this))
-      .subscribe((params) => {
-        this.getTranslationsById(+params['id']);
-        this.projectId = +params['id'];
-      });
-
-    this.appDataGlobalStorageService.userData
-      .pipe(untilComponentDestroyed(this))
-      .subscribe((res: UserModel) => {
-        this.projectData = res && res.projects.find((p: ProjectModel) => p.id === this.projectId);
-      });
+  
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.projectData.currentValue) {
+      this.getTranslationsById(this.projectData.id);
+    }
   }
 
   ngOnDestroy() {
@@ -107,7 +95,6 @@ export class TranslationsComponent implements OnInit, OnDestroy {
     this.previousElement = nativeEl;
     const factory = this.resolver.resolveComponentFactory(TranslationEditorComponent);
     this.componentRef = nativeEl.createComponent(factory);
-    this.componentRef.instance.projectId = this.projectId;
     this.componentRef.instance.translation = translation;
     this.componentRef.instance.projectData = this.projectData;
   }
@@ -116,7 +103,7 @@ export class TranslationsComponent implements OnInit, OnDestroy {
     this.componentRef.instance.newTranslationData
       .pipe(untilComponentDestroyed(this))
       .subscribe((data) => {
-        this.translationsService.updateTranslation(this.projectId, translationId, data)
+        this.translationsService.updateTranslation(this.projectData.id, translationId, data)
           .pipe(untilComponentDestroyed(this))
           .subscribe((res: TranslationModel[]) => {
             const updatedTranslation = res[0];

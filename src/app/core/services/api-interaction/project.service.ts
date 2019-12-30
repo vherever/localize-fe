@@ -11,6 +11,10 @@ export class ProjectService {
   ) {
   }
 
+  getProjects(): Observable<any> {
+    return this.projectApiService.getProjects();
+  }
+
   getProjectById(id: number): Observable<ProjectModel> {
     return this.projectApiService.getProjectById(id);
   }

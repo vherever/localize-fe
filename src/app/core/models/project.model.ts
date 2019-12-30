@@ -9,4 +9,5 @@ export interface ProjectModel {
   created: Date;
   updated: Date;
   latestUpdatedAtFormatted: string;
+  role: string;
 }

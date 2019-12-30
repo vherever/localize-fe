@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatDialog, MatDialogRef } from '@angular/material';
 import { NgxPubSubService } from '@pscoped/ngx-pub-sub';
@@ -9,22 +9,35 @@ import { ProjectModel } from '../../core/models/project.model';
 import { ProjectAddDialogComponent } from '../project-add-dialog/project-add-dialog.component';
 import { ProjectService } from '../../core/services/api-interaction/project.service';
 import { RemoveDialogConfirmComponent } from '../../core/shared/remove-dialog-confirm/remove-dialog-confirm.component';
+import { AppDataGlobalStorageService } from '../../core/services/app-data-global-storage.service';
 
 @Component({
   selector: 'app-projects',
   templateUrl: 'projects.component.html',
   styleUrls: ['projects.component.scss'],
 })
-export class ProjectsComponent implements OnDestroy {
-  @Input() projects: ProjectModel[];
-  @Output() projectsUpdatedEvent: EventEmitter<ProjectModel[]> = new EventEmitter<ProjectModel[]>();
+export class ProjectsComponent implements OnInit, OnDestroy {
+  projectsOwned: ProjectModel[];
+  projectsShared: ProjectModel[];
 
   constructor(
     private pubSubService: NgxPubSubService,
     private dialog: MatDialog,
     private projectService: ProjectService,
     private router: Router,
+    private appDataGlobalStorageService: AppDataGlobalStorageService,
   ) {
+  }
+
+  ngOnInit() {
+    this.projectService.getProjects()
+      .pipe(untilComponentDestroyed(this))
+      .subscribe((projects: {owned: ProjectModel[], shared: ProjectModel[]}) => {
+        // @ts-ignore
+        this.appDataGlobalStorageService.userProjects = projects;
+        this.projectsOwned = projects.owned;
+        this.projectsShared = projects.shared;
+      });
   }
 
   ngOnDestroy() {
@@ -40,18 +53,19 @@ export class ProjectsComponent implements OnDestroy {
     dialogRef.componentInstance.addedProject
       .pipe(untilComponentDestroyed(this))
       .subscribe((res: ProjectModel) => {
-        this.projects.push(res);
+        this.projectsOwned.push(res);
         dialogRef.close();
       });
   }
 
-  onProjectClick(event: MouseEvent, id: number): void {
+  onProjectClick(event: MouseEvent, project: ProjectModel): void {
+    const id = project.id;
     const tagName = event.target['tagName'].toLowerCase();
     if (tagName === 'svg') {
       if (event.target['className'].baseVal.search('lz_download_svg') > -1) {
         this.onExportClick(id);
       } else if (event.target['className'].baseVal.search('lz_remove_svg') > -1) {
-        this.onProjectDeleteClick(id);
+        this.onProjectDeleteClick(project);
       } else if (event.target['className'].baseVal.search('lz_settings_svg') > -1) {
         this.onSettingsClick(id);
       }
@@ -59,7 +73,7 @@ export class ProjectsComponent implements OnDestroy {
       if (event.target['parentElement'].className.baseVal.search('lz_download_svg') > -1) {
         this.onExportClick(id);
       } else if (event.target['parentElement'].className.baseVal.search('lz_remove_svg') > -1) {
-        this.onProjectDeleteClick(id);
+        this.onProjectDeleteClick(project);
       } else if (event.target['parentElement'].className.baseVal.search('lz_settings_svg') > -1) {
         this.onSettingsClick(id);
       }
@@ -67,7 +81,7 @@ export class ProjectsComponent implements OnDestroy {
       if (event.target['className'].search('lz_download') > -1) {
         this.onExportClick(id);
       } else if (event.target['className'].search('lz_remove') > -1) {
-        this.onProjectDeleteClick(id);
+        this.onProjectDeleteClick(project);
       } else if (event.target['className'].search('lz_settings') > -1) {
         this.onSettingsClick(id);
       } else {
@@ -78,25 +92,29 @@ export class ProjectsComponent implements OnDestroy {
     }
   }
 
-  private onProjectDeleteClick(projectId: number): void {
+  private onProjectDeleteClick(project: ProjectModel): void {
+    const id = project.id;
+    const role = project.role;
     const dialogRef = this.dialog.open(RemoveDialogConfirmComponent, {
       width: '500px',
       data: `Do you really want to remove the project
-      <b>${this.getProjectById(projectId).title}</b>?
+      <b>${this.getProjectById(id).title}</b>?
       This will delete the entire project permanently
       including all translations across
-      <b>${this.getProjectLocalesCount(projectId)}</b> locales.`,
+      <b>${this.getProjectLocalesCount(id)}</b> locales.`,
     });
 
     dialogRef.afterClosed().subscribe((state: boolean) => {
       if (state) {
-        this.projectService.deleteProject(projectId)
+        this.projectService.deleteProject(id)
           .pipe(untilComponentDestroyed(this))
           .subscribe((res: HttpResponse<any>) => {
             if (res.status === 200) {
               // update userData after translation updated
-              this.projects = this.projects.filter((p: ProjectModel) => p.id !== projectId);
-              this.projectsUpdatedEvent.emit(this.projects);
+              if (role !== 'administrator') {
+                this.projectsShared = this.projectsShared.filter((p: ProjectModel) => p.id !== id);
+              }
+              this.projectsOwned = this.projectsOwned.filter((p: ProjectModel) => p.id !== id);
             }
           });
       }
@@ -111,11 +129,13 @@ export class ProjectsComponent implements OnDestroy {
     console.log('___ onSettingsClick', id); // todo
   }
 
-  private getProjectById(projectId: number): ProjectModel {
-    return this.projects.find((p: ProjectModel) => p.id === projectId);
+  private getProjectById(projectId: number): any {
+    return this.projectsOwned[0];
+    // return this.projects.find((p: ProjectModel) => p.id === projectId);
   }
 
   private getProjectLocalesCount(projectId: number): number {
-    return this.getProjectById(projectId).translationsLocales.split(',').length;
+    return 1;
+    // return this.getProjectById(projectId).translationsLocales.split(',').length;
   }
 }

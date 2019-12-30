@@ -14,7 +14,6 @@ interface TranslateEditorModel {
   styleUrls: ['translation-editor.component.scss'],
 })
 export class TranslationEditorComponent implements OnInit {
-  @Input() projectId: number;
   @Input() translation: TranslationModel;
   @Input() projectData: ProjectModel;
 

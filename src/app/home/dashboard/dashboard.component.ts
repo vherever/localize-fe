@@ -26,8 +26,4 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
   }
-
-  onProjectsUpdated(projects: ProjectModel[]): void {
-    this.userData.projects = projects;
-  }
 }

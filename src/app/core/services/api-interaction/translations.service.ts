@@ -22,4 +22,8 @@ export class TranslationsService {
   createTranslation(projectId: number, data: any): Observable<TranslationModel[]> {
     return this.translationApiService.createTranslation(projectId, data);
   }
+
+  removeTranslation(projectId: number, translationId: number): Observable<any> {
+    return this.translationApiService.removeTranslation(projectId, translationId);
+  }
 }

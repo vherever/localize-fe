@@ -23,4 +23,8 @@ export class TranslationApiService {
   createTranslation(projectId: number, data: any): Observable<TranslationModel[]> {
     return this.http.post(`${environment.apiUrl}/projects/${projectId}/translations/`, data) as Observable<TranslationModel[]>;
   }
+
+  removeTranslation(projectId: number, translationId: number): Observable<any> {
+    return this.http.delete(`${environment.apiUrl}/projects/${projectId}/translations/${translationId}`) as Observable<any>;
+  }
 }

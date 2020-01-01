@@ -49,7 +49,8 @@ export class TranslationsComponent implements OnChanges, OnDestroy {
   }
 
   onTranslationEditClick(event: MouseEvent, translation: TranslationModel, index: number): void {
-    if (event.srcElement.nodeName.toLocaleLowerCase() === 'span' || event.srcElement.nodeName.toLocaleLowerCase() === 'a') {
+    if (event.srcElement.nodeName.toLocaleLowerCase() === 'span' ||
+      event.srcElement.nodeName.toLocaleLowerCase() === 'a') {
       this.currentClickedElementId = null;
       if (this.previousElement) {
         this.previousElement.clear();
@@ -58,10 +59,18 @@ export class TranslationsComponent implements OnChanges, OnDestroy {
         this.previousElement.clear();
         this.previousClickedElementId = null; // reset value to make checking again
       } else {
-        this.currentClickedElementId = index;
-        this.previousClickedElementId = index;
-        this.createComponent(translation, index);
-        this.updateTranslation(translation.id);
+        if (event.target['className'] === 'lz_remove') {
+          this.removeTranslation(translation.id);
+        } else {
+          this.currentClickedElementId = index;
+          this.previousClickedElementId = index;
+          this.createComponent(translation, index);
+          this.updateTranslation(translation.id);
+        }
+      }
+    } else {
+      if (event.target['parentNode'].className === 'lz_remove' || event.target['parentNode'].className.baseVal === 'lz_remove_svg') {
+        this.removeTranslation(translation.id);
       }
     }
   }
@@ -115,6 +124,14 @@ export class TranslationsComponent implements OnChanges, OnDestroy {
             this.previousClickedElementId = null;
             this.currentClickedElementId = null;
           });
+      });
+  }
+
+  private removeTranslation(translationId: number): void {
+    this.translationService.removeTranslation(this.projectData.id, translationId)
+      .pipe(untilComponentDestroyed(this))
+      .subscribe(() => {
+        this.translations = this.translations.filter((t: TranslationModel) => t.id !== translationId);
       });
   }
 }

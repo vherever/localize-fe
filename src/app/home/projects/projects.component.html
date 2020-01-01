@@ -1,9 +1,11 @@
 <div class="container" *ngIf="projectsOwned || projectsShared">
   <div class="lz_projects_wrapper">
     <h2 class="lz_h_bordered">Projects</h2>
+
     <button (click)="onProjectAddClick()">Add new</button>
 
-    <div class="lz_list">
+    <div class="lz_list" *ngIf="projectsOwned.length">
+      <h5 class="lz_h_bordered">Your Projects</h5>
       <a href="javascript:;" (click)="onProjectClick($event, project)"
          *ngFor="let project of projectsOwned"
          class="lz_list_item lz_list_item_link" fxLayout fxLayoutAlign="space-between start">
@@ -12,7 +14,8 @@
           <div class="lz_p_description">{{ project.description }}</div>
           <div class="lz_p_latest_update">{{ project.latestUpdatedAtFormatted }}</div>
         </div>
-        <div class="lz_list_item_controls">
+
+        <div class="lz_list_item_controls" fxLayout>
           <a href="javascript:;" class="lz_download">
             <svg class="icon lz_download_svg">
               <use xlink:href="#download"></use>
@@ -31,26 +34,27 @@
         </div>
       </a>
     </div>
+
+    <div class="lz_list" *ngIf="projectsShared.length">
+      <h5 class="lz_h_bordered">Projects shared with You</h5>
+      <a href="javascript:;" (click)="onProjectClick($event, project)"
+         *ngFor="let project of projectsShared"
+         class="lz_list_item lz_list_item_link" fxLayout fxLayoutAlign="space-between start">
+        <div class="lz_project_name_description">
+          <div class="lz_p_title">{{ project.title }}</div>
+          <div class="lz_p_description">{{ project.description }}</div>
+          <div class="lz_p_latest_update">{{ project.latestUpdatedAtFormatted }}</div>
+        </div>
+        <div class="lz_list_item_controls">
+          <a href="javascript:;" class="lz_download" style="margin-right: 0">
+            <svg class="icon lz_download_svg">
+              <use xlink:href="#download"></use>
+            </svg>
+          </a>
+        </div>
+      </a>
+    </div>
   </div>
 </div>
 
-<!--SPRITE-->
-<svg width="0" height="0" class="hidden ggg">
-  <symbol viewBox="0 0 384 512" xmlns="http://www.w3.org/2000/svg" id="download">
-    <title>download</title>
-    <g>
-      <path d="M112.469 95.332V0h-1.07a15.003 15.003 0 0 0-10.606 4.395L4.395 100.793A15.003 15.003 0 0 0 0 111.398v1.07h95.336c9.445 0 17.133-7.687 17.133-17.136z"></path>
-      <path d="M336.336 0H142.469v95.332c0 25.988-21.145 47.133-47.133 47.133H0v322.402C0 490.855 21.145 512 47.133 512h289.203c25.914 0 47.133-20.953 47.133-47.133V47.133C383.469 21.219 362.516 0 336.336 0zM116.859 261.46c5.86-5.858 15.356-5.858 21.215 0l38.66 38.661V191.734c0-8.285 6.715-15 15-15 8.286 0 15 6.715 15 15v108.387l38.66-38.66c5.856-5.86 15.356-5.86 21.211 0 5.86 5.855 5.86 15.355 0 21.21l-64.265 64.27c-5.86 5.86-15.356 5.856-21.211 0l-64.27-64.27c-5.855-5.855-5.855-15.355 0-21.21zM256 415.603H127.469c-8.285 0-15-6.72-15-15 0-8.286 6.715-15 15-15H256c8.285 0 15 6.714 15 15 0 8.28-6.715 15-15 15z"></path>
-    </g>
-  </symbol>
-
-  <symbol viewBox="0 0 139 197" xmlns="http://www.w3.org/2000/svg" id="recycle_bin">
-    <title>recycle_bin</title>
-    <path d="M128.024 196.766v-137.3H10.741v137.3h117.283zM86.448 76.908h13.533v97.434H86.448V76.908zm-47.664 0h13.532v97.434H38.784V76.908zM35.1 0v12.63H.217v32.746h138.332V12.63h-34.885V0H35.1zm55.031 21.201H48.633v-7.669h41.499v7.669h-.001z"></path>
-  </symbol>
-
-  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" id="settings">
-    <path d="M256 211c-24.814 0-45 20.186-45 45s20.186 45 45 45 45-20.186 45-45-20.186-45-45-45z"></path>
-    <path d="M501.746 211.776l-61.718-20.244a189.947 189.947 0 0 0-8.335-20.054l28.638-57.261a14.995 14.995 0 0 0-2.813-17.314l-42.422-42.422a14.99 14.99 0 0 0-17.314-2.813l-57.261 28.638a189.86 189.86 0 0 0-20.054-8.335l-20.244-61.718A14.983 14.983 0 0 0 286 0h-60a14.984 14.984 0 0 0-14.224 10.254l-20.244 61.718a189.947 189.947 0 0 0-20.054 8.335l-57.261-28.638c-5.786-2.886-12.729-1.787-17.314 2.813L54.481 96.903a14.998 14.998 0 0 0-2.813 17.314l28.638 57.261a189.86 189.86 0 0 0-8.335 20.054l-61.718 20.244A14.985 14.985 0 0 0 0 226v60c0 6.46 4.131 12.188 10.254 14.224l61.718 20.244a189.947 189.947 0 0 0 8.335 20.054l-28.638 57.261a14.995 14.995 0 0 0 2.813 17.314l42.422 42.422c4.6 4.585 11.572 5.713 17.314 2.813l57.261-28.638a189.86 189.86 0 0 0 20.054 8.335l20.244 61.718A14.982 14.982 0 0 0 226 512h60c6.46 0 12.187-4.131 14.224-10.254l20.244-61.718a189.947 189.947 0 0 0 20.054-8.335l57.261 28.638c5.757 2.871 12.729 1.743 17.314-2.813l42.422-42.422a14.998 14.998 0 0 0 2.813-17.314l-28.638-57.261a189.86 189.86 0 0 0 8.335-20.054l61.718-20.244A14.982 14.982 0 0 0 512 286v-60c0-6.46-4.131-12.188-10.254-14.224zM256 361c-57.891 0-105-47.109-105-105s47.109-105 105-105 105 47.109 105 105-47.109 105-105 105z"></path>
-  </symbol>
-</svg>
+<app-sprite></app-sprite>

@@ -8,12 +8,16 @@ import { TranslationApiService } from '../../../../core/services/api/translation
 import { TranslationsService } from '../../../../core/services/api-interaction/translations.service';
 import { TranslationEditorModule } from './translation-editor/translation-editor.module';
 import { TranslationAddDialogModule } from '../../../translation-add-dialog/translation-add-dialog.module';
+import { SpriteModule } from '../../../../core/shared/sprite/sprite.module';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 @NgModule({
   imports: [
     CommonModule,
     TranslationsRoutingModule,
     TranslationEditorModule,
+    FlexLayoutModule,
+    SpriteModule,
     MatDialogModule,
     TranslationAddDialogModule,
   ],

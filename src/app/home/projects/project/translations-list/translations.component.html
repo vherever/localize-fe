@@ -1,8 +1,32 @@
-<button (click)="onAddTranslationClick()">Add Translation</button>
-<div *ngFor="let translation of translations; let i = index" class="lz_translation"
-     (click)="onTranslationEditClick($event, translation, i);">
-  <div class="lz_assetCode"
-       [ngClass]="{'lz_opened': currentClickedElementId === i}">{{ translation.assetCode }}
+<div class="container">
+  <h2 class="lz_h_bordered">Translations</h2>
+
+  <button (click)="onAddTranslationClick()">Add Translation</button>
+
+  <div class="lz_list">
+    <a href="javascript:;"
+       *ngFor="let translation of translations; let i = index"
+       class="lz_list_item lz_list_item_link lz_translation"
+         (click)="onTranslationEditClick($event, translation, i);">
+      <span fxLayout fxLayoutAlign="space-between start">
+        <div class="lz_project_name_description"
+             [ngClass]="{'lz_opened': currentClickedElementId === i}">
+          <span class="lz_p_title">{{ translation.assetCode }}</span>
+          <span class="lz_p_description"></span>
+          <span class="lz_p_latest_update">{{ translation.latestUpdatedAtFormatted }}</span>
+        </div>
+
+        <div class="lz_list_item_controls" fxLayout>
+          <a href="javascript:;" class="lz_remove">
+            <svg class="lz_remove_svg">
+              <use xlink:href="#recycle_bin"></use>
+            </svg>
+          </a>
+        </div>
+      </span>
+      <ng-container #translationEditor></ng-container>
+    </a>
   </div>
-  <ng-container #translationEditor></ng-container>
 </div>
+
+<app-sprite></app-sprite>

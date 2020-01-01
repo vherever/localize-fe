@@ -9,6 +9,7 @@ import { TranslationEditorComponent } from './translation-editor/translation-edi
 import { AppDataGlobalStorageService } from '../../../../core/services/app-data-global-storage.service';
 import { TranslationAddDialogComponent } from '../../../translation-add-dialog/translation-add-dialog.component';
 import { ProjectModel } from '../../../../core/models/project.model';
+
 @Component({
   selector: 'app-translations',
   templateUrl: 'translations.component.html',
@@ -34,7 +35,7 @@ export class TranslationsComponent implements OnChanges, OnDestroy {
     private dialog: MatDialog,
   ) {
   }
-  
+
   ngOnChanges(changes: SimpleChanges) {
     if (changes.projectData.currentValue) {
       this.getTranslationsById(this.projectData.id);
@@ -42,11 +43,13 @@ export class TranslationsComponent implements OnChanges, OnDestroy {
   }
 
   ngOnDestroy() {
-    if (this.componentRef) { this.componentRef.destroy(); }
+    if (this.componentRef) {
+      this.componentRef.destroy();
+    }
   }
 
-  onTranslationEditClick(event: any, translation: TranslationModel, index: number): void {
-    if (event.srcElement.className.search('lz_translation') > -1 || event.srcElement.className.search('lz_assetCode') > -1) {
+  onTranslationEditClick(event: MouseEvent, translation: TranslationModel, index: number): void {
+    if (event.srcElement.nodeName.toLocaleLowerCase() === 'span' || event.srcElement.nodeName.toLocaleLowerCase() === 'a') {
       this.currentClickedElementId = null;
       if (this.previousElement) {
         this.previousElement.clear();
@@ -70,9 +73,9 @@ export class TranslationsComponent implements OnChanges, OnDestroy {
   private onOpenAddTranslationDialog(): void {
     const dialogRef: MatDialogRef<TranslationAddDialogComponent> =
       this.dialog.open(TranslationAddDialogComponent, {
-      width: '500px',
-      data: this.projectData,
-    });
+        width: '500px',
+        data: this.projectData,
+      });
 
     dialogRef.componentInstance.addedTranslation
       .pipe(untilComponentDestroyed(this))

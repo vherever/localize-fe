@@ -1,7 +1,6 @@
 export interface TranslationModel {
   id: number;
-  created: Date;
-  updated: Date;
+  latestUpdatedAtFormatted: string;
   translations: Translations;
   assetCode: string;
   assetProjectCode: string;

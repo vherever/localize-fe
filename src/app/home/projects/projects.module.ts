@@ -8,15 +8,16 @@ import { ProjectAddDialogModule } from '../project-add-dialog/project-add-dialog
 import { ProjectService } from '../../core/services/api-interaction/project.service';
 import { ProjectApiService } from '../../core/services/api/project-api.service';
 import { RemoveDialogConfirmModule } from '../../core/shared/remove-dialog-confirm/remove-dialog-confirm.module';
+import { SpriteModule } from '../../core/shared/sprite/sprite.module';
 
 @NgModule({
   imports: [
     CommonModule,
     ProjectsRoutingModule,
     FlexLayoutModule,
-
     ProjectAddDialogModule,
     RemoveDialogConfirmModule,
+    SpriteModule,
   ],
   providers: [
     ProjectApiService,

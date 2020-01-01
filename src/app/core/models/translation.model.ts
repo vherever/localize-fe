@@ -10,6 +10,7 @@ export interface TranslationModel {
   projectId: number;
   authorId?: number;
   labels: string;
+  author: string;
 }
 
 interface Translations {

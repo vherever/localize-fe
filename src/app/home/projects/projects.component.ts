@@ -63,27 +63,27 @@ export class ProjectsComponent implements OnInit, OnDestroy {
     const tagName = event.target['tagName'].toLowerCase();
     if (tagName === 'svg') {
       if (event.target['className'].baseVal.search('lz_download_svg') > -1) {
-        this.onExportClick(id);
+        this.exportProjectAction(id);
       } else if (event.target['className'].baseVal.search('lz_remove_svg') > -1) {
-        this.onProjectDeleteClick(project);
+        this.deleteProjectAction(project);
       } else if (event.target['className'].baseVal.search('lz_settings_svg') > -1) {
-        this.onSettingsClick(id);
+        this.projectSettingsAction(id);
       }
     } else if (tagName === 'use') {
       if (event.target['parentElement'].className.baseVal.search('lz_download_svg') > -1) {
-        this.onExportClick(id);
+        this.exportProjectAction(id);
       } else if (event.target['parentElement'].className.baseVal.search('lz_remove_svg') > -1) {
-        this.onProjectDeleteClick(project);
+        this.deleteProjectAction(project);
       } else if (event.target['parentElement'].className.baseVal.search('lz_settings_svg') > -1) {
-        this.onSettingsClick(id);
+        this.projectSettingsAction(id);
       }
     } else if (tagName === 'a') {
       if (event.target['className'].search('lz_download') > -1) {
-        this.onExportClick(id);
+        this.exportProjectAction(id);
       } else if (event.target['className'].search('lz_remove') > -1) {
-        this.onProjectDeleteClick(project);
+        this.deleteProjectAction(project);
       } else if (event.target['className'].search('lz_settings') > -1) {
-        this.onSettingsClick(id);
+        this.projectSettingsAction(id);
       } else {
         this.router.navigate(['/project', id]);
       }
@@ -92,7 +92,7 @@ export class ProjectsComponent implements OnInit, OnDestroy {
     }
   }
 
-  private onProjectDeleteClick(project: ProjectModel): void {
+  private deleteProjectAction(project: ProjectModel): void {
     const id = project.id;
     const role = project.role;
     const dialogRef = this.dialog.open(RemoveDialogConfirmComponent, {
@@ -104,7 +104,9 @@ export class ProjectsComponent implements OnInit, OnDestroy {
       <b>${this.getProjectLocalesCount(id)}</b> locales.`,
     });
 
-    dialogRef.afterClosed().subscribe((state: boolean) => {
+    dialogRef.afterClosed()
+      .pipe(untilComponentDestroyed(this))
+      .subscribe((state: boolean) => {
       if (state) {
         this.projectService.deleteProject(id)
           .pipe(untilComponentDestroyed(this))
@@ -121,21 +123,19 @@ export class ProjectsComponent implements OnInit, OnDestroy {
     });
   }
 
-  private onExportClick(id: number): void {
+  private exportProjectAction(id: number): void {
     console.log('___ onExportClick', id); // todo
   }
 
-  private onSettingsClick(id: number): void {
+  private projectSettingsAction(id: number): void {
     console.log('___ onSettingsClick', id); // todo
   }
 
-  private getProjectById(projectId: number): any {
-    return this.projectsOwned[0];
-    // return this.projects.find((p: ProjectModel) => p.id === projectId);
+  private getProjectById(projectId: number): ProjectModel {
+    return this.projectsOwned.find((p: ProjectModel) => p.id === projectId);
   }
 
   private getProjectLocalesCount(projectId: number): number {
-    return 1;
-    // return this.getProjectById(projectId).translationsLocales.split(',').length;
+    return this.getProjectById(projectId).translationsLocales.split(',').length;
   }
 }

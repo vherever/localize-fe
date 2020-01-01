@@ -10,6 +10,7 @@ import { TranslationEditorModule } from './translation-editor/translation-editor
 import { TranslationAddDialogModule } from '../../../translation-add-dialog/translation-add-dialog.module';
 import { SpriteModule } from '../../../../core/shared/sprite/sprite.module';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { RemoveDialogConfirmModule } from '../../../../core/shared/remove-dialog-confirm/remove-dialog-confirm.module';
 
 @NgModule({
   imports: [
@@ -20,6 +21,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     SpriteModule,
     MatDialogModule,
     TranslationAddDialogModule,
+    RemoveDialogConfirmModule,
   ],
   declarations: [TranslationsComponent],
   providers: [

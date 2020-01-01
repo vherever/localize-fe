@@ -9,6 +9,9 @@ h2 {
   margin-top: 0;
   font-size: 21px;
   color: #6d6c6c;
+  &.lz_h_bordered {
+    border-bottom: 1px solid #6d6c6c;
+  }
 }
 h3 {}
 h4 {}
@@ -50,7 +53,7 @@ button {
 }
 
 .lz_h_bordered {
-  border-bottom: 1px solid #dedee3;
+  border-bottom: 1px solid #cdcdcd;
   padding-bottom: 7px;
 }
 
@@ -96,7 +99,7 @@ button {
 .lz_list {
   .lz_list_item {
     &:not(:last-child) {
-      border-bottom: 1px solid lightgrey;
+      border-bottom: 1px solid #e8e8e8;
     }
     &.lz_list_item_link {
       padding: 15px 15px;
@@ -143,51 +146,61 @@ button {
           }
         }
       }
-    }
-    .lz_list_item_controls {
-      text-align: right;
-      .lz_settings {
-        display: block;
-        margin-right: 7px;
-        svg {
-          width: 16px;
-          height: 16px;
-        }
-      }
-      .lz_download {
-        display: block;
-        margin-right: 7px;
-        svg {
-          width: 16px;
-          height: 16px;
-        }
-      }
-      .lz_remove {
-        display: block;
-        svg {
-          width: 16px;
-          height: 16px;
-        }
-      }
-      svg {
-        &.lz_settings_svg {
-          fill: #7e7e7e;
-          &:hover {
-            fill: #000000;
+      .lz_list_item_controls {
+        text-align: right;
+        a {
+          padding: 4px 4px 2px 4px;
+          border: 1px solid #e0e0e0;
+          border-radius: 50%;
+          &.lz_settings {
+            display: block;
+            margin-right: 7px;
+            svg {
+              width: 14px;
+              height: 14px;
+            }
           }
-        }
-
-        &.lz_download_svg {
-          fill: #7e7e7e;
-          &:hover {
-            fill: #000000;
+          &.lz_download {
+            display: block;
+            margin-right: 7px;
+            svg {
+              width: 14px;
+              height: 14px;
+            }
           }
-        }
+          &.lz_remove {
+            display: block;
+            svg {
+              width: 14px;
+              height: 14px;
+            }
+          }
+          svg {
+            &.lz_settings_svg {
+              fill: #7e7e7e;
+            }
 
-        &.lz_remove_svg {
-          fill: #7e7e7e;
+            &.lz_download_svg {
+              fill: #7e7e7e;
+            }
+
+            &.lz_remove_svg {
+              fill: #7e7e7e;
+            }
+          }
           &:hover {
-            fill: #c0392b;
+            background-color: #eaeaea;
+            svg {
+              &.lz_settings_svg {
+                fill: #000000;
+              }
+              &.lz_download_svg {
+                fill: #000000;
+              }
+              &.lz_remove_svg {
+                fill: #c0392b;
+              }
+            }
           }
         }
       }

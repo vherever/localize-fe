@@ -9,6 +9,7 @@ import { TranslationEditorComponent } from './translation-editor/translation-edi
 import { AppDataGlobalStorageService } from '../../../../core/services/app-data-global-storage.service';
 import { TranslationAddDialogComponent } from '../../../translation-add-dialog/translation-add-dialog.component';
 import { ProjectModel } from '../../../../core/models/project.model';
+import { RemoveDialogConfirmComponent } from '../../../../core/shared/remove-dialog-confirm/remove-dialog-confirm.component';
 
 @Component({
   selector: 'app-translations',
@@ -60,7 +61,7 @@ export class TranslationsComponent implements OnChanges, OnDestroy {
         this.previousClickedElementId = null; // reset value to make checking again
       } else {
         if (event.target['className'] === 'lz_remove') {
-          this.removeTranslation(translation.id);
+          this.removeTranslation(translation);
         } else {
           this.currentClickedElementId = index;
           this.previousClickedElementId = index;
@@ -70,7 +71,7 @@ export class TranslationsComponent implements OnChanges, OnDestroy {
       }
     } else {
       if (event.target['parentNode'].className === 'lz_remove' || event.target['parentNode'].className.baseVal === 'lz_remove_svg') {
-        this.removeTranslation(translation.id);
+        this.removeTranslation(translation);
       }
     }
   }
@@ -127,11 +128,28 @@ export class TranslationsComponent implements OnChanges, OnDestroy {
       });
   }
 
-  private removeTranslation(translationId: number): void {
-    this.translationService.removeTranslation(this.projectData.id, translationId)
+  private removeTranslation(translation: TranslationModel): void {
+    const dialogRef = this.dialog.open(RemoveDialogConfirmComponent, {
+      width: '500px',
+      data: `Do you really want to remove the translation asset
+      <b>${translation.assetCode}</b> across
+      <b>${this.projectLocalesCount}</b> locales?`,
+    });
+
+    dialogRef.afterClosed()
       .pipe(untilComponentDestroyed(this))
-      .subscribe(() => {
-        this.translations = this.translations.filter((t: TranslationModel) => t.id !== translationId);
+      .subscribe((state: boolean) => {
+        if (state) {
+          this.translationService.removeTranslation(this.projectData.id, translation.id)
+            .pipe(untilComponentDestroyed(this))
+            .subscribe(() => {
+              this.translations = this.translations.filter((t: TranslationModel) => t.id !== translation.id);
+            });
+        }
       });
+  }
+
+  private get projectLocalesCount(): number {
+    return this.projectData.translationsLocales.split(',').length;
   }
 }

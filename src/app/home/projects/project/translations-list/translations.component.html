@@ -13,10 +13,15 @@
              [ngClass]="{'lz_opened': currentClickedElementId === i}">
           <span class="lz_p_title">{{ translation.assetCode }}</span>
           <span class="lz_p_description"></span>
-          <span class="lz_p_latest_update">{{ translation.latestUpdatedAtFormatted }}</span>
+          <span class="lz_p_latest_update">{{ translation.latestUpdatedAtFormatted }} by <b>{{ translation.author }}</b></span>
         </div>
 
         <div class="lz_list_item_controls" fxLayout>
+          <a href="javascript:;" class="lz_settings">
+            <svg class="lz_settings_svg">
+              <use xlink:href="#settings"></use>
+            </svg>
+          </a>
           <a href="javascript:;" class="lz_remove">
             <svg class="lz_remove_svg">
               <use xlink:href="#recycle_bin"></use>

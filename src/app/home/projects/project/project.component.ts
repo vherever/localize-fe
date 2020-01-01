@@ -1,6 +1,6 @@
 import { Component, OnDestroy } from '@angular/core';
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
-import { filter } from 'rxjs/operators';
+import { ActivatedRoute, NavigationEnd, NavigationStart, Router, RoutesRecognized } from '@angular/router';
+import { filter, pairwise } from 'rxjs/operators';
 import { NgxPubSubService } from '@pscoped/ngx-pub-sub';
 import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
 // app imports
@@ -43,13 +43,14 @@ export class ProjectComponent implements OnDestroy {
             .pipe(untilComponentDestroyed(this))
             .subscribe((project: ProjectModel) => {
               this.projectData = project;
+              // @ts-ignore
+              this.appDataGlobalStorageService.currentProject = project;
             });
         } else {
-          this.appDataGlobalStorageService.userProjects
+          this.appDataGlobalStorageService.currentProject
             .pipe(untilComponentDestroyed(this))
-            .subscribe((projects: {owned: ProjectModel[], shared: ProjectModel[]}) => {
-              this.projectData = [...projects.owned, ...projects.shared]
-                .find((p: ProjectModel) => p.id === this.projectId);
+            .subscribe((res: ProjectModel) => {
+              this.projectData = res;
             });
         }
       });

@@ -33,8 +33,6 @@ export class ProjectsComponent implements OnInit, OnDestroy {
     this.projectService.getProjects()
       .pipe(untilComponentDestroyed(this))
       .subscribe((projects: {owned: ProjectModel[], shared: ProjectModel[]}) => {
-        // @ts-ignore
-        this.appDataGlobalStorageService.userProjects = projects;
         this.projectsOwned = projects.owned;
         this.projectsShared = projects.shared;
       });
@@ -61,6 +59,8 @@ export class ProjectsComponent implements OnInit, OnDestroy {
   onProjectClick(event: MouseEvent, project: ProjectModel): void {
     const id = project.id;
     const tagName = event.target['tagName'].toLowerCase();
+    // @ts-ignore
+    this.appDataGlobalStorageService.currentProject = project;
     if (tagName === 'svg') {
       if (event.target['className'].baseVal.search('lz_download_svg') > -1) {
         this.exportProjectAction(id);

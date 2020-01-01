@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { CacheService } from '@ngx-cache/core';
 import { NgxPubSubService } from '@pscoped/ngx-pub-sub';
+// app imports
 import { UserModel } from '../models/user.model';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { ProjectModel } from '../models/project.model';
@@ -10,7 +11,7 @@ import { ProjectModel } from '../models/project.model';
 })
 export class AppDataGlobalStorageService {
   private userData_: BehaviorSubject<UserModel> = new BehaviorSubject(null);
-  private userProjects_: BehaviorSubject<{owned: ProjectModel[], shared: ProjectModel[]}> = new BehaviorSubject(null);
+  private currentProject_: BehaviorSubject<ProjectModel> = new BehaviorSubject(null);
 
   constructor(
     private pubSubService: NgxPubSubService,
@@ -19,14 +20,13 @@ export class AppDataGlobalStorageService {
   }
 
   // @ts-ignore
-  set userProjects(data: {owned: ProjectModel[], shared: ProjectModel[]}) {
-    this.userProjects_.next(null);
-    this.userProjects_.next(data);
+  set currentProject(project: ProjectModel) {
+    this.currentProject_.next(project);
   }
 
   // @ts-ignore
-  get userProjects(): Observable<{owned: ProjectModel[], shared: ProjectModel[]}> {
-    return this.userProjects_.asObservable();
+  get currentProject(): Observable<ProjectModel> {
+    return this.currentProject_.asObservable();
   }
 
   get userData(): Observable<UserModel> {

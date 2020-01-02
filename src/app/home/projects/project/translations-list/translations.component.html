@@ -1,17 +1,18 @@
-<div class="container">
-  <h2 class="lz_h_bordered">Translations</h2>
+<button (click)="onAddTranslationClick()">Add Translation</button>
 
-  <button (click)="onAddTranslationClick()">Add Translation</button>
-
-  <div class="lz_list">
-    <a href="javascript:;"
-       *ngFor="let translation of translations; let i = index"
-       class="lz_list_item lz_list_item_link lz_translation"
-         (click)="onTranslationEditClick($event, translation, i);">
+<div class="lz_list">
+  <a href="javascript:;"
+     *ngFor="let translation of translations; let i = index"
+     class="lz_list_item lz_list_item_link lz_translation"
+     (click)="onTranslationEditClick($event, translation, i);">
       <span fxLayout fxLayoutAlign="space-between start">
         <div class="lz_project_name_description"
              [ngClass]="{'lz_opened': currentClickedElementId === i}">
-          <span class="lz_p_title">{{ translation.assetCode }}</span>
+          <span class="lz_p_title" *ngIf="translation.translations[activeLocale]; else noTranslation">{{ translation.translations[activeLocale] }}</span>
+
+          <ng-template #noTranslation><span class="lz_p_needs_translation">*requires translation*</span></ng-template>
+
+          <span class="lz_p_current_locale">[{{ activeLocale }}]</span>
           <span class="lz_p_description"></span>
           <span class="lz_p_latest_update">{{ translation.latestUpdatedAtFormatted }} by <b>{{ translation.author }}</b></span>
         </div>
@@ -29,9 +30,8 @@
           </a>
         </div>
       </span>
-      <ng-container #translationEditor></ng-container>
-    </a>
-  </div>
+    <ng-container #translationEditor></ng-container>
+  </a>
 </div>
 
 <app-sprite></app-sprite>

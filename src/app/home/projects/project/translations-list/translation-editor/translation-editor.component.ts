@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 // app imports
 import { TranslationModel } from '../../../../../core/models/translation.model';
@@ -12,17 +12,38 @@ interface TranslateEditorModel {
 @Component({
   templateUrl: 'translation-editor.component.html',
   styleUrls: ['translation-editor.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TranslationEditorComponent implements OnInit {
   @Input() translation: TranslationModel;
   @Input() projectData: ProjectModel;
 
+  @Input() set activeLocale(val: string) {
+    this.cdr.markForCheck();
+    this._activeLocale = val;
+    setTimeout(() => {
+      if (this.translateForm) {
+        this.translateForm.controls['editInLanguage'].patchValue(this.activeLocale);
+        this.onLanguageEditChange(this.activeLocale);
+      }
+    }, 10);
+    this.localeIndex = this.projectData.translationsLocales.split(',').indexOf(this.activeLocale);
+  }
+
+  get activeLocale() {
+    return this._activeLocale;
+  }
+
   @Output() newTranslationData: EventEmitter<any> = new EventEmitter();
 
+  private _activeLocale: string;
+
+  localeIndex: number;
   translateForm: FormGroup;
 
   constructor(
     private fb: FormBuilder,
+    private cdr: ChangeDetectorRef,
   ) {
   }
 
@@ -45,7 +66,7 @@ export class TranslationEditorComponent implements OnInit {
   }
 
   onLanguageEditChange(lang: string): void {
-    this.translateForm.controls['translation'].setValue(this.translation.translations[lang]);
+    this.translateForm.controls['translation'].patchValue(this.translation.translations[lang]);
   }
 
   private buildFullTranslation(currentLang: string, currentFormValue: TranslateEditorModel): any {

@@ -1,1 +1,13 @@
-<app-translations [projectData]="projectData"></app-translations>
+<div class="container">
+  <h2 class="lz_h_bordered">Translations</h2>
+
+  <div class="lz_project_wrapper" fxLayout>
+    <div fxFlex="70%">
+      <app-translations *ngIf="projectData" [activeLocale]="activeLocale" [projectData]="projectData"></app-translations>
+    </div>
+    <div fxFlex="30%">
+      <app-project-sidebar
+        [projectData]="projectData" (activeLocaleEmit)="onActiveLocaleEmit($event)"></app-project-sidebar>
+    </div>
+  </div>
+</div>

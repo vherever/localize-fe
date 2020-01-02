@@ -1,0 +1,17 @@
+.lz_list {
+  .lz_project_name_description {
+    .lz_p_title {
+      display: inline-block;
+    }
+    .lz_p_current_locale {
+      display: inline-block;
+      font-size: 12px;
+      margin-left: 3px;
+    }
+    .lz_p_needs_translation {
+      display: inline-block;
+      font-size: 13px;
+      color: #e67e22;
+    }
+  }
+}

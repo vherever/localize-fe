@@ -7,6 +7,8 @@ import { ErrorMessageModule } from '../../../core/shared/error-message/error-mes
 import { TranslationsModule } from './translations-list/translations.module';
 import { ProjectApiService } from '../../../core/services/api/project-api.service';
 import { ProjectService } from '../../../core/services/api-interaction/project.service';
+import { ProjectSidebarModule } from './project-sidebar/project-sidebar.module';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 @NgModule({
   imports: [
@@ -14,6 +16,8 @@ import { ProjectService } from '../../../core/services/api-interaction/project.s
     ProjectRoutingModule,
     ErrorMessageModule,
     TranslationsModule,
+    ProjectSidebarModule,
+    FlexLayoutModule,
   ],
   declarations: [
     ProjectComponent,

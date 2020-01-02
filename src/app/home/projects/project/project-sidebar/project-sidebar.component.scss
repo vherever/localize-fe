@@ -1,0 +1,30 @@
+.lz_project_sidebar_wrapper {
+  margin-left: 15px;
+  height: 100%;
+  background-color: #f5f5f5;
+  padding: 15px 0;
+  .lz_section_title {
+    padding: 0 15px;
+  }
+  .lz_locales_list {
+    margin-top: 10px;
+    > a {
+      padding: 5px 15px;
+      text-decoration: none;
+      display: block;
+      font-size: 13px;
+      color: #6d6c6c;
+      .lz_locale_isdefault {
+        font-size: 11px;
+        color: #9b9b9b;
+      }
+      &:hover {
+        background-color: #e8e8e8;
+      }
+      &.isActive {
+        background-color: #e4e4e4;
+        color: #000000;
+      }
+    }
+  }
+}

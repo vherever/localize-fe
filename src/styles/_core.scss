@@ -4,23 +4,31 @@
   box-sizing: border-box;
 }
 
+html {
+  height: 100%;
+}
+
+body {
+  height: 100%;
+}
+
 h1 {}
 h2 {
   margin-top: 0;
   font-size: 21px;
-  color: #6d6c6c;
+  color: #000000;
   &.lz_h_bordered {
-    border-bottom: 1px solid #6d6c6c;
+    border-bottom: 1px solid #000000;
   }
 }
 h3 {}
 h4 {}
 h5 {
   color: #6d6c6c;
-}
-
-body {
-  //background-color: #121116;
+  &.lz_h_bordered {
+    border-bottom: 1px solid #cdcdcd;
+    padding-bottom: 7px;
+  }
 }
 
 button {
@@ -48,13 +56,9 @@ button {
 }
 
 .container {
+  height: 100%;
   max-width: 960px;
   margin: 0 auto;
-}
-
-.lz_h_bordered {
-  border-bottom: 1px solid #cdcdcd;
-  padding-bottom: 7px;
 }
 
 .lz_form_control {
@@ -206,6 +210,10 @@ button {
       }
     }
   }
+}
+.lz_section_title {
+  font-size: 15px;
+  color: #000000;
 }
 
 a {

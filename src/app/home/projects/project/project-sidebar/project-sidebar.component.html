@@ -1,0 +1,12 @@
+<div class="lz_project_sidebar_wrapper">
+  <div class="lz_section_title">Locales</div>
+  <div class="lz_locales_list" *ngIf="projectData">
+    <a href="javascript:;" *ngFor="let locale of projectLocales"
+       (click)="onLocaleClick(locale)"
+       [ngClass]="{'isActive': activeLocale === locale}">
+      {{ locale.toUpperCase() }}
+      <span class="lz_locale_isdefault"
+        *ngIf="locale === projectData.defaultLocale">(default)</span>
+    </a>
+  </div>
+</div>

@@ -10,10 +10,12 @@ import { ProjectService } from '../../../core/services/api-interaction/project.s
 
 @Component({
   templateUrl: 'project.component.html',
+  styleUrls: ['project.component.scss'],
 })
 export class ProjectComponent implements OnDestroy {
   projectId: number;
   projectData: ProjectModel;
+  activeLocale: string;
 
   constructor(
     private pubSubService: NgxPubSubService,
@@ -58,5 +60,9 @@ export class ProjectComponent implements OnDestroy {
   }
 
   ngOnDestroy() {
+  }
+
+  onActiveLocaleEmit(activeLocale: string): void {
+    this.activeLocale = activeLocale;
   }
 }

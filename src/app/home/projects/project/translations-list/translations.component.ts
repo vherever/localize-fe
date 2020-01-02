@@ -1,4 +1,4 @@
-import { Component, ComponentFactoryResolver, ComponentRef, Input, OnChanges, OnDestroy, QueryList, SimpleChanges, ViewChildren, ViewContainerRef } from '@angular/core';
+import { Component, ComponentFactoryResolver, ComponentRef, Input, OnChanges, OnDestroy, OnInit, QueryList, ViewChildren, ViewContainerRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MatDialog, MatDialogRef } from '@angular/material';
 import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
@@ -16,9 +16,10 @@ import { RemoveDialogConfirmComponent } from '../../../../core/shared/remove-dia
   templateUrl: 'translations.component.html',
   styleUrls: ['translations.component.scss'],
 })
-export class TranslationsComponent implements OnChanges, OnDestroy {
+export class TranslationsComponent implements OnInit, OnChanges, OnDestroy {
   @ViewChildren('translationEditor', { read: ViewContainerRef }) translationContainers: QueryList<ViewContainerRef>;
   @Input() projectData: ProjectModel;
+  @Input() activeLocale: string;
 
   private previousElement: ViewContainerRef;
   private previousClickedElementId: number;
@@ -37,10 +38,15 @@ export class TranslationsComponent implements OnChanges, OnDestroy {
   ) {
   }
 
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes.projectData.currentValue) {
-      this.getTranslationsById(this.projectData.id);
+  ngOnInit() {
+    this.getTranslationsById(this.projectData.id);
+  }
+
+  ngOnChanges() {
+    if (!this.componentRef) {
+      return;
     }
+    this.componentRef.instance.activeLocale = this.activeLocale;
   }
 
   ngOnDestroy() {
@@ -110,6 +116,7 @@ export class TranslationsComponent implements OnChanges, OnDestroy {
     this.componentRef = nativeEl.createComponent(factory);
     this.componentRef.instance.translation = translation;
     this.componentRef.instance.projectData = this.projectData;
+    this.componentRef.instance.activeLocale = this.activeLocale;
   }
 
   private updateTranslation(translationId: number): void {

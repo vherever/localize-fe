@@ -2,9 +2,9 @@
   <div style="border: 1px solid">
 
     <select #t formControlName="editInLanguage" (ngModelChange)="onLanguageEditChange(t.value)">
-      <option *ngFor="let item of translation.translations | keyvalue"
-              [attr.data-test]="item.value"
+      <option *ngFor="let item of translation.translations | keyvalue" [selected]="localeIndex"
               [ngValue]="item.value"
+              [attr.data-test]="item.value"
               [value]="item.key" [innerHtml]="item.key"></option>
     </select>
 

@@ -51,11 +51,10 @@ export class AccountComponent implements OnInit, OnDestroy {
   }
 
   onAvatarUpdated(fileName: string): void {
-    this.userData.avatar = null;
-    setTimeout(() => {
-      this.userData.avatar = fileName;
-      this.cacheService.set('userData', this.userData);
-    }, 1);
+    const timestamp = Math.round((new Date()).getTime() / 1000);
+    this.userData.avatar = fileName + `?v=${timestamp}`;
+    this.cacheService.set('userData', this.userData);
+    this.pubSubService.publishEvent('userDataCached', true);
   }
 
   selectFileInputEmitted(el: ElementRef): void {

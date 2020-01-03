@@ -1,4 +1,4 @@
-import { Component, ComponentFactoryResolver, ComponentRef, Input, OnChanges, OnDestroy, OnInit, QueryList, ViewChildren, ViewContainerRef } from '@angular/core';
+import { Component, ComponentFactoryResolver, ComponentRef, Input, OnChanges, OnDestroy, OnInit, QueryList, SimpleChanges, ViewChildren, ViewContainerRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MatDialog, MatDialogRef } from '@angular/material';
 import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
@@ -10,6 +10,7 @@ import { AppDataGlobalStorageService } from '../../../../core/services/app-data-
 import { TranslationAddDialogComponent } from '../../../translation-add-dialog/translation-add-dialog.component';
 import { ProjectModel } from '../../../../core/models/project.model';
 import { RemoveDialogConfirmComponent } from '../../../../core/shared/remove-dialog-confirm/remove-dialog-confirm.component';
+import { LocaleModel } from '../../../../core/models/locale.model';
 
 @Component({
   selector: 'app-translations',
@@ -23,10 +24,12 @@ export class TranslationsComponent implements OnInit, OnChanges, OnDestroy {
 
   private previousElement: ViewContainerRef;
   private previousClickedElementId: number;
+  private localesData: LocaleModel[];
 
   translations: TranslationModel[];
   componentRef: ComponentRef<TranslationEditorComponent>;
   currentClickedElementId: number;
+  activeLocaleCountryName: string;
 
   constructor(
     private route: ActivatedRoute,
@@ -42,11 +45,27 @@ export class TranslationsComponent implements OnInit, OnChanges, OnDestroy {
     this.getTranslationsById(this.projectData.id);
   }
 
-  ngOnChanges() {
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.activeLocale.currentValue) {
+      if (!this.localesData) {
+        this.appDataGlobalStorageService.localesData
+          .pipe(untilComponentDestroyed(this))
+          .subscribe((res) => {
+            this.localesData = res;
+            if (this.localesData) {
+              this.activeLocaleCountryName = this.getActiveLocaleCountryName(this.activeLocale);
+            }
+          });
+      } else {
+        this.activeLocaleCountryName = this.getActiveLocaleCountryName(this.activeLocale);
+      }
+    }
+
     if (!this.componentRef) {
       return;
     }
     this.componentRef.instance.activeLocale = this.activeLocale;
+    this.componentRef.instance.activeLocaleCountryName = this.activeLocaleCountryName;
   }
 
   ngOnDestroy() {
@@ -117,6 +136,8 @@ export class TranslationsComponent implements OnInit, OnChanges, OnDestroy {
     this.componentRef.instance.translation = translation;
     this.componentRef.instance.projectData = this.projectData;
     this.componentRef.instance.activeLocale = this.activeLocale;
+    this.componentRef.instance.activeLocaleCountryName = this.activeLocaleCountryName;
+    this.componentRef.instance.localesData = this.localesData;
   }
 
   private updateTranslation(translationId: number): void {
@@ -158,5 +179,9 @@ export class TranslationsComponent implements OnInit, OnChanges, OnDestroy {
 
   private get projectLocalesCount(): number {
     return this.projectData.translationsLocales.split(',').length;
+  }
+
+  private getActiveLocaleCountryName(locale: string): string {
+    return this.localesData.find((l: LocaleModel) => l.key === locale).name;
   }
 }

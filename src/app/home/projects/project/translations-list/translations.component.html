@@ -12,7 +12,7 @@
 
           <ng-template #noTranslation><span class="lz_p_needs_translation">*requires translation*</span></ng-template>
 
-          <span class="lz_p_current_locale">[{{ activeLocale }}]</span>
+          <span class="lz_p_current_locale">[{{ activeLocaleCountryName }}, {{ activeLocale.toUpperCase() }}]</span>
           <span class="lz_p_description"></span>
           <span class="lz_p_latest_update">{{ translation.latestUpdatedAtFormatted }} by <b>{{ translation.author }}</b></span>
         </div>

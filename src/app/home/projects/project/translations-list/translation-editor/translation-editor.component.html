@@ -1,6 +1,7 @@
 <form [formGroup]="translateForm" (submit)="onSaveTranslation()">
   <div style="border: 1px solid">
 
+    <div>translation in <b>{{ activeLocaleCountryName }}</b></div>
     <select #t formControlName="editInLanguage" (ngModelChange)="onLanguageEditChange(t.value)">
       <option *ngFor="let item of translation.translations | keyvalue" [selected]="localeIndex"
               [ngValue]="item.value"

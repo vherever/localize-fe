@@ -1,4 +1,6 @@
 .lz_list {
+  overflow: auto;
+  height: calc(100% - 33px);
   .lz_project_name_description {
     .lz_p_title {
       display: inline-block;

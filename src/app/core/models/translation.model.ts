@@ -1,3 +1,5 @@
+import { UserModel } from './user.model';
+
 export interface TranslationModel {
   id: number;
   latestUpdatedAtFormatted: string;
@@ -11,6 +13,7 @@ export interface TranslationModel {
   authorId?: number;
   labels: string;
   author: string;
+  updatedBy: UserModel;
 }
 
 interface Translations {

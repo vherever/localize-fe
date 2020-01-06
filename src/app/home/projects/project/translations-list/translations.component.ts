@@ -11,6 +11,7 @@ import { TranslationAddDialogComponent } from '../../../translation-add-dialog/t
 import { ProjectModel } from '../../../../core/models/project.model';
 import { RemoveDialogConfirmComponent } from '../../../../core/shared/remove-dialog-confirm/remove-dialog-confirm.component';
 import { LocaleModel } from '../../../../core/models/locale.model';
+import { UserModel } from '../../../../core/models/user.model';
 
 @Component({
   selector: 'app-translations',
@@ -30,6 +31,7 @@ export class TranslationsComponent implements OnInit, OnChanges, OnDestroy {
   componentRef: ComponentRef<TranslationEditorComponent>;
   currentClickedElementId: number;
   activeLocaleCountryName: string;
+  userId: number;
 
   constructor(
     private route: ActivatedRoute,
@@ -43,6 +45,12 @@ export class TranslationsComponent implements OnInit, OnChanges, OnDestroy {
 
   ngOnInit() {
     this.getTranslationsById(this.projectData.id);
+
+    this.appDataGlobalStorageService.userData
+      .pipe(untilComponentDestroyed(this))
+      .subscribe((res: UserModel) => {
+        this.userId = res.id;
+      });
   }
 
   ngOnChanges(changes: SimpleChanges) {

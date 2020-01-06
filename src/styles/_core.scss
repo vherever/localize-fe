@@ -112,6 +112,7 @@ button {
       color: #5d5d5d;
       text-decoration: none;
       .lz_project_name_description {
+        width: 100%;
         span {
           display: block;
         }
@@ -140,6 +141,17 @@ button {
             width: 12px;
             height: 12px;
             background-size: 12px 12px;
+          }
+          .lz_p_users_list {
+            span {
+              display: inline-block;
+              border: 1px solid #e6e6e6;
+              padding: 0 5px;
+              border-radius: 5px;
+              &:not(:last-child) {
+                margin-right: 5px;
+              }
+            }
           }
         }
       }

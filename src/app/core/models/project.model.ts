@@ -1,3 +1,5 @@
+import { UserModel } from './user.model';
+
 export interface ProjectModel {
   id: number;
   title: string;
@@ -10,4 +12,5 @@ export interface ProjectModel {
   updated: Date;
   latestUpdatedAtFormatted: string;
   role: string;
+  sharedUsers: UserModel[];
 }

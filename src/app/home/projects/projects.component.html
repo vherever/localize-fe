@@ -8,14 +8,24 @@
       <h5 class="lz_h_bordered">Your Projects</h5>
       <a href="javascript:;" (click)="onProjectClick($event, project)"
          *ngFor="let project of projectsOwned"
-         class="lz_list_item lz_list_item_link" fxLayout fxLayoutAlign="space-between start">
+         class="lz_list_item lz_list_item_link" fxLayout fxLayoutAlign="space-between stretch">
         <div class="lz_project_name_description">
           <div class="lz_p_title">{{ project.title }}</div>
           <div class="lz_p_description">{{ project.description }}</div>
-          <div class="lz_p_latest_update">{{ project.latestUpdatedAtFormatted }}</div>
+          <div class="lz_p_latest_update" fxLayout="row" fxLayoutAlign="space-between center">
+            <div>{{ project.latestUpdatedAtFormatted }}</div>
+            <div class="lz_p_users_list">
+              <ng-container *ngFor="let user of project.sharedUsers">
+                <span *ngIf="user.name; else email">{{ user.name }}</span>
+                <ng-template #email>
+                  <span>{{ user.email }}</span>
+                </ng-template>
+              </ng-container>
+            </div>
+          </div>
         </div>
 
-        <div class="lz_list_item_controls" fxLayout>
+        <div class="lz_list_item_controls" fxLayout fxLayoutAlign="space-around start">
           <a href="javascript:;" class="lz_download">
             <svg class="icon lz_download_svg">
               <use xlink:href="#download"></use>
@@ -39,13 +49,23 @@
       <h5 class="lz_h_bordered">Projects shared with You</h5>
       <a href="javascript:;" (click)="onProjectClick($event, project)"
          *ngFor="let project of projectsShared"
-         class="lz_list_item lz_list_item_link" fxLayout fxLayoutAlign="space-between start">
+         class="lz_list_item lz_list_item_link" fxLayout fxLayoutAlign="space-between stretch">
         <div class="lz_project_name_description">
           <div class="lz_p_title">{{ project.title }}</div>
           <div class="lz_p_description">{{ project.description }}</div>
-          <div class="lz_p_latest_update">{{ project.latestUpdatedAtFormatted }}</div>
+          <div class="lz_p_latest_update" fxLayout="row" fxLayoutAlign="space-between center">
+            <div>{{ project.latestUpdatedAtFormatted }}</div>
+            <div class="lz_p_users_list">
+              <ng-container *ngFor="let user of project.sharedUsers">
+                <span *ngIf="user.name; else email">{{ user.name }}</span>
+                <ng-template #email>
+                  <span>{{ user.email }}</span>
+                </ng-template>
+              </ng-container>
+            </div>
+          </div>
         </div>
-        <div class="lz_list_item_controls">
+        <div class="lz_list_item_controls" fxLayoutAlign="space-around start">
           <a href="javascript:;" class="lz_download" style="margin-right: 0">
             <svg class="icon lz_download_svg">
               <use xlink:href="#download"></use>

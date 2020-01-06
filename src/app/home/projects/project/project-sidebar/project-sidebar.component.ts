@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+// app imports
 import { ProjectModel } from '../../../../core/models/project.model';
 
 @Component({
@@ -18,7 +19,11 @@ export class ProjectSidebarComponent implements OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.projectData.currentValue) {
-      this.projectLocales = `${this.projectData.defaultLocale},${this.projectData.translationsLocales}`.split(',');
+      this.projectLocales = `${this.projectData.defaultLocale},${this.projectData.translationsLocales}`
+        .split(',')
+        .filter((value, index, self) => {
+          return self.indexOf(value) === index;
+        });
       this.activeLocale = this.projectData.defaultLocale;
       this.activeLocaleEmit.emit(this.activeLocale);
     }

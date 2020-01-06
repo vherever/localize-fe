@@ -49,7 +49,9 @@ export class TranslationsComponent implements OnInit, OnChanges, OnDestroy {
     this.appDataGlobalStorageService.userData
       .pipe(untilComponentDestroyed(this))
       .subscribe((res: UserModel) => {
-        this.userId = res.id;
+        if (res) {
+          this.userId = res.id;
+        }
       });
   }
 

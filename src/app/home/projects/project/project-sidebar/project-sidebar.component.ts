@@ -18,7 +18,7 @@ export class ProjectSidebarComponent implements OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.projectData.currentValue) {
-      this.projectLocales = this.projectData.translationsLocales.split(',');
+      this.projectLocales = `${this.projectData.defaultLocale},${this.projectData.translationsLocales}`.split(',');
       this.activeLocale = this.projectData.defaultLocale;
       this.activeLocaleEmit.emit(this.activeLocale);
     }

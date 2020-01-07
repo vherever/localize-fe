@@ -1,6 +1,7 @@
 .lz_header_avatar {
+  border: none;
+  background-color: #e0e0e0;
   position: relative;
-  border: 1px solid #d6d6d6;
   overflow: hidden;
   ::ng-deep {
     .mat-button-wrapper {
@@ -17,6 +18,21 @@
     right: 0;
     top: 0;
     bottom: 0;
+  }
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+  &:hover {
+    border: none;
+    &::before {
+      background-color: #000000;
+      opacity: .1;
+    }
   }
 }
 
@@ -49,6 +65,7 @@
         padding: 12px 18px;
         align-items: center;
         .lz_menu_avatar_wrapper {
+          background-color: #ececec;
           border-radius: 50%;
           overflow: hidden;
           width: 48px;

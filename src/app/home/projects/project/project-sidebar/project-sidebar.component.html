@@ -9,4 +9,28 @@
         *ngIf="locale === projectData.defaultLocale">(default)</span>
     </a>
   </div>
+
+  <br>
+  <ng-container *ngIf="projectData && projectData.sharedUsers.length">
+    <div class="lz_section_title">Users</div>
+    <div class="lz_users_list lz_list">
+      <div *ngFor="let user of projectData.sharedUsers" class="lz_list_item" fxLayout fxLayoutAlign="space-between stretch">
+        <div fxLayoutAlign="start center">
+          <span class="lz_list_u_avatar">
+             <img *ngIf="user.avatar" src="{{ uploadsEndpoint }}/{{ user.avatar }}" alt="">
+          </span>
+          <span class="lz_list_u_name">{{ user.name ? user.name : user.email }}</span>,&nbsp;
+          <span class="lz_list_u_role">{{ user.role }}</span>
+        </div>
+
+        <div class="lz_list_item_controls">
+          <a href="javascript:;" class="lz_settings" style="margin-right: 0">
+            <svg class="lz_settings_svg">
+              <use xlink:href="#settings"></use>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </ng-container>
 </div>

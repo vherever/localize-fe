@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 // app imports
 import { ProjectModel } from '../../../../core/models/project.model';
+import { UPLOADS_ENDPOINT } from '../../../../core/app-constants';
 
 @Component({
   selector: 'app-project-sidebar',
@@ -13,8 +14,10 @@ export class ProjectSidebarComponent implements OnChanges {
 
   projectLocales: string[];
   activeLocale: string;
+  uploadsEndpoint: string;
 
   constructor() {
+    this.uploadsEndpoint = UPLOADS_ENDPOINT;
   }
 
   ngOnChanges(changes: SimpleChanges) {

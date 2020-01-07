@@ -6,7 +6,6 @@ import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
 // app imports
 import { AuthService } from '../core/services/api/auth.service';
 import { UserModel } from '../core/models/user.model';
-import { environment } from '../../environments/environment';
 import { AppDataGlobalStorageService } from '../core/services/app-data-global-storage.service';
 
 @Component({
@@ -17,7 +16,6 @@ import { AppDataGlobalStorageService } from '../core/services/app-data-global-st
 export class HeaderComponent implements OnInit, OnDestroy {
   isAuthenticated: boolean;
   userData: UserModel;
-  uploadsEndpoint: string;
 
   constructor(
     private authService: AuthService,
@@ -29,8 +27,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.uploadsEndpoint = `${environment.apiUrl}/uploads`;
-
     this.appDataGlobalStorageService.userData
       .pipe(untilComponentDestroyed(this))
       .subscribe((res: UserModel) => {

@@ -9,7 +9,7 @@
       (avatarUpdated)="onAvatarUpdated($event)" (selectFileInput)="selectFileInputEmitted($event)"
     ></app-image-uploader>
     <div class="lz_avatar_wrapper" (click)="fileInput.nativeElement.click()">
-      <img src="{{ uploadsEndpoint }}/{{ userData.avatar }}" alt="">
+      <img *ngIf="userData.avatar" src="{{ uploadsEndpoint }}/{{ userData.avatar }}" alt="">
     </div>
   </div>
 

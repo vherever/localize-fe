@@ -162,60 +162,60 @@ button {
           }
         }
       }
-      .lz_list_item_controls {
-        text-align: right;
-        a {
-          padding: 4px 4px 2px 4px;
-          border: 1px solid #e0e0e0;
-          border-radius: 50%;
-          &.lz_settings {
-            display: block;
-            margin-right: 7px;
-            svg {
-              width: 14px;
-              height: 14px;
-            }
+    }
+    .lz_list_item_controls {
+      text-align: right;
+      a {
+        padding: 4px 4px 1px 4px;
+        border: 1px solid #e0e0e0;
+        border-radius: 50%;
+        &.lz_settings {
+          display: block;
+          margin-right: 7px;
+          svg {
+            width: 14px;
+            height: 14px;
           }
-          &.lz_download {
-            display: block;
-            margin-right: 7px;
-            svg {
-              width: 14px;
-              height: 14px;
-            }
+        }
+        &.lz_download {
+          display: block;
+          margin-right: 7px;
+          svg {
+            width: 14px;
+            height: 14px;
           }
-          &.lz_remove {
-            display: block;
-            svg {
-              width: 14px;
-              height: 14px;
-            }
+        }
+        &.lz_remove {
+          display: block;
+          svg {
+            width: 14px;
+            height: 14px;
           }
+        }
+        svg {
+          &.lz_settings_svg {
+            fill: #7e7e7e;
+          }
+
+          &.lz_download_svg {
+            fill: #7e7e7e;
+          }
+
+          &.lz_remove_svg {
+            fill: #7e7e7e;
+          }
+        }
+        &:hover {
+          background-color: #eaeaea;
           svg {
             &.lz_settings_svg {
-              fill: #7e7e7e;
+              fill: #000000;
             }
-
             &.lz_download_svg {
-              fill: #7e7e7e;
+              fill: #000000;
             }
-
             &.lz_remove_svg {
-              fill: #7e7e7e;
-            }
-          }
-          &:hover {
-            background-color: #eaeaea;
-            svg {
-              &.lz_settings_svg {
-                fill: #000000;
-              }
-              &.lz_download_svg {
-                fill: #000000;
-              }
-              &.lz_remove_svg {
-                fill: #c0392b;
-              }
+              fill: #c0392b;
             }
           }
         }
@@ -224,7 +224,8 @@ button {
   }
 }
 .lz_section_title {
-  font-size: 15px;
+  font-size: 13px;
+  font-weight: bold;
   color: #000000;
 }
 

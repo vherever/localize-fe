@@ -7,8 +7,8 @@ import { NgxPubSubService } from '@pscoped/ngx-pub-sub';
 // app imports
 import { UserModel } from '../../core/models/user.model';
 import { AppDataGlobalStorageService } from '../../core/services/app-data-global-storage.service';
-import { environment } from '../../../environments/environment';
 import { UserService } from '../../core/services/api-interaction/user.service';
+import { UPLOADS_ENDPOINT } from '../../core/app-constants';
 
 @Component({
   templateUrl: 'account.component.html',
@@ -35,7 +35,7 @@ export class AccountComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.uploadsEndpoint = `${environment.apiUrl}/uploads`;
+    this.uploadsEndpoint = UPLOADS_ENDPOINT;
 
     this.appDataGlobalStorageService.userData
       .pipe(untilComponentDestroyed(this))

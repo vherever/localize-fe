@@ -6,7 +6,7 @@
 <mat-menu #menu="matMenu" [overlapTrigger]="false">
   <div class="lz_menu_category_top" (click)="$event.stopPropagation();" fxLayout>
     <div class="lz_menu_avatar_wrapper">
-      <img src="{{ uploadsEndpoint }}/{{ userData.avatar }}" alt="">
+      <img *ngIf="userData.avatar" src="{{ uploadsEndpoint }}/{{ userData.avatar }}" alt="">
     </div>
     <div class="lz_menu_user_name">{{ userData.name }}</div>
   </div>

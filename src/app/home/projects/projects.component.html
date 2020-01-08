@@ -1,8 +1,13 @@
 <div class="container" *ngIf="projectsOwned || projectsShared">
-  <div class="lz_projects_wrapper">
-    <h2 class="lz_h_bordered">Projects</h2>
+  <div class="lz-page-title-holder" fxLayout fxLayoutAlign="space-between center">
+    <h1 class="lz-page-title">Projects</h1>
+    <div class="lz-page-title-controls">
+      <button (click)="onProjectAddClick()">New project</button>
+    </div>
+  </div>
 
-    <button (click)="onProjectAddClick()">Add new</button>
+  <div class="lz-filters-area-wrapper"></div>
+  <div class="lz_projects_wrapper">
 
     <div class="lz_list" *ngIf="projectsOwned.length">
       <h5 class="lz_h_bordered">Your Projects</h5>

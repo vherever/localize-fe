@@ -12,7 +12,12 @@ body {
   height: 100%;
 }
 
-h1 {}
+h1 {
+  margin: 16px 0;
+  font-size: 1.75em;
+  font-weight: 600;
+  color: #2e2e2e;
+}
 h2 {
   margin-top: 0;
   font-size: 21px;
@@ -57,7 +62,7 @@ button {
 
 .container {
   height: 100%;
-  max-width: 960px;
+  max-width: 1248px;
   margin: 0 auto;
 }
 
@@ -247,4 +252,16 @@ button {
 a {
   color: #5c5c5c;
   font-size: 14px;
+}
+
+.lz_card {
+  border-radius: 4px;
+  box-shadow: 0 0 6px rgba(25,25,34,.16);
+  padding: 24px;
+}
+.lz-page-title-holder {
+  border-bottom: 1px solid #e5e5e5;
+}
+.lz-filters-area-wrapper {
+  border-bottom: 1px solid #e5e5e5;
 }

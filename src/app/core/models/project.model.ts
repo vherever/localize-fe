@@ -13,4 +13,5 @@ export interface ProjectModel {
   latestUpdatedAtFormatted: string;
   role: string;
   sharedUsers: UserModel[];
+  translationsCount: number;
 }

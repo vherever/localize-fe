@@ -14,7 +14,7 @@
   <ng-container *ngIf="projectData && projectData.sharedUsers.length">
     <div class="lz_section_title">Users</div>
     <div class="lz_users_list lz_list">
-      <div *ngFor="let user of projectData.sharedUsers" class="lz_list_item" fxLayout fxLayoutAlign="space-between stretch">
+      <div *ngFor="let user of projectData.sharedUsers" class="" fxLayout fxLayoutAlign="space-between stretch">
         <div fxLayoutAlign="start center">
           <span class="lz_list_u_avatar">
              <img *ngIf="user.avatar" src="{{ uploadsEndpoint }}/{{ user.avatar }}" alt="">

@@ -1,5 +1,75 @@
 .lz_projects_wrapper {
   .lz_list {
     margin-top: 15px;
+    .lz_p_users_list {
+    }
+  }
+}
+
+.lz_list_u_avatar {
+  position: relative;
+  background-color: #ececec;
+  border-radius: 50%;
+  overflow: hidden;
+  width: 24px;
+  height: 24px;
+  img {
+    width: 100%;
+    height: 100%;
+    -o-object-fit: cover;
+    object-fit: cover;
+  }
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+  &:hover {
+    border: none;
+    &::before {
+      background-color: #000000;
+      opacity: .1;
+    }
+  }
+  &:not(:first-child) {
+    margin-left: 7px;
+  }
+}
+
+.lz_list_u_tooltip {
+  .lz_list_u_tooltip_username {
+    font-size: 12px;
+    font-weight: bold;
+  }
+  .lz_list_u_tooltip_role {
+    font-size: 11px;
+  }
+}
+
+
+::ng-deep {
+  .lz_modal_user_info {
+    background-color: #000000;
+    color: #ffffff;
+    z-index: 1;
+    border: none !important;
+    &[x-placement="left"] {
+      .ngxp__arrow {
+        border-left-color: #000000 !important;
+      }
+    }
+    .lz_list_u_user_info {
+      padding-left: 7px;
+      .lz_list_u_user_name {
+        font-weight: bold;
+        font-size: 11px;
+      }
+      .lz_list_u_user_role {
+        font-size: 11px;
+      }
+    }
   }
 }

@@ -10,6 +10,7 @@ import { ProjectAddDialogComponent } from '../project-add-dialog/project-add-dia
 import { ProjectService } from '../../core/services/api-interaction/project.service';
 import { RemoveDialogConfirmComponent } from '../../core/shared/remove-dialog-confirm/remove-dialog-confirm.component';
 import { AppDataGlobalStorageService } from '../../core/services/app-data-global-storage.service';
+import { UPLOADS_ENDPOINT } from '../../core/app-constants';
 
 @Component({
   selector: 'app-projects',
@@ -19,6 +20,7 @@ import { AppDataGlobalStorageService } from '../../core/services/app-data-global
 export class ProjectsComponent implements OnInit, OnDestroy {
   projectsOwned: ProjectModel[];
   projectsShared: ProjectModel[];
+  uploadsEndpoint: string;
 
   constructor(
     private pubSubService: NgxPubSubService,
@@ -27,6 +29,7 @@ export class ProjectsComponent implements OnInit, OnDestroy {
     private router: Router,
     private appDataGlobalStorageService: AppDataGlobalStorageService,
   ) {
+    this.uploadsEndpoint = UPLOADS_ENDPOINT;
   }
 
   ngOnInit() {
@@ -84,6 +87,8 @@ export class ProjectsComponent implements OnInit, OnDestroy {
         this.deleteProjectAction(project);
       } else if (event.target['className'].search('lz_settings') > -1) {
         this.projectSettingsAction(id);
+      } else if (event.target['className'].search('lz_list_u_avatar') > -1) {
+        // console.log('___ avatar'); // todo
       } else {
         this.router.navigate(['/project', id]);
       }

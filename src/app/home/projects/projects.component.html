@@ -8,24 +8,13 @@
       <h5 class="lz_h_bordered">Your Projects</h5>
       <a href="javascript:;" (click)="onProjectClick($event, project)"
          *ngFor="let project of projectsOwned"
-         class="lz_list_item lz_list_item_link" fxLayout fxLayoutAlign="space-between stretch">
-        <div class="lz_project_name_description">
-          <div class="lz_p_title">{{ project.title }}</div>
-          <div class="lz_p_description">{{ project.description }}</div>
-          <div class="lz_p_latest_update" fxLayout="row" fxLayoutAlign="space-between center">
-            <div>{{ project.latestUpdatedAtFormatted }}</div>
-            <div class="lz_p_users_list">
-              <ng-container *ngFor="let user of project.sharedUsers">
-                <span *ngIf="user.name; else email">{{ user.name }}</span>
-                <ng-template #email>
-                  <span>{{ user.email }}</span>
-                </ng-template>
-              </ng-container>
-            </div>
+         class="lz_list_item lz_list_item_link">
+        <div fxLayout fxLayoutAlign="space-between stretch">
+          <div class="lz_project_name_description">
+            <div class="lz_p_title">{{ project.title }}</div>
+            <div class="lz_p_description">{{ project.description }}</div>
           </div>
-        </div>
-
-        <div class="lz_list_item_controls" fxLayout fxLayoutAlign="space-around start">
+          <div class="lz_list_item_controls" fxLayout fxLayoutAlign="space-around start">
           <a href="javascript:;" class="lz_download">
             <svg class="icon lz_download_svg">
               <use xlink:href="#download"></use>
@@ -42,6 +31,44 @@
             </svg>
           </a>
         </div>
+        </div>
+
+        <div fxLayout fxLayoutAlign="space-between stretch">
+          <div>
+            <div class="lz_p_latest_update" fxLayout="row" fxLayoutAlign="space-between center">
+              <div>{{ project.latestUpdatedAtFormatted }}</div>
+            </div>
+          </div>
+          <div>
+            <div class="lz_p_users_list" fxLayout fxLayoutAlign="space-around start">
+              <ng-container *ngFor="let user of project.sharedUsers">
+                <a href="javascript:;" class="lz_list_u_avatar"
+                   [popper]="popperContent"
+                   [popperShowOnStart]="false"
+                   [popperTrigger]="'hover'"
+                   [popperHideOnClickOutside]="true"
+                   [popperHideOnScroll]="true"
+                   [popperHideOnMouseLeave]="true"
+                   [popperApplyClass]="'lz_modal_user_info'"
+                   [popperPlacement]="'left'">
+                  <img *ngIf="user.avatar" src="{{ uploadsEndpoint }}/{{ user.avatar }}" alt="">
+                </a>
+
+                <popper-content #popperContent>
+                  <div fxLayout fxLayoutAlign="space-around start">
+                    <div class="lz_list_u_avatar">
+                      <img *ngIf="user.avatar" src="{{ uploadsEndpoint }}/{{ user.avatar }}" alt="">
+                    </div>
+                    <div class="lz_list_u_user_info">
+                      <div class="lz_list_u_user_name">{{ user.name ? user.name : user.email }}</div>
+                      <div class="lz_list_u_user_role">{{ user.role }}</div>
+                    </div>
+                  </div>
+                </popper-content>
+              </ng-container>
+            </div>
+          </div>
+        </div>
       </a>
     </div>
 
@@ -49,28 +76,57 @@
       <h5 class="lz_h_bordered">Projects shared with You</h5>
       <a href="javascript:;" (click)="onProjectClick($event, project)"
          *ngFor="let project of projectsShared"
-         class="lz_list_item lz_list_item_link" fxLayout fxLayoutAlign="space-between stretch">
-        <div class="lz_project_name_description">
-          <div class="lz_p_title">{{ project.title }}</div>
-          <div class="lz_p_description">{{ project.description }}</div>
-          <div class="lz_p_latest_update" fxLayout="row" fxLayoutAlign="space-between center">
-            <div>{{ project.latestUpdatedAtFormatted }}</div>
-            <div class="lz_p_users_list">
+         class="lz_list_item lz_list_item_link">
+        <div fxLayout fxLayoutAlign="space-between stretch">
+          <div class="lz_project_name_description">
+            <div class="lz_p_title">{{ project.title }}</div>
+            <div class="lz_p_description">{{ project.description }}</div>
+          </div>
+          <div class="lz_list_item_controls" fxLayoutAlign="space-around start">
+            <a href="javascript:;" class="lz_download" style="margin-right: 0">
+              <svg class="icon lz_download_svg">
+                <use xlink:href="#download"></use>
+              </svg>
+            </a>
+          </div>
+        </div>
+
+        <div fxLayout fxLayoutAlign="space-between stretch">
+          <div>
+            <div class="lz_p_latest_update" fxLayout="row" fxLayoutAlign="space-between center">
+              <div>{{ project.latestUpdatedAtFormatted }}</div>
+            </div>
+          </div>
+
+          <div>
+            <div class="lz_p_users_list" fxLayout fxLayoutAlign="space-around start">
               <ng-container *ngFor="let user of project.sharedUsers">
-                <span *ngIf="user.name; else email">{{ user.name }}</span>
-                <ng-template #email>
-                  <span>{{ user.email }}</span>
-                </ng-template>
+                <a href="javascript:;" class="lz_list_u_avatar"
+                   [popper]="popperContent"
+                   [popperShowOnStart]="false"
+                   [popperTrigger]="'hover'"
+                   [popperHideOnClickOutside]="true"
+                   [popperHideOnScroll]="true"
+                   [popperHideOnMouseLeave]="true"
+                   [popperApplyClass]="'lz_modal_user_info'"
+                   [popperPlacement]="'left'">
+                  <img *ngIf="user.avatar" src="{{ uploadsEndpoint }}/{{ user.avatar }}" alt="">
+                </a>
+
+                <popper-content #popperContent>
+                  <div fxLayout fxLayoutAlign="space-around start">
+                    <div class="lz_list_u_avatar">
+                      <img *ngIf="user.avatar" src="{{ uploadsEndpoint }}/{{ user.avatar }}" alt="">
+                    </div>
+                    <div class="lz_list_u_user_info">
+                      <div class="lz_list_u_user_name">{{ user.name ? user.name : user.email }}</div>
+                      <div class="lz_list_u_user_role">{{ user.role }}</div>
+                    </div>
+                  </div>
+                </popper-content>
               </ng-container>
             </div>
           </div>
-        </div>
-        <div class="lz_list_item_controls" fxLayoutAlign="space-around start">
-          <a href="javascript:;" class="lz_download" style="margin-right: 0">
-            <svg class="icon lz_download_svg">
-              <use xlink:href="#download"></use>
-            </svg>
-          </a>
         </div>
       </a>
     </div>

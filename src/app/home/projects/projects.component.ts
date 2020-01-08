@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatDialog, MatDialogRef } from '@angular/material';
 import { NgxPubSubService } from '@pscoped/ngx-pub-sub';
@@ -11,6 +11,8 @@ import { ProjectService } from '../../core/services/api-interaction/project.serv
 import { RemoveDialogConfirmComponent } from '../../core/shared/remove-dialog-confirm/remove-dialog-confirm.component';
 import { AppDataGlobalStorageService } from '../../core/services/app-data-global-storage.service';
 import { UPLOADS_ENDPOINT } from '../../core/app-constants';
+import { FilterService } from '../../core/shared/filter/filter.service';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Component({
   selector: 'app-projects',
@@ -24,14 +26,23 @@ export class ProjectsComponent implements OnInit, OnDestroy {
   yourProjectsCount: number;
   sharedProjectsCount: number;
 
+  changesDetected: BehaviorSubject<boolean>;
+
+  get changesDetected$(): Observable<boolean> {
+    return this.changesDetected.asObservable();
+  }
+
   constructor(
     private pubSubService: NgxPubSubService,
     private dialog: MatDialog,
     private projectService: ProjectService,
     private router: Router,
     private appDataGlobalStorageService: AppDataGlobalStorageService,
+    private cdr: ChangeDetectorRef,
+    public filterService: FilterService,
   ) {
     this.uploadsEndpoint = UPLOADS_ENDPOINT;
+    this.changesDetected = new BehaviorSubject<boolean>(false);
   }
 
   ngOnInit() {
@@ -58,7 +69,15 @@ export class ProjectsComponent implements OnInit, OnDestroy {
     dialogRef.componentInstance.addedProject
       .pipe(untilComponentDestroyed(this))
       .subscribe((res: ProjectModel) => {
+        this.changesDetected.next(true);
+        this.cdr.detectChanges();
+
         this.projectsOwned.push(res);
+
+        this.changesDetected.next(false);
+        this.cdr.detectChanges();
+        this.cdr.markForCheck();
+
         this.yourProjectsCount = this.projectsOwned.length;
         dialogRef.close();
       });
@@ -100,6 +119,10 @@ export class ProjectsComponent implements OnInit, OnDestroy {
     } else {
       this.router.navigate(['/project', id]);
     }
+  }
+
+  onNotifyFilter(value: string): void {
+    this.filterService.onNotifyFilter(value);
   }
 
   private deleteProjectAction(project: ProjectModel): void {

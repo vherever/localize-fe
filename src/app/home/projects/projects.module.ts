@@ -10,6 +10,8 @@ import { ProjectApiService } from '../../core/services/api/project-api.service';
 import { RemoveDialogConfirmModule } from '../../core/shared/remove-dialog-confirm/remove-dialog-confirm.module';
 import { SpriteModule } from '../../core/shared/sprite/sprite.module';
 import { NgxPopperModule } from 'ngx-popper';
+import { FilterModule } from '../../core/shared/filter/filter.module';
+import { FilterPipe } from '../../core/pipes/filter.pipe';
 
 @NgModule({
   imports: [
@@ -20,12 +22,13 @@ import { NgxPopperModule } from 'ngx-popper';
     RemoveDialogConfirmModule,
     SpriteModule,
     NgxPopperModule.forRoot({}),
+    FilterModule,
   ],
   providers: [
     ProjectApiService,
     ProjectService,
   ],
-  declarations: [ProjectsComponent],
+  declarations: [ProjectsComponent, FilterPipe],
   exports: [ProjectsComponent],
 })
 export class ProjectsModule {

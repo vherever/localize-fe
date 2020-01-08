@@ -21,6 +21,8 @@ export class ProjectsComponent implements OnInit, OnDestroy {
   projectsOwned: ProjectModel[];
   projectsShared: ProjectModel[];
   uploadsEndpoint: string;
+  yourProjectsCount: number;
+  sharedProjectsCount: number;
 
   constructor(
     private pubSubService: NgxPubSubService,
@@ -38,6 +40,8 @@ export class ProjectsComponent implements OnInit, OnDestroy {
       .subscribe((projects: {owned: ProjectModel[], shared: ProjectModel[]}) => {
         this.projectsOwned = projects.owned;
         this.projectsShared = projects.shared;
+        this.yourProjectsCount = this.projectsOwned.length;
+        this.sharedProjectsCount = this.projectsShared.length;
       });
   }
 
@@ -55,6 +59,7 @@ export class ProjectsComponent implements OnInit, OnDestroy {
       .pipe(untilComponentDestroyed(this))
       .subscribe((res: ProjectModel) => {
         this.projectsOwned.push(res);
+        this.yourProjectsCount = this.projectsOwned.length;
         dialogRef.close();
       });
   }
@@ -120,8 +125,10 @@ export class ProjectsComponent implements OnInit, OnDestroy {
               // update userData after translation updated
               if (role !== 'administrator') {
                 this.projectsShared = this.projectsShared.filter((p: ProjectModel) => p.id !== id);
+                this.sharedProjectsCount = this.projectsShared.length;
               }
               this.projectsOwned = this.projectsOwned.filter((p: ProjectModel) => p.id !== id);
+              this.yourProjectsCount = this.projectsOwned.length;
             }
           });
       }
@@ -142,5 +149,9 @@ export class ProjectsComponent implements OnInit, OnDestroy {
 
   private getProjectLocalesCount(projectId: number): number {
     return this.getProjectById(projectId).translationsLocales.split(',').length;
+  }
+
+  private getProjectsCount(): number {
+    return this.projectsOwned.length + this.projectsShared.length;
   }
 }

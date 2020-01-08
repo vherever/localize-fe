@@ -6,11 +6,17 @@
     </div>
   </div>
 
-  <div class="lz-filters-area-wrapper"></div>
+  <div class="lz-filters-area-wrapper" fxLayout fxLayoutAlign="space-between center">
+    <h5>
+      Your projects
+      <span class="lz_pill_counter">{{ yourProjectsCount }}</span>
+      , shared with you
+      <span class="lz_pill_counter">{{ sharedProjectsCount }}</span>
+    </h5>
+  </div>
   <div class="lz_projects_wrapper">
 
     <div class="lz_list" *ngIf="projectsOwned.length">
-      <h5 class="lz_h_bordered">Your Projects</h5>
       <a href="javascript:;" (click)="onProjectClick($event, project)"
          *ngFor="let project of projectsOwned"
          class="lz_list_item lz_list_item_link">

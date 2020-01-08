@@ -265,3 +265,12 @@ a {
 .lz-filters-area-wrapper {
   border-bottom: 1px solid #e5e5e5;
 }
+.lz_pill_counter {
+  background-color: rgba(0,0,0,0.07);
+  color: #000000;
+  padding: 5px 5px;
+  min-width: 24px;
+  display: inline-block;
+  text-align: center;
+  border-radius: 50%;
+}

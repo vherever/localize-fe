@@ -15,7 +15,7 @@ import { UPLOADS_ENDPOINT } from '../../core/app-constants';
   styleUrls: ['account.component.scss'],
 })
 export class AccountComponent implements OnInit, OnDestroy {
-  @ViewChild('nameFieldRef') nameFieldRef: ElementRef;
+  @ViewChild('nameFieldRef', {static: false}) nameFieldRef: ElementRef;
 
   private formCurrentState: any;
   accountSettingsForm: FormGroup;

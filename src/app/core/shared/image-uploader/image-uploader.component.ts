@@ -10,7 +10,7 @@ import { ImageUploaderHelper } from './image-uploader-helper';
   styleUrls: ['image-uploader.component.scss'],
 })
 export class ImageUploaderComponent extends ImageUploaderHelper implements AfterViewInit, OnDestroy {
-  @ViewChild('fileInput') fileInput: ElementRef;
+  @ViewChild('fileInput', {static: false}) fileInput: ElementRef;
 
   @Input() userId: number;
   @Input() uuid: string;

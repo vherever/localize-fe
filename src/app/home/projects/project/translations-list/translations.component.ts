@@ -85,8 +85,10 @@ export class TranslationsComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   onTranslationEditClick(event: MouseEvent, translation: TranslationModel, index: number): void {
-    if (event.srcElement.nodeName.toLocaleLowerCase() === 'span' ||
-      event.srcElement.nodeName.toLocaleLowerCase() === 'a') {
+    // TODO refactor this.
+    console.log('___ event', event); // todo
+    if (event.srcElement['nodeName'].toLocaleLowerCase() === 'span' ||
+      event.srcElement['nodeName'].toLocaleLowerCase() === 'a') {
       this.currentClickedElementId = null;
       if (this.previousElement) {
         this.previousElement.clear();

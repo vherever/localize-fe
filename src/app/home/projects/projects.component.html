@@ -1,4 +1,4 @@
-<div class="container" *ngIf="projectsOwned || projectsShared">
+<div class="container">
   <div class="lz-page-title-holder" fxLayout fxLayoutAlign="space-between center">
     <h1 class="lz-page-title">Projects</h1>
     <div class="lz-page-title-controls">
@@ -6,21 +6,19 @@
     </div>
   </div>
 
-  <div class="lz-filters-area-wrapper" fxLayout fxLayoutAlign="space-between center">
-    <h5>
-      Your projects
-      <span class="lz_pill_counter">{{ yourProjectsCount }}</span>
-      , shared with you
-      <span class="lz_pill_counter">{{ sharedProjectsCount }}</span>
-    </h5>
-    <app-filter (notifyFilter)="onNotifyFilter($event)" [placeholder]="'Filter by title, description...'"></app-filter>
+  <div class="lz-filters-area-wrapper" *ngIf="allProjects">
+    <app-projects-filters-bar [projectsAllCount]="allProjects.length"
+                              [yourProjectsCount]="yourProjects.length"
+                              [sharedProjectsCount]="sharedProjects.length"
+                              (sortKeySelected2)="onSortKeySelected2($event)"
+                              (projectsListToggleEvent)="onProjectsListToggleEvent($event)"></app-projects-filters-bar>
   </div>
-  <div class="lz_projects_wrapper">
+  <div class="lz_projects_wrapper" *ngIf="allProjects">
 
     <ng-container *ngIf="!(changesDetected$ | async)">
-      <div class="lz_list" *ngIf="projectsOwned.length">
+      <div class="lz_list">
         <a href="javascript:;" (click)="onProjectClick($event, project)"
-           *ngFor="let project of projectsOwned | filter: {title: filterService.filterText, description: filterService.filterText}"
+           *ngFor="let project of allProjectsFiltered | filter: {title: filterService.filterText, description: filterService.filterText}"
            class="lz_list_item lz_list_item_link">
           <div fxLayout fxLayoutAlign="space-between stretch">
             <div class="lz_project_name_description">
@@ -33,12 +31,12 @@
                 <use xlink:href="#download"></use>
               </svg>
             </a>
-            <a href="javascript:;" class="lz_settings">
+            <a href="javascript:;" class="lz_settings" *ngIf="project.role === 'administrator'">
               <svg class="lz_settings_svg">
                 <use xlink:href="#settings"></use>
               </svg>
             </a>
-            <a href="javascript:;" class="lz_remove">
+            <a href="javascript:;" class="lz_remove" *ngIf="project.role === 'administrator'">
               <svg class="lz_remove_svg">
                 <use xlink:href="#recycle_bin"></use>
               </svg>
@@ -86,7 +84,8 @@
       </div>
     </ng-container>
 
-    <div class="lz_list" *ngIf="projectsShared.length">
+    <!--
+    <div class="lz_list">
       <h5 class="lz_h_bordered">Projects shared with You</h5>
       <a href="javascript:;" (click)="onProjectClick($event, project)"
          *ngFor="let project of projectsShared"
@@ -144,6 +143,7 @@
         </div>
       </a>
     </div>
+    -->
   </div>
 </div>
 

@@ -17,6 +17,7 @@ import { TokenInterceptor } from './core/services/interceptors/token-interceptor
 import { BrowserCacheModule, MemoryCacheService } from '@ngx-cache/platform-browser';
 import { AppRouteRootModule } from './app-route-root/app-route-root.module';
 import { PubSubEventsHandlerModule } from './core/shared/pub-sub-events-handler/pub-sub-events-handler.module';
+import { MAT_RIPPLE_GLOBAL_OPTIONS } from '@angular/material';
 
 @NgModule({
   declarations: [
@@ -59,6 +60,10 @@ import { PubSubEventsHandlerModule } from './core/shared/pub-sub-events-handler/
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptor,
       multi: true,
+    },
+    {
+      provide: MAT_RIPPLE_GLOBAL_OPTIONS,
+      useValue: { disabled: true },
     },
   ],
   bootstrap: [AppComponent],

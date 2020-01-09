@@ -1,0 +1,23 @@
+::ng-deep {
+  mat-button-toggle-group {
+    border-radius: 3px !important;
+    mat-button-toggle {
+      button {
+        height: 32px;
+        padding: 4px 10px !important;
+        div {
+          line-height: normal !important;
+          //border: 1px solid #72727d !important;
+          padding: 0 !important;
+          font-size: 13px !important;
+          //border-radius: 3px !important;
+          color: #72727d !important;
+          cursor: pointer;
+        }
+        &:hover {
+          border:  none !important;
+        }
+      }
+    }
+  }
+}

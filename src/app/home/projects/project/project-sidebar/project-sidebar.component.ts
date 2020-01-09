@@ -22,6 +22,7 @@ export class ProjectSidebarComponent implements OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.projectData.currentValue) {
+      console.log('___ this.projectData', this.projectData); // todo
       this.projectLocales = `${this.projectData.defaultLocale},${this.projectData.translationsLocales}`
         .split(',')
         .filter((value, index, self) => {

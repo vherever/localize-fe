@@ -13,6 +13,7 @@ import { AppDataGlobalStorageService } from '../../core/services/app-data-global
 import { UPLOADS_ENDPOINT } from '../../core/app-constants';
 import { FilterService } from '../../core/shared/filter/filter.service';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-projects',
@@ -20,16 +21,21 @@ import { BehaviorSubject, Observable } from 'rxjs';
   styleUrls: ['projects.component.scss'],
 })
 export class ProjectsComponent implements OnInit, OnDestroy {
-  projectsOwned: ProjectModel[];
-  projectsShared: ProjectModel[];
+  yourProjects: ProjectModel[];
+  sharedProjects: ProjectModel[];
+  allProjects: ProjectModel[];
+  allProjectsFiltered: ProjectModel[];
   uploadsEndpoint: string;
-  yourProjectsCount: number;
-  sharedProjectsCount: number;
 
   changesDetected: BehaviorSubject<boolean>;
+  projects: BehaviorSubject<ProjectModel[]> = new BehaviorSubject(null);
 
   get changesDetected$(): Observable<boolean> {
     return this.changesDetected.asObservable();
+  }
+
+  get projects$(): Observable<ProjectModel[]> {
+    return this.projects.asObservable();
   }
 
   constructor(
@@ -48,11 +54,17 @@ export class ProjectsComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.projectService.getProjects()
       .pipe(untilComponentDestroyed(this))
-      .subscribe((projects: {owned: ProjectModel[], shared: ProjectModel[]}) => {
-        this.projectsOwned = projects.owned;
-        this.projectsShared = projects.shared;
-        this.yourProjectsCount = this.projectsOwned.length;
-        this.sharedProjectsCount = this.projectsShared.length;
+      .subscribe((projects: ProjectModel[]) => {
+        this.projects.next(projects);
+
+        this.projects$
+          .pipe(untilComponentDestroyed(this))
+          .subscribe((res: ProjectModel[]) => {
+            this.allProjects = res;
+            this.allProjectsFiltered = [...res];
+            this.yourProjects = res.filter((p) => p.role === 'administrator');
+            this.sharedProjects = res.filter((p) => p.role !== 'administrator');
+          });
       });
   }
 
@@ -72,13 +84,20 @@ export class ProjectsComponent implements OnInit, OnDestroy {
         this.changesDetected.next(true);
         this.cdr.detectChanges();
 
-        this.projectsOwned.push(res);
+        this.projects$
+          .pipe(
+            take(1),
+            untilComponentDestroyed(this),
+          )
+          .subscribe((res2: ProjectModel[]) => {
+            res2.push(res);
+            this.projects.next(res2);
+          });
 
         this.changesDetected.next(false);
         this.cdr.detectChanges();
         this.cdr.markForCheck();
 
-        this.yourProjectsCount = this.projectsOwned.length;
         dialogRef.close();
       });
   }
@@ -121,8 +140,22 @@ export class ProjectsComponent implements OnInit, OnDestroy {
     }
   }
 
-  onNotifyFilter(value: string): void {
-    this.filterService.onNotifyFilter(value);
+  onSortKeySelected2(value: string): void {
+    console.log('___ sortkey', value); // todo
+  }
+
+  onProjectsListToggleEvent(value: string): void {
+    switch (value) {
+      case 'all':
+        this.allProjectsFiltered = this.allProjects;
+        break;
+      case 'yours':
+        this.allProjectsFiltered = this.yourProjects;
+        break;
+      case 'shared':
+        this.allProjectsFiltered = this.sharedProjects;
+        break;
+    }
   }
 
   private deleteProjectAction(project: ProjectModel): void {
@@ -146,12 +179,16 @@ export class ProjectsComponent implements OnInit, OnDestroy {
           .subscribe((res: HttpResponse<any>) => {
             if (res.status === 200) {
               // update userData after translation updated
-              if (role !== 'administrator') {
-                this.projectsShared = this.projectsShared.filter((p: ProjectModel) => p.id !== id);
-                this.sharedProjectsCount = this.projectsShared.length;
-              }
-              this.projectsOwned = this.projectsOwned.filter((p: ProjectModel) => p.id !== id);
-              this.yourProjectsCount = this.projectsOwned.length;
+
+              this.projects$
+                .pipe(
+                  take(1),
+                  untilComponentDestroyed(this),
+                )
+                .subscribe((res2: ProjectModel[]) => {
+                  const filtered = res2.filter((p) => p.id !== id);
+                  this.projects.next(filtered);
+                });
             }
           });
       }
@@ -167,14 +204,10 @@ export class ProjectsComponent implements OnInit, OnDestroy {
   }
 
   private getProjectById(projectId: number): ProjectModel {
-    return this.projectsOwned.find((p: ProjectModel) => p.id === projectId);
+    return this.yourProjects.find((p: ProjectModel) => p.id === projectId);
   }
 
   private getProjectLocalesCount(projectId: number): number {
     return this.getProjectById(projectId).translationsLocales.split(',').length;
-  }
-
-  private getProjectsCount(): number {
-    return this.projectsOwned.length + this.projectsShared.length;
   }
 }

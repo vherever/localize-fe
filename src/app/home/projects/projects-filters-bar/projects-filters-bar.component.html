@@ -1,0 +1,13 @@
+<div fxLayout fxLayoutAlign="space-between center">
+<h5>
+  <mat-button-toggle-group name="fontStyle" aria-label="Font Style" (change)="onProjectsListToggle($event.value)">
+    <mat-button-toggle value="all" [checked]="true">All<span class="lz_pill_counter">{{ projectsAllCount }}</span></mat-button-toggle>
+    <mat-button-toggle value="yours">Yours<span class="lz_pill_counter">{{ yourProjectsCount }}</span></mat-button-toggle>
+    <mat-button-toggle value="shared">Shared<span class="lz_pill_counter">{{ sharedProjectsCount }}</span></mat-button-toggle>
+  </mat-button-toggle-group>
+</h5>
+<div fxLayout>
+  <app-projects-filter-select (sortKeySelected)="onSortKeySelected($event)"></app-projects-filter-select>
+  <app-filter (notifyFilter)="onNotifyFilter($event)" [placeholder]="'Filter by title, description...'"></app-filter>
+</div>
+</div>

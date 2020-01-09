@@ -1,0 +1,9 @@
+<ng-select [items]="selectData"
+           [clearable]="false"
+           [searchable]="false"
+           bindLabel="text"
+           autofocus
+           bindValue="id"
+           (change)="onSortChange($event)"
+           [(ngModel)]="selectedId">
+</ng-select>

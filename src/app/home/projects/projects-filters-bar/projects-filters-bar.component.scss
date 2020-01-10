@@ -1,11 +1,16 @@
 ::ng-deep {
   mat-button-toggle-group {
     border-radius: 3px !important;
+    border: none !important;
     mat-button-toggle {
+      border-left: none !important;
       button {
         height: 32px;
         padding: 4px 10px !important;
         div {
+          display: flex !important;
+          place-content: center space-between !important;
+          align-items: center !important;
           line-height: normal !important;
           //border: 1px solid #72727d !important;
           padding: 0 !important;
@@ -16,6 +21,20 @@
         }
         &:hover {
           border:  none !important;
+        }
+      }
+      &.mat-button-toggle-checked {
+        background-color: #ffffff !important;
+        button {
+          div {
+            //font-weight: bold;
+            color: #000000 !important;
+            .lz_pill_counter {
+              background-color: #d35400;
+              color: #ffffff;
+              font-weight: bold;
+            }
+          }
         }
       }
     }

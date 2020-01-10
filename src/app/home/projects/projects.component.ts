@@ -21,6 +21,8 @@ import { take } from 'rxjs/operators';
   styleUrls: ['projects.component.scss'],
 })
 export class ProjectsComponent implements OnInit, OnDestroy {
+  private currentProjectsListSwitcherState: string;
+
   yourProjects: ProjectModel[];
   sharedProjects: ProjectModel[];
   allProjects: ProjectModel[];
@@ -64,6 +66,9 @@ export class ProjectsComponent implements OnInit, OnDestroy {
             this.allProjectsFiltered = [...res];
             this.yourProjects = res.filter((p) => p.role === 'administrator');
             this.sharedProjects = res.filter((p) => p.role !== 'administrator');
+
+            console.log('___ this.yourProjects', this.yourProjects); // todo
+            this.onProjectsListToggleEvent(this.currentProjectsListSwitcherState);
           });
       });
   }
@@ -145,6 +150,7 @@ export class ProjectsComponent implements OnInit, OnDestroy {
   }
 
   onProjectsListToggleEvent(value: string): void {
+    this.currentProjectsListSwitcherState = value;
     switch (value) {
       case 'all':
         this.allProjectsFiltered = this.allProjects;

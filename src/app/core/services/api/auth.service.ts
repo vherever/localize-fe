@@ -33,5 +33,6 @@ export class AuthService {
 
   onLogOut(): void {
     this.objectLocalStorageService.removeItem(AppVariables.LOCAL_STORAGE_USER_ACCESS_TOKEN);
+    this.objectLocalStorageService.removeItem(AppVariables.LOCAL_STORAGE_USER_CONFIG);
   }
 }

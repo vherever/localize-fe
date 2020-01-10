@@ -1,3 +1,3 @@
 export interface UserConfigModel {
-  accessToken: string;
+  projectsActiveTab: string;
 }

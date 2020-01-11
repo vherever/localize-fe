@@ -4,6 +4,6 @@
            bindLabel="text"
            autofocus
            bindValue="id"
-           (change)="onSortChange($event)"
+           (change)="onSortChange($event.sortKey)"
            [(ngModel)]="selectedId">
 </ng-select>

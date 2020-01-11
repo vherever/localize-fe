@@ -14,6 +14,10 @@ export class AuthService {
   }
 
   get token(): string {
+    const value = this.objectLocalStorageService.getRawItem(AppVariables.LOCAL_STORAGE_USER_ACCESS_TOKEN);
+    if (!this.objectLocalStorageService.isJsonString(value)) {
+      this.onLogOut();
+    }
     return this.objectLocalStorageService.getItem(AppVariables.LOCAL_STORAGE_USER_ACCESS_TOKEN);
   }
 

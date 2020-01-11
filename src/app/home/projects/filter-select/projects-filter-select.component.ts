@@ -1,5 +1,6 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { ProjectsFilterSelectModel } from './projects-filter-select.model';
+import { UserConfigService } from '../../../core/services/user-config/user-config.service';
 
 @Component({
   selector: 'app-projects-filter-select',
@@ -8,10 +9,23 @@ import { ProjectsFilterSelectModel } from './projects-filter-select.model';
 export class AppProjectsFilterSelectComponent implements OnInit {
   @Output() sortKeySelected: EventEmitter<string> = new EventEmitter<string>();
 
-  selectedId = 3;
+  private keysForSort: string[] = [
+    'title_asc',
+    'title_desc',
+    'created_asc',
+    'created_desc',
+    'updated_asc',
+    'updated_desc',
+  ];
+
+  activeSortKey: string;
+
+  selectedId: number;
   selectData: ProjectsFilterSelectModel[];
 
-  constructor() {
+  constructor(
+    private userConfigService: UserConfigService,
+  ) {
   }
 
   ngOnInit() {
@@ -20,7 +34,7 @@ export class AppProjectsFilterSelectComponent implements OnInit {
         id: 0,
         isActive: false,
         text: 'Last updated',
-        sortKey: 'latest_activity_desc',
+        sortKey: 'updated_desc',
       },
       {
         id: 1,
@@ -32,13 +46,13 @@ export class AppProjectsFilterSelectComponent implements OnInit {
         id: 2,
         isActive: false,
         text: 'Name',
-        sortKey: 'name_asc',
+        sortKey: 'title_asc',
       },
       {
         id: 3,
         isActive: false,
         text: 'Oldest updated',
-        sortKey: 'latest_activity_asc',
+        sortKey: 'updated_asc',
       },
       {
         id: 4,
@@ -48,10 +62,26 @@ export class AppProjectsFilterSelectComponent implements OnInit {
       },
     ];
 
-    this.sortKeySelected.emit(this.selectData[this.selectedId].sortKey);
+    this.activeSortKey = this.userConfigService.getItem('projectsActiveSortKey');
+    if (this.activeSortKey && this.isConfigCorrect(this.activeSortKey)) {
+      this.selectedId = this.selectData.find((o) => o.sortKey === this.activeSortKey).id;
+      this.onSortChange(this.activeSortKey);
+    } else {
+      this.activeSortKey = 'updated_desc';
+      this.userConfigService.setItem('projectsActiveSortKey', this.activeSortKey);
+      this.onSortChange(this.activeSortKey);
+      this.selectedId = this.selectData.find((o) => o.sortKey === this.activeSortKey).id;
+    }
   }
 
-  onSortChange(sortItem: ProjectsFilterSelectModel): void {
-    this.sortKeySelected.emit(sortItem.sortKey);
+  onSortChange(sortKey: string): void {
+    if (sortKey) {
+      this.userConfigService.setItem('projectsActiveSortKey', sortKey);
+    }
+    this.sortKeySelected.emit(sortKey);
+  }
+
+  private isConfigCorrect(key: string): boolean {
+    return !!this.keysForSort.find((k) => k === key);
   }
 }

@@ -10,8 +10,12 @@ export abstract class ObjectStorageAbstract implements ObjectStorageModel {
     this.storage.setItem(key, JSON.stringify(data));
   }
 
+  getRawItem(key: string): string {
+    return this.storage.getItem(key);
+  }
+
   getItem<T>(key: string): T {
-    return JSON.parse(this.storage.getItem(key));
+    return JSON.parse(this.getRawItem(key));
   }
 
   updateItem<T>(key: string, data: object): void {
@@ -29,5 +33,14 @@ export abstract class ObjectStorageAbstract implements ObjectStorageModel {
 
   key(index: number): any {
     return this.storage.key(index);
+  }
+
+  isJsonString(str: string) {
+    try {
+      JSON.parse(str);
+    } catch (e) {
+      return false;
+    }
+    return true;
   }
 }

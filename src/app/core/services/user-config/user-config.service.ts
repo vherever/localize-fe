@@ -13,6 +13,7 @@ export class UserConfigService {
 
   private userConfigKeys: string[] = [
     'projectsActiveTab',
+    'projectsActiveSortKey',
   ];
 
   constructor(
@@ -21,6 +22,10 @@ export class UserConfigService {
   }
 
   private getConf(): UserConfigModel {
+    const value = this.objectLocalStorageService.getRawItem(this.userConfigLsKey);
+    if (!this.objectLocalStorageService.isJsonString(value)) {
+      this.objectLocalStorageService.removeItem(this.userConfigLsKey);
+    }
     return this.objectLocalStorageService.getItem(this.userConfigLsKey);
   }
 
@@ -31,7 +36,10 @@ export class UserConfigService {
   }
 
   private getConfigEmpty(): UserConfigModel {
-    return {projectsActiveTab: ''};
+    return {
+      projectsActiveTab: '',
+      projectsActiveSortKey: '',
+    };
   }
 
   private setConf(config: UserConfigModel) {

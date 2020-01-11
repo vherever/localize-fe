@@ -12,15 +12,16 @@ import { RemoveDialogConfirmComponent } from '../../core/shared/remove-dialog-co
 import { AppDataGlobalStorageService } from '../../core/services/app-data-global-storage.service';
 import { UPLOADS_ENDPOINT } from '../../core/app-constants';
 import { FilterService } from '../../core/shared/filter/filter.service';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { take } from 'rxjs/operators';
+import { SortingHelper } from '../../core/helpers/sorting-helper';
 
 @Component({
   selector: 'app-projects',
   templateUrl: 'projects.component.html',
   styleUrls: ['projects.component.scss'],
 })
-export class ProjectsComponent implements OnInit, OnDestroy {
+export class ProjectsComponent extends SortingHelper implements OnInit, OnDestroy {
   private currentProjectsListSwitcherState: string;
 
   yourProjects: ProjectModel[];
@@ -31,6 +32,8 @@ export class ProjectsComponent implements OnInit, OnDestroy {
 
   changesDetected: BehaviorSubject<boolean>;
   projects: BehaviorSubject<ProjectModel[]> = new BehaviorSubject(null);
+
+  activeSortKey: BehaviorSubject<string> = new BehaviorSubject<string>('');
 
   get changesDetected$(): Observable<boolean> {
     return this.changesDetected.asObservable();
@@ -49,6 +52,7 @@ export class ProjectsComponent implements OnInit, OnDestroy {
     private cdr: ChangeDetectorRef,
     public filterService: FilterService,
   ) {
+    super();
     this.uploadsEndpoint = UPLOADS_ENDPOINT;
     this.changesDetected = new BehaviorSubject<boolean>(false);
   }
@@ -64,12 +68,22 @@ export class ProjectsComponent implements OnInit, OnDestroy {
           .subscribe((res: ProjectModel[]) => {
             this.allProjects = res;
             this.allProjectsFiltered = [...res];
-            this.yourProjects = res.filter((p) => p.role === 'administrator');
-            this.sharedProjects = res.filter((p) => p.role !== 'administrator');
 
-            console.log('___ this.yourProjects', this.yourProjects); // todo
-            this.onProjectsListToggleEvent(this.currentProjectsListSwitcherState);
+            this.yourProjects = this.allProjects.filter((p) => p.role === 'administrator');
+            this.sharedProjects = this.allProjects.filter((p) => p.role !== 'administrator');
           });
+      });
+
+    this.activeSortKey.asObservable()
+      .pipe(untilComponentDestroyed(this))
+      .subscribe((value: string) => {
+        if (value) {
+          this.allProjects = this.sortData(this.allProjects, value);
+          // this.allProjectsFiltered = this.sortData(this.allProjectsFiltered, value);
+
+          this.yourProjects = this.allProjects.filter((p) => p.role === 'administrator');
+          this.sharedProjects = this.allProjects.filter((p) => p.role !== 'administrator');
+        }
       });
   }
 
@@ -146,7 +160,9 @@ export class ProjectsComponent implements OnInit, OnDestroy {
   }
 
   onSortKeySelected2(value: string): void {
-    console.log('___ sortkey', value); // todo
+    this.activeSortKey.next(value);
+    this.onProjectsListToggleEvent(this.currentProjectsListSwitcherState);
+    this.allProjectsFiltered = this.sortData([...this.allProjectsFiltered], value);
   }
 
   onProjectsListToggleEvent(value: string): void {

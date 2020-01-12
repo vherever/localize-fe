@@ -1,10 +1,12 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+// app imports
 import { ProjectsFilterSelectModel } from './projects-filter-select.model';
 import { UserConfigService } from '../../../core/services/user-config/user-config.service';
 
 @Component({
   selector: 'app-projects-filter-select',
   templateUrl: 'projects-filter-select.component.html',
+  styleUrls: ['projects-filter-select.component.scss'],
 })
 export class AppProjectsFilterSelectComponent implements OnInit {
   @Output() sortKeySelected: EventEmitter<string> = new EventEmitter<string>();

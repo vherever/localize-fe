@@ -1,0 +1,27 @@
+::ng-deep {
+  .ng-select-container {
+    min-width: 150px;
+    width: 100%;
+    cursor: pointer !important;
+    min-height: 32px !important;
+    height: 100% !important;
+    .ng-value-container {
+      .ng-value {
+        font-size: 13px;
+      }
+    }
+  }
+  ng-dropdown-panel {
+    .ng-dropdown-panel-items {
+      .ng-option {
+        font-size: 13px;
+        &.ng-option-selected {
+          .ng-option-label {
+            font-weight: 400 !important;
+          }
+        }
+      }
+    }
+  }
+}
+

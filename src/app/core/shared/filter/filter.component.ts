@@ -8,6 +8,8 @@ import { debounceTime } from 'rxjs/operators';
 })
 export class FilterComponent implements OnInit {
   @Input() placeholder: string;
+  @Input() cssClass: string;
+
   @Output() notifyFilter: EventEmitter<string> = new EventEmitter<string>();
 
   filterInput = new FormControl();

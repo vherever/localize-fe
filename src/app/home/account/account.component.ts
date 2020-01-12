@@ -51,8 +51,7 @@ export class AccountComponent implements OnInit, OnDestroy {
   }
 
   onAvatarUpdated(fileName: string): void {
-    const timestamp = Math.round((new Date()).getTime() / 1000);
-    this.userData.avatar = fileName + `?v=${timestamp}`;
+    this.userData.avatar = fileName + `?v=${this.currentTimestamp}`;
     this.cacheService.set('userData', this.userData);
     this.pubSubService.publishEvent('userDataCached', true);
   }
@@ -65,6 +64,7 @@ export class AccountComponent implements OnInit, OnDestroy {
     this.userInfoService.updateUser(this.userData.id, this.accountSettingsForm.value)
       .pipe(untilComponentDestroyed(this))
       .subscribe((res) => {
+        res.avatar = res.avatar + `?v=${this.currentTimestamp}`;
         this.cacheService.set('userData', res);
         this.pubSubService.publishEvent('userDataCached', true);
         this.snackBar.open(
@@ -93,5 +93,9 @@ export class AccountComponent implements OnInit, OnDestroy {
       email: [{ value: this.userData.email, disabled: true }],
     });
     this.formCurrentState = this.accountSettingsForm.value;
+  }
+
+  private get currentTimestamp(): number {
+    return Math.round((new Date()).getTime() / 1000);
   }
 }

@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 // app imports
-import { UserConfigService } from '../../../core/services/user-config/user-config.service';
+import { UserConfigService } from '../../../../core/services/user-config/user-config.service';
 
 @Component({
   selector: 'app-projects-lists-switcher',

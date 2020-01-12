@@ -1,7 +1,7 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 // app imports
 import { ProjectsFilterSelectModel } from './projects-filter-select.model';
-import { UserConfigService } from '../../../core/services/user-config/user-config.service';
+import { UserConfigService } from '../../../../core/services/user-config/user-config.service';
 
 @Component({
   selector: 'app-projects-filter-select',

@@ -7,8 +7,8 @@ import { NgSelectModule } from '@ng-select/ng-select';
 // app imports
 import { ProjectsFiltersBarComponent } from './projects-filters-bar.component';
 import { FilterModule } from '../../../core/shared/filter/filter.module';
-import { AppProjectsFilterSelectComponent } from '../filter-select/projects-filter-select.component';
-import { ProjectsListsSwitcherComponent } from '../projects-lists-switcher/projects-lists-switcher.component';
+import { AppProjectsFilterSelectComponent } from './filter-select/projects-filter-select.component';
+import { ProjectsListsSwitcherComponent } from './projects-lists-switcher/projects-lists-switcher.component';
 
 @NgModule({
   imports: [

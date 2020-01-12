@@ -13,7 +13,7 @@ import { NgxPopperModule } from 'ngx-popper';
 import { FilterModule } from '../../core/shared/filter/filter.module';
 import { FilterPipe } from '../../core/pipes/filter.pipe';
 import { NgSelectModule } from '@ng-select/ng-select';
-import { AppProjectsFilterSelectComponent } from './filter-select/projects-filter-select.component';
+import { AppProjectsFilterSelectComponent } from './projects-filters-bar/filter-select/projects-filter-select.component';
 import { FormsModule } from '@angular/forms';
 import { ProjectsFiltersBarModule } from './projects-filters-bar/projects-filters-bar.module';
 

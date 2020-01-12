@@ -111,6 +111,7 @@ export class ProjectsComponent extends SortingHelper implements OnInit, OnDestro
           .subscribe((res2: ProjectModel[]) => {
             res2.push(res);
             this.projects.next(res2);
+            this.allProjectsFiltered = this.yourProjects;
           });
 
         this.changesDetected.next(false);
@@ -195,26 +196,26 @@ export class ProjectsComponent extends SortingHelper implements OnInit, OnDestro
     dialogRef.afterClosed()
       .pipe(untilComponentDestroyed(this))
       .subscribe((state: boolean) => {
-      if (state) {
-        this.projectService.deleteProject(id)
-          .pipe(untilComponentDestroyed(this))
-          .subscribe((res: HttpResponse<any>) => {
-            if (res.status === 200) {
-              // update userData after translation updated
-
-              this.projects$
-                .pipe(
-                  take(1),
-                  untilComponentDestroyed(this),
-                )
-                .subscribe((res2: ProjectModel[]) => {
-                  const filtered = res2.filter((p) => p.id !== id);
-                  this.projects.next(filtered);
-                });
-            }
-          });
-      }
-    });
+        if (state) {
+          this.projectService.deleteProject(id)
+            .pipe(untilComponentDestroyed(this))
+            .subscribe((res: HttpResponse<any>) => {
+              if (res.status === 200) {
+                // update userData after translation updated
+                this.projects$
+                  .pipe(
+                    take(1),
+                    untilComponentDestroyed(this),
+                  )
+                  .subscribe((res2: ProjectModel[]) => {
+                    const filtered = res2.filter((p) => p.id !== id);
+                    this.projects.next(filtered);
+                    this.allProjectsFiltered = this.yourProjects;
+                  });
+              }
+            });
+        }
+      });
   }
 
   private exportProjectAction(id: number): void {
@@ -230,6 +231,7 @@ export class ProjectsComponent extends SortingHelper implements OnInit, OnDestro
   }
 
   private getProjectLocalesCount(projectId: number): number {
-    return this.getProjectById(projectId).translationsLocales.split(',').length;
+    // +1 means +defaultLocale
+    return this.getProjectById(projectId).translationsLocales.split(',').length + 1;
   }
 }

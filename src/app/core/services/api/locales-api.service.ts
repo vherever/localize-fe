@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 // app imports
 import { environment } from '../../../../environments/environment';
-import { LocaleModel } from '../../models/locale.model';
+import { LocalesModel } from '../../models/locales.model';
 
 @Injectable()
 export class LocalesApiService {
@@ -12,7 +12,7 @@ export class LocalesApiService {
   ) {
   }
 
-  getLocales(): Observable<LocaleModel[]> {
-    return this.http.get(`${environment.apiUrl}/locales`) as Observable<LocaleModel[]>;
+  getLocales(): Observable<LocalesModel> {
+    return this.http.get(`${environment.apiUrl}/locales`) as Observable<LocalesModel>;
   }
 }

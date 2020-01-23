@@ -52,6 +52,7 @@ export class TranslationAddDialogComponent implements OnInit, OnDestroy {
           if (error.statusCode === 409) {
             this.addTranslationForm.controls['assetCode'].setErrors({ assetCodeExists: true });
           }
+          return;
         }),
       )
       .subscribe((res: TranslationModel[]) => {

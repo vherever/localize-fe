@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
+// app imports
 import { LocalesApiService } from '../api/locales-api.service';
 import { Observable } from 'rxjs';
-import { LocaleModel } from '../../models/locale.model';
+import { LocalesModel } from '../../models/locales.model';
 
 @Injectable()
 export class LocalesService {
@@ -10,7 +11,7 @@ export class LocalesService {
   ) {
   }
 
-  getLocales(): Observable<LocaleModel[]> {
+  getLocales(): Observable<LocalesModel> {
     return this.localesApiService.getLocales();
   }
 }

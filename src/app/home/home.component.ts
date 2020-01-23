@@ -7,8 +7,8 @@ import { UserService } from '../core/services/api-interaction/user.service';
 import { AuthService } from '../core/services/api/auth.service';
 import { UserModel } from '../core/models/user.model';
 import { LocalesService } from '../core/services/api-interaction/locales.service';
-import { LocaleModel } from '../core/models/locale.model';
 import { AppDataGlobalStorageService } from '../core/services/app-data-global-storage.service';
+import { LocalesModel } from '../core/models/locales.model';
 
 @Component({
   selector: 'app-home',
@@ -48,7 +48,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   private getLocalesAndCache(): void {
     this.localesService.getLocales()
       .pipe(untilComponentDestroyed(this))
-      .subscribe((res: LocaleModel[]) => {
+      .subscribe((res: LocalesModel) => {
         this.cacheService.set('localesData', res);
         this.pubSubService.publishEvent('localesDataCached', true);
       });

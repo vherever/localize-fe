@@ -10,8 +10,8 @@ import { AppDataGlobalStorageService } from '../../../../core/services/app-data-
 import { TranslationAddDialogComponent } from '../../../translation-add-dialog/translation-add-dialog.component';
 import { ProjectModel } from '../../../../core/models/project.model';
 import { RemoveDialogConfirmComponent } from '../../../../core/shared/remove-dialog-confirm/remove-dialog-confirm.component';
-import { LocaleModel } from '../../../../core/models/locale.model';
 import { UserModel } from '../../../../core/models/user.model';
+import { LocalesModel } from '../../../../core/models/locales.model';
 
 @Component({
   selector: 'app-translations',
@@ -25,7 +25,7 @@ export class TranslationsComponent implements OnInit, OnChanges, OnDestroy {
 
   private previousElement: ViewContainerRef;
   private previousClickedElementId: number;
-  private localesData: LocaleModel[];
+  private localesData: LocalesModel;
 
   translations: TranslationModel[];
   componentRef: ComponentRef<TranslationEditorComponent>;
@@ -86,7 +86,7 @@ export class TranslationsComponent implements OnInit, OnChanges, OnDestroy {
 
   onTranslationEditClick(event: MouseEvent, translation: TranslationModel, index: number): void {
     // TODO refactor this.
-    console.log('___ event', event); // todo
+    // console.log('___ event', event); // todo
     if (event.srcElement['nodeName'].toLocaleLowerCase() === 'span' ||
       event.srcElement['nodeName'].toLocaleLowerCase() === 'a') {
       this.currentClickedElementId = null;
@@ -194,6 +194,6 @@ export class TranslationsComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private getActiveLocaleCountryName(locale: string): string {
-    return this.localesData.find((l: LocaleModel) => l.key === locale).name;
+    return this.localesData['languages'][locale].name;
   }
 }

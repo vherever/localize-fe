@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 // app imports
 import { TranslationModel } from '../../../../../core/models/translation.model';
 import { ProjectModel } from '../../../../../core/models/project.model';
-import { LocaleModel } from '../../../../../core/models/locale.model';
+import { LocalesModel } from '../../../../../core/models/locales.model';
 
 interface TranslateEditorModel {
   editInLanguage: string;
@@ -51,7 +51,7 @@ export class TranslationEditorComponent implements OnInit {
 
   localeIndex: number;
   translateForm: FormGroup;
-  localesData: LocaleModel[];
+  localesData: LocalesModel;
 
   constructor(
     private fb: FormBuilder,
@@ -90,6 +90,6 @@ export class TranslationEditorComponent implements OnInit {
   }
 
   private getActiveLocaleCountryName(locale: string): string {
-    return this.localesData.find((l: LocaleModel) => l.key === locale).name;
+    return this.localesData.languages[locale].name;
   }
 }

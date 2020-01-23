@@ -34,5 +34,40 @@
     </mat-form-field>
   </div>
 
+  <div>
+    <!--<label for="localesData">Select locale</label>-->
+    <ng-select formControlName="selectedLocale"
+               [items]="localesDataTransformed"
+               [multiple]="false"
+               [bindLabel]="'value'"
+               [placeholder]="'Start typing a language or country...'"
+               [dropdownPosition]="'top'"
+               [loadingText]="'Loading...'"
+               [loading]="selectDataLoading"
+               [isOpen]="dropdownIsOpen"
+               (search)="onLanguageSearch($event)"
+               (blur)="onCloseSearchBox()"
+               (focus)="onFocusSearchBar($event)"
+               (change)="onChangeSearchBar($event)"
+               (clear)="onClearSearchBar()"
+               labelForId="localesData">
+
+      <ng-template ng-option-tmp let-item="item">
+        <span class="flag">{{ item.emoji }}</span>
+        <span class="text">{{item.value}}</span>
+        <span *ngIf="item.type === 'lang'" class="code">{{ item.code }}</span>
+      </ng-template>
+
+      <ng-template ng-loadingspinner-tmp>
+        <div class="lds-ellipsis" *ngIf="selectDataLoading">
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
+      </ng-template>
+    </ng-select>
+  </div>
+
   <button [disabled]="!projectAddForm.valid">Save</button>
 </form>

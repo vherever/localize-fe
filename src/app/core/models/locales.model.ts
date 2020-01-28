@@ -10,6 +10,7 @@ export interface CountryModel {
   key: string;
   locales: LocaleModel[];
   code?: string;
+  value?: string;
 }
 export interface LocaleModel {
   name: string;

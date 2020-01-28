@@ -39,7 +39,8 @@
     <ng-select formControlName="selectedLocale"
                [items]="localesDataTransformed"
                [multiple]="false"
-               [bindLabel]="'value'"
+               [virtualScroll]="true"
+               [bindLabel]="'filter'"
                [placeholder]="'Start typing a language or country...'"
                [dropdownPosition]="'top'"
                [loadingText]="'Loading...'"
@@ -65,6 +66,12 @@
           <div></div>
           <div></div>
         </div>
+      </ng-template>
+
+      <ng-template ng-label-tmp let-item="item">
+        <span *ngIf="item.type === 'lang';" class="code">{{ item.code }}</span>
+        <span *ngIf="item.type !== 'lang'" class="flag">{{ item.emoji }}</span>
+        <span class="value-selected">{{ item.value }}</span>
       </ng-template>
     </ng-select>
   </div>

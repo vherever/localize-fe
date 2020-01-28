@@ -9,12 +9,13 @@ import { UserModel } from '../core/models/user.model';
 import { LocalesService } from '../core/services/api-interaction/locales.service';
 import { AppDataGlobalStorageService } from '../core/services/app-data-global-storage.service';
 import { LocalesModel } from '../core/models/locales.model';
+import { SearchCountryAutocompleteHelper } from '../core/helpers/search-country-autocomplete.helper';
 
 @Component({
   selector: 'app-home',
   templateUrl: 'home.component.html',
 })
-export class HomeComponent implements OnInit, OnDestroy {
+export class HomeComponent extends SearchCountryAutocompleteHelper implements OnInit, OnDestroy {
   constructor(
     private userInfoService: UserService,
     private localesService: LocalesService,
@@ -23,6 +24,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     private pubSubService: NgxPubSubService,
     private appDataGlobalStorageService: AppDataGlobalStorageService,
   ) {
+    super();
   }
 
   ngOnInit() {
@@ -49,7 +51,9 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.localesService.getLocales()
       .pipe(untilComponentDestroyed(this))
       .subscribe((res: LocalesModel) => {
-        this.cacheService.set('localesData', res);
+        const formattedData = this.formatData(res);
+        // console.log('___ formattedData', formattedData); // todo
+        this.cacheService.set('localesData', formattedData);
         this.pubSubService.publishEvent('localesDataCached', true);
       });
   }

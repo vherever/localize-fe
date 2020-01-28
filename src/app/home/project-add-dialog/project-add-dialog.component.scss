@@ -77,29 +77,11 @@ form {
     ng-dropdown-panel {
       .ng-option {
         position: relative;
-        .flag {
-          position: absolute;
-          top: 4px;
-          left: 10px;
-          font-size: 21px;
-        }
         .text {
           font-size: 12px;
           color: #72727d;
         }
-        .code {
-          position: absolute;
-          top: 9px;
-          left: 10px;
-          background-color: #27ae60;
-          color: #ffffff;
-          padding: 2px 4px;
-          border-radius: 2px;
-          text-transform: uppercase;
-          font-size: 9px;
-          width: 20px;
-          text-align: center;
-        }
+
         &:not(.ng-option-disabled) {
           padding-left: 40px !important;
           &:hover {
@@ -113,7 +95,7 @@ form {
           cursor: default !important;
         }
         &.ng-option-marked {
-          background-color: transparent !important;
+          background-color: #f5f5f5 !important;
         }
         &:not(:last-child) {
           border-bottom: 1px solid #e8e8e8;
@@ -138,6 +120,28 @@ form {
         .ng-value {
         }
       }
+    }
+    .code {
+      position: absolute;
+      top: 9px;
+      left: 10px;
+      background-color: #27ae60;
+      color: #ffffff;
+      padding: 2px 4px;
+      border-radius: 2px;
+      text-transform: uppercase;
+      font-size: 9px;
+      width: 20px;
+      text-align: center;
+    }
+    .flag {
+      position: absolute;
+      top: 4px;
+      left: 10px;
+      font-size: 21px;
+    }
+    .value-selected {
+      margin-left: 25px;
     }
   }
 }

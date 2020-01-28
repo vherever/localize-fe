@@ -56,11 +56,16 @@ export class ProjectAddDialogComponent extends SearchCountryAutocompleteHelper i
       debounceTime(200),
       distinctUntilChanged())
       .subscribe((value: any) => {
-        const originalData = JSON.parse(JSON.stringify(this.localesDataForFilter));
-        this.localesDataTransformed = this.getResult(value.term, originalData);
-        // console.log('___ localesData', this.localesDataTransformed); // todo
-        this.dropdownIsOpen = true;
-        this.localesDataTransformedCopy = [...this.localesDataTransformed];
+        if (value.term) {
+          const originalData = JSON.parse(JSON.stringify(this.localesDataForFilter));
+          this.localesDataTransformed = this.getResult(value.term, originalData);
+          // console.log('___ localesData', this.localesDataTransformed); // todo
+          this.dropdownIsOpen = true;
+          this.localesDataTransformedCopy = [...this.localesDataTransformed];
+        } else {
+          this.localesDataTransformed = [];
+          this.dropdownIsOpen = false;
+        }
         this.selectDataLoading = false;
       });
   }
@@ -69,7 +74,7 @@ export class ProjectAddDialogComponent extends SearchCountryAutocompleteHelper i
   }
 
   onCloseSearchBox(): void {
-    // this.dropdownIsOpen = false;
+    this.dropdownIsOpen = false;
     // this.localesDataTransformed = [];
   }
 

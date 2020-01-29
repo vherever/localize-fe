@@ -23,6 +23,7 @@ import { SortingHelper } from '../../core/helpers/sorting-helper';
 })
 export class ProjectsComponent extends SortingHelper implements OnInit, OnDestroy {
   private currentProjectsListSwitcherState: string;
+  private currentSortKey: string;
 
   yourProjects: ProjectModel[];
   sharedProjects: ProjectModel[];
@@ -67,10 +68,7 @@ export class ProjectsComponent extends SortingHelper implements OnInit, OnDestro
           .pipe(untilComponentDestroyed(this))
           .subscribe((res: ProjectModel[]) => {
             this.allProjects = res;
-            this.allProjectsFiltered = [...res];
-
-            this.yourProjects = this.allProjects.filter((p) => p.role === 'administrator');
-            this.sharedProjects = this.allProjects.filter((p) => p.role !== 'administrator');
+            this.allProjectsFiltered = this.getProjectsFiltered(this.currentProjectsListSwitcherState, this.currentSortKey);
           });
       });
 
@@ -78,11 +76,8 @@ export class ProjectsComponent extends SortingHelper implements OnInit, OnDestro
       .pipe(untilComponentDestroyed(this))
       .subscribe((value: string) => {
         if (value) {
-          this.allProjects = this.sortData(this.allProjects, value);
-          // this.allProjectsFiltered = this.sortData(this.allProjectsFiltered, value);
-
-          this.yourProjects = this.allProjects.filter((p) => p.role === 'administrator');
-          this.sharedProjects = this.allProjects.filter((p) => p.role !== 'administrator');
+          this.currentSortKey = value;
+          this.allProjectsFiltered = this.getProjectsFiltered(this.currentProjectsListSwitcherState, this.currentSortKey);
         }
       });
   }
@@ -111,7 +106,7 @@ export class ProjectsComponent extends SortingHelper implements OnInit, OnDestro
           .subscribe((res2: ProjectModel[]) => {
             res2.push(res);
             this.projects.next(res2);
-            this.allProjectsFiltered = this.yourProjects;
+            this.allProjectsFiltered = this.getProjectsFiltered(this.currentProjectsListSwitcherState, this.currentSortKey);
           });
 
         this.changesDetected.next(false);
@@ -161,14 +156,30 @@ export class ProjectsComponent extends SortingHelper implements OnInit, OnDestro
   }
 
   onSortKeySelected2(value: string): void {
+    this.changesDetected.next(true);
+    this.cdr.detectChanges();
+
+    this.currentSortKey = value;
     this.activeSortKey.next(value);
-    this.onProjectsListToggleEvent(this.currentProjectsListSwitcherState);
-    this.allProjectsFiltered = this.sortData([...this.allProjectsFiltered], value);
+    this.allProjectsFiltered = this.getProjectsFiltered(this.currentProjectsListSwitcherState, this.currentSortKey);
+
+    this.changesDetected.next(false);
+    this.cdr.detectChanges();
+    this.cdr.markForCheck();
   }
 
   onProjectsListToggleEvent(value: string): void {
     this.currentProjectsListSwitcherState = value;
-    switch (value) {
+    this.allProjectsFiltered = this.getProjectsFiltered(this.currentProjectsListSwitcherState, this.currentSortKey);
+  }
+
+  private getProjectsFiltered(listSwitchKey: string, sortKey: string): any {
+    this.currentProjectsListSwitcherState = listSwitchKey;
+
+    this.yourProjects = this.allProjects.filter((p) => p.role === 'administrator');
+    this.sharedProjects = this.allProjects.filter((p) => p.role !== 'administrator');
+
+    switch (listSwitchKey) {
       case 'all':
         this.allProjectsFiltered = this.allProjects;
         break;
@@ -179,11 +190,12 @@ export class ProjectsComponent extends SortingHelper implements OnInit, OnDestro
         this.allProjectsFiltered = this.sharedProjects;
         break;
     }
+
+    return this.sortData(this.allProjectsFiltered, this.currentSortKey);
   }
 
   private deleteProjectAction(project: ProjectModel): void {
     const id = project.id;
-    const role = project.role;
     const dialogRef = this.dialog.open(RemoveDialogConfirmComponent, {
       width: '500px',
       data: `Do you really want to remove the project
@@ -210,7 +222,7 @@ export class ProjectsComponent extends SortingHelper implements OnInit, OnDestro
                   .subscribe((res2: ProjectModel[]) => {
                     const filtered = res2.filter((p) => p.id !== id);
                     this.projects.next(filtered);
-                    this.allProjectsFiltered = this.yourProjects;
+                    this.allProjectsFiltered = this.getProjectsFiltered(this.currentProjectsListSwitcherState, this.currentSortKey);
                   });
               }
             });

@@ -14,15 +14,15 @@
     </mat-form-field>
   </div>
 
-  <div>
-    <mat-form-field>
-      <input matInput placeholder="Default locale" formControlName="defaultLocale" autocomplete="off">
-      <mat-error *ngIf="projectAddForm.controls['defaultLocale'].hasError('required')">
-        defaultLocale is required.
-      </mat-error>
-      <mat-hint>The language you are translating from.</mat-hint>
-    </mat-form-field>
-  </div>
+  <!--<div>-->
+    <!--<mat-form-field>-->
+      <!--<input matInput placeholder="Default locale" formControlName="defaultLocale" autocomplete="off">-->
+      <!--<mat-error *ngIf="projectAddForm.controls['defaultLocale'].hasError('required')">-->
+        <!--defaultLocale is required.-->
+      <!--</mat-error>-->
+      <!--<mat-hint>The language you are translating from.</mat-hint>-->
+    <!--</mat-form-field>-->
+  <!--</div>-->
 
   <div>
     <mat-form-field>
@@ -36,11 +36,12 @@
 
   <div>
     <!--<label for="localesData">Select locale</label>-->
-    <ng-select formControlName="selectedLocale"
+    <ng-select formControlName="defaultLocale"
                [items]="localesDataTransformed"
                [multiple]="false"
                [virtualScroll]="true"
                [bindLabel]="'filter'"
+               [bindValue]="'keyCode'"
                [placeholder]="'Start typing a language or country...'"
                [dropdownPosition]="'top'"
                [loadingText]="'Loading...'"

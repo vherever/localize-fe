@@ -33,4 +33,5 @@ export interface LocaleModelFormatted {
   name?: string;
   native?: string;
   emoji?: string;
+  keyCode: string;
 }

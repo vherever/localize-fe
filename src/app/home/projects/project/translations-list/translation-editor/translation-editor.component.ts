@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { TranslationModel } from '../../../../../core/models/translation.model';
 import { ProjectModel } from '../../../../../core/models/project.model';
 import { LocalesModel } from '../../../../../core/models/locales.model';
+import { LocalesHelper } from '../../../../../core/helpers/locales-helper';
 
 interface TranslateEditorModel {
   editInLanguage: string;
@@ -15,7 +16,7 @@ interface TranslateEditorModel {
   styleUrls: ['translation-editor.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TranslationEditorComponent implements OnInit {
+export class TranslationEditorComponent extends LocalesHelper implements OnInit {
   @Input() translation: TranslationModel;
   @Input() projectData: ProjectModel;
 
@@ -57,6 +58,7 @@ export class TranslationEditorComponent implements OnInit {
     private fb: FormBuilder,
     private cdr: ChangeDetectorRef,
   ) {
+    super();
   }
 
   ngOnInit() {
@@ -79,7 +81,7 @@ export class TranslationEditorComponent implements OnInit {
 
   onLanguageEditChange(lang: string): void {
     this.translateForm.controls['translation'].patchValue(this.translation.translations[lang]);
-    this.activeLocaleCountryName = this.getActiveLocaleCountryName(lang);
+    this.activeLocaleCountryName = this.getActiveLocaleCountryName(lang, this.localesData);
   }
 
   private buildFullTranslation(currentLang: string, currentFormValue: TranslateEditorModel): any {
@@ -87,9 +89,5 @@ export class TranslationEditorComponent implements OnInit {
     const translationsCloned = JSON.parse(JSON.stringify(this.translation.translations));
     delete translationsCloned[currentLang];
     return Object.assign(translationsCloned, currentTranslation);
-  }
-
-  private getActiveLocaleCountryName(locale: string): string {
-    return this.localesData.languages[locale].name;
   }
 }

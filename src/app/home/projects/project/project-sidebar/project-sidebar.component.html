@@ -4,6 +4,7 @@
     <a href="javascript:;" *ngFor="let locale of projectLocales"
        (click)="onLocaleClick(locale)"
        [ngClass]="{'isActive': activeLocale === locale}">
+      <span class="flag">s</span>
       {{ locale.toUpperCase() }}
       <span class="lz_locale_isdefault"
         *ngIf="locale === projectData.defaultLocale">(default)</span>

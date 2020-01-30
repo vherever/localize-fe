@@ -12,13 +12,14 @@ import { ProjectModel } from '../../../../core/models/project.model';
 import { RemoveDialogConfirmComponent } from '../../../../core/shared/remove-dialog-confirm/remove-dialog-confirm.component';
 import { UserModel } from '../../../../core/models/user.model';
 import { LocalesModel } from '../../../../core/models/locales.model';
+import { LocalesHelper } from '../../../../core/helpers/locales-helper';
 
 @Component({
   selector: 'app-translations',
   templateUrl: 'translations.component.html',
   styleUrls: ['translations.component.scss'],
 })
-export class TranslationsComponent implements OnInit, OnChanges, OnDestroy {
+export class TranslationsComponent extends LocalesHelper implements OnInit, OnChanges, OnDestroy {
   @ViewChildren('translationEditor', { read: ViewContainerRef }) translationContainers: QueryList<ViewContainerRef>;
   @Input() projectData: ProjectModel;
   @Input() activeLocale: string;
@@ -41,6 +42,7 @@ export class TranslationsComponent implements OnInit, OnChanges, OnDestroy {
     private translationsService: TranslationsService,
     private dialog: MatDialog,
   ) {
+    super();
   }
 
   ngOnInit() {
@@ -63,11 +65,11 @@ export class TranslationsComponent implements OnInit, OnChanges, OnDestroy {
           .subscribe((res) => {
             this.localesData = res;
             if (this.localesData) {
-              this.activeLocaleCountryName = this.getActiveLocaleCountryName(this.activeLocale);
+              this.activeLocaleCountryName = this.getActiveLocaleCountryName(this.activeLocale, this.localesData);
             }
           });
       } else {
-        this.activeLocaleCountryName = this.getActiveLocaleCountryName(this.activeLocale);
+        this.activeLocaleCountryName = this.getActiveLocaleCountryName(this.activeLocale, this.localesData);
       }
     }
 
@@ -191,9 +193,5 @@ export class TranslationsComponent implements OnInit, OnChanges, OnDestroy {
 
   private get projectLocalesCount(): number {
     return this.projectData.translationsLocales.split(',').length;
-  }
-
-  private getActiveLocaleCountryName(locale: string): string {
-    return this.localesData['languages'][locale].name;
   }
 }

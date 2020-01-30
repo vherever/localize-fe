@@ -8,14 +8,14 @@ import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { ProjectService } from '../../core/services/api-interaction/project.service';
 import { ProjectModel } from '../../core/models/project.model';
 import { AppDataGlobalStorageService } from '../../core/services/app-data-global-storage.service';
-import { SearchCountryAutocompleteHelper } from '../../core/helpers/search-country-autocomplete.helper';
+import { LocalesHelper } from '../../core/helpers/locales-helper';
 import { LocaleModelFormatted } from '../../core/models/locales.model';
 
 @Component({
   templateUrl: 'project-add-dialog.component.html',
   styleUrls: ['project-add-dialog.component.scss'],
 })
-export class ProjectAddDialogComponent extends SearchCountryAutocompleteHelper implements OnInit, OnDestroy {
+export class ProjectAddDialogComponent extends LocalesHelper implements OnInit, OnDestroy {
   @Output() addedProject: EventEmitter<ProjectModel> = new EventEmitter();
   inputLanguageSearch: Subject<string> = new Subject<string>();
 
@@ -41,7 +41,7 @@ export class ProjectAddDialogComponent extends SearchCountryAutocompleteHelper i
       description: [''],
       defaultLocale: ['', Validators.required],
       translationsLocales: ['', Validators.required],
-      selectedLocale: [],
+      // selectedLocale: ['', Validators.required],
     });
 
     this.localesDataTransformed = [];
@@ -101,6 +101,7 @@ export class ProjectAddDialogComponent extends SearchCountryAutocompleteHelper i
 
   onChangeSearchBar(value: LocaleModelFormatted): void {
     console.log('___ value', value); // todo
+    this.projectAddForm.get('defaultLocale').patchValue(value.keyCode);
     this.dropdownIsOpen = false;
   }
 

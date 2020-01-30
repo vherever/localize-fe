@@ -1,6 +1,6 @@
 import { CountryModel, LocalesModel } from '../models/locales.model';
 
-export class SearchCountryAutocompleteHelper {
+export class LocalesHelper {
   formatData(data) {
     const countries = data.countries;
     const languages = data.languages;
@@ -83,5 +83,24 @@ export class SearchCountryAutocompleteHelper {
       }
       return acc;
     }, []);
+  }
+
+  getActiveLocaleCountryName(locale: string, localesData): string {
+    const splitted = locale.split('-');
+
+    let language;
+    let country;
+    let result;
+
+    if (splitted.length > 1) {
+      country = localesData['countries'].find((c) => c.key === splitted[0]).name;
+      language = localesData['languages'][splitted[1]].name;
+      result = `${language} (${country})`;
+    } else {
+      language = localesData['languages'][splitted[0]].name;
+      result = language;
+    }
+
+    return result;
   }
 }

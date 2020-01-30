@@ -9,13 +9,13 @@ import { UserModel } from '../core/models/user.model';
 import { LocalesService } from '../core/services/api-interaction/locales.service';
 import { AppDataGlobalStorageService } from '../core/services/app-data-global-storage.service';
 import { LocalesModel } from '../core/models/locales.model';
-import { SearchCountryAutocompleteHelper } from '../core/helpers/search-country-autocomplete.helper';
+import { LocalesHelper } from '../core/helpers/locales-helper';
 
 @Component({
   selector: 'app-home',
   templateUrl: 'home.component.html',
 })
-export class HomeComponent extends SearchCountryAutocompleteHelper implements OnInit, OnDestroy {
+export class HomeComponent extends LocalesHelper implements OnInit, OnDestroy {
   constructor(
     private userInfoService: UserService,
     private localesService: LocalesService,

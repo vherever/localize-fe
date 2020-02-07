@@ -58,6 +58,12 @@ button {
     color: #a2a2a2;
     border: 1px solid #a2a2a2;
   }
+  &.lz_button_light {
+    border: none;
+    &:hover {
+      border: none;
+    }
+  }
 }
 
 .container {
@@ -85,7 +91,7 @@ button {
     border: 1px solid #828282;
     border-radius: 3px;
     font-size: 13px;
-    padding: 3px 5px;
+    padding: 3px 7px;
     color: #828282;
     width: 100%;
     &:focus:not([disabled]), &:hover:not([disabled]) {

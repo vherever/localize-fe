@@ -1,5 +1,5 @@
 import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { NgxPubSubService } from '@pscoped/ngx-pub-sub';
 import { Subject } from 'rxjs';
 import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
@@ -41,7 +41,6 @@ export class ProjectAddDialogComponent extends LocalesHelper implements OnInit, 
       description: [''],
       defaultLocale: ['', Validators.required],
       translationsLocales: ['', Validators.required],
-      // selectedLocale: ['', Validators.required],
     });
 
     this.localesDataTransformed = [];
@@ -73,6 +72,14 @@ export class ProjectAddDialogComponent extends LocalesHelper implements OnInit, 
   ngOnDestroy() {
   }
 
+  get titleField(): FormControl {
+    return this.projectAddForm.get('title') as FormControl;
+  }
+
+  get defaultLocaleField(): FormControl {
+    return this.projectAddForm.get('defaultLocale') as FormControl;
+  }
+
   onCloseSearchBox(): void {
     this.dropdownIsOpen = false;
     // this.localesDataTransformed = [];
@@ -101,8 +108,10 @@ export class ProjectAddDialogComponent extends LocalesHelper implements OnInit, 
 
   onChangeSearchBar(value: LocaleModelFormatted): void {
     console.log('___ value', value); // todo
-    this.projectAddForm.get('defaultLocale').patchValue(value.keyCode);
-    this.dropdownIsOpen = false;
+    if (value) {
+      this.projectAddForm.get('defaultLocale').patchValue(value.keyCode);
+      this.dropdownIsOpen = false;
+    }
   }
 
   onClearSearchBar(): void {
@@ -116,4 +125,6 @@ export class ProjectAddDialogComponent extends LocalesHelper implements OnInit, 
         this.addedProject.emit(res);
       });
   }
+
+  onCloseDialogClick(): void {}
 }

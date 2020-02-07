@@ -7,6 +7,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { ProjectAddDialogComponent } from './project-add-dialog.component';
 import { ProjectService } from '../../core/services/api-interaction/project.service';
 import { ProjectApiService } from '../../core/services/api/project-api.service';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 @NgModule({
   imports: [
@@ -18,6 +19,7 @@ import { ProjectApiService } from '../../core/services/api/project-api.service';
     MatInputModule,
     MatButtonModule,
     NgSelectModule,
+    FlexLayoutModule,
   ],
   declarations: [ProjectAddDialogComponent],
   entryComponents: [ProjectAddDialogComponent],

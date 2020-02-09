@@ -1,4 +1,5 @@
 import { UserModel } from './user.model';
+import { SharedWithUserModel } from './shared-with-user.model';
 
 export interface ProjectModel {
   id: number;
@@ -13,5 +14,6 @@ export interface ProjectModel {
   latestUpdatedAtFormatted: string;
   role: string;
   sharedUsers: UserModel[];
+  sharedWith: SharedWithUserModel[];
   translationsCount: number;
 }

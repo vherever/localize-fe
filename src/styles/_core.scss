@@ -112,7 +112,12 @@ button {
 }
 
 .lz_list {
+  background-color: #F4F5F7;
+  padding: 10px 10px;
+  height: 100%;
+  overflow: auto;
   .lz_list_item {
+    background-color: #ffffff;
     &:not(:last-child) {
       border-bottom: 1px solid #e8e8e8;
     }
@@ -251,7 +256,7 @@ button {
       }
     }
     &:hover {
-      background-color: #f5f5f5;
+      background-color: #eaeaea;
     }
   }
 }

@@ -3,10 +3,10 @@
   <div class="lz_form_control">
     <div fxLayout>
       <label for="s_project_name">Project name:</label>
-      <input type="text" id="s_project_name" formControlName="title" autocomplete="off">
+      <input type="text" id="s_project_name" formControlName="title" autocomplete="off" placeholder="e.g. My website">
     </div>
     <div class="lz_error_message" *ngIf="(titleField.dirty || titleField.touched) && titleField.hasError('required')">
-      Name name is required.
+      Project name is required.
     </div>
   </div>
 

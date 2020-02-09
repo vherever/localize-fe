@@ -22,9 +22,12 @@ export class ProjectAddDialogComponent extends LocalesHelper implements OnInit, 
   projectAddForm: FormGroup;
   localesDataTransformed: any[];
   localesDataTransformedCopy: any[];
+  originalData: any[];
   localesDataForFilter: any;
   selectDataLoading: boolean;
   dropdownIsOpen = false;
+
+  private defaultLanguage: string;
 
   constructor(
     private fb: FormBuilder,
@@ -33,6 +36,7 @@ export class ProjectAddDialogComponent extends LocalesHelper implements OnInit, 
     private appDataGlobalStorageService: AppDataGlobalStorageService,
   ) {
     super();
+    this.defaultLanguage = 'gb-en';
   }
 
   ngOnInit() {
@@ -49,6 +53,10 @@ export class ProjectAddDialogComponent extends LocalesHelper implements OnInit, 
       .pipe(untilComponentDestroyed(this))
       .subscribe((res) => {
         this.localesDataForFilter = res;
+
+        this.originalData = JSON.parse(JSON.stringify(this.localesDataForFilter));
+        this.localesDataTransformed = this.getResult('', this.originalData);
+        this.projectAddForm.get('defaultLocale').patchValue(this.defaultLanguage);
       });
 
     this.inputLanguageSearch.pipe(
@@ -56,9 +64,7 @@ export class ProjectAddDialogComponent extends LocalesHelper implements OnInit, 
       distinctUntilChanged())
       .subscribe((value: any) => {
         if (value.term) {
-          const originalData = JSON.parse(JSON.stringify(this.localesDataForFilter));
-          this.localesDataTransformed = this.getResult(value.term, originalData);
-          // console.log('___ localesData', this.localesDataTransformed); // todo
+          this.localesDataTransformed = this.getResult(value.term, this.originalData);
           this.dropdownIsOpen = true;
           this.localesDataTransformedCopy = [...this.localesDataTransformed];
         } else {
@@ -126,5 +132,8 @@ export class ProjectAddDialogComponent extends LocalesHelper implements OnInit, 
       });
   }
 
-  onCloseDialogClick(): void {}
+  private getDefaultLanguage(data: any, key: string): LocaleModelFormatted {
+    // this.projectAddForm.get('defaultLocale').patchValue(this.localesDataTransformed[210].keyCode);
+    return data.filter((l: LocaleModelFormatted) => l.keyCode === key);
+  }
 }

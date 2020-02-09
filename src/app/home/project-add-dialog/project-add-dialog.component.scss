@@ -108,6 +108,7 @@ form {
       border: 1px solid #828282 !important;
       .ng-value-container {
         .ng-placeholder {
+          line-height: 18px;
           font-size: 13px;
           display: block;
         }
@@ -153,6 +154,7 @@ form {
     }
     .value-selected {
       margin-left: 25px;
+      line-height: 18px;
     }
     .ng-clear-wrapper {
       display: none;

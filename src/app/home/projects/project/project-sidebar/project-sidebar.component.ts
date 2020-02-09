@@ -6,6 +6,9 @@ import { UPLOADS_ENDPOINT } from '../../../../core/app-constants';
 import { LocalesModel } from '../../../../core/models/locales.model';
 import { AppDataGlobalStorageService } from '../../../../core/services/app-data-global-storage.service';
 import { filter, take } from 'rxjs/operators';
+import { UserModel } from '../../../../core/models/user.model';
+import { MatDialog } from '@angular/material';
+import { ManageUserDialogComponent } from './manage-user-dialog/manage-user-dialog.component';
 
 @Component({
   selector: 'app-project-sidebar',
@@ -20,9 +23,11 @@ export class ProjectSidebarComponent implements OnChanges, OnInit, OnDestroy {
   activeLocale: string;
   uploadsEndpoint: string;
   localesData: LocalesModel;
+  userData: UserModel;
 
   constructor(
     private appDataGlobalStorageService: AppDataGlobalStorageService,
+    private dialog: MatDialog,
   ) {
     this.uploadsEndpoint = UPLOADS_ENDPOINT;
   }
@@ -49,6 +54,16 @@ export class ProjectSidebarComponent implements OnChanges, OnInit, OnDestroy {
       .subscribe((res: LocalesModel) => {
         this.localesData = res;
       });
+
+    this.appDataGlobalStorageService.userData
+      .pipe(
+        filter((res) => res !== undefined),
+        take(1),
+        untilComponentDestroyed(this),
+      )
+      .subscribe((res: UserModel) => {
+        this.userData = res;
+      });
   }
 
   ngOnDestroy() {
@@ -63,5 +78,12 @@ export class ProjectSidebarComponent implements OnChanges, OnInit, OnDestroy {
   onLocaleClick(locale: string): void {
     this.activeLocale = locale;
     this.activeLocaleEmit.emit(locale);
+  }
+
+  onManageUSerClick(id: number): void {
+    console.log('___ id', id); // todo
+    const dialogRef = this.dialog.open(ManageUserDialogComponent, {
+      width: '250px',
+    });
   }
 }

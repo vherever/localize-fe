@@ -11,10 +11,20 @@
     </a>
   </div>
 
-  <br>
-  <ng-container *ngIf="projectData && projectData.sharedUsers && projectData.sharedUsers.length">
+  <div class="lz_users_list" *ngIf="projectData">
     <div class="lz_section_title">Project team</div>
-    <div class="lz_users_list lz_list">
+    <div fxLayout fxLayoutAlign="space-between stretch">
+      <div fxLayoutAlign="start center">
+              <span class="lz_list_u_avatar">
+                 <img *ngIf="userData && userData.avatar" src="{{ uploadsEndpoint }}/{{ userData.avatar }}" alt="">
+              </span>
+        <span class="lz_list_u_name">You</span>,&nbsp;
+        <span class="lz_list_u_role">{{ projectData.role }}</span>
+      </div>
+    </div>
+
+    <ng-container *ngIf="projectData.sharedUsers && projectData.sharedUsers.length">
+
       <ng-container *ngFor="let user of projectData.sharedUsers">
         <div fxLayout fxLayoutAlign="space-between stretch">
           <div fxLayoutAlign="start center">
@@ -25,8 +35,9 @@
             <span class="lz_list_u_role">{{ user.role }}</span>
           </div>
 
-          <div class="lz_list_item_controls" *ngIf="projectData.role === 'administrator'">
-            <a href="javascript:;" class="lz_settings" style="margin-right: 0">
+          <div class="lz_list_item_controls" *ngIf="projectData.role === 'administrator'" fxFlex
+               fxLayoutAlign="end center">
+            <a href="javascript:;" class="lz_settings" style="margin-right: 0" (click)="onManageUSerClick(user.id)">
               <svg class="lz_settings_svg">
                 <use xlink:href="#settings"></use>
               </svg>
@@ -34,6 +45,7 @@
           </div>
         </div>
       </ng-container>
-    </div>
-  </ng-container>
+
+    </ng-container>
+  </div>
 </div>

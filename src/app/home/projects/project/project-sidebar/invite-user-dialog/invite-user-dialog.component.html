@@ -1,0 +1,18 @@
+<form [formGroup]="inviteUserGroup" (submit)="onUserInviteClick()">
+  <h1 mat-dialog-title>Invite user to project</h1>
+  <div class="lz_form_control">
+    <div fxLayout>
+      <label for="s_user_email">User email:</label>
+      <input type="text" id="s_user_email" formControlName="email" autocomplete="off" placeholder="">
+    </div>
+    <div class="lz_error_message" *ngIf="(emailField.dirty || emailField.touched) && emailField.hasError('required')">
+      Email is required.
+    </div>
+  </div>
+
+  <br>
+  <div class="lz_dialog_controls">
+    <button class="lz_button_light" mat-dialog-close>Cancel</button>
+    <button type="submit" [disabled]="inviteUserGroup.invalid">Invite user</button>
+  </div>
+</form>

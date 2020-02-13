@@ -9,6 +9,7 @@ import { filter, take } from 'rxjs/operators';
 import { UserModel } from '../../../../core/models/user.model';
 import { MatDialog } from '@angular/material';
 import { ManageUserDialogComponent } from './manage-user-dialog/manage-user-dialog.component';
+import { InviteUserDialogComponent } from './invite-user-dialog/invite-user-dialog.component';
 
 @Component({
   selector: 'app-project-sidebar',
@@ -80,10 +81,56 @@ export class ProjectSidebarComponent implements OnChanges, OnInit, OnDestroy {
     this.activeLocaleEmit.emit(locale);
   }
 
-  onManageUSerClick(id: number): void {
-    console.log('___ id', id); // todo
+  onManageUSerClick(user: UserModel): void {
     const dialogRef = this.dialog.open(ManageUserDialogComponent, {
-      width: '250px',
+      width: '600px',
+      data: {
+        userId: user.id,
+        projectId: this.projectData.id,
+        userEmail: user.email,
+        projectLocales: this.getAvailableTranslationLocalesForUser(user.id),
+      },
     });
+
+    dialogRef.componentInstance.removeUserEmit
+      .pipe(untilComponentDestroyed(this))
+      .subscribe((res) => {
+        this.projectData.sharedUsers = this.projectData.sharedUsers.filter((u: UserModel) => u.id !== res.userId);
+      });
+  }
+
+  getUserTranslations(userId: number): any[] {
+    const translationLocales =  this.projectData.sharedWith.find((o) => o.targetId === userId).translationLocales;
+    return translationLocales.split(',').map((l) => l.trim());
+  }
+
+  onInviteUserClick(): void {
+    this.dialog.open(InviteUserDialogComponent, {
+      width: '400px',
+      data: {
+        projectId: this.projectData.id,
+      },
+    });
+  }
+
+  getAvailableTranslationLocalesForUser(userId: number): any[] {
+    const projectLocales = this.projectLocales.map((l) => {
+      return {
+        checked: false,
+        value: l.trim(),
+      };
+    });
+
+    const userLocales = this.getUserTranslations(userId);
+    projectLocales.forEach((l) => {
+      userLocales.forEach((ll) => {
+        if (l.value === ll) {
+          l.checked = true;
+        }
+      });
+    });
+
+    return projectLocales;
+
   }
 }

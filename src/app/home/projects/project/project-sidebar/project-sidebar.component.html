@@ -37,7 +37,7 @@
 
           <div class="lz_list_item_controls" *ngIf="projectData.role === 'administrator'" fxFlex
                fxLayoutAlign="end center">
-            <a href="javascript:;" class="lz_settings" style="margin-right: 0" (click)="onManageUSerClick(user.id)">
+            <a href="javascript:;" class="lz_settings" style="margin-right: 0" (click)="onManageUSerClick(user)">
               <svg class="lz_settings_svg">
                 <use xlink:href="#settings"></use>
               </svg>
@@ -47,5 +47,11 @@
       </ng-container>
 
     </ng-container>
+  </div>
+
+  <div class="lz_invite_user_to_project" *ngIf="projectData && projectData.role === 'administrator'">
+    <br>
+    <div class="lz_section_title">Invite user to project</div>
+    <button style="margin-top: 10px" (click)="onInviteUserClick()">Invite user</button>
   </div>
 </div>

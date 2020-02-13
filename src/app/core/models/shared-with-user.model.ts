@@ -3,4 +3,5 @@ export interface SharedWithUserModel {
   senderId: number;
   projectId: number;
   role: string;
+  translationLocales: string;
 }

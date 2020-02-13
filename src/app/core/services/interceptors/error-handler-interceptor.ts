@@ -21,7 +21,7 @@ export class ErrorHandlerInterceptor implements HttpInterceptor {
   private handleError(err: HttpErrorResponse): Observable<any> {
     const error: ErrorModel | any = err.error;
     if (error.message && error.message.length) {
-      if (error.statusCode === 404) {
+      if (error.statusCode === 4041) {
         this.router.navigate(['404']);
       }
       return throwError(error);

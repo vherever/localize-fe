@@ -1,1 +1,24 @@
-manage-user-dialog
+<form [formGroup]="managePermissionsForm" (submit)="onUpdatePermissionsClick()">
+  <h1 mat-dialog-title>Manage user permissions</h1>
+
+  <div>Which project languages can this user translate?</div>
+  <br>
+  <ng-container *ngFor="let lang of managePermissionsForm.get('translationLocales').controls; let i = index">
+    <label style="margin-right: 15px" formArrayName="translationLocales">
+      {{ data.projectLocales[i].value }}
+      <input type="checkbox" [checked]="data.projectLocales[i].checked"
+             [formControlName]="i"
+             (change)="onCheckboxChange(data.projectLocales[i], managePermissionsForm.value.translationLocales[i])">
+    </label>
+  </ng-container>
+  <br><br>
+  <div class="lz_dialog_controls" fxLayout fxLayoutAlign="space-between center">
+    <div>
+      <button type="button" (click)="onRemoveUserFromProjectClick()">Remove from project</button>
+    </div>
+    <div>
+      <button class="lz_button_light" mat-dialog-close>Cancel</button>
+      <button type="button" (click)="onUpdatePermissionsClick()">Save</button>
+    </div>
+  </div>
+</form>

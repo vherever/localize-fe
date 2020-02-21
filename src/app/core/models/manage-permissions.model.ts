@@ -1,5 +1,5 @@
 export interface ManagePermissionsModel {
   targetId: number;
   projectId: number;
-  translationLocales?: string;
+  availableTranslationLocales: string;
 }

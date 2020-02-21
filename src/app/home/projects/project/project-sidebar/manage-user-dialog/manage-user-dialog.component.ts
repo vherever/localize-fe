@@ -20,6 +20,7 @@ interface DialogData {
 })
 export class ManageUserDialogComponent implements OnInit, OnDestroy {
   @Output() removeUserEmit: EventEmitter<any> = new EventEmitter<any>();
+  onAvailableTranslationsUpdate: EventEmitter<any> = new EventEmitter();
 
   private defaultValues;
 
@@ -35,7 +36,7 @@ export class ManageUserDialogComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.managePermissionsForm = this.fb.group({
-      translationLocales: new FormArray([]),
+      availableTranslationLocales: new FormArray([]),
     });
     this.initCheckboxes();
   }
@@ -59,7 +60,7 @@ export class ManageUserDialogComponent implements OnInit, OnDestroy {
   }
 
   onUpdatePermissionsClick(): void {
-    const translationLocales = this.defaultValues.reduce((acc, curr) => {
+    const availableTranslationLocales = this.defaultValues.reduce((acc, curr) => {
       if (curr.checked) {
         acc.push(curr.value);
         return acc;
@@ -70,11 +71,12 @@ export class ManageUserDialogComponent implements OnInit, OnDestroy {
     const req: ManagePermissionsModel = {
       targetId: this.data.userId,
       projectId: this.data.projectId,
-      translationLocales,
+      availableTranslationLocales,
     };
 
     this.shareProjectService.managePermissions(req)
-      .subscribe((res) => {
+      .subscribe(() => {
+        this.onAvailableTranslationsUpdate.emit(availableTranslationLocales);
         this.dialogRef.close();
       });
 
@@ -87,8 +89,8 @@ export class ManageUserDialogComponent implements OnInit, OnDestroy {
   private initCheckboxes(): void {
     this.data.projectLocales.forEach((o) => {
       const control = new FormControl(o);
-      (this.managePermissionsForm.controls.translationLocales as FormArray).push(control);
+      (this.managePermissionsForm.controls.availableTranslationLocales as FormArray).push(control);
     });
-    this.defaultValues = this.managePermissionsForm.controls.translationLocales.value;
+    this.defaultValues = this.managePermissionsForm.controls.availableTranslationLocales.value;
   }
 }

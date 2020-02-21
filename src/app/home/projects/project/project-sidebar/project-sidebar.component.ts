@@ -34,8 +34,23 @@ export class ProjectSidebarComponent implements OnChanges, OnInit, OnDestroy {
   }
 
   ngOnChanges(changes: SimpleChanges) {
+    // if (changes.projectData.currentValue) {
+    //   const translations = this.projectData.role === 'administrator' ?
+    //     `${this.projectData.defaultLocale},${this.projectData.translationsLocales}` :
+    //     this.projectData.availableTranslationLocales;
+    //   this.projectLocales = translations
+    //     .split(',')
+    //     .filter((value, index, self) => {
+    //       return self.indexOf(value) === index;
+    //     }).filter((v) => v !== '');
+    //   this.activeLocale = this.projectData.defaultLocale;
+    //   this.activeLocaleEmit.emit(this.activeLocale);
+    // }
+
     if (changes.projectData.currentValue) {
       this.projectLocales = `${this.projectData.defaultLocale},${this.projectData.translationsLocales}`
+      // const locales = this.projectData.role === 'administrator' ? `${this.projectData.defaultLocale},${this.projectData.translationsLocales}` : `${this.projectData.availableTranslationLocales}`
+      // this.projectLocales = locales
         .split(',')
         .filter((value, index, self) => {
           return self.indexOf(value) === index;
@@ -97,10 +112,15 @@ export class ProjectSidebarComponent implements OnChanges, OnInit, OnDestroy {
       .subscribe((res) => {
         this.projectData.sharedUsers = this.projectData.sharedUsers.filter((u: UserModel) => u.id !== res.userId);
       });
+
+    dialogRef.componentInstance.onAvailableTranslationsUpdate
+      .subscribe((res) => {
+        this.projectData.sharedWith.find((u) => u.targetId === user.id).availableTranslationLocales = res;
+      });
   }
 
   getUserTranslations(userId: number): any[] {
-    const translationLocales =  this.projectData.sharedWith.find((o) => o.targetId === userId).translationLocales;
+    const translationLocales = this.projectData.sharedWith.find((o) => o.targetId === userId).availableTranslationLocales;
     return translationLocales.split(',').map((l) => l.trim());
   }
 
@@ -113,7 +133,7 @@ export class ProjectSidebarComponent implements OnChanges, OnInit, OnDestroy {
     });
   }
 
-  getAvailableTranslationLocalesForUser(userId: number): any[] {
+  private getAvailableTranslationLocalesForUser(userId: number): any[] {
     const projectLocales = this.projectLocales.map((l) => {
       return {
         checked: false,
@@ -131,6 +151,5 @@ export class ProjectSidebarComponent implements OnChanges, OnInit, OnDestroy {
     });
 
     return projectLocales;
-
   }
 }

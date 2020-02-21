@@ -29,6 +29,7 @@ export class TranslationAddDialogComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    console.log('___ this.projectData', this.projectData); // todo
     this.addTranslationForm = this.fb.group({
       defaultLocaleValue: ['', Validators.required],
       assetCode: ['', Validators.required],
@@ -62,11 +63,11 @@ export class TranslationAddDialogComponent implements OnInit, OnDestroy {
 
   private createTranslations(defaultLocaleValue: string): string {
     const localesObj = {};
-    const localesArray = this.projectData.translationsLocales.split(',');
+    const localesArray = this.projectData.translationsLocales.split(',').filter((v) => v !== '');
     localesArray.forEach((l: string) => {
       localesObj[l] = '';
     });
-    localesObj[this.projectData.defaultLocale] = defaultLocaleValue;
+    // localesObj[this.projectData.defaultLocale] = defaultLocaleValue;
     return JSON.stringify(localesObj);
   }
 }

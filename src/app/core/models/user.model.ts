@@ -5,4 +5,5 @@ export interface UserModel {
   email: string;
   avatar: string;
   role?: string;
+  availableTranslationLocales: string[];
 }

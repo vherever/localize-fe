@@ -4,4 +4,5 @@ export interface SharedWithUserModel {
   projectId: number;
   role: string;
   translationLocales: string;
+  availableTranslationLocales: string;
 }

@@ -6,13 +6,22 @@
       <option *ngFor="let item of translation.translations | keyvalue" [selected]="localeIndex"
               [ngValue]="item.value"
               [attr.data-test]="item.value"
-              [value]="item.key" [innerHtml]="item.key"></option>
+              [value]="item.key"
+              [innerHtml]="item.key"></option>
     </select>
+
+    <!--<select #t formControlName="editInLanguage" (ngModelChange)="onLanguageEditChange(t.value)">-->
+      <!--&lt;!&ndash;<option *ngFor="let item of translation.translations | keyvalue" [selected]="localeIndex"&ndash;&gt;-->
+      <!--<option *ngFor="let item of locales" [selected]="localeIndex"-->
+              <!--[ngValue]="item.translation"-->
+              <!--[attr.data-active]="item.active"-->
+              <!--[value]="item.code" [innerHtml]="item.code"></option>-->
+    <!--</select>-->
 
     <br>
     <textarea formControlName="translation" name="" id="" cols="30" rows="10"></textarea>
 
     <br>
-    <button type="submit">Save</button>
+    <button type="submit" [disabled]="!textareaEnabled">Save</button>
   </div>
 </form>

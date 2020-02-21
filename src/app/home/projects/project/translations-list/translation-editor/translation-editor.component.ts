@@ -26,7 +26,7 @@ export class TranslationEditorComponent extends LocalesHelper implements OnInit 
     setTimeout(() => {
       if (this.translateForm) {
         this.translateForm.controls['editInLanguage'].patchValue(this.activeLocale);
-        this.onLanguageEditChange(this.activeLocale);
+        // this.onLanguageEditChange(this.activeLocale);
       }
     }, 10);
     this.localeIndex = this.projectData.translationsLocales.split(',').indexOf(this.activeLocale);
@@ -53,6 +53,8 @@ export class TranslationEditorComponent extends LocalesHelper implements OnInit 
   localeIndex: number;
   translateForm: FormGroup;
   localesData: LocalesModel;
+  locales: any[];
+  textareaEnabled: boolean;
 
   constructor(
     private fb: FormBuilder,
@@ -68,6 +70,8 @@ export class TranslationEditorComponent extends LocalesHelper implements OnInit 
       editInLanguage: [projectDefaultLocale],
       translation: [this.translation.translations[projectDefaultLocale]],
     });
+
+    this.initializeAvailableLocales();
   }
 
   onSaveTranslation(): void {
@@ -82,6 +86,13 @@ export class TranslationEditorComponent extends LocalesHelper implements OnInit 
   onLanguageEditChange(lang: string): void {
     this.translateForm.controls['translation'].patchValue(this.translation.translations[lang]);
     this.activeLocaleCountryName = this.getActiveLocaleCountryName(lang, this.localesData);
+
+    this.textareaEnabled = this.locales.find((l) => l.code === lang).active;
+    if (this.textareaEnabled) {
+      this.translateForm.get('translation').enable();
+    } else {
+      this.translateForm.get('translation').disable();
+    }
   }
 
   private buildFullTranslation(currentLang: string, currentFormValue: TranslateEditorModel): any {
@@ -89,5 +100,38 @@ export class TranslationEditorComponent extends LocalesHelper implements OnInit 
     const translationsCloned = JSON.parse(JSON.stringify(this.translation.translations));
     delete translationsCloned[currentLang];
     return Object.assign(translationsCloned, currentTranslation);
+  }
+
+  private initializeAvailableLocales(): any {
+    if (this.projectData.role === 'administrator') {
+      const availableTranslations = `${this.projectData.defaultLocale},${this.projectData.translationsLocales}`;
+      this.locales = this.prepareAvailableTranslations(this.translation.translations, availableTranslations);
+    } else {
+      const availableTranslations = this.projectData.availableTranslationLocales;
+      this.locales = this.prepareAvailableTranslations(this.translation.translations, availableTranslations);
+    }
+  }
+
+  private prepareAvailableTranslations(translations: any, availableTranslations: string) {
+    const res: any = [];
+    for (const key in translations) {
+      if (translations.hasOwnProperty(key)) {
+        res.push({ code: key, translation: translations[key], active: false });
+      }
+    }
+
+    const availableLocations_ = availableTranslations.split(',')
+      .map((v) => v.trim())
+      .filter((v) => v !== '');
+
+    res.forEach((t) => {
+      availableLocations_.forEach((tt) => {
+        if (t.code === tt) {
+          t.active = true;
+        }
+      });
+    });
+
+    return res;
   }
 }

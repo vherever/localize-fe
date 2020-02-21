@@ -3,12 +3,12 @@
 
   <div>Which project languages can this user translate?</div>
   <br>
-  <ng-container *ngFor="let lang of managePermissionsForm.get('translationLocales').controls; let i = index">
-    <label style="margin-right: 15px" formArrayName="translationLocales">
+  <ng-container *ngFor="let lang of managePermissionsForm.get('availableTranslationLocales').controls; let i = index">
+    <label style="margin-right: 15px" formArrayName="availableTranslationLocales">
       {{ data.projectLocales[i].value }}
       <input type="checkbox" [checked]="data.projectLocales[i].checked"
              [formControlName]="i"
-             (change)="onCheckboxChange(data.projectLocales[i], managePermissionsForm.value.translationLocales[i])">
+             (change)="onCheckboxChange(data.projectLocales[i], managePermissionsForm.value.availableTranslationLocales[i])">
     </label>
   </ng-container>
   <br><br>

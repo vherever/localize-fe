@@ -63,11 +63,11 @@ export class TranslationAddDialogComponent implements OnInit, OnDestroy {
 
   private createTranslations(defaultLocaleValue: string): string {
     const localesObj = {};
-    const localesArray = this.projectData.translationsLocales.split(',').filter((v) => v !== '');
+    const localesArray = this.projectData.translationsLocales.split(',');
     localesArray.forEach((l: string) => {
       localesObj[l] = '';
     });
-    // localesObj[this.projectData.defaultLocale] = defaultLocaleValue;
+    localesObj[this.projectData.defaultLocale] = defaultLocaleValue;
     return JSON.stringify(localesObj);
   }
 }

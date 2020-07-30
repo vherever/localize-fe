@@ -37,7 +37,7 @@ export class ImageUploaderComponent extends ImageUploaderHelper implements After
     if (this.selectedImage) {
       const fd = new FormData();
       fd.append('image', this.selectedImage, this.getFileName(event, this.uuid));
-      this.userInfoService.uploadAvatar(this.userId, fd)
+      this.userInfoService.uploadAvatar(this.uuid, fd)
         .pipe(untilComponentDestroyed(this))
         .subscribe((res: {fileName: string}) => {
           this.avatarUpdated.emit(res.fileName);

@@ -29,7 +29,6 @@ export class HomeComponent extends LocalesHelper implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.getUserDataAndCache();
-    this.getLocalesAndCache();
   }
 
   ngOnDestroy() {
@@ -38,11 +37,12 @@ export class HomeComponent extends LocalesHelper implements OnInit, OnDestroy {
   private getUserDataAndCache(): void {
     const token = this.authService.decodeToken();
     if (token) {
-      this.userInfoService.getUserData(token.id)
+      this.userInfoService.getUserData(token.uuid)
         .pipe(untilComponentDestroyed(this))
         .subscribe((res: UserModel) => {
           this.cacheService.set('userData', res);
           this.pubSubService.publishEvent('userDataCached', true);
+          this.getLocalesAndCache();
         });
     }
   }
@@ -52,7 +52,6 @@ export class HomeComponent extends LocalesHelper implements OnInit, OnDestroy {
       .pipe(untilComponentDestroyed(this))
       .subscribe((res: LocalesModel) => {
         const formattedData = this.formatData(res);
-        // console.log('___ formattedData', formattedData); // todo
         this.cacheService.set('localesData', formattedData);
         this.pubSubService.publishEvent('localesDataCached', true);
       });

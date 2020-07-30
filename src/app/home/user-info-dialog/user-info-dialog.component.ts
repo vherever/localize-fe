@@ -37,7 +37,7 @@ export class UserInfoDialogComponent implements OnInit, OnDestroy {
   }
 
   onUserSettingsSave(): void {
-    this.userInfoService.updateUser(this.userData.id, this.userSettingsForm.value)
+    this.userInfoService.updateUser(this.userData.uuid, this.userSettingsForm.value)
       .pipe(
         untilComponentDestroyed(this),
         // @ts-ignore

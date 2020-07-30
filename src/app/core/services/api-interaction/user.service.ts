@@ -12,15 +12,15 @@ export class UserService {
   ) {
   }
 
-  getUserData(id: number): Observable<UserModel> {
-    return this.userApiService.getUserData(id);
+  getUserData(uuid: string): Observable<UserModel> {
+    return this.userApiService.getUserData(uuid);
   }
 
-  updateUser(id: number, data: UpdateUserReqModel): Observable<UserModel> {
-    return this.userApiService.updateUser(id, data);
+  updateUser(uuid: string, data: UpdateUserReqModel): Observable<UserModel> {
+    return this.userApiService.updateUser(uuid, data);
   }
 
-  uploadAvatar(id: number, file: any): Observable<any> {
-    return this.userApiService.uploadAvatar(id, file);
+  uploadAvatar(uuid: string, file: any): Observable<any> {
+    return this.userApiService.uploadAvatar(uuid, file);
   }
 }

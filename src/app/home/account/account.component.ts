@@ -61,7 +61,7 @@ export class AccountComponent implements OnInit, OnDestroy {
   }
 
   onFormSave(): void {
-    this.userInfoService.updateUser(this.userData.id, this.accountSettingsForm.value)
+    this.userInfoService.updateUser(this.userData.uuid, this.accountSettingsForm.value)
       .pipe(untilComponentDestroyed(this))
       .subscribe((res) => {
         res.avatar = res.avatar + `?v=${this.currentTimestamp}`;

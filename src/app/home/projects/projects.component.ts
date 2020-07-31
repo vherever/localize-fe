@@ -15,6 +15,7 @@ import { FilterService } from '../../core/shared/filter/filter.service';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { SortingHelper } from '../../core/helpers/sorting-helper';
+import { ProjectSettingsDialogComponent } from './project-settings-dialog/project-settings-dialog.component';
 
 @Component({
   selector: 'app-projects',
@@ -24,6 +25,7 @@ import { SortingHelper } from '../../core/helpers/sorting-helper';
 export class ProjectsComponent extends SortingHelper implements OnInit, OnDestroy {
   private currentProjectsListSwitcherState: string;
   private currentSortKey: string;
+  private currentProject: any;
 
   yourProjects: ProjectModel[];
   sharedProjects: ProjectModel[];
@@ -128,7 +130,7 @@ export class ProjectsComponent extends SortingHelper implements OnInit, OnDestro
       } else if (event.target['className'].baseVal.search('lz_remove_svg') > -1) {
         this.deleteProjectAction(project);
       } else if (event.target['className'].baseVal.search('lz_settings_svg') > -1) {
-        this.projectSettingsAction(id);
+        this.projectSettingsAction(project);
       }
     } else if (tagName === 'use') {
       if (event.target['parentElement'].className.baseVal.search('lz_download_svg') > -1) {
@@ -136,7 +138,7 @@ export class ProjectsComponent extends SortingHelper implements OnInit, OnDestro
       } else if (event.target['parentElement'].className.baseVal.search('lz_remove_svg') > -1) {
         this.deleteProjectAction(project);
       } else if (event.target['parentElement'].className.baseVal.search('lz_settings_svg') > -1) {
-        this.projectSettingsAction(id);
+        this.projectSettingsAction(project);
       }
     } else if (tagName === 'a') {
       if (event.target['className'].search('lz_download') > -1) {
@@ -144,7 +146,7 @@ export class ProjectsComponent extends SortingHelper implements OnInit, OnDestro
       } else if (event.target['className'].search('lz_remove') > -1) {
         this.deleteProjectAction(project);
       } else if (event.target['className'].search('lz_settings') > -1) {
-        this.projectSettingsAction(id);
+        this.projectSettingsAction(project);
       } else if (event.target['className'].search('lz_list_u_avatar') > -1) {
         // console.log('___ avatar'); // todo
       } else {
@@ -195,21 +197,21 @@ export class ProjectsComponent extends SortingHelper implements OnInit, OnDestro
   }
 
   private deleteProjectAction(project: ProjectModel): void {
-    const id = project.id;
+    const uuid = project.uuid;
     const dialogRef = this.dialog.open(RemoveDialogConfirmComponent, {
       width: '500px',
       data: `Do you really want to remove the project
-      <b>${this.getProjectById(id).title}</b>?
+      <b>${this.getProjectById(uuid).title}</b>?
       This will delete the entire project permanently
       including all translations across
-      <b>${this.getProjectLocalesCount(id)}</b> locales.`,
+      <b>${this.getProjectLocalesCount(uuid)}</b> locales.`,
     });
 
     dialogRef.afterClosed()
       .pipe(untilComponentDestroyed(this))
       .subscribe((state: boolean) => {
         if (state) {
-          this.projectService.deleteProject(id)
+          this.projectService.deleteProject(uuid)
             .pipe(untilComponentDestroyed(this))
             .subscribe((res: HttpResponse<any>) => {
               if (res.status === 200) {
@@ -220,7 +222,7 @@ export class ProjectsComponent extends SortingHelper implements OnInit, OnDestro
                     untilComponentDestroyed(this),
                   )
                   .subscribe((res2: ProjectModel[]) => {
-                    const filtered = res2.filter((p) => p.id !== id);
+                    const filtered = res2.filter((p) => p.uuid !== uuid);
                     this.projects.next(filtered);
                     this.allProjectsFiltered = this.getProjectsFiltered(this.currentProjectsListSwitcherState, this.currentSortKey);
                   });
@@ -234,16 +236,39 @@ export class ProjectsComponent extends SortingHelper implements OnInit, OnDestro
     console.log('___ onExportClick', id); // todo
   }
 
-  private projectSettingsAction(id: string): void {
-    console.log('___ onSettingsClick', id); // todo
+  private projectSettingsAction(project: ProjectModel): void {
+    const projectInList = this.allProjectsFiltered.find((p) => p.uuid === project.uuid);
+    const indexInList = this.allProjectsFiltered.indexOf(projectInList);
+    const dialogRef: MatDialogRef<ProjectSettingsDialogComponent> =
+      this.dialog.open(ProjectSettingsDialogComponent, {
+        width: '500px',
+        data: {
+          uuid: project.uuid,
+          title: project.title,
+          description: project.description,
+          defaultLocale: project.defaultLocale,
+          translationsLocales: project.translationsLocales,
+        },
+      });
+
+    dialogRef.componentInstance.onResponseReceived
+      .pipe(untilComponentDestroyed(this))
+      .subscribe((res) => {
+        this.allProjectsFiltered[indexInList] = res;
+        this.allProjectsFiltered = this.getProjectsFiltered(this.currentProjectsListSwitcherState, this.currentSortKey);
+        this.changesDetected.next(true);
+        this.cdr.detectChanges();
+        this.changesDetected.next(false);
+        dialogRef.close();
+      });
   }
 
-  private getProjectById(projectId: number): ProjectModel {
-    return this.yourProjects.find((p: ProjectModel) => p.id === projectId);
+  private getProjectById(uuid: string): ProjectModel {
+    return this.yourProjects.find((p: ProjectModel) => p.uuid === uuid);
   }
 
-  private getProjectLocalesCount(projectId: number): number {
+  private getProjectLocalesCount(uuid: string): number {
     // +1 means +defaultLocale
-    return this.getProjectById(projectId).translationsLocales.split(',').length + 1;
+    return this.getProjectById(uuid).translationsLocales.split(',').length + 1;
   }
 }

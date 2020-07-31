@@ -23,7 +23,11 @@ export class ProjectService {
     return this.projectApiService.createProject(data);
   }
 
-  deleteProject(id: number): Observable<any> {
-    return this.projectApiService.deleteProject(id);
+  updateProject(data: any, projectUuid: string): Observable<ProjectModel> {
+    return this.projectApiService.updateProject(data, projectUuid);
+  }
+
+  deleteProject(uuid: string): Observable<any> {
+    return this.projectApiService.deleteProject(uuid);
   }
 }

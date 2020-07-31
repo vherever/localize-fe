@@ -1,0 +1,23 @@
+<form [formGroup]="settingsForm" (submit)="onFormSave()">
+  <h1 mat-dialog-title>Project settings</h1>
+
+  <div class="lz_form_control">
+    <div fxLayout>
+      <label for="s_project_name">Project name:</label>
+      <input type="text" id="s_project_name" formControlName="title" autocomplete="off" placeholder="e.g. My website">
+    </div>
+    <div class="lz_error_message" *ngIf="(titleField.dirty || titleField.touched) && titleField.hasError('required')">
+      Project name is required.
+    </div>
+  </div>
+
+  <div class="lz_form_control">
+    <div fxLayout>
+      <label for="s_project_description">Description:</label>
+      <input type="text" id="s_project_description" formControlName="description" autocomplete="off">
+    </div>
+  </div>
+
+  <button [disabled]="!settingsForm.valid" style="margin-left: 10px">Save</button>
+  <button class="lz_button_light" mat-dialog-close>Cancel</button>
+</form>

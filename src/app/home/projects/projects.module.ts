@@ -16,6 +16,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { AppProjectsFilterSelectComponent } from './projects-filters-bar/filter-select/projects-filter-select.component';
 import { FormsModule } from '@angular/forms';
 import { ProjectsFiltersBarModule } from './projects-filters-bar/projects-filters-bar.module';
+import { ProjectSettingsDialogModule } from './project-settings-dialog/project-settings-dialog.module';
 
 @NgModule({
   imports: [
@@ -23,6 +24,7 @@ import { ProjectsFiltersBarModule } from './projects-filters-bar/projects-filter
     ProjectsRoutingModule,
     FlexLayoutModule,
     ProjectAddDialogModule,
+    ProjectSettingsDialogModule,
     RemoveDialogConfirmModule,
     SpriteModule,
     NgxPopperModule.forRoot({}),

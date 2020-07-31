@@ -118,7 +118,7 @@ export class ProjectsComponent extends SortingHelper implements OnInit, OnDestro
   }
 
   onProjectClick(event: MouseEvent, project: ProjectModel): void {
-    const id = project.id;
+    const id = project.uuid;
     const tagName = event.target['tagName'].toLowerCase();
     // @ts-ignore
     this.appDataGlobalStorageService.currentProject = project;
@@ -230,11 +230,11 @@ export class ProjectsComponent extends SortingHelper implements OnInit, OnDestro
       });
   }
 
-  private exportProjectAction(id: number): void {
+  private exportProjectAction(id: string): void {
     console.log('___ onExportClick', id); // todo
   }
 
-  private projectSettingsAction(id: number): void {
+  private projectSettingsAction(id: string): void {
     console.log('___ onSettingsClick', id); // todo
   }
 

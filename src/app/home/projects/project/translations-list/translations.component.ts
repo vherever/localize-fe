@@ -46,7 +46,7 @@ export class TranslationsComponent extends LocalesHelper implements OnInit, OnCh
   }
 
   ngOnInit() {
-    this.getTranslationsById(this.projectData.id);
+    this.getTranslationsById(this.projectData.uuid);
 
     this.appDataGlobalStorageService.userData
       .pipe(untilComponentDestroyed(this))
@@ -105,7 +105,7 @@ export class TranslationsComponent extends LocalesHelper implements OnInit, OnCh
           this.currentClickedElementId = index;
           this.previousClickedElementId = index;
           this.createComponent(translation, index);
-          this.updateTranslation(translation.id);
+          this.updateTranslation(translation.uuid);
         }
       }
     } else {
@@ -134,7 +134,7 @@ export class TranslationsComponent extends LocalesHelper implements OnInit, OnCh
       });
   }
 
-  private getTranslationsById(id: number): void {
+  private getTranslationsById(id: string): void {
     this.translationService.getTranslationsById(id)
       .pipe(untilComponentDestroyed(this))
       .subscribe((res: TranslationModel[]) => {
@@ -154,11 +154,11 @@ export class TranslationsComponent extends LocalesHelper implements OnInit, OnCh
     this.componentRef.instance.localesData = this.localesData;
   }
 
-  private updateTranslation(translationId: number): void {
+  private updateTranslation(translationId: string): void {
     this.componentRef.instance.newTranslationData
       .pipe(untilComponentDestroyed(this))
       .subscribe((data) => {
-        this.translationsService.updateTranslation(this.projectData.id, translationId, data)
+        this.translationsService.updateTranslation(this.projectData.uuid, translationId, data)
           .pipe(untilComponentDestroyed(this))
           .subscribe((res: TranslationModel[]) => {
             const updatedTranslation = res[0];
@@ -182,7 +182,7 @@ export class TranslationsComponent extends LocalesHelper implements OnInit, OnCh
       .pipe(untilComponentDestroyed(this))
       .subscribe((state: boolean) => {
         if (state) {
-          this.translationService.removeTranslation(this.projectData.id, translation.id)
+          this.translationService.removeTranslation(this.projectData.uuid, translation.uuid)
             .pipe(untilComponentDestroyed(this))
             .subscribe(() => {
               this.translations = this.translations.filter((t: TranslationModel) => t.id !== translation.id);

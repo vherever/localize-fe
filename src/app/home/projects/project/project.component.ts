@@ -13,7 +13,7 @@ import { ProjectService } from '../../../core/services/api-interaction/project.s
   styleUrls: ['project.component.scss'],
 })
 export class ProjectComponent implements OnDestroy {
-  projectId: number;
+  projectId: string;
   projectData: ProjectModel;
   activeLocale: string;
 
@@ -27,7 +27,7 @@ export class ProjectComponent implements OnDestroy {
     this.route.params
       .pipe(untilComponentDestroyed(this))
       .subscribe((params) => {
-        this.projectId = +params['id'];
+        this.projectId = params['id'];
       });
 
     this.router.events

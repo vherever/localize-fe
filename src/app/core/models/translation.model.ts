@@ -2,6 +2,7 @@ import { UserModel } from './user.model';
 
 export interface TranslationModel {
   id: number;
+  uuid: string;
   latestUpdatedAtFormatted: string;
   translations: Translations;
   assetCode: string;

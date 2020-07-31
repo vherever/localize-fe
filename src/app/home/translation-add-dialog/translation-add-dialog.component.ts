@@ -29,7 +29,6 @@ export class TranslationAddDialogComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    console.log('___ this.projectData', this.projectData); // todo
     this.addTranslationForm = this.fb.group({
       defaultLocaleValue: ['', Validators.required],
       assetCode: ['', Validators.required],
@@ -45,7 +44,7 @@ export class TranslationAddDialogComponent implements OnInit, OnDestroy {
       translations: this.createTranslations(this.addTranslationForm.controls['defaultLocaleValue'].value),
       assetCode: this.addTranslationForm.controls['assetCode'].value,
     };
-    this.translationService.createTranslation(this.projectData.id, data)
+    this.translationService.createTranslation(this.projectData.uuid, data)
       .pipe(
         untilComponentDestroyed(this),
         // @ts-ignore

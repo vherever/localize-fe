@@ -11,19 +11,19 @@ export class TranslationsService {
   ) {
   }
 
-  getTranslationsById(id: number): Observable<TranslationModel[]> {
+  getTranslationsById(id: string): Observable<TranslationModel[]> {
     return this.translationApiService.getTranslationsById(id);
   }
 
-  updateTranslation(projectId: number, translationId: number, data: any): Observable<TranslationModel[]> {
+  updateTranslation(projectId: string, translationId: string, data: any): Observable<TranslationModel[]> {
     return this.translationApiService.updateTranslation(projectId, translationId, data);
   }
 
-  createTranslation(projectId: number, data: any): Observable<TranslationModel[]> {
+  createTranslation(projectId: string, data: any): Observable<TranslationModel[]> {
     return this.translationApiService.createTranslation(projectId, data);
   }
 
-  removeTranslation(projectId: number, translationId: number): Observable<any> {
+  removeTranslation(projectId: string, translationId: string): Observable<any> {
     return this.translationApiService.removeTranslation(projectId, translationId);
   }
 }

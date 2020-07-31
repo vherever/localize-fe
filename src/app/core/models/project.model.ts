@@ -3,6 +3,7 @@ import { SharedWithUserModel } from './shared-with-user.model';
 
 export interface ProjectModel {
   id: number;
+  uuid: string;
   title: string;
   description: string;
   defaultLocale: string;

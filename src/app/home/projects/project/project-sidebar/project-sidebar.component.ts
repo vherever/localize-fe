@@ -48,7 +48,13 @@ export class ProjectSidebarComponent implements OnChanges, OnInit, OnDestroy {
     // }
 
     if (changes.projectData.currentValue) {
-      this.projectLocales = `${this.projectData.defaultLocale},${this.projectData.translationsLocales}`
+      let projectLocales: string;
+      if (this.projectData.translationsLocales) {
+        projectLocales = this.projectData.defaultLocale + ',' + this.projectData.translationsLocales;
+      } else {
+        projectLocales = this.projectData.defaultLocale;
+      }
+      this.projectLocales = projectLocales
       // const locales = this.projectData.role === 'administrator' ? `${this.projectData.defaultLocale},${this.projectData.translationsLocales}` : `${this.projectData.availableTranslationLocales}`
       // this.projectLocales = locales
         .split(',')

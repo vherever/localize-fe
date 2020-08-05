@@ -44,7 +44,7 @@ export class ProjectAddDialogComponent extends LocalesHelper implements OnInit, 
       title: ['', Validators.required],
       description: [''],
       defaultLocale: ['', Validators.required],
-      translationsLocales: ['', Validators.required],
+      // translationsLocales: ['', Validators.required],
     });
 
     this.localesDataTransformed = [];

@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule, MatDialogModule, MatInputModule } from '@angular/material';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { FlexLayoutModule } from '@angular/flex-layout';
 // app imports
 import { ProjectAddDialogComponent } from './project-add-dialog.component';
 import { ProjectService } from '../../core/services/api-interaction/project.service';
 import { ProjectApiService } from '../../core/services/api/project-api.service';
-import { FlexLayoutModule } from '@angular/flex-layout';
+import { CountrySearchAutocompleteModule } from '../../core/shared/country-search-autocomplete/country-search-autocomplete.module';
 
 @NgModule({
   imports: [
@@ -20,6 +21,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     MatButtonModule,
     NgSelectModule,
     FlexLayoutModule,
+    CountrySearchAutocompleteModule,
   ],
   declarations: [ProjectAddDialogComponent],
   entryComponents: [ProjectAddDialogComponent],

@@ -268,7 +268,10 @@ export class ProjectsComponent extends SortingHelper implements OnInit, OnDestro
   }
 
   private getProjectLocalesCount(uuid: string): number {
-    // +1 means +defaultLocale
-    return this.getProjectById(uuid).translationsLocales.split(',').length + 1;
+    // TODO: Inform about shared project
+    // +1 means +defaultLocale, project always have at least one locale by default
+    const project = this.getProjectById(uuid);
+    return project.translationsLocales ? project.translationsLocales
+      .split(',').length + 1 : 1;
   }
 }

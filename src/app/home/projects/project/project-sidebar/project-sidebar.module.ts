@@ -9,6 +9,7 @@ import { ManageUserDialogComponent } from './manage-user-dialog/manage-user-dial
 import { InviteUserDialogComponent } from './invite-user-dialog/invite-user-dialog.component';
 import { ShareProjectApiService } from '../../../../core/services/api/share-project-api.service';
 import { ShareProjectService } from '../../../../core/services/api-interaction/share-project.service';
+import { AddLocaleDialogModule } from './add-locale-dialog/add-locale-dialog.module';
 
 @NgModule({
   imports: [
@@ -16,6 +17,7 @@ import { ShareProjectService } from '../../../../core/services/api-interaction/s
     FlexLayoutModule,
     MatDialogModule,
     ReactiveFormsModule,
+    AddLocaleDialogModule,
   ],
   declarations: [
     ProjectSidebarComponent,

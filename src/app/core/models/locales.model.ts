@@ -34,4 +34,5 @@ export interface LocaleModelFormatted {
   native?: string;
   emoji?: string;
   keyCode: string;
+  filter: string;
 }

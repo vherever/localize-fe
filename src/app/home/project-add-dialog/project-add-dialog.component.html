@@ -29,46 +29,47 @@
 
   <div class="lz_form_control">
     <div fxLayout>
-      <label for="s_project_default_locale">Default locale:</label>
-      <ng-select formControlName="defaultLocale"
-                 [items]="localesDataTransformed"
-                 [multiple]="false"
-                 [virtualScroll]="true"
-                 [bindLabel]="'filter'"
-                 [bindValue]="'keyCode'"
-                 [placeholder]="'Start typing a language or country...'"
-                 [dropdownPosition]="'top'"
-                 [loadingText]="'Loading...'"
-                 [loading]="selectDataLoading"
-                 [isOpen]="dropdownIsOpen"
-                 (search)="onLanguageSearch($event)"
-                 (blur)="onCloseSearchBox()"
-                 (focus)="onFocusSearchBar($event)"
-                 (change)="onChangeSearchBar($event)"
-                 (clear)="onClearSearchBar()"
-                 labelForId="s_project_default_locale">
+      <label>Starting locale:</label>
+<!--      <ng-select formControlName="defaultLocale"-->
+<!--                 [items]="localesDataTransformed"-->
+<!--                 [multiple]="false"-->
+<!--                 [virtualScroll]="true"-->
+<!--                 [bindLabel]="'filter'"-->
+<!--                 [bindValue]="'keyCode'"-->
+<!--                 [placeholder]="'Start typing a language or country...'"-->
+<!--                 [dropdownPosition]="'top'"-->
+<!--                 [loadingText]="'Loading...'"-->
+<!--                 [loading]="selectDataLoading"-->
+<!--                 [isOpen]="dropdownIsOpen"-->
+<!--                 (search)="onLanguageSearch($event)"-->
+<!--                 (blur)="onCloseSearchBox()"-->
+<!--                 (focus)="onFocusSearchBar($event)"-->
+<!--                 (change)="onChangeSearchBar($event)"-->
+<!--                 (clear)="onClearSearchBar()"-->
+<!--                 labelForId="s_project_default_locale">-->
 
-        <ng-template ng-option-tmp let-item="item">
-          <span class="flag">{{ item.emoji }}</span>
-          <span class="text">{{item.value}}</span>
-          <span *ngIf="item.type === 'lang'" class="code">{{ item.code }}</span>
-        </ng-template>
+<!--        <ng-template ng-option-tmp let-item="item">-->
+<!--          <span class="flag">{{ item.emoji }}</span>-->
+<!--          <span class="text">{{item.value}}</span>-->
+<!--          <span *ngIf="item.type === 'lang'" class="code">{{ item.code }}</span>-->
+<!--        </ng-template>-->
 
-        <ng-template ng-loadingspinner-tmp>
-          <div class="lds-ellipsis" *ngIf="selectDataLoading">
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-          </div>
-        </ng-template>
+<!--        <ng-template ng-loadingspinner-tmp>-->
+<!--          <div class="lds-ellipsis" *ngIf="selectDataLoading">-->
+<!--            <div></div>-->
+<!--            <div></div>-->
+<!--            <div></div>-->
+<!--            <div></div>-->
+<!--          </div>-->
+<!--        </ng-template>-->
 
-        <ng-template ng-label-tmp let-item="item">
-          <span *ngIf="item.type === 'lang';" class="code">{{ item.code }}</span>
-          <span *ngIf="item.type !== 'lang'" class="flag">{{ item.emoji }}</span>
-          <span class="value-selected">{{ item.value }}</span>
-        </ng-template>
-      </ng-select>
+<!--        <ng-template ng-label-tmp let-item="item">-->
+<!--          <span *ngIf="item.type === 'lang';" class="code">{{ item.code }}</span>-->
+<!--          <span *ngIf="item.type !== 'lang'" class="flag">{{ item.emoji }}</span>-->
+<!--          <span class="value-selected">{{ item.value }}</span>-->
+<!--        </ng-template>-->
+<!--      </ng-select>-->
+      <app-country-search-autocomplete (languageSelectedEmit)="onLanguageSelectedEmit($event)"></app-country-search-autocomplete>
     </div>
     <div class="lz_error_message" *ngIf="(defaultLocaleField.dirty || defaultLocaleField.touched) && defaultLocaleField.hasError('required')">
       Default locale is required.

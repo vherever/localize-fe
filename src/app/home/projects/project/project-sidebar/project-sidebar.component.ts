@@ -10,6 +10,8 @@ import { UserModel } from '../../../../core/models/user.model';
 import { MatDialog } from '@angular/material';
 import { ManageUserDialogComponent } from './manage-user-dialog/manage-user-dialog.component';
 import { InviteUserDialogComponent } from './invite-user-dialog/invite-user-dialog.component';
+import { MatDialogRef } from '@angular/material/dialog';
+import { AddLocaleDialogComponent } from './add-locale-dialog/add-locale-dialog.component';
 
 @Component({
   selector: 'app-project-sidebar',
@@ -21,6 +23,7 @@ export class ProjectSidebarComponent implements OnChanges, OnInit, OnDestroy {
   @Output() activeLocaleEmit: EventEmitter<string> = new EventEmitter();
 
   projectLocales: string[];
+  defaultLocale: string;
   activeLocale: string;
   uploadsEndpoint: string;
   localesData: LocalesModel;
@@ -48,12 +51,8 @@ export class ProjectSidebarComponent implements OnChanges, OnInit, OnDestroy {
     // }
 
     if (changes.projectData.currentValue) {
-      let projectLocales: string;
-      if (this.projectData.translationsLocales) {
-        projectLocales = this.projectData.defaultLocale + ',' + this.projectData.translationsLocales;
-      } else {
-        projectLocales = this.projectData.defaultLocale;
-      }
+      this.defaultLocale = this.projectData.defaultLocale;
+      const projectLocales = this.projectData.translationsLocales ? this.projectData.translationsLocales : '';
       this.projectLocales = projectLocales
       // const locales = this.projectData.role === 'administrator' ? `${this.projectData.defaultLocale},${this.projectData.translationsLocales}` : `${this.projectData.availableTranslationLocales}`
       // this.projectLocales = locales
@@ -90,7 +89,7 @@ export class ProjectSidebarComponent implements OnChanges, OnInit, OnDestroy {
 
   ngOnDestroy() {
   }
-  
+
   get flag(): string {
     // this.localesData
     // TODO: get flag
@@ -157,5 +156,15 @@ export class ProjectSidebarComponent implements OnChanges, OnInit, OnDestroy {
     });
 
     return projectLocales;
+  }
+
+  private addLocale(): void {
+    const dialogRef: MatDialogRef<AddLocaleDialogComponent> =
+      this.dialog.open(AddLocaleDialogComponent, {
+        width: '400px',
+        data: {
+          projectId: this.projectData.id,
+        },
+      });
   }
 }

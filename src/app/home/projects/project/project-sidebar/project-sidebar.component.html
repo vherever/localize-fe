@@ -1,16 +1,25 @@
 <div class="lz_project_sidebar_wrapper">
   <div class="lz_section_title">Locales</div>
   <div class="lz_locales_list" *ngIf="projectData">
+    <a href="javascript:;" (click)="onLocaleClick(defaultLocale)"
+       [ngClass]="{'isActive': activeLocale === defaultLocale}">
+      <span class="flag"></span>
+      {{ defaultLocale }}
+      <span class="lz_locale_isdefault"
+            *ngIf="activeLocale === defaultLocale">(default)</span>
+    </a>
     <a href="javascript:;" *ngFor="let locale of projectLocales"
        (click)="onLocaleClick(locale)"
        [ngClass]="{'isActive': activeLocale === locale}">
-      <span class="flag">s</span>
+      <span class="flag"></span>
       {{ locale.toUpperCase() }}
       <span class="lz_locale_isdefault"
-        *ngIf="locale === projectData.defaultLocale">(default)</span>
+        *ngIf="locale === defaultLocale">(default)</span>
     </a>
   </div>
+  <button style="margin-top: 5px" (click)="addLocale()">Add locale</button>
 
+  <br><br>
   <div class="lz_users_list" *ngIf="projectData">
     <div class="lz_section_title">Project team</div>
     <div fxLayout fxLayoutAlign="space-between stretch">

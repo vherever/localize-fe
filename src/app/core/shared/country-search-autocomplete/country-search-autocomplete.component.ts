@@ -81,12 +81,11 @@ export class CountrySearchAutocompleteComponent extends LocalesHelper implements
   }
 
   private onFocusSearchBar(e): void {
+    this.dropdownIsOpen = true;
     if (e.target.value) {
       const originalData = JSON.parse(JSON.stringify(this.localesDataForFilter));
       this.localesDataTransformed = this.getResult(e.target.value, originalData);
-      this.dropdownIsOpen = true;
     }
-
   }
 
   private onChangeSearchBar(value: LocaleModelFormatted): void {

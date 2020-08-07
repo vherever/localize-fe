@@ -18,6 +18,21 @@
     </div>
   </div>
 
+  <div class="lz_form_control">
+    <div fxLayout>
+      <label for="default_locale">Starting locale:</label>
+      <ng-select appearance="outline"
+                 labelForId="default_locale"
+                 [searchable]="false"
+                 [clearable]="false"
+                 [dropdownPosition]="'top'"
+                 formControlName="defaultLocale">
+        <ng-option *ngFor="let locale of locales" [value]="locale">{{ locale }}</ng-option>
+      </ng-select>
+    </div>
+  </div>
+
+  <br><br>
   <button [disabled]="!settingsForm.valid" style="margin-left: 10px">Save</button>
   <button class="lz_button_light" mat-dialog-close>Cancel</button>
 </form>

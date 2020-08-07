@@ -6,7 +6,9 @@ import { UserConfigService } from '../../../../core/services/user-config/user-co
 @Component({
   selector: 'app-projects-filter-select',
   templateUrl: 'projects-filter-select.component.html',
-  styleUrls: ['projects-filter-select.component.scss'],
+  styleUrls: [
+    '../../../../core/shared/country-search-autocomplete/country-search-autocomplete.component.scss',
+  ],
 })
 export class AppProjectsFilterSelectComponent implements OnInit {
   @Output() sortKeySelected: EventEmitter<string> = new EventEmitter<string>();

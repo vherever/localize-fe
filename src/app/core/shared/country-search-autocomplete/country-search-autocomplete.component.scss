@@ -64,6 +64,30 @@
 }
 
 ::ng-deep {
+  .ng-select-container {
+    min-width: 150px;
+    width: 100%;
+    cursor: pointer !important;
+    min-height: 32px !important;
+    height: 100% !important;
+    .ng-value-container {
+      .ng-value {
+        font-size: 13px;
+      }
+    }
+  }
+  ng-dropdown-panel {
+    .ng-dropdown-panel-items {
+      .ng-option {
+        font-size: 13px;
+        &.ng-option-selected {
+          .ng-option-label {
+            font-weight: 400 !important;
+          }
+        }
+      }
+    }
+  }
   ng-select {
     width: 100%;
     ng-dropdown-panel {
@@ -110,6 +134,7 @@
           padding-right: 85px !important;
           padding-left: 7px !important;
           input {
+            cursor: pointer !important;
             padding: 0;
             height: 100%;
             font-size: 13px;
@@ -158,6 +183,11 @@
     &.ng-select-filtered {
       .ng-placeholder {
         display: none !important;
+      }
+    }
+    &:not(.showArrow) {
+      .ng-arrow-wrapper {
+        display: none;
       }
     }
   }

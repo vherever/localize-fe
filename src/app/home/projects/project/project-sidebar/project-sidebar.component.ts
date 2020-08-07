@@ -58,7 +58,7 @@ export class ProjectSidebarComponent implements OnChanges, OnInit, OnDestroy {
       // this.projectLocales = locales
         .split(',')
         .filter((value, index, self) => {
-          return self.indexOf(value) === index;
+          return self.indexOf(value) === index && value !== '';
         });
       this.activeLocale = this.projectData.defaultLocale;
       this.activeLocaleEmit.emit(this.activeLocale);
@@ -119,6 +119,7 @@ export class ProjectSidebarComponent implements OnChanges, OnInit, OnDestroy {
       });
 
     dialogRef.componentInstance.onAvailableTranslationsUpdate
+      .pipe(untilComponentDestroyed(this))
       .subscribe((res) => {
         this.projectData.sharedWith.find((u) => u.targetId === user.id).availableTranslationLocales = res;
       });
@@ -161,10 +162,18 @@ export class ProjectSidebarComponent implements OnChanges, OnInit, OnDestroy {
   private addLocale(): void {
     const dialogRef: MatDialogRef<AddLocaleDialogComponent> =
       this.dialog.open(AddLocaleDialogComponent, {
-        width: '400px',
+        width: '500px',
+        autoFocus: false,
         data: {
-          projectId: this.projectData.id,
+          projectUuid: this.projectData.uuid,
+          projectTitle: this.projectData.title,
         },
+      });
+
+    dialogRef.componentInstance.addedLocale
+      .subscribe((locale: string) => {
+        this.projectLocales.push(locale);
+        dialogRef.close();
       });
   }
 }

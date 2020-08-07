@@ -1,8 +1,19 @@
-<form [formGroup]="localeAddForm">
-  <h1 mat-dialog-title>Create new project</h1>
+<form [formGroup]="localeAddForm" (submit)="onFormSave()">
+  <h1 mat-dialog-title>Add new locale to <span style="color: #2980b9; font-weight: bold">{{ dialogData.projectTitle }}</span></h1>
 
   <div class="lz_form_control">
     <div fxLayout>
+      <label for="projectLocale">Locale:</label>
+      <app-country-search-autocomplete (languageSelectedEmit)="onLanguageSelectedEmit($event)"
+                                       labelForId="projectLocale"
+      ></app-country-search-autocomplete>
+    </div>
+
+    <div class="lz_error_message" *ngIf="localeField.hasError('required')">
+      Locale is required.
     </div>
   </div>
+
+  <button [disabled]="!localeAddForm.valid" style="margin-left: 10px">Save</button>
+  <button class="lz_button_light" mat-dialog-close>Cancel</button>
 </form>

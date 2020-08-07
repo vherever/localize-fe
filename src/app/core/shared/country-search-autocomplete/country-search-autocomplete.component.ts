@@ -7,6 +7,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { LocalesHelper } from '../../helpers/locales-helper';
 import { AppDataGlobalStorageService } from '../../services/app-data-global-storage.service';
 import { LocaleModelFormatted } from '../../models/locales.model';
+import { NgSelectComponent } from '@ng-select/ng-select';
 
 @Component({
   selector: 'app-country-search-autocomplete',
@@ -14,8 +15,9 @@ import { LocaleModelFormatted } from '../../models/locales.model';
   styleUrls: ['country-search-autocomplete.component.scss'],
 })
 export class CountrySearchAutocompleteComponent extends LocalesHelper implements OnInit, OnDestroy {
+  @Input() labelForId: string;
   @Output() languageSelectedEmit: EventEmitter<string> = new EventEmitter<string>();
-  @ViewChild('selectEl', {static: false}) selectEl: ElementRef;
+  @ViewChild('selectEl', {static: false}) select: NgSelectComponent;
 
   private inputLanguageSearch: Subject<string> = new Subject<string>();
   private originalData: any[];
@@ -47,6 +49,9 @@ export class CountrySearchAutocompleteComponent extends LocalesHelper implements
         this.originalData = JSON.parse(JSON.stringify(this.localesDataForFilter));
         this.localesDataTransformed = this.getResult('', this.originalData);
         this.languageSelectedEmit.emit(this.defaultLanguage);
+        setTimeout(() => {
+          this.select.blur();
+        }, 0);
       });
 
     this.inputLanguageSearch.pipe(
@@ -82,10 +87,10 @@ export class CountrySearchAutocompleteComponent extends LocalesHelper implements
 
   private onFocusSearchBar(e): void {
     this.dropdownIsOpen = true;
-    if (e.target.value) {
-      const originalData = JSON.parse(JSON.stringify(this.localesDataForFilter));
-      this.localesDataTransformed = this.getResult(e.target.value, originalData);
-    }
+    // if (e.target.value) {
+      // const originalData = JSON.parse(JSON.stringify(this.localesDataForFilter));
+      // this.localesDataTransformed = this.getResult(e.target.value, originalData);
+    // }
   }
 
   private onChangeSearchBar(value: LocaleModelFormatted): void {
@@ -95,9 +100,11 @@ export class CountrySearchAutocompleteComponent extends LocalesHelper implements
     } else {
       this.languageSelectedEmit.emit(null);
     }
+    this.select.blur();
   }
 
   private onClearSearchBar(): void {
     this.dropdownIsOpen = false;
+    this.localesDataTransformed = this.getResult('', this.originalData);
   }
 }

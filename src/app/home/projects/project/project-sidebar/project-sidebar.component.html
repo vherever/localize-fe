@@ -4,7 +4,7 @@
     <a href="javascript:;" (click)="onLocaleClick(defaultLocale)"
        [ngClass]="{'isActive': activeLocale === defaultLocale}">
       <span class="flag"></span>
-      {{ defaultLocale }}
+      {{ defaultLocale.toUpperCase() }}
       <span class="lz_locale_isdefault"
             *ngIf="activeLocale === defaultLocale">(default)</span>
     </a>

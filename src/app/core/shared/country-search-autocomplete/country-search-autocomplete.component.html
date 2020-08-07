@@ -15,7 +15,7 @@
              (focus)="onFocusSearchBar($event)"
              (change)="onChangeSearchBar($event)"
              (clear)="onClearSearchBar()"
-             labelForId="s_project_default_locale">
+             labelForId="{{ labelForId }}">
 
     <ng-template ng-option-tmp let-item="item">
       <span class="flag">{{ item.emoji }}</span>

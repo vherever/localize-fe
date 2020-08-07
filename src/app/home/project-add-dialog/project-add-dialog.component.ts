@@ -51,7 +51,10 @@ export class ProjectAddDialogComponent extends LocalesHelper implements OnInit, 
       });
   }
 
-  private onLanguageSelectedEmit(e: any): void {
-    this.projectAddForm.get('defaultLocale').patchValue(e);
+  private onLanguageSelectedEmit(lang: string): void {
+    if (!lang) {
+      this.projectAddForm.get('defaultLocale').setErrors({ required: true });
+    }
+    this.projectAddForm.get('defaultLocale').patchValue(lang);
   }
 }

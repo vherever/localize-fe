@@ -19,11 +19,12 @@
 
   <div class="lz_form_control">
     <div fxLayout>
-      <label>Starting locale:</label>
-      <app-country-search-autocomplete (languageSelectedEmit)="onLanguageSelectedEmit($event)"></app-country-search-autocomplete>
+      <label for="projectLocale">Starting locale:</label>
+      <app-country-search-autocomplete (languageSelectedEmit)="onLanguageSelectedEmit($event)"
+                                       labelForId="projectLocale"
+      ></app-country-search-autocomplete>
     </div>
-    <!--TODO: error not working-->
-    <div class="lz_error_message" *ngIf="(defaultLocaleField.dirty || defaultLocaleField.touched) && defaultLocaleField.hasError('required')">
+    <div class="lz_error_message" *ngIf="defaultLocaleField.hasError('required')">
       Default locale is required.
     </div>
   </div>

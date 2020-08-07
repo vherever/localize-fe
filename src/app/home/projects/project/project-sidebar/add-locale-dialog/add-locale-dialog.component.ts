@@ -1,16 +1,23 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, EventEmitter, Inject, OnDestroy, OnInit, Output } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
+// app imports
+import { LocaleService } from '../../../../../core/services/api-interaction/locale.service';
 
 @Component({
   templateUrl: 'add-locale-dialog.component.html',
+  styleUrls: ['add-locale-dialog.component.scss'],
 })
-export class AddLocaleDialogComponent implements OnInit {
+export class AddLocaleDialogComponent implements OnInit, OnDestroy {
+  @Output() addedLocale: EventEmitter<string> = new EventEmitter();
+
   private localeAddForm: FormGroup;
-  private selectDataLoading: boolean;
-  private dropdownIsOpen: boolean;
 
   constructor(
     private fb: FormBuilder,
+    private localeService: LocaleService,
+    @Inject(MAT_DIALOG_DATA) public dialogData: { projectUuid: string, projectTitle: string },
   ) {
   }
 
@@ -20,13 +27,24 @@ export class AddLocaleDialogComponent implements OnInit {
     });
   }
 
-  private onLanguageSearch(e: any): void {}
+  ngOnDestroy() {}
 
-  private onCloseSearchBox(e: any): void {}
+  private get localeField(): FormControl {
+    return  this.localeAddForm.get('locale') as FormControl;
+  }
 
-  private onFocusSearchBar(e: any): void {}
+  private onLanguageSelectedEmit(lang: string): void {
+    if (!lang) {
+      this.localeAddForm.setErrors({ required: true });
+    }
+    this.localeAddForm.get('locale').patchValue(lang);
+  }
 
-  private onChangeSearchBar(e: any): void {}
-
-  private onClearSearchBar(e: any): void {}
+  private onFormSave(): void {
+    this.localeService.addLocale(this.dialogData.projectUuid, this.localeAddForm.value)
+      .pipe(untilComponentDestroyed(this))
+      .subscribe(() => {
+        this.addedLocale.emit(this.localeAddForm.value.locale);
+      });
+  }
 }

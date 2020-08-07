@@ -82,10 +82,3 @@ app-filter {
 .lz-filters-area-wrapper {
   padding: 7px 0;
 }
-
-::ng-deep mat-dialog-container {
-  overflow: visible !important;
-  .ng-arrow-wrapper {
-    display: none !important;
-  }
-}

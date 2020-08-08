@@ -37,30 +37,11 @@ export class ProjectSidebarComponent implements OnChanges, OnInit, OnDestroy {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    // if (changes.projectData.currentValue) {
-    //   const translations = this.projectData.role === 'administrator' ?
-    //     `${this.projectData.defaultLocale},${this.projectData.translationsLocales}` :
-    //     this.projectData.availableTranslationLocales;
-    //   this.projectLocales = translations
-    //     .split(',')
-    //     .filter((value, index, self) => {
-    //       return self.indexOf(value) === index;
-    //     }).filter((v) => v !== '');
-    //   this.activeLocale = this.projectData.defaultLocale;
-    //   this.activeLocaleEmit.emit(this.activeLocale);
-    // }
-
     if (changes.projectData.currentValue) {
-      this.defaultLocale = this.projectData.defaultLocale;
-      const projectLocales = this.projectData.translationsLocales ? this.projectData.translationsLocales : '';
-      this.projectLocales = projectLocales
-      // const locales = this.projectData.role === 'administrator' ? `${this.projectData.defaultLocale},${this.projectData.translationsLocales}` : `${this.projectData.availableTranslationLocales}`
-      // this.projectLocales = locales
-        .split(',')
-        .filter((value, index, self) => {
-          return self.indexOf(value) === index && value !== '';
-        });
-      this.activeLocale = this.projectData.defaultLocale;
+      this.projectLocales = this.getProjectLocales(this.projectData);
+      this.defaultLocale = this.getDefaultLocale(this.projectData);
+      this.activeLocale = this.defaultLocale;
+      console.log('this.projectData', this.projectData);
       this.activeLocaleEmit.emit(this.activeLocale);
     }
   }
@@ -108,6 +89,7 @@ export class ProjectSidebarComponent implements OnChanges, OnInit, OnDestroy {
         userId: user.id,
         projectId: this.projectData.id,
         userEmail: user.email,
+        defaultLocale: this.projectData.defaultLocale,
         projectLocales: this.getAvailableTranslationLocalesForUser(user.id),
       },
     });
@@ -140,7 +122,9 @@ export class ProjectSidebarComponent implements OnChanges, OnInit, OnDestroy {
   }
 
   private getAvailableTranslationLocalesForUser(userId: number): any[] {
-    const projectLocales = this.projectLocales.map((l) => {
+    const projectLocalesCopy = [...this.projectLocales];
+    projectLocalesCopy.unshift(this.projectData.defaultLocale);
+    const projectLocales = projectLocalesCopy.map((l) => {
       return {
         checked: false,
         value: l.trim(),
@@ -156,6 +140,7 @@ export class ProjectSidebarComponent implements OnChanges, OnInit, OnDestroy {
       });
     });
 
+    console.log('projectLocales1', projectLocales);
     return projectLocales;
   }
 
@@ -175,5 +160,29 @@ export class ProjectSidebarComponent implements OnChanges, OnInit, OnDestroy {
         this.projectLocales.push(locale);
         dialogRef.close();
       });
+  }
+
+  private getProjectLocales(projectData: ProjectModel): string[] {
+    const projectLocalesByRole = projectData.isShared ?
+      projectData.availableTranslationLocales : projectData.translationsLocales;
+    const projectLocales: string = projectLocalesByRole ? projectLocalesByRole : '';
+    return projectLocales
+      .split(',')
+      .filter((value, index, self) => {
+        return self.indexOf(value) === index && value !== '';
+      });
+  }
+
+  private getDefaultLocale(projectData: ProjectModel): string {
+    if (!projectData.isShared) {
+      return projectData.defaultLocale;
+    } else {
+      const localesArray = this.projectData.availableTranslationLocales.split(',');
+      const found = localesArray.find((locale: string) => locale === projectData.defaultLocale);
+      if (found) {
+        return projectData.defaultLocale;
+      }
+      return localesArray[0];
+    }
   }
 }

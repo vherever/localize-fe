@@ -11,6 +11,7 @@ interface DialogData {
   targetEmail: string;
   projectId: number;
   userId: number;
+  defaultLocale: string;
   projectLocales?: any;
 }
 
@@ -23,6 +24,7 @@ export class ManageUserDialogComponent implements OnInit, OnDestroy {
   onAvailableTranslationsUpdate: EventEmitter<any> = new EventEmitter();
 
   private defaultValues;
+  private projectLocales: string;
 
   managePermissionsForm: FormGroup;
 
@@ -87,6 +89,7 @@ export class ManageUserDialogComponent implements OnInit, OnDestroy {
   }
 
   private initCheckboxes(): void {
+    this.projectLocales = this.data.defaultLocale + ',' + this.data.projectLocales;
     this.data.projectLocales.forEach((o) => {
       const control = new FormControl(o);
       (this.managePermissionsForm.controls.availableTranslationLocales as FormArray).push(control);

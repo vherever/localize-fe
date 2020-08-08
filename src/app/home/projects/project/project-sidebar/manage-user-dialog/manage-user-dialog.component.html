@@ -8,7 +8,8 @@
       {{ data.projectLocales[i].value }}
       <input type="checkbox" [checked]="data.projectLocales[i].checked"
              [formControlName]="i"
-             (change)="onCheckboxChange(data.projectLocales[i], managePermissionsForm.value.availableTranslationLocales[i])">
+             (change)="onCheckboxChange(data.projectLocales[i], managePermissionsForm.value.availableTranslationLocales[i])"
+      />
     </label>
   </ng-container>
   <br><br>

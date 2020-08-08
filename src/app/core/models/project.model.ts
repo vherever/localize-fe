@@ -18,4 +18,5 @@ export interface ProjectModel {
   sharedUsers: UserModel[];
   sharedWith: SharedWithUserModel[];
   translationsCount: number;
+  isShared?: boolean;
 }

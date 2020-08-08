@@ -4,6 +4,7 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
 // app imports
 import { LocaleService } from '../../../../../core/services/api-interaction/locale.service';
+import { ErrorModel } from '../../../../../core/models/error.model';
 
 @Component({
   templateUrl: 'add-locale-dialog.component.html',
@@ -13,6 +14,7 @@ export class AddLocaleDialogComponent implements OnInit, OnDestroy {
   @Output() addedLocale: EventEmitter<string> = new EventEmitter();
 
   private localeAddForm: FormGroup;
+  private errorMessage: string;
 
   constructor(
     private fb: FormBuilder,
@@ -35,16 +37,24 @@ export class AddLocaleDialogComponent implements OnInit, OnDestroy {
 
   private onLanguageSelectedEmit(lang: string): void {
     if (!lang) {
+      this.clearErrorMessage();
       this.localeAddForm.setErrors({ required: true });
     }
     this.localeAddForm.get('locale').patchValue(lang);
   }
 
   private onFormSave(): void {
+    this.clearErrorMessage();
     this.localeService.addLocale(this.dialogData.projectUuid, this.localeAddForm.value)
       .pipe(untilComponentDestroyed(this))
       .subscribe(() => {
         this.addedLocale.emit(this.localeAddForm.value.locale);
+      }, (error: ErrorModel) => {
+        this.errorMessage = error.message;
       });
+  }
+
+  private clearErrorMessage(): void {
+    this.errorMessage = '';
   }
 }

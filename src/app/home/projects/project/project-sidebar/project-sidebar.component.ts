@@ -41,7 +41,6 @@ export class ProjectSidebarComponent implements OnChanges, OnInit, OnDestroy {
       this.projectLocales = this.getProjectLocales(this.projectData);
       this.defaultLocale = this.getDefaultLocale(this.projectData);
       this.activeLocale = this.defaultLocale;
-      console.log('this.projectData', this.projectData);
       this.activeLocaleEmit.emit(this.activeLocale);
     }
   }
@@ -140,7 +139,6 @@ export class ProjectSidebarComponent implements OnChanges, OnInit, OnDestroy {
       });
     });
 
-    console.log('projectLocales1', projectLocales);
     return projectLocales;
   }
 
@@ -164,13 +162,17 @@ export class ProjectSidebarComponent implements OnChanges, OnInit, OnDestroy {
 
   private getProjectLocales(projectData: ProjectModel): string[] {
     const projectLocalesByRole = projectData.isShared ?
-      projectData.availableTranslationLocales : projectData.translationsLocales;
+      projectData.translationsLocales : projectData.translationsLocales;
     const projectLocales: string = projectLocalesByRole ? projectLocalesByRole : '';
-    return projectLocales
+    const d = projectLocales
       .split(',')
       .filter((value, index, self) => {
         return self.indexOf(value) === index && value !== '';
       });
+    d.unshift(projectData.defaultLocale);
+    console.log('projectData.translationsLocales', projectData.translationsLocales);
+    console.log('d', d);
+    return d;
   }
 
   private getDefaultLocale(projectData: ProjectModel): string {
@@ -182,7 +184,8 @@ export class ProjectSidebarComponent implements OnChanges, OnInit, OnDestroy {
       if (found) {
         return projectData.defaultLocale;
       }
-      return localesArray[0];
+      // return localesArray[0];
+      return projectData.defaultLocale;
     }
   }
 }

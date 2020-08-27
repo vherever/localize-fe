@@ -93,6 +93,9 @@ export class TranslationEditorComponent extends LocalesHelper implements OnInit 
     } else {
       this.translateForm.get('translation').disable();
     }
+
+    // console.log('locales', this.locales);
+    // console.log('translations', this.translation.translations);
   }
 
   private buildFullTranslation(currentLang: string, currentFormValue: TranslateEditorModel): any {

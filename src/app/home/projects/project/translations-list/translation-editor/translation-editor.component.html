@@ -3,11 +3,18 @@
 
     <div>translation in <b>{{ activeLocaleCountryName }}</b></div>
     <select #t formControlName="editInLanguage" (ngModelChange)="onLanguageEditChange(t.value)">
-      <option *ngFor="let item of translation.translations | keyvalue" [selected]="localeIndex"
-              [ngValue]="item.value"
-              [attr.data-test]="item.value"
-              [value]="item.key"
-              [innerHtml]="item.key"></option>
+<!--      <option *ngFor="let item of translation.translations | keyvalue" [selected]="localeIndex"-->
+<!--              [ngValue]="item.value"-->
+<!--              [attr.data-test]="item.value"-->
+<!--              [value]="item.key"-->
+<!--              [innerHtml]="item.key"></option>-->
+      <ng-container *ngFor="let item of locales">
+        <option [selected]="localeIndex"
+                [ngValue]="item.translation"
+                [attr.data-test]="item.translation"
+                [value]="item.code"
+                [innerHtml]="item.code"></option>
+      </ng-container>
     </select>
 
     <!--<select #t formControlName="editInLanguage" (ngModelChange)="onLanguageEditChange(t.value)">-->

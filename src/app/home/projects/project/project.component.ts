@@ -44,7 +44,6 @@ export class ProjectComponent implements OnDestroy {
           this.projectService.getProjectById(this.projectId)
             .pipe(untilComponentDestroyed(this))
             .subscribe((project: ProjectModel) => {
-              // console.log('___ project', project); // todo
               this.projectData = project;
               // @ts-ignore
               this.appDataGlobalStorageService.currentProject = project;
@@ -52,9 +51,8 @@ export class ProjectComponent implements OnDestroy {
         } else {
           this.appDataGlobalStorageService.currentProject
             .pipe(untilComponentDestroyed(this))
-            .subscribe((res: ProjectModel) => {
-              // console.log('___ res', res); // todo
-              this.projectData = res;
+            .subscribe((project: ProjectModel) => {
+              this.projectData = project;
             });
         }
       });

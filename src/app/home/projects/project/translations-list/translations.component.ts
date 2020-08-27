@@ -129,6 +129,7 @@ export class TranslationsComponent extends LocalesHelper implements OnInit, OnCh
     dialogRef.componentInstance.addedTranslation
       .pipe(untilComponentDestroyed(this))
       .subscribe((res: TranslationModel) => {
+        console.log('res', res);
         this.translations.push(res);
         dialogRef.close();
       });

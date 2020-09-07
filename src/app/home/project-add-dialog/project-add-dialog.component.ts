@@ -6,6 +6,9 @@ import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
 import { ProjectService } from '../../core/services/api-interaction/project.service';
 import { ProjectModel } from '../../core/models/project.model';
 import { LocalesHelper } from '../../core/helpers/locales-helper';
+import { AppStateModel } from '../../store/models/app-state.model';
+import { Store } from '@ngrx/store';
+import { AddProjectAction } from '../../store/actions/projects.actions';
 
 @Component({
   templateUrl: 'project-add-dialog.component.html',
@@ -20,6 +23,7 @@ export class ProjectAddDialogComponent extends LocalesHelper implements OnInit, 
     private fb: FormBuilder,
     private pubSubService: NgxPubSubService,
     private projectService: ProjectService,
+    private store: Store<AppStateModel>,
   ) {
     super();
   }
@@ -44,11 +48,13 @@ export class ProjectAddDialogComponent extends LocalesHelper implements OnInit, 
   }
 
   onProjectAddFormSave(): void {
-    this.projectService.createProject(this.projectAddForm.value)
-      .pipe(untilComponentDestroyed(this))
-      .subscribe((res: ProjectModel) => {
-        this.addedProject.emit(res);
-      });
+    this.store.dispatch(new AddProjectAction(this.projectAddForm.value));
+
+    // this.projectService.createProject(this.projectAddForm.value)
+    //   .pipe(untilComponentDestroyed(this))
+    //   .subscribe((res: ProjectModel) => {
+    //     this.addedProject.emit(res);
+    //   });
   }
 
   private onLanguageSelectedEmit(lang: string): void {

@@ -1,21 +1,22 @@
-import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatDialog, MatDialogRef } from '@angular/material';
 import { NgxPubSubService } from '@pscoped/ngx-pub-sub';
 import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
-import { HttpResponse } from '@angular/common/http';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { Store } from '@ngrx/store';
 // app imports
 import { ProjectModel } from '../../core/models/project.model';
 import { ProjectAddDialogComponent } from '../project-add-dialog/project-add-dialog.component';
 import { ProjectService } from '../../core/services/api-interaction/project.service';
 import { RemoveDialogConfirmComponent } from '../../core/shared/remove-dialog-confirm/remove-dialog-confirm.component';
 import { AppDataGlobalStorageService } from '../../core/services/app-data-global-storage.service';
-import { UPLOADS_ENDPOINT } from '../../core/app-constants';
 import { FilterService } from '../../core/shared/filter/filter.service';
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
-import { take } from 'rxjs/operators';
 import { SortingHelper } from '../../core/helpers/sorting-helper';
 import { ProjectSettingsDialogComponent } from './project-settings-dialog/project-settings-dialog.component';
+import { AppStateModel } from '../../store/models/app-state.model';
+import { DeleteProjectAction, LoadProjectsAction } from '../../store/actions/projects.actions';
 
 @Component({
   selector: 'app-projects',
@@ -25,26 +26,19 @@ import { ProjectSettingsDialogComponent } from './project-settings-dialog/projec
 export class ProjectsComponent extends SortingHelper implements OnInit, OnDestroy {
   private currentProjectsListSwitcherState: string;
   private currentSortKey: string;
-  private currentProject: any;
 
-  yourProjects: ProjectModel[];
-  sharedProjects: ProjectModel[];
-  allProjects: ProjectModel[];
-  allProjectsFiltered: ProjectModel[];
-  uploadsEndpoint: string;
+  private projectsOriginal$: Observable<ProjectModel[]>;
+  private projects$: Observable<ProjectModel[]>;
 
-  changesDetected: BehaviorSubject<boolean>;
-  projects: BehaviorSubject<ProjectModel[]> = new BehaviorSubject(null);
+  private projectItemsCountAll$: Observable<number>;
+  private projectItemsCountOnlyMy$: Observable<number>;
+  private projectItemsCountSharedWithMe$: Observable<number>;
+
+  private loading$: Observable<boolean>;
+  private error$: Observable<Error>;
+  private dialogRef: MatDialogRef<ProjectAddDialogComponent>;
 
   activeSortKey: BehaviorSubject<string> = new BehaviorSubject<string>('');
-
-  get changesDetected$(): Observable<boolean> {
-    return this.changesDetected.asObservable();
-  }
-
-  get projects$(): Observable<ProjectModel[]> {
-    return this.projects.asObservable();
-  }
 
   constructor(
     private pubSubService: NgxPubSubService,
@@ -52,34 +46,45 @@ export class ProjectsComponent extends SortingHelper implements OnInit, OnDestro
     private projectService: ProjectService,
     private router: Router,
     private appDataGlobalStorageService: AppDataGlobalStorageService,
-    private cdr: ChangeDetectorRef,
     public filterService: FilterService,
+    private store: Store<AppStateModel>,
   ) {
     super();
-    this.uploadsEndpoint = UPLOADS_ENDPOINT;
-    this.changesDetected = new BehaviorSubject<boolean>(false);
   }
 
   ngOnInit() {
-    this.projectService.getProjects()
-      .pipe(untilComponentDestroyed(this))
-      .subscribe((projects: ProjectModel[]) => {
-        this.projects.next(projects);
+    this.projectsOriginal$ = this.store.select((store: AppStateModel) => store.projects.list);
+    this.projects$ = this.store.select((store: AppStateModel) => store.projects.list);
+    this.loading$ = this.store.select((store: AppStateModel) => store.projects.loading);
+    this.error$ = this.store.select((store: AppStateModel) => store.projects.error);
 
-        this.projects$
-          .pipe(untilComponentDestroyed(this))
-          .subscribe((res: ProjectModel[]) => {
-            this.allProjects = res;
-            this.allProjectsFiltered = this.getProjectsFiltered(this.currentProjectsListSwitcherState, this.currentSortKey);
-          });
-      });
+    this.projectItemsCountAll$ = this.projects$
+      .pipe(
+        map((projects: ProjectModel[]) => projects.length),
+      );
+
+    this.projectItemsCountOnlyMy$ = this.projects$
+      .pipe(
+        map((projects: ProjectModel[]) => {
+          return projects.slice().filter((project: ProjectModel) => project.role === 'administrator').length;
+        }),
+      );
+
+    this.projectItemsCountSharedWithMe$ = this.projects$
+      .pipe(
+        map((projects: ProjectModel[]) => {
+          return projects.slice().filter((project: ProjectModel) => project.role !== 'administrator').length;
+        }),
+      );
+
+    this.store.dispatch(new LoadProjectsAction());
 
     this.activeSortKey.asObservable()
       .pipe(untilComponentDestroyed(this))
       .subscribe((value: string) => {
         if (value) {
           this.currentSortKey = value;
-          this.allProjectsFiltered = this.getProjectsFiltered(this.currentProjectsListSwitcherState, this.currentSortKey);
+          this.projects$ = this.sortData(this.projects$, this.currentSortKey);
         }
       });
   }
@@ -88,34 +93,16 @@ export class ProjectsComponent extends SortingHelper implements OnInit, OnDestro
   }
 
   onProjectAddClick(): void {
-    const dialogRef: MatDialogRef<ProjectAddDialogComponent> =
+    this.dialogRef =
       this.dialog.open(ProjectAddDialogComponent, {
         width: '500px',
         data: {},
       });
 
-    dialogRef.componentInstance.addedProject
+    this.dialogRef.componentInstance.addedProject
       .pipe(untilComponentDestroyed(this))
-      .subscribe((res: ProjectModel) => {
-        this.changesDetected.next(true);
-        this.cdr.detectChanges();
-
-        this.projects$
-          .pipe(
-            take(1),
-            untilComponentDestroyed(this),
-          )
-          .subscribe((res2: ProjectModel[]) => {
-            res2.push(res);
-            this.projects.next(res2);
-            this.allProjectsFiltered = this.getProjectsFiltered(this.currentProjectsListSwitcherState, this.currentSortKey);
-          });
-
-        this.changesDetected.next(false);
-        this.cdr.detectChanges();
-        this.cdr.markForCheck();
-
-        dialogRef.close();
+      .subscribe(() => {
+        this.dialogRef.close();
       });
   }
 
@@ -158,42 +145,66 @@ export class ProjectsComponent extends SortingHelper implements OnInit, OnDestro
   }
 
   onSortKeySelected2(value: string): void {
-    this.changesDetected.next(true);
-    this.cdr.detectChanges();
-
     this.currentSortKey = value;
     this.activeSortKey.next(value);
-    this.allProjectsFiltered = this.getProjectsFiltered(this.currentProjectsListSwitcherState, this.currentSortKey);
-
-    this.changesDetected.next(false);
-    this.cdr.detectChanges();
-    this.cdr.markForCheck();
   }
 
   onProjectsListToggleEvent(value: string): void {
     this.currentProjectsListSwitcherState = value;
-    this.allProjectsFiltered = this.getProjectsFiltered(this.currentProjectsListSwitcherState, this.currentSortKey);
+    if (this.currentSortKey) {
+      this.projects$ = this.sortData(this.getProjectsFiltered(this.currentProjectsListSwitcherState), this.currentSortKey);
+    } else {
+      this.projects$ = this.getProjectsFiltered(this.currentProjectsListSwitcherState);
+    }
   }
 
-  private getProjectsFiltered(listSwitchKey: string, sortKey: string): any {
+  private getProjectsFiltered(listSwitchKey: string): any {
     this.currentProjectsListSwitcherState = listSwitchKey;
 
-    this.yourProjects = this.allProjects.filter((p) => p.role === 'administrator');
-    this.sharedProjects = this.allProjects.filter((p) => p.role !== 'administrator');
+    if (this.currentSortKey) {
+      this.activeSortKey.next(this.currentSortKey);
+    }
 
     switch (listSwitchKey) {
       case 'all':
-        this.allProjectsFiltered = this.allProjects;
-        break;
+        return this.projectsOriginal$
+          .pipe(
+            map((projects: ProjectModel[]) => {
+              this.closeDialog();
+              return projects.slice().filter((project) => project);
+            }),
+          );
       case 'yours':
-        this.allProjectsFiltered = this.yourProjects;
-        break;
+        return this.projectsOriginal$
+          .pipe(
+            map((projects: ProjectModel[]) => {
+              this.closeDialog();
+              return projects.slice().filter((project: ProjectModel) => project.role === 'administrator');
+            }),
+          );
       case 'shared':
-        this.allProjectsFiltered = this.sharedProjects;
-        break;
+        return this.projectsOriginal$
+          .pipe(
+            map((projects: ProjectModel[]) => {
+              this.closeDialog();
+              return projects.slice().filter((project: ProjectModel) => project.role !== 'administrator');
+            }),
+          );
+      default:
+        return this.projectsOriginal$
+          .pipe(
+            map((projects: ProjectModel[]) => {
+              this.closeDialog();
+              return projects.slice().filter((project: ProjectModel) => project);
+            }),
+          );
     }
+  }
 
-    return this.sortData(this.allProjectsFiltered, this.currentSortKey);
+  private closeDialog(): void {
+    if (this.dialogRef) {
+      this.dialogRef.close();
+    }
   }
 
   private deleteProjectAction(project: ProjectModel): void {
@@ -201,33 +212,17 @@ export class ProjectsComponent extends SortingHelper implements OnInit, OnDestro
     const dialogRef = this.dialog.open(RemoveDialogConfirmComponent, {
       width: '500px',
       data: `Do you really want to remove the project
-      <b>${this.getProjectById(uuid).title}</b>?
+      <b>${project.title}</b>?
       This will delete the entire project permanently
       including all translations across
-      <b>${this.getProjectLocalesCount(uuid)}</b> locales.`,
+      <b>${this.getProjectLocalesCount(project)}</b> locales.`,
     });
 
     dialogRef.afterClosed()
       .pipe(untilComponentDestroyed(this))
       .subscribe((state: boolean) => {
         if (state) {
-          this.projectService.deleteProject(uuid)
-            .pipe(untilComponentDestroyed(this))
-            .subscribe((res: HttpResponse<any>) => {
-              if (res.status === 200) {
-                // update userData after translation updated
-                this.projects$
-                  .pipe(
-                    take(1),
-                    untilComponentDestroyed(this),
-                  )
-                  .subscribe((res2: ProjectModel[]) => {
-                    const filtered = res2.filter((p) => p.uuid !== uuid);
-                    this.projects.next(filtered);
-                    this.allProjectsFiltered = this.getProjectsFiltered(this.currentProjectsListSwitcherState, this.currentSortKey);
-                  });
-              }
-            });
+          this.store.dispatch(new DeleteProjectAction(uuid));
         }
       });
   }
@@ -237,8 +232,6 @@ export class ProjectsComponent extends SortingHelper implements OnInit, OnDestro
   }
 
   private projectSettingsAction(project: ProjectModel): void {
-    const projectInList = this.allProjectsFiltered.find((p) => p.uuid === project.uuid);
-    const indexInList = this.allProjectsFiltered.indexOf(projectInList);
     const dialogRef: MatDialogRef<ProjectSettingsDialogComponent> =
       this.dialog.open(ProjectSettingsDialogComponent, {
         width: '500px',
@@ -253,24 +246,14 @@ export class ProjectsComponent extends SortingHelper implements OnInit, OnDestro
 
     dialogRef.componentInstance.onResponseReceived
       .pipe(untilComponentDestroyed(this))
-      .subscribe((res) => {
-        this.allProjectsFiltered[indexInList] = res;
-        this.allProjectsFiltered = this.getProjectsFiltered(this.currentProjectsListSwitcherState, this.currentSortKey);
-        this.changesDetected.next(true);
-        this.cdr.detectChanges();
-        this.changesDetected.next(false);
+      .subscribe(() => {
         dialogRef.close();
       });
   }
 
-  private getProjectById(uuid: string): ProjectModel {
-    return this.yourProjects.find((p: ProjectModel) => p.uuid === uuid);
-  }
-
-  private getProjectLocalesCount(uuid: string): number {
+  private getProjectLocalesCount(project: ProjectModel): number {
     // TODO: Inform about shared project
     // +1 means +defaultLocale, project always have at least one locale by default
-    const project = this.getProjectById(uuid);
     return project.translationsLocales ? project.translationsLocales
       .split(',').length + 1 : 1;
   }

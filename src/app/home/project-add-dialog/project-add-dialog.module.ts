@@ -9,6 +9,8 @@ import { ProjectAddDialogComponent } from './project-add-dialog.component';
 import { ProjectService } from '../../core/services/api-interaction/project.service';
 import { ProjectApiService } from '../../core/services/api/project-api.service';
 import { CountrySearchAutocompleteModule } from '../../core/shared/country-search-autocomplete/country-search-autocomplete.module';
+import { ProjectsEffects } from '../../store/effects/projects.effects';
+import { EffectsModule } from '@ngrx/effects';
 
 @NgModule({
   imports: [
@@ -22,6 +24,7 @@ import { CountrySearchAutocompleteModule } from '../../core/shared/country-searc
     NgSelectModule,
     FlexLayoutModule,
     CountrySearchAutocompleteModule,
+    EffectsModule.forFeature([ProjectsEffects]),
   ],
   declarations: [ProjectAddDialogComponent],
   entryComponents: [ProjectAddDialogComponent],

@@ -6,19 +6,24 @@
     </div>
   </div>
 
-  <div class="lz-filters-area-wrapper" *ngIf="allProjects">
-    <app-projects-filters-bar [projectsAllCount]="allProjects.length"
-                              [yourProjectsCount]="yourProjects.length"
-                              [sharedProjectsCount]="sharedProjects.length"
+  <ng-template #error>
+    <h2>{{(error$ | async)?.message}}</h2>
+  </ng-template>
+
+  <div *ngIf="loading$ | async">loading....</div>
+
+  <div class="lz-filters-area-wrapper" *ngIf="projects$ | async">
+    <app-projects-filters-bar [projectsAllCount]="projectItemsCountAll$ | async"
+                              [yourProjectsCount]="projectItemsCountOnlyMy$ | async"
+                              [sharedProjectsCount]="projectItemsCountSharedWithMe$ | async"
                               (sortKeySelected2)="onSortKeySelected2($event)"
                               (projectsListToggleEvent)="onProjectsListToggleEvent($event)"></app-projects-filters-bar>
   </div>
-  <div class="lz_projects_wrapper" *ngIf="allProjects">
-
-    <ng-container *ngIf="!(changesDetected$ | async)">
+  <ng-container *ngIf="projects$ | async">
+    <div class="lz_projects_wrapper">
       <div class="lz_list">
         <a href="javascript:;" (click)="onProjectClick($event, project)"
-           *ngFor="let project of allProjectsFiltered | filter: {title: filterService.filterText, description: filterService.filterText}"
+           *ngFor="let project of projects$ | async | filter: {title: filterService.filterText, description: filterService.filterText}"
            class="lz_list_item lz_list_item_link">
           <div fxLayout fxLayoutAlign="space-between stretch">
             <div class="lz_project_name_description">
@@ -82,8 +87,8 @@
           </div>
         </a>
       </div>
-    </ng-container>
-  </div>
+    </div>
+  </ng-container>
 </div>
 
 <app-sprite [spriteKey]="'controls'"></app-sprite>

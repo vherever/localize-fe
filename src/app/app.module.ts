@@ -18,6 +18,11 @@ import { BrowserCacheModule, MemoryCacheService } from '@ngx-cache/platform-brow
 import { AppRouteRootModule } from './app-route-root/app-route-root.module';
 import { PubSubEventsHandlerModule } from './core/shared/pub-sub-events-handler/pub-sub-events-handler.module';
 import { MAT_RIPPLE_GLOBAL_OPTIONS } from '@angular/material';
+import { EffectsModule } from '@ngrx/effects';
+import { StoreModule } from '@ngrx/store';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { environment } from '../environments/environment';
+import { ProjectsReducer } from './store/reducers/projects.reducer';
 
 @NgModule({
   declarations: [
@@ -46,8 +51,15 @@ import { MAT_RIPPLE_GLOBAL_OPTIONS } from '@angular/material';
     AppRoutingModule,
     PubSubEventsHandlerModule,
     HeaderModule,
+    StoreModule.forRoot({
+      projects: ProjectsReducer,
+    }),
+    EffectsModule.forRoot([]),
+    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
   ],
   providers: [
+    // ProjectService,
+    // ProjectApiService,
     TransferState,
     AuthGuardService,
     AuthService,

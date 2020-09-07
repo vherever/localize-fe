@@ -3,6 +3,7 @@ import { Observable } from 'rxjs';
 // app imports
 import { ProjectApiService } from '../api/project-api.service';
 import { ProjectModel } from '../../models/project.model';
+import { delay } from 'rxjs/operators';
 
 @Injectable()
 export class ProjectService {
@@ -28,6 +29,8 @@ export class ProjectService {
   }
 
   deleteProject(uuid: string): Observable<any> {
-    return this.projectApiService.deleteProject(uuid);
+    return this.projectApiService.deleteProject(uuid).pipe(
+      delay(2000),
+    );
   }
 }

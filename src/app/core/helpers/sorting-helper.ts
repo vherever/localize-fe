@@ -5,42 +5,80 @@
  * title (*_asc, *_desc): string
  * name (*_asc, *_desc): string
  */
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+
 export class SortingHelper {
-  sortData(arr: any[], key: string): any {
+  sortData(source: Observable<any>, key: string): any {
     const sortKey = this.getRawKey(key);
     switch (key) {
       case 'name_asc':
       case 'title_asc':
-        return arr.sort((a, b) => {
-          if (a[sortKey].toLowerCase() < b[sortKey].toLowerCase()) { return -1; }
-          if (a[sortKey].toLowerCase() > b[sortKey].toLowerCase()) { return 1; }
-          return 0;
-        });
+        return source
+          .pipe(
+            map((data: any[]) => {
+              return data.slice().sort((a, b) => {
+                if (a[sortKey].toLowerCase() < b[sortKey].toLowerCase()) {
+                  return -1;
+                }
+                if (a[sortKey].toLowerCase() > b[sortKey].toLowerCase()) {
+                  return 1;
+                }
+                return 0;
+              });
+            }),
+          );
       case 'name_desc':
       case 'title_desc':
-        return arr.sort((a, b) => {
-          if (a[sortKey].toLowerCase() > b[sortKey].toLowerCase()) { return -1; }
-          if (a[sortKey].toLowerCase() < b[sortKey].toLowerCase()) { return 1; }
-          return 0;
-        });
+        return source
+          .pipe(
+            map((data: any[]) => {
+              return data.slice().sort((a, b) => {
+                if (a[sortKey].toLowerCase() > b[sortKey].toLowerCase()) {
+                  return -1;
+                }
+                if (a[sortKey].toLowerCase() < b[sortKey].toLowerCase()) {
+                  return 1;
+                }
+                return 0;
+              });
+            }),
+          );
       case 'created_asc':
       case 'updated_asc':
-        return arr.sort((a, b) => {
-          const keyA = new Date(a[sortKey]);
-          const keyB = new Date(b[sortKey]);
-          if (keyA < keyB) { return -1; }
-          if (keyA > keyB) { return 1; }
-          return 0;
-        });
+        return source
+          .pipe(
+            map((data: any[]) => {
+              return data.slice().sort((a, b) => {
+                const keyA = new Date(a[sortKey]);
+                const keyB = new Date(b[sortKey]);
+                if (keyA < keyB) {
+                  return -1;
+                }
+                if (keyA > keyB) {
+                  return 1;
+                }
+                return 0;
+              });
+            }),
+          );
       case 'created_desc':
       case 'updated_desc':
-        return arr.sort((a, b) => {
-          const keyA = new Date(a[sortKey]);
-          const keyB = new Date(b[sortKey]);
-          if (keyA > keyB) { return -1; }
-          if (keyA < keyB) { return 1; }
-          return 0;
-        });
+        return source
+          .pipe(
+            map((data: any[]) => {
+              return data.slice().sort((a, b) => {
+                const keyA = new Date(a[sortKey]);
+                const keyB = new Date(b[sortKey]);
+                if (keyA > keyB) {
+                  return -1;
+                }
+                if (keyA < keyB) {
+                  return 1;
+                }
+              });
+            }),
+          );
     }
   }
 

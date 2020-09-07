@@ -17,6 +17,8 @@ import { AppProjectsFilterSelectComponent } from './projects-filters-bar/filter-
 import { FormsModule } from '@angular/forms';
 import { ProjectsFiltersBarModule } from './projects-filters-bar/projects-filters-bar.module';
 import { ProjectSettingsDialogModule } from './project-settings-dialog/project-settings-dialog.module';
+import { ProjectsEffects } from '../../store/effects/projects.effects';
+import { EffectsModule } from '@ngrx/effects';
 
 @NgModule({
   imports: [
@@ -29,10 +31,12 @@ import { ProjectSettingsDialogModule } from './project-settings-dialog/project-s
     SpriteModule,
     NgxPopperModule.forRoot({}),
     ProjectsFiltersBarModule,
+    EffectsModule.forFeature([ProjectsEffects]),
   ],
   providers: [
     ProjectApiService,
     ProjectService,
+    ProjectsEffects,
   ],
   declarations: [
     ProjectsComponent,

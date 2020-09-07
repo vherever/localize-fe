@@ -52,6 +52,29 @@ export function ProjectsReducer(state: ProjectState = initialState, action: Proj
         error: action.payload,
         loading: false,
       };
+    // UPDATE PROJECT
+    case ProjectActionTypes.UPDATE_PROJECT:
+      return {
+        ...state,
+        loading: true,
+      };
+    case ProjectActionTypes.UPDATE_PROJECT_SUCCESS:
+      return {
+        ...state,
+        list: state.list.map((o) => {
+          if (o.uuid === action.payload.uuid) {
+            o = { ...o, ...action.payload };
+          }
+          return o;
+        }),
+        loading: false,
+      };
+    case ProjectActionTypes.UPDATE_PROJECT_FAILURE:
+      return {
+        ...state,
+        error: action.payload,
+        loading: false,
+      };
     // DELETE PROJECT
     case ProjectActionTypes.DELETE_PROJECT:
       return {

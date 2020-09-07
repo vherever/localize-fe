@@ -1,10 +1,10 @@
 import { Component, EventEmitter, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA } from '@angular/material';
-import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
+import { Store } from '@ngrx/store';
 // app imports
-import { ProjectService } from '../../../core/services/api-interaction/project.service';
 import { ProjectModel } from '../../../core/models/project.model';
+import { UpdateProjectAction } from '../../../store/actions/projects.actions';
 
 @Component({
   templateUrl: 'project-settings-dialog.component.html',
@@ -13,8 +13,8 @@ import { ProjectModel } from '../../../core/models/project.model';
     '../../../core/shared/country-search-autocomplete/country-search-autocomplete.component.scss',
   ],
 })
-export class ProjectSettingsDialogComponent implements OnInit, OnDestroy {
-  onResponseReceived: EventEmitter<any> = new EventEmitter();
+export class ProjectSettingsDialogComponent implements OnInit {
+  onRequestSent: EventEmitter<boolean> = new EventEmitter();
 
   private settingsForm: FormGroup;
   private locales: any;
@@ -22,7 +22,7 @@ export class ProjectSettingsDialogComponent implements OnInit, OnDestroy {
   constructor(
     @Inject(MAT_DIALOG_DATA) public projectData: any,
     private fb: FormBuilder,
-    private projectService: ProjectService,
+    private store: Store,
   ) {}
 
   ngOnInit() {
@@ -34,8 +34,6 @@ export class ProjectSettingsDialogComponent implements OnInit, OnDestroy {
     this.locales = this.getLocales(this.projectData);
   }
 
-  ngOnDestroy() {}
-
   get titleField(): FormControl {
     return this.settingsForm.get('title') as FormControl;
   }
@@ -46,11 +44,8 @@ export class ProjectSettingsDialogComponent implements OnInit, OnDestroy {
       description: this.settingsForm.value.description,
       defaultLocale: this.settingsForm.value.defaultLocale,
     };
-    this.projectService.updateProject(data, this.projectData.uuid)
-      .pipe(untilComponentDestroyed(this))
-      .subscribe((res: ProjectModel) => {
-        this.onResponseReceived.emit(res);
-      });
+    this.store.dispatch(new UpdateProjectAction(data, this.projectData.uuid));
+    this.onRequestSent.emit(true);
   }
 
   private getLocales(projectData: any): string[] {

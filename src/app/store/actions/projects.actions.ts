@@ -7,6 +7,9 @@ export enum ProjectActionTypes {
   ADD_PROJECT = '[PROJECT] Add Project',
   ADD_PROJECT_SUCCESS = '[PROJECT] Add Project Success',
   ADD_PROJECT_FAILURE = '[PROJECT] Add Project Failure',
+  UPDATE_PROJECT = '[PROJECT] Update Project',
+  UPDATE_PROJECT_SUCCESS = '[PROJECT] Update Project Success',
+  UPDATE_PROJECT_FAILURE = '[PROJECT] Update Project Failure',
   DELETE_PROJECT = '[PROJECT] Delete Project',
   DELETE_PROJECT_SUCCESS = '[PROJECT] Delete Project Success',
   DELETE_PROJECT_FAILURE = '[PROJECT] Delete Project Failure',
@@ -46,6 +49,24 @@ export class AddProjectFailureAction implements Action {
   }
 }
 
+export class UpdateProjectAction implements Action {
+  readonly type = ProjectActionTypes.UPDATE_PROJECT;
+  constructor(public payload: any, public uuid: string) {
+  }
+}
+
+export class UpdateProjectSuccessAction implements Action {
+  readonly type = ProjectActionTypes.UPDATE_PROJECT_SUCCESS;
+  constructor(public payload: any, uuid: string) {
+  }
+}
+
+export class UpdateProjectFailureAction implements Action {
+  readonly type = ProjectActionTypes.UPDATE_PROJECT_FAILURE;
+  constructor(public payload: Error) {
+  }
+}
+
 export class DeleteProjectAction implements Action {
   readonly type = ProjectActionTypes.DELETE_PROJECT;
   constructor(public payload: string) {
@@ -67,4 +88,5 @@ export class DeleteProjectFailureAction implements Action {
 export type ProjectsAction =
   LoadProjectsAction | LoadProjectsSuccessAction | LoadProjectsFailureAction |
   AddProjectAction | AddProjectSuccessAction | AddProjectFailureAction |
-  DeleteProjectAction | DeleteProjectSuccessAction | DeleteProjectFailureAction;
+  DeleteProjectAction | DeleteProjectSuccessAction | DeleteProjectFailureAction |
+  UpdateProjectAction | UpdateProjectSuccessAction | UpdateProjectFailureAction;

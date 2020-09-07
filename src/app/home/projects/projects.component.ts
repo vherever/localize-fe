@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { MatDialog, MatDialogRef } from '@angular/material';
 import { NgxPubSubService } from '@pscoped/ngx-pub-sub';
 import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 // app imports
@@ -37,8 +37,6 @@ export class ProjectsComponent extends SortingHelper implements OnInit, OnDestro
   private loading$: Observable<boolean>;
   private error$: Observable<Error>;
   private dialogRef: MatDialogRef<ProjectAddDialogComponent>;
-
-  activeSortKey: BehaviorSubject<string> = new BehaviorSubject<string>('');
 
   constructor(
     private pubSubService: NgxPubSubService,
@@ -78,15 +76,6 @@ export class ProjectsComponent extends SortingHelper implements OnInit, OnDestro
       );
 
     this.store.dispatch(new LoadProjectsAction());
-
-    this.activeSortKey.asObservable()
-      .pipe(untilComponentDestroyed(this))
-      .subscribe((value: string) => {
-        if (value) {
-          this.currentSortKey = value;
-          this.projects$ = this.sortData(this.projects$, this.currentSortKey);
-        }
-      });
   }
 
   ngOnDestroy() {
@@ -146,7 +135,7 @@ export class ProjectsComponent extends SortingHelper implements OnInit, OnDestro
 
   onSortKeySelected2(value: string): void {
     this.currentSortKey = value;
-    this.activeSortKey.next(value);
+    this.projects$ = this.sortData(this.projects$, value);
   }
 
   onProjectsListToggleEvent(value: string): void {
@@ -160,10 +149,6 @@ export class ProjectsComponent extends SortingHelper implements OnInit, OnDestro
 
   private getProjectsFiltered(listSwitchKey: string): any {
     this.currentProjectsListSwitcherState = listSwitchKey;
-
-    if (this.currentSortKey) {
-      this.activeSortKey.next(this.currentSortKey);
-    }
 
     switch (listSwitchKey) {
       case 'all':
@@ -208,7 +193,6 @@ export class ProjectsComponent extends SortingHelper implements OnInit, OnDestro
   }
 
   private deleteProjectAction(project: ProjectModel): void {
-    const uuid = project.uuid;
     const dialogRef = this.dialog.open(RemoveDialogConfirmComponent, {
       width: '500px',
       data: `Do you really want to remove the project
@@ -222,7 +206,7 @@ export class ProjectsComponent extends SortingHelper implements OnInit, OnDestro
       .pipe(untilComponentDestroyed(this))
       .subscribe((state: boolean) => {
         if (state) {
-          this.store.dispatch(new DeleteProjectAction(uuid));
+          this.store.dispatch(new DeleteProjectAction(project.uuid));
         }
       });
   }
@@ -240,11 +224,10 @@ export class ProjectsComponent extends SortingHelper implements OnInit, OnDestro
           title: project.title,
           description: project.description,
           defaultLocale: project.defaultLocale,
-          translationsLocales: project.translationsLocales,
         },
       });
 
-    dialogRef.componentInstance.onResponseReceived
+    dialogRef.componentInstance.onRequestSent
       .pipe(untilComponentDestroyed(this))
       .subscribe(() => {
         dialogRef.close();

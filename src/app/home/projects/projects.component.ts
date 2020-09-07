@@ -35,8 +35,10 @@ export class ProjectsComponent extends SortingHelper implements OnInit, OnDestro
   private projectItemsCountSharedWithMe$: Observable<number>;
 
   private loading$: Observable<boolean>;
+  private projectUpdated$: Observable<boolean>;
   private error$: Observable<Error>;
-  private dialogRef: MatDialogRef<ProjectAddDialogComponent>;
+  private dialogProjectAddRef: MatDialogRef<ProjectAddDialogComponent>;
+  private dialogProjectUpdateRef: MatDialogRef<ProjectSettingsDialogComponent>;
 
   constructor(
     private pubSubService: NgxPubSubService,
@@ -55,6 +57,8 @@ export class ProjectsComponent extends SortingHelper implements OnInit, OnDestro
     this.projects$ = this.store.select((store: AppStateModel) => store.projects.list);
     this.loading$ = this.store.select((store: AppStateModel) => store.projects.loading);
     this.error$ = this.store.select((store: AppStateModel) => store.projects.error);
+
+    this.projectUpdated$ = this.store.select((store: AppStateModel) => store.projects.updated);
 
     this.projectItemsCountAll$ = this.projects$
       .pipe(
@@ -75,23 +79,27 @@ export class ProjectsComponent extends SortingHelper implements OnInit, OnDestro
         }),
       );
 
+    // Load Projects
     this.store.dispatch(new LoadProjectsAction());
+
+    // Close settings modal after success
+    this.projectUpdated$
+      .pipe(untilComponentDestroyed(this))
+      .subscribe((projectUpdated: boolean) => {
+        if (projectUpdated) {
+          this.dialogProjectUpdateRef.close();
+        }
+      });
   }
 
   ngOnDestroy() {
   }
 
   onProjectAddClick(): void {
-    this.dialogRef =
+    this.dialogProjectAddRef =
       this.dialog.open(ProjectAddDialogComponent, {
         width: '500px',
         data: {},
-      });
-
-    this.dialogRef.componentInstance.addedProject
-      .pipe(untilComponentDestroyed(this))
-      .subscribe(() => {
-        this.dialogRef.close();
       });
   }
 
@@ -187,8 +195,8 @@ export class ProjectsComponent extends SortingHelper implements OnInit, OnDestro
   }
 
   private closeDialog(): void {
-    if (this.dialogRef) {
-      this.dialogRef.close();
+    if (this.dialogProjectAddRef) {
+      this.dialogProjectAddRef.close();
     }
   }
 
@@ -216,7 +224,7 @@ export class ProjectsComponent extends SortingHelper implements OnInit, OnDestro
   }
 
   private projectSettingsAction(project: ProjectModel): void {
-    const dialogRef: MatDialogRef<ProjectSettingsDialogComponent> =
+    this.dialogProjectUpdateRef =
       this.dialog.open(ProjectSettingsDialogComponent, {
         width: '500px',
         data: {
@@ -225,12 +233,6 @@ export class ProjectsComponent extends SortingHelper implements OnInit, OnDestro
           description: project.description,
           defaultLocale: project.defaultLocale,
         },
-      });
-
-    dialogRef.componentInstance.onRequestSent
-      .pipe(untilComponentDestroyed(this))
-      .subscribe(() => {
-        dialogRef.close();
       });
   }
 

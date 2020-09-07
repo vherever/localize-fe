@@ -57,6 +57,7 @@ export function ProjectsReducer(state: ProjectState = initialState, action: Proj
       return {
         ...state,
         loading: true,
+        updated: false,
       };
     case ProjectActionTypes.UPDATE_PROJECT_SUCCESS:
       return {
@@ -68,12 +69,14 @@ export function ProjectsReducer(state: ProjectState = initialState, action: Proj
           return o;
         }),
         loading: false,
+        updated: true,
       };
     case ProjectActionTypes.UPDATE_PROJECT_FAILURE:
       return {
         ...state,
         error: action.payload,
         loading: false,
+        updated: false,
       };
     // DELETE PROJECT
     case ProjectActionTypes.DELETE_PROJECT:

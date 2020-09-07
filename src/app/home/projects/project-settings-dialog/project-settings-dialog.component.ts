@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA } from '@angular/material';
 import { Store } from '@ngrx/store';
@@ -14,13 +14,11 @@ import { UpdateProjectAction } from '../../../store/actions/projects.actions';
   ],
 })
 export class ProjectSettingsDialogComponent implements OnInit {
-  onRequestSent: EventEmitter<boolean> = new EventEmitter();
-
   private settingsForm: FormGroup;
   private locales: any;
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) public projectData: any,
+    @Inject(MAT_DIALOG_DATA) public projectData: ProjectModel,
     private fb: FormBuilder,
     private store: Store,
   ) {}
@@ -45,7 +43,6 @@ export class ProjectSettingsDialogComponent implements OnInit {
       defaultLocale: this.settingsForm.value.defaultLocale,
     };
     this.store.dispatch(new UpdateProjectAction(data, this.projectData.uuid));
-    this.onRequestSent.emit(true);
   }
 
   private getLocales(projectData: any): string[] {

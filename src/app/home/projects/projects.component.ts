@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatDialog, MatDialogRef } from '@angular/material';
 import { NgxPubSubService } from '@pscoped/ngx-pub-sub';
@@ -22,6 +22,7 @@ import { DeleteProjectAction, LoadProjectsAction } from '../../store/actions/pro
   selector: 'app-projects',
   templateUrl: 'projects.component.html',
   styleUrls: ['projects.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProjectsComponent extends SortingHelper implements OnInit, OnDestroy {
   private currentProjectsListSwitcherState: string;

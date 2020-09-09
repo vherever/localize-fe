@@ -1,12 +1,11 @@
-import { CountryModel, LocalesModel } from '../models/locales.model';
-
 export class LocalesHelper {
   formatData(data) {
-    const countries = data.countries;
-    const languages = data.languages;
+    const countries = {...data.countries};
+    const languages = {...data.languages};
     const countries_ = [];
 
     Object.keys(countries).forEach((key) => {
+      countries[key] = {...countries[key]};
       countries[key]['key'] = key.toLowerCase();
       countries_.push(countries[key]);
       countries[key].locales = [];

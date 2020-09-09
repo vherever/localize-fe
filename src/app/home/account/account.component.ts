@@ -1,14 +1,15 @@
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material';
-import { CacheService } from '@ngx-cache/core';
 import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
-import { NgxPubSubService } from '@pscoped/ngx-pub-sub';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
 // app imports
 import { UserModel } from '../../core/models/user.model';
-import { AppDataGlobalStorageService } from '../../core/services/app-data-global-storage.service';
 import { UserService } from '../../core/services/api-interaction/user.service';
 import { UPLOADS_ENDPOINT } from '../../core/app-constants';
+import { AppStateModel } from '../../store/models/app-state.model';
+import { UpdateUserAction } from '../../store/actions/user.actions';
 
 @Component({
   templateUrl: 'account.component.html',
@@ -17,32 +18,55 @@ import { UPLOADS_ENDPOINT } from '../../core/app-constants';
 export class AccountComponent implements OnInit, OnDestroy {
   @ViewChild('nameFieldRef', {static: false}) nameFieldRef: ElementRef;
 
+  private readonly uploadsEndpoint: string = UPLOADS_ENDPOINT;
   private formCurrentState: any;
-  accountSettingsForm: FormGroup;
-  fileInput: ElementRef;
-  userData: UserModel;
-  uploadsEndpoint: string;
-  formChanged: boolean;
+  private accountSettingsForm: FormGroup;
+  private fileInput: ElementRef;
+  private formChanged: boolean;
+  private userData: UserModel;
+  private avatar: string;
+
+  private userData$: Observable<UserModel>;
+  private userUpdated$: Observable<boolean>;
+  private avatar$: Observable<string>;
 
   constructor(
-    private cacheService: CacheService,
-    private pubSubService: NgxPubSubService,
-    private appDataGlobalStorageService: AppDataGlobalStorageService,
     private fb: FormBuilder,
     private userInfoService: UserService,
     private snackBar: MatSnackBar,
+    private store: Store<AppStateModel>,
   ) {
   }
 
   ngOnInit() {
-    this.uploadsEndpoint = UPLOADS_ENDPOINT;
-
-    this.appDataGlobalStorageService.userData
+    this.userData$ = this.store.select((store: AppStateModel) => store.userData.user);
+    this.userData$
       .pipe(untilComponentDestroyed(this))
-      .subscribe((res: UserModel) => {
-        this.userData = res;
-        if (this.userData) {
-          this.initForm();
+      .subscribe((userData: any) => {
+        this.userData = userData;
+        this.avatar = this.userData.avatar;
+        this.initForm();
+      });
+
+    this.avatar$ = this.store.select((store: AppStateModel) => store.userData.avatar);
+    this.avatar$
+      .pipe(untilComponentDestroyed(this))
+      .subscribe((avatar: string) => {
+        this.avatar = avatar;
+      });
+
+    this.userUpdated$ = this.store.select((store: AppStateModel) => store.userData.updated);
+    this.userUpdated$
+      .pipe(untilComponentDestroyed(this))
+      .subscribe((state: boolean) => {
+        if (state) {
+          this.snackBar.open(
+            `The data was saved.`,
+            'Okay',
+            { duration: 5000 },
+          );
+          this.formChanged = false;
+          this.nameFieldRef.nativeElement.blur();
         }
       });
   }
@@ -50,31 +74,12 @@ export class AccountComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
   }
 
-  onAvatarUpdated(fileName: string): void {
-    this.userData.avatar = fileName + `?v=${this.currentTimestamp}`;
-    this.cacheService.set('userData', this.userData);
-    this.pubSubService.publishEvent('userDataCached', true);
-  }
-
   selectFileInputEmitted(el: ElementRef): void {
     this.fileInput = el;
   }
 
   onFormSave(): void {
-    this.userInfoService.updateUser(this.userData.uuid, this.accountSettingsForm.value)
-      .pipe(untilComponentDestroyed(this))
-      .subscribe((res) => {
-        res.avatar = res.avatar + `?v=${this.currentTimestamp}`;
-        this.cacheService.set('userData', res);
-        this.pubSubService.publishEvent('userDataCached', true);
-        this.snackBar.open(
-          `The data was saved.`,
-          'Okay',
-          { duration: 5000 },
-        );
-        this.formChanged = false;
-        this.nameFieldRef.nativeElement.blur();
-      });
+    this.store.dispatch(new UpdateUserAction(this.accountSettingsForm.value, this.userData.uuid));
   }
 
   onFormChange(): void {
@@ -93,9 +98,5 @@ export class AccountComponent implements OnInit, OnDestroy {
       email: [{ value: this.userData.email, disabled: true }],
     });
     this.formCurrentState = this.accountSettingsForm.value;
-  }
-
-  private get currentTimestamp(): number {
-    return Math.round((new Date()).getTime() / 1000);
   }
 }

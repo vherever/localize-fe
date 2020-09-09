@@ -5,8 +5,8 @@
       <button routerLink="/auth/login">Login</button>
       <button routerLink="/auth/register">Register</button>
     </ng-container>
-    <ng-container *ngIf="isAuthenticated && userData">
-      <app-menu [userData]="userData" (logOutClickedEvent)="onLogOutClick()"></app-menu>
+    <ng-container *ngIf="isAuthenticated && (userData$ | async)">
+      <app-menu (logOutClickedEvent)="onLogOutClick()"></app-menu>
     </ng-container>
   </div>
 </mat-toolbar>

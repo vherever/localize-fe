@@ -10,9 +10,8 @@ import {
   LoadProjectsSuccessAction,
   ProjectActionTypes, UpdateProjectAction, UpdateProjectFailureAction, UpdateProjectSuccessAction,
 } from '../actions/projects.actions';
-import { catchError, map, mergeMap, tap } from 'rxjs/operators';
+import { catchError, map, mergeMap } from 'rxjs/operators';
 import { of } from 'rxjs';
-import { error } from 'util';
 
 @Injectable()
 export class ProjectsEffects {

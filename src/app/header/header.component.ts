@@ -1,12 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { CacheService } from '@ngx-cache/core';
 import { NgxPubSubService } from '@pscoped/ngx-pub-sub';
-import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
+import { Observable } from 'rxjs';
+import { Store } from '@ngrx/store';
 // app imports
 import { AuthService } from '../core/services/api/auth.service';
 import { UserModel } from '../core/models/user.model';
-import { AppDataGlobalStorageService } from '../core/services/app-data-global-storage.service';
+import { AppStateModel } from '../store/models/app-state.model';
 
 @Component({
   selector: 'app-header',
@@ -14,24 +14,19 @@ import { AppDataGlobalStorageService } from '../core/services/app-data-global-st
   styleUrls: ['header.component.scss'],
 })
 export class HeaderComponent implements OnInit, OnDestroy {
-  isAuthenticated: boolean;
-  userData: UserModel;
+  private isAuthenticated: boolean;
+  private userData$: Observable<UserModel>;
 
   constructor(
     private authService: AuthService,
-    private cacheService: CacheService,
     private pubSubService: NgxPubSubService,
-    private appDataGlobalStorageService: AppDataGlobalStorageService,
     private router: Router,
+    private store: Store<AppStateModel>,
   ) {
   }
 
   ngOnInit() {
-    this.appDataGlobalStorageService.userData
-      .pipe(untilComponentDestroyed(this))
-      .subscribe((res: UserModel) => {
-        this.userData = res;
-      });
+    this.userData$ = this.store.select((store: AppStateModel) => store.userData.user);
 
     this.isAuthenticated = this.authService.isAuthenticated();
     this.pubSubService.subscribe('isAuthenticated', (state: boolean) => {
@@ -48,8 +43,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   onLogOutClick(): void {
-    this.cacheService.set('userData', null);
-    this.pubSubService.publishEvent('userDataCached', true);
     this.authService.onLogOut();
     this.pubSubService.publishEvent('isAuthenticated', false);
   }

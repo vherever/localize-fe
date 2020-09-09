@@ -1,13 +1,13 @@
-import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
-import { Subject } from 'rxjs';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
+import { Observable, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
-import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
+import { Store } from '@ngrx/store';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { NgSelectComponent } from '@ng-select/ng-select';
 // app imports
 import { LocalesHelper } from '../../helpers/locales-helper';
-import { AppDataGlobalStorageService } from '../../services/app-data-global-storage.service';
-import { LocaleModelFormatted } from '../../models/locales.model';
-import { NgSelectComponent } from '@ng-select/ng-select';
+import { LocaleModelFormatted, LocalesModel } from '../../models/locales.model';
+import { AppStateModel } from '../../../store/models/app-state.model';
 
 @Component({
   selector: 'app-country-search-autocomplete',
@@ -25,14 +25,13 @@ export class CountrySearchAutocompleteComponent extends LocalesHelper implements
   private localesDataForFilter: any;
   private selectDataLoading: boolean;
   private dropdownIsOpen: boolean;
-
   private group: FormGroup;
-
   private readonly defaultLanguage: string = 'gb-en';
+  private localesData$: Observable<LocalesModel>;
 
   constructor(
-    private appDataGlobalStorageService: AppDataGlobalStorageService,
     private fb: FormBuilder,
+    private store: Store<AppStateModel>,
   ) {
     super();
   }
@@ -42,10 +41,10 @@ export class CountrySearchAutocompleteComponent extends LocalesHelper implements
       defaultLocale: [this.defaultLanguage],
     });
 
-    this.appDataGlobalStorageService.localesData
-      .pipe(untilComponentDestroyed(this))
-      .subscribe((res) => {
-        this.localesDataForFilter = res;
+    this.localesData$ = this.store.select((store: AppStateModel) => store.localesData.data);
+    this.localesData$
+      .subscribe((localesData) => {
+        this.localesDataForFilter = this.formatData(localesData);
         this.originalData = JSON.parse(JSON.stringify(this.localesDataForFilter));
         this.localesDataTransformed = this.getResult('', this.originalData);
         this.languageSelectedEmit.emit(this.defaultLanguage);
@@ -87,10 +86,6 @@ export class CountrySearchAutocompleteComponent extends LocalesHelper implements
 
   private onFocusSearchBar(e): void {
     this.dropdownIsOpen = true;
-    // if (e.target.value) {
-      // const originalData = JSON.parse(JSON.stringify(this.localesDataForFilter));
-      // this.localesDataTransformed = this.getResult(e.target.value, originalData);
-    // }
   }
 
   private onChangeSearchBar(value: LocaleModelFormatted): void {

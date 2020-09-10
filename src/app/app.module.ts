@@ -8,7 +8,7 @@ import { NgxPubSubModule } from '@pscoped/ngx-pub-sub';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-import { MAT_RIPPLE_GLOBAL_OPTIONS } from '@angular/material';
+import { MAT_RIPPLE_GLOBAL_OPTIONS, MatProgressBarModule } from '@angular/material';
 import { BrowserCacheModule, MemoryCacheService } from '@ngx-cache/platform-browser';
 // app imports
 import { AppComponent } from './app.component';
@@ -60,6 +60,7 @@ import { LocalesReducer } from './store/reducers/locales.reducer';
     }),
     EffectsModule.forRoot([]),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
+    MatProgressBarModule,
   ],
   providers: [
     // ProjectService,

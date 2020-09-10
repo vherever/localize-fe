@@ -4,7 +4,7 @@ import { ProjectService } from '../../core/services/api-interaction/project.serv
 import {
   AddProjectAction,
   AddProjectFailureAction,
-  AddProjectSuccessAction, DeleteProjectAction, DeleteProjectFailureAction, DeleteProjectSuccessAction,
+  AddProjectSuccessAction, CancelProjectLoadingAction, DeleteProjectAction, DeleteProjectFailureAction, DeleteProjectSuccessAction,
   LoadProjectsAction,
   LoadProjectsFailureAction,
   LoadProjectsSuccessAction,
@@ -16,11 +16,11 @@ import { of } from 'rxjs';
 @Injectable()
 export class ProjectsEffects {
   loadProjects$ = createEffect(
-    () => this.actions$
+    () => (this.actions$ as any)
       .pipe(
-        ofType<LoadProjectsAction>(ProjectActionTypes.LOAD_PROJECTS),
+        ofType<LoadProjectsAction | CancelProjectLoadingAction>(ProjectActionTypes.LOAD_PROJECTS, ProjectActionTypes.CANCEL_PROJECT_LOADING_ACTION),
         mergeMap(
-          () => this.projectService.getProjects()
+          (action: any) => action.type === ProjectActionTypes.CANCEL_PROJECT_LOADING_ACTION ? of() : this.projectService.getProjects()
             .pipe(
               map((data) => {
                 return new LoadProjectsSuccessAction(data);

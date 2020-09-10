@@ -16,7 +16,7 @@ import { FilterService } from '../../core/shared/filter/filter.service';
 import { SortingHelper } from '../../core/helpers/sorting-helper';
 import { ProjectSettingsDialogComponent } from './project-settings-dialog/project-settings-dialog.component';
 import { AppStateModel } from '../../store/models/app-state.model';
-import { DeleteProjectAction, LoadProjectsAction } from '../../store/actions/projects.actions';
+import { CancelProjectLoadingAction, DeleteProjectAction, LoadProjectsAction } from '../../store/actions/projects.actions';
 
 @Component({
   selector: 'app-projects',
@@ -35,7 +35,6 @@ export class ProjectsComponent extends SortingHelper implements OnInit, OnDestro
   private projectItemsCountOnlyMy$: Observable<number>;
   private projectItemsCountSharedWithMe$: Observable<number>;
 
-  private loading$: Observable<boolean>;
   private projectUpdated$: Observable<boolean>;
   private error$: Observable<Error>;
   private dialogProjectAddRef: MatDialogRef<ProjectAddDialogComponent>;
@@ -56,7 +55,6 @@ export class ProjectsComponent extends SortingHelper implements OnInit, OnDestro
   ngOnInit() {
     this.projectsOriginal$ = this.store.select((store: AppStateModel) => store.projects.list);
     this.projects$ = this.store.select((store: AppStateModel) => store.projects.list);
-    this.loading$ = this.store.select((store: AppStateModel) => store.projects.loading);
     this.error$ = this.store.select((store: AppStateModel) => store.projects.error);
 
     this.projectUpdated$ = this.store.select((store: AppStateModel) => store.projects.updated);
@@ -94,6 +92,7 @@ export class ProjectsComponent extends SortingHelper implements OnInit, OnDestro
   }
 
   ngOnDestroy() {
+    this.store.dispatch(new CancelProjectLoadingAction());
   }
 
   onProjectAddClick(): void {

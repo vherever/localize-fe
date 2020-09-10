@@ -96,6 +96,11 @@ export function ProjectsReducer(state: ProjectState = initialState, action: Proj
         error: action.payload,
         loading: false,
       };
+    case ProjectActionTypes.CANCEL_PROJECT_LOADING_ACTION:
+      return {
+        ...state,
+        loading: false,
+      };
     default:
       return state;
   }

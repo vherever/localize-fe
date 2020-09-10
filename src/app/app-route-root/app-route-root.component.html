@@ -1,4 +1,11 @@
 <app-header></app-header>
+<div style="height: 5px; position: relative;">
+  <mat-progress-bar *ngIf="(loadingProjects$ | async) || (loadingUser$ | async)"
+                    mode="indeterminate"
+                    style="position: absolute; top: 0"
+  ></mat-progress-bar>
+</div>
+
 <div class="l_content_wrapper">
   <app-pub-sub-events-handler></app-pub-sub-events-handler>
   <router-outlet #outlet="outlet"></router-outlet>

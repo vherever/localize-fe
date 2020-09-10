@@ -13,6 +13,7 @@ export enum ProjectActionTypes {
   DELETE_PROJECT = '[PROJECT] Delete Project',
   DELETE_PROJECT_SUCCESS = '[PROJECT] Delete Project Success',
   DELETE_PROJECT_FAILURE = '[PROJECT] Delete Project Failure',
+  CANCEL_PROJECT_LOADING_ACTION = '[PROJECT] Cancel Project loading',
 }
 
 export class LoadProjectsAction implements Action {
@@ -29,6 +30,10 @@ export class LoadProjectsFailureAction implements Action {
   readonly type = ProjectActionTypes.LOAD_PROJECTS_FAILURE;
   constructor(public payload: Error) {
   }
+}
+
+export class CancelProjectLoadingAction implements Action {
+  readonly type = ProjectActionTypes.CANCEL_PROJECT_LOADING_ACTION;
 }
 
 export class AddProjectAction implements Action {
@@ -89,4 +94,5 @@ export type ProjectsAction =
   LoadProjectsAction | LoadProjectsSuccessAction | LoadProjectsFailureAction |
   AddProjectAction | AddProjectSuccessAction | AddProjectFailureAction |
   DeleteProjectAction | DeleteProjectSuccessAction | DeleteProjectFailureAction |
-  UpdateProjectAction | UpdateProjectSuccessAction | UpdateProjectFailureAction;
+  UpdateProjectAction | UpdateProjectSuccessAction | UpdateProjectFailureAction |
+  CancelProjectLoadingAction;

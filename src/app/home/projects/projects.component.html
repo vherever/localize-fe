@@ -10,8 +10,6 @@
     <h2>{{(error$ | async)?.message}}</h2>
   </ng-template>
 
-  <div *ngIf="loading$ | async">loading....</div>
-
   <div class="lz-filters-area-wrapper" *ngIf="projects$ | async">
     <app-projects-filters-bar [projectsAllCount]="projectItemsCountAll$ | async"
                               [yourProjectsCount]="projectItemsCountOnlyMy$ | async"

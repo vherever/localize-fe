@@ -1,4 +1,17 @@
-import { Component, ComponentFactoryResolver, ComponentRef, Input, OnChanges, OnDestroy, OnInit, QueryList, SimpleChanges, ViewChildren, ViewContainerRef } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ComponentFactoryResolver,
+  ComponentRef,
+  Input,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  QueryList,
+  SimpleChanges,
+  ViewChildren,
+  ViewContainerRef,
+} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MatDialog, MatDialogRef } from '@angular/material';
 import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
@@ -13,20 +26,27 @@ import { RemoveDialogConfirmComponent } from '../../../../core/shared/remove-dia
 import { UserModel } from '../../../../core/models/user.model';
 import { LocalesModel } from '../../../../core/models/locales.model';
 import { LocalesHelper } from '../../../../core/helpers/locales-helper';
+import { Store } from '@ngrx/store';
+import { AppStateModel } from '../../../../store/models/app-state.model';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-translations',
   templateUrl: 'translations.component.html',
   styleUrls: ['translations.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TranslationsComponent extends LocalesHelper implements OnInit, OnChanges, OnDestroy {
   @ViewChildren('translationEditor', { read: ViewContainerRef }) translationContainers: QueryList<ViewContainerRef>;
-  @Input() projectData: ProjectModel;
+  private projectData: ProjectModel;
   @Input() activeLocale: string;
 
   private previousElement: ViewContainerRef;
   private previousClickedElementId: number;
   private localesData: LocalesModel;
+
+  private userData$: Observable<UserModel>;
+  private projectData$: Observable<ProjectModel>;
 
   translations: TranslationModel[];
   componentRef: ComponentRef<TranslationEditorComponent>;
@@ -41,18 +61,26 @@ export class TranslationsComponent extends LocalesHelper implements OnInit, OnCh
     private appDataGlobalStorageService: AppDataGlobalStorageService,
     private translationsService: TranslationsService,
     private dialog: MatDialog,
+    private store: Store<AppStateModel>,
   ) {
     super();
   }
 
   ngOnInit() {
-    this.getTranslationsById(this.projectData.uuid);
+    this.projectData$ = this.store.select((store: AppStateModel) => store.project.data);
+    this.projectData$
+      .subscribe((projectData: ProjectModel) => {
+        this.projectData = projectData;
+        if (projectData) {
+          this.getTranslationsById(projectData.uuid);
+        }
+      });
 
-    this.appDataGlobalStorageService.userData
-      .pipe(untilComponentDestroyed(this))
-      .subscribe((res: UserModel) => {
-        if (res) {
-          this.userId = res.id;
+    this.userData$ = this.store.select((store: AppStateModel) => store.userData.user);
+    this.userData$
+      .subscribe((userData: UserModel) => {
+        if (userData) {
+          this.userId = userData.id;
         }
       });
   }
@@ -139,6 +167,7 @@ export class TranslationsComponent extends LocalesHelper implements OnInit, OnCh
     this.translationService.getTranslationsById(id)
       .pipe(untilComponentDestroyed(this))
       .subscribe((res: TranslationModel[]) => {
+        console.log('res translations', res);
         this.translations = res;
       });
   }

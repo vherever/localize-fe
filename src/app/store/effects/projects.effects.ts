@@ -4,11 +4,18 @@ import { ProjectService } from '../../core/services/api-interaction/project.serv
 import {
   AddProjectAction,
   AddProjectFailureAction,
-  AddProjectSuccessAction, CancelProjectLoadingAction, DeleteProjectAction, DeleteProjectFailureAction, DeleteProjectSuccessAction,
+  AddProjectSuccessAction,
+  CancelProjectsLoadingAction,
+  DeleteProjectAction,
+  DeleteProjectFailureAction,
+  DeleteProjectSuccessAction,
   LoadProjectsAction,
   LoadProjectsFailureAction,
   LoadProjectsSuccessAction,
-  ProjectActionTypes, UpdateProjectAction, UpdateProjectFailureAction, UpdateProjectSuccessAction,
+  ProjectsActionTypes,
+  UpdateProjectAction,
+  UpdateProjectFailureAction,
+  UpdateProjectSuccessAction,
 } from '../actions/projects.actions';
 import { catchError, map, mergeMap } from 'rxjs/operators';
 import { of } from 'rxjs';
@@ -18,9 +25,9 @@ export class ProjectsEffects {
   loadProjects$ = createEffect(
     () => (this.actions$ as any)
       .pipe(
-        ofType<LoadProjectsAction | CancelProjectLoadingAction>(ProjectActionTypes.LOAD_PROJECTS, ProjectActionTypes.CANCEL_PROJECT_LOADING_ACTION),
+        ofType<LoadProjectsAction | CancelProjectsLoadingAction>(ProjectsActionTypes.LOAD_PROJECTS, ProjectsActionTypes.CANCEL_PROJECTS_LOADING_ACTION),
         mergeMap(
-          (action: any) => action.type === ProjectActionTypes.CANCEL_PROJECT_LOADING_ACTION ? of() : this.projectService.getProjects()
+          (action: any) => action.type === ProjectsActionTypes.CANCEL_PROJECTS_LOADING_ACTION ? of() : this.projectService.getProjects()
             .pipe(
               map((data) => {
                 return new LoadProjectsSuccessAction(data);
@@ -34,7 +41,7 @@ export class ProjectsEffects {
   addProject$ = createEffect(
     () => this.actions$
       .pipe(
-        ofType<AddProjectAction>(ProjectActionTypes.ADD_PROJECT),
+        ofType<AddProjectAction>(ProjectsActionTypes.ADD_PROJECT),
         mergeMap(
           (data) => this.projectService.createProject(data.payload)
             .pipe(
@@ -48,7 +55,7 @@ export class ProjectsEffects {
   updateProject$ = createEffect(
     () => this.actions$
       .pipe(
-        ofType<UpdateProjectAction>(ProjectActionTypes.UPDATE_PROJECT),
+        ofType<UpdateProjectAction>(ProjectsActionTypes.UPDATE_PROJECT),
         mergeMap(
           (data) => this.projectService.updateProject(data.payload, data.uuid)
             .pipe(
@@ -62,7 +69,7 @@ export class ProjectsEffects {
   deleteProject$ = createEffect(
     () => this.actions$
       .pipe(
-        ofType<DeleteProjectAction>(ProjectActionTypes.DELETE_PROJECT),
+        ofType<DeleteProjectAction>(ProjectsActionTypes.DELETE_PROJECT),
         mergeMap(
           (data) => this.projectService.deleteProject(data.payload)
             .pipe(

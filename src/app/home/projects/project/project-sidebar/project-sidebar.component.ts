@@ -1,69 +1,76 @@
-import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
+import { Observable } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { MatDialog } from '@angular/material';
+import { MatDialogRef } from '@angular/material/dialog';
 import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
 // app imports
 import { ProjectModel } from '../../../../core/models/project.model';
 import { UPLOADS_ENDPOINT } from '../../../../core/app-constants';
 import { LocalesModel } from '../../../../core/models/locales.model';
-import { AppDataGlobalStorageService } from '../../../../core/services/app-data-global-storage.service';
-import { filter, take } from 'rxjs/operators';
 import { UserModel } from '../../../../core/models/user.model';
-import { MatDialog } from '@angular/material';
 import { ManageUserDialogComponent } from './manage-user-dialog/manage-user-dialog.component';
 import { InviteUserDialogComponent } from './invite-user-dialog/invite-user-dialog.component';
-import { MatDialogRef } from '@angular/material/dialog';
 import { AddLocaleDialogComponent } from './add-locale-dialog/add-locale-dialog.component';
+import { AppStateModel } from '../../../../store/models/app-state.model';
 
 @Component({
   selector: 'app-project-sidebar',
   templateUrl: 'project-sidebar.component.html',
   styleUrls: ['project-sidebar.component.scss'],
 })
-export class ProjectSidebarComponent implements OnChanges, OnInit, OnDestroy {
-  @Input() projectData: ProjectModel;
+export class ProjectSidebarComponent implements OnInit, OnDestroy {
   @Output() activeLocaleEmit: EventEmitter<string> = new EventEmitter();
 
-  projectLocales: string[];
-  defaultLocale: string;
-  activeLocale: string;
-  uploadsEndpoint: string;
-  localesData: LocalesModel;
-  userData: UserModel;
+  private readonly uploadsEndpoint: string = UPLOADS_ENDPOINT;
+  private projectData: ProjectModel;
+  private projectLocales: string[];
+  private defaultLocale: string;
+  private activeLocale: string;
+  private localesData: LocalesModel;
+  private userData: UserModel;
+
+  private projectData$: Observable<ProjectModel>;
+  private userData$: Observable<UserModel>;
+  private projectLoading$: Observable<boolean>;
+  private localesData$: Observable<LocalesModel>;
 
   constructor(
-    private appDataGlobalStorageService: AppDataGlobalStorageService,
     private dialog: MatDialog,
+    private store: Store<AppStateModel>,
   ) {
-    this.uploadsEndpoint = UPLOADS_ENDPOINT;
-  }
-
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes.projectData.currentValue) {
-      this.projectLocales = this.getProjectLocales(this.projectData);
-      this.defaultLocale = this.getDefaultLocale(this.projectData);
-      this.activeLocale = this.defaultLocale;
-      this.activeLocaleEmit.emit(this.activeLocale);
-    }
   }
 
   ngOnInit() {
-    this.appDataGlobalStorageService.localesData
-      .pipe(
-        filter((r) => r as LocalesModel | any),
-        take(1),
-        untilComponentDestroyed(this),
-      )
-      .subscribe((res: LocalesModel) => {
-        this.localesData = res;
+    this.projectLoading$ = this.store.select((store: AppStateModel) => store.project.loading);
+    this.projectData$ = this.store.select((store: AppStateModel) => store.project.data);
+
+    setTimeout(() => {
+      this.projectData$
+        .pipe(untilComponentDestroyed(this))
+        .subscribe((projectData: ProjectModel) => {
+          if (projectData) {
+            this.projectData = projectData;
+            this.projectLocales = this.getProjectLocales(this.projectData);
+            this.defaultLocale = this.getDefaultLocale(this.projectData);
+            this.activeLocale = this.defaultLocale;
+            this.activeLocaleEmit.emit(this.activeLocale);
+          }
+        });
+    }, 1);
+
+    this.userData$ = this.store.select((store: AppStateModel) => store.userData.user);
+    this.userData$
+      .pipe(untilComponentDestroyed(this))
+      .subscribe((userData: UserModel) => {
+        this.userData = userData;
       });
 
-    this.appDataGlobalStorageService.userData
-      .pipe(
-        filter((res) => res !== undefined),
-        take(1),
-        untilComponentDestroyed(this),
-      )
-      .subscribe((res: UserModel) => {
-        this.userData = res;
+    this.localesData$ = this.store.select((store: AppStateModel) => store.localesData.data);
+    this.localesData$
+      .pipe(untilComponentDestroyed(this))
+      .subscribe((localesData: LocalesModel) => {
+        this.localesData = localesData;
       });
   }
 
@@ -164,15 +171,13 @@ export class ProjectSidebarComponent implements OnChanges, OnInit, OnDestroy {
     const projectLocalesByRole = projectData.isShared ?
       projectData.translationsLocales : projectData.translationsLocales;
     const projectLocales: string = projectLocalesByRole ? projectLocalesByRole : '';
-    const d = projectLocales
+    const projectLocalesArray = projectLocales
       .split(',')
       .filter((value, index, self) => {
         return self.indexOf(value) === index && value !== '';
       });
-    d.unshift(projectData.defaultLocale);
-    console.log('projectData.translationsLocales', projectData.translationsLocales);
-    console.log('d', d);
-    return d;
+    projectLocalesArray.unshift(projectData.defaultLocale);
+    return projectLocalesArray;
   }
 
   private getDefaultLocale(projectData: ProjectModel): string {

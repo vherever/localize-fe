@@ -1,6 +1,6 @@
-<div class="lz_project_sidebar_wrapper">
-  <div class="lz_section_title">Locales</div>
+<div class="lz_project_sidebar_wrapper" *ngIf="(projectData$ | async) && !(projectLoading$ | async)">
   <ng-container *ngIf="projectData">
+    <div class="lz_section_title">Locales</div>
     <div class="lz_locales_list">
 <!--      <a href="javascript:;" *ngIf="projectData.role === 'administrator'"-->
 <!--         (click)="onLocaleClick(defaultLocale)"-->

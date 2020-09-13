@@ -16,7 +16,7 @@ import { FilterService } from '../../core/shared/filter/filter.service';
 import { SortingHelper } from '../../core/helpers/sorting-helper';
 import { ProjectSettingsDialogComponent } from './project-settings-dialog/project-settings-dialog.component';
 import { AppStateModel } from '../../store/models/app-state.model';
-import { CancelProjectLoadingAction, DeleteProjectAction, LoadProjectsAction } from '../../store/actions/projects.actions';
+import { CancelProjectsLoadingAction, DeleteProjectAction, LoadProjectsAction } from '../../store/actions/projects.actions';
 
 @Component({
   selector: 'app-projects',
@@ -92,7 +92,7 @@ export class ProjectsComponent extends SortingHelper implements OnInit, OnDestro
   }
 
   ngOnDestroy() {
-    this.store.dispatch(new CancelProjectLoadingAction());
+    this.store.dispatch(new CancelProjectsLoadingAction());
   }
 
   onProjectAddClick(): void {

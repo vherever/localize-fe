@@ -25,6 +25,7 @@ import { environment } from '../environments/environment';
 import { ProjectsReducer } from './store/reducers/projects.reducer';
 import { UserReducer } from './store/reducers/user.reducer';
 import { LocalesReducer } from './store/reducers/locales.reducer';
+import { ProjectReducer } from './store/reducers/project.reducer';
 
 @NgModule({
   declarations: [
@@ -55,6 +56,7 @@ import { LocalesReducer } from './store/reducers/locales.reducer';
     HeaderModule,
     StoreModule.forRoot({
       projects: ProjectsReducer,
+      project: ProjectReducer,
       userData: UserReducer,
       localesData: LocalesReducer,
     }),

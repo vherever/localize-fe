@@ -13,6 +13,7 @@ import { AppStateModel } from '../store/models/app-state.model';
 export class AppRouteRootComponent implements AfterViewInit {
   private loadingProjects$: Observable<boolean>;
   private loadingUser$: Observable<boolean>;
+  private loadingProject$: Observable<boolean>;
 
   constructor(
     private store: Store<AppStateModel>,
@@ -22,6 +23,7 @@ export class AppRouteRootComponent implements AfterViewInit {
 
   ngAfterViewInit() {
     this.loadingProjects$ = this.store.select((store: AppStateModel) => store.projects.loading);
+    this.loadingProject$ = this.store.select((store: AppStateModel) => store.project.loading);
     this.loadingUser$ = this.store.select((store: AppStateModel) => store.userData.loading);
     this.cdr.detectChanges();
   }

@@ -1,6 +1,6 @@
 <app-header></app-header>
 <div style="height: 5px; position: relative;">
-  <mat-progress-bar *ngIf="(loadingProjects$ | async) || (loadingUser$ | async)"
+  <mat-progress-bar *ngIf="(loadingProjects$ | async) || (loadingUser$ | async) || (loadingProject$ | async)"
                     mode="indeterminate"
                     style="position: absolute; top: 0"
   ></mat-progress-bar>

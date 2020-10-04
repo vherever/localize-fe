@@ -4,7 +4,7 @@
 
   <div class="lz_project_wrapper" fxLayout>
     <div fxFlex="70%" class="lz_card lz_col_left">
-      <app-translations [activeLocale]="activeLocale"></app-translations>
+      <app-translations *ngIf="activeLocale" [activeLocale]="activeLocale" [projectData]="projectData"></app-translations>
     </div>
     <div fxFlex="30%" class="lz_card lz_col_right">
       <app-project-sidebar (activeLocaleEmit)="onActiveLocaleEmit($event)"></app-project-sidebar>

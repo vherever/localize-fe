@@ -26,6 +26,7 @@ import { ProjectsReducer } from './store/reducers/projects.reducer';
 import { UserReducer } from './store/reducers/user.reducer';
 import { LocalesReducer } from './store/reducers/locales.reducer';
 import { ProjectReducer } from './store/reducers/project.reducer';
+import { TranslationsReducer } from './store/reducers/translations.reducer';
 
 @NgModule({
   declarations: [
@@ -59,14 +60,13 @@ import { ProjectReducer } from './store/reducers/project.reducer';
       project: ProjectReducer,
       userData: UserReducer,
       localesData: LocalesReducer,
+      translationsData: TranslationsReducer,
     }),
     EffectsModule.forRoot([]),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
     MatProgressBarModule,
   ],
   providers: [
-    // ProjectService,
-    // ProjectApiService,
     TransferState,
     AuthGuardService,
     AuthService,

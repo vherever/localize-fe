@@ -14,7 +14,7 @@ const initialState: ProjectState = {
 
 export function ProjectsReducer(state: ProjectState = initialState, action: ProjectsAction) {
   switch (action.type) {
-    // LOAD PROJECT
+    // LOAD PROJECTS
     case ProjectsActionTypes.LOAD_PROJECTS:
       return {
         ...state,

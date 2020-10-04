@@ -1,8 +1,10 @@
 <button (click)="onAddTranslationClick()">Add Translation</button>
 <h5 class="lz_h_bordered">Translations</h5>
 <div class="lz_list">
+  <div>translationsLoading$: {{ translationsLoading$ | async }}</div>
+  <ng-container *ngIf="true">
   <a href="javascript:;"
-     *ngFor="let translation of translations; let i = index"
+     *ngFor="let translation of (translationsData$ | async); let i = index"
      class="lz_list_item lz_list_item_link lz_translation"
      (click)="onTranslationEditClick($event, translation, i);">
       <span fxLayout fxLayoutAlign="space-between start">
@@ -46,6 +48,7 @@
       </span>
     <ng-container #translationEditor></ng-container>
   </a>
+  </ng-container>
 </div>
 
 <app-sprite [spriteKey]="'controls'"></app-sprite>

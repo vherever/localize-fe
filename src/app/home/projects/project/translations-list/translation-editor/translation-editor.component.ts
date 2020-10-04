@@ -1,10 +1,15 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 // app imports
 import { TranslationModel } from '../../../../../core/models/translation.model';
 import { ProjectModel } from '../../../../../core/models/project.model';
 import { LocalesModel } from '../../../../../core/models/locales.model';
 import { LocalesHelper } from '../../../../../core/helpers/locales-helper';
+import { AppStateModel } from '../../../../../store/models/app-state.model';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
+import { UpdateTranslationAction } from '../../../../../store/actions/translations.action';
+import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
 
 interface TranslateEditorModel {
   editInLanguage: string;
@@ -16,9 +21,13 @@ interface TranslateEditorModel {
   styleUrls: ['translation-editor.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TranslationEditorComponent extends LocalesHelper implements OnInit {
+export class TranslationEditorComponent extends LocalesHelper implements OnInit, OnDestroy {
   @Input() translation: TranslationModel;
   @Input() projectData: ProjectModel;
+
+  public translationUpdated$: Observable<boolean>;
+
+  public translationUpdating$: Observable<boolean>;
 
   @Input() set activeLocale(val: string) {
     this.cdr.markForCheck();
@@ -29,7 +38,6 @@ export class TranslationEditorComponent extends LocalesHelper implements OnInit 
         // this.onLanguageEditChange(this.activeLocale);
       }
     }, 10);
-    this.localeIndex = this.projectData.translationsLocales.split(',').indexOf(this.activeLocale);
   }
 
   get activeLocale(): string {
@@ -59,11 +67,13 @@ export class TranslationEditorComponent extends LocalesHelper implements OnInit 
   constructor(
     private fb: FormBuilder,
     private cdr: ChangeDetectorRef,
+    private store: Store<AppStateModel>,
   ) {
     super();
   }
 
   ngOnInit() {
+    this.translationUpdating$ = this.store.select((store: AppStateModel) => store.translationsData.updating);
     const projectDefaultLocale = this.projectData.defaultLocale;
 
     this.translateForm = this.fb.group({
@@ -72,6 +82,11 @@ export class TranslationEditorComponent extends LocalesHelper implements OnInit 
     });
 
     this.initializeAvailableLocales();
+
+    this.translationUpdated$ = this.store.select((store: AppStateModel) => store.translationsData.updated);
+  }
+
+  ngOnDestroy() {
   }
 
   onSaveTranslation(): void {
@@ -80,7 +95,8 @@ export class TranslationEditorComponent extends LocalesHelper implements OnInit 
       translations: JSON.stringify(this.buildFullTranslation(this.translateForm.value.editInLanguage, this.translateForm.value)),
     };
 
-    this.newTranslationData.emit(data);
+    // this.newTranslationData.emit(data);
+    this.store.dispatch(new UpdateTranslationAction(this.projectData.uuid, this.translation.uuid, data));
   }
 
   onLanguageEditChange(lang: string): void {
@@ -93,9 +109,6 @@ export class TranslationEditorComponent extends LocalesHelper implements OnInit 
     } else {
       this.translateForm.get('translation').disable();
     }
-
-    // console.log('locales', this.locales);
-    // console.log('translations', this.translation.translations);
   }
 
   private buildFullTranslation(currentLang: string, currentFormValue: TranslateEditorModel): any {

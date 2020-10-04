@@ -1,22 +1,19 @@
-import { Component, EventEmitter, Inject, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA } from '@angular/material';
 import { CacheService } from '@ngx-cache/core';
-import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
-import { catchError } from 'rxjs/operators';
 // app imports
 import { TranslationsService } from '../../core/services/api-interaction/translations.service';
-import { TranslationModel } from '../../core/models/translation.model';
 import { ProjectModel } from '../../core/models/project.model';
-import { ErrorModel } from '../../core/models/error.model';
+import { Store } from '@ngrx/store';
+import { AppStateModel } from '../../store/models/app-state.model';
+import { AddTranslationAction } from '../../store/actions/translations.action';
 
 @Component({
   templateUrl: 'translation-add-dialog.component.html',
   styleUrls: ['translation-add-dialog.scss'],
 })
 export class TranslationAddDialogComponent implements OnInit, OnDestroy {
-  @Output() addedTranslation: EventEmitter<TranslationModel> = new EventEmitter();
-
   addTranslationForm: FormGroup;
   defaultLocale: string;
 
@@ -24,6 +21,7 @@ export class TranslationAddDialogComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private cacheService: CacheService,
     private translationService: TranslationsService,
+    private store: Store<AppStateModel>,
     @Inject(MAT_DIALOG_DATA) private projectData: ProjectModel,
   ) {
   }
@@ -44,28 +42,17 @@ export class TranslationAddDialogComponent implements OnInit, OnDestroy {
       translations: this.createTranslations(this.addTranslationForm.controls['defaultLocaleValue'].value),
       assetCode: this.addTranslationForm.controls['assetCode'].value,
     };
-    this.translationService.createTranslation(this.projectData.uuid, data)
-      .pipe(
-        untilComponentDestroyed(this),
-        // @ts-ignore
-        catchError((error: ErrorModel) => {
-          if (error.statusCode === 409) {
-            this.addTranslationForm.controls['assetCode'].setErrors({ assetCodeExists: true });
-          }
-          return;
-        }),
-      )
-      .subscribe((res: TranslationModel[]) => {
-        this.addedTranslation.emit(res[0]);
-      });
+    this.store.dispatch(new AddTranslationAction(this.projectData.uuid, data));
   }
 
   private createTranslations(defaultLocaleValue: string): string {
     const localesObj = {};
-    const localesArray = this.projectData.translationsLocales.split(',');
-    localesArray.forEach((l: string) => {
-      localesObj[l] = '';
-    });
+    if (this.projectData.translationsLocales) {
+      const localesArray = this.projectData.translationsLocales.split(',');
+      localesArray.forEach((l: string) => {
+        localesObj[l] = '';
+      });
+    }
     localesObj[this.projectData.defaultLocale] = defaultLocaleValue;
     return JSON.stringify(localesObj);
   }

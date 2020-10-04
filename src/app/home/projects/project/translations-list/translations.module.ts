@@ -11,6 +11,8 @@ import { TranslationAddDialogModule } from '../../../translation-add-dialog/tran
 import { SpriteModule } from '../../../../core/shared/sprite/sprite.module';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { RemoveDialogConfirmModule } from '../../../../core/shared/remove-dialog-confirm/remove-dialog-confirm.module';
+import { EffectsModule } from '@ngrx/effects';
+import { TranslationsEffects } from '../../../../store/effects/translations.effects';
 
 @NgModule({
   imports: [
@@ -22,6 +24,7 @@ import { RemoveDialogConfirmModule } from '../../../../core/shared/remove-dialog
     MatDialogModule,
     TranslationAddDialogModule,
     RemoveDialogConfirmModule,
+    EffectsModule.forFeature([TranslationsEffects]),
   ],
   declarations: [TranslationsComponent],
   providers: [

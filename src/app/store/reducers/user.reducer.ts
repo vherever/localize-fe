@@ -1,5 +1,4 @@
 import { UserAction, UserActionTypes } from '../actions/user.actions';
-import { act } from '@ngrx/effects';
 
 export interface UserState {
   user: any;
@@ -20,18 +19,21 @@ export function UserReducer(state: UserState = initialState, action: UserAction)
       return {
         ...state,
         loading: true,
+        updated: false,
       };
     case UserActionTypes.LOAD_USER_SUCCESS:
       return {
         ...state,
         user: action.payload,
         loading: false,
+        updated: false,
       };
     case UserActionTypes.LOAD_USER_FAILURE:
       return {
         ...state,
         error: action.payload,
         loading: false,
+        updated: false,
       };
     // UPDATE USER
     case UserActionTypes.UPDATE_USER:
@@ -71,6 +73,11 @@ export function UserReducer(state: UserState = initialState, action: UserAction)
         ...state,
         error: action.payload,
         loading: false,
+      };
+    case UserActionTypes.RESET_STATE:
+      return {
+        ...state,
+        updated: false,
       };
     default:
       return state;

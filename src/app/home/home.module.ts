@@ -6,16 +6,16 @@ import { HomeRoutingModule } from './home-routing.module';
 import { HomeComponent } from './home.component';
 import { UserApiService } from '../core/services/api/user-api.service';
 import { UserService } from '../core/services/api-interaction/user.service';
-import { LocalesApiService } from '../core/services/api/locales-api.service';
-import { LocalesService } from '../core/services/api-interaction/locales.service';
+import { LanguagesApiService } from '../core/services/api/languages-api.service';
+import { LanguagesService } from '../core/services/api-interaction/languages.service';
 import { UserEffects } from '../store/effects/user.effects';
-import { LocalesEffects } from '../store/effects/locales.effects';
+import { LanguagesEffects } from '../store/effects/languages.effects';
 
 @NgModule({
   imports: [
     CommonModule,
     HomeRoutingModule,
-    EffectsModule.forFeature([UserEffects, LocalesEffects]),
+    EffectsModule.forFeature([UserEffects, LanguagesEffects]),
   ],
   declarations: [
     HomeComponent,
@@ -23,8 +23,8 @@ import { LocalesEffects } from '../store/effects/locales.effects';
   providers: [
     UserApiService,
     UserService,
-    LocalesApiService,
-    LocalesService,
+    LanguagesApiService,
+    LanguagesService,
   ],
 })
 export class HomeModule {

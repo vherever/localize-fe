@@ -6,13 +6,13 @@ import { environment } from '../../../../environments/environment';
 import { LocalesModel } from '../../models/locales.model';
 
 @Injectable()
-export class LocalesApiService {
+export class LanguagesApiService {
   constructor(
     private http: HttpClient,
   ) {
   }
 
-  getLocales(): Observable<LocalesModel> {
+  getLanguages(): Observable<LocalesModel> {
     return this.http.get(`${environment.apiUrl}/locales`) as Observable<LocalesModel>;
   }
 }

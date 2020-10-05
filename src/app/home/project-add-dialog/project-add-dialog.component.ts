@@ -2,7 +2,7 @@ import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/cor
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 // app imports
 import { ProjectModel } from '../../core/models/project.model';
-import { LocalesHelper } from '../../core/helpers/locales-helper';
+import { LanguagesHelper } from '../../core/helpers/languages-helper';
 import { AppStateModel } from '../../store/models/app-state.model';
 import { Store } from '@ngrx/store';
 import { AddProjectAction } from '../../store/actions/projects.actions';
@@ -11,7 +11,7 @@ import { AddProjectAction } from '../../store/actions/projects.actions';
   templateUrl: 'project-add-dialog.component.html',
   styleUrls: ['project-add-dialog.component.scss'],
 })
-export class ProjectAddDialogComponent extends LocalesHelper implements OnInit {
+export class ProjectAddDialogComponent extends LanguagesHelper implements OnInit {
   // @Output() addedProject: EventEmitter<ProjectModel> = new EventEmitter();
 
   projectAddForm: FormGroup;

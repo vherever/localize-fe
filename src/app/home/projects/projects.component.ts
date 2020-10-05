@@ -11,7 +11,6 @@ import { ProjectModel } from '../../core/models/project.model';
 import { ProjectAddDialogComponent } from '../project-add-dialog/project-add-dialog.component';
 import { ProjectService } from '../../core/services/api-interaction/project.service';
 import { RemoveDialogConfirmComponent } from '../../core/shared/remove-dialog-confirm/remove-dialog-confirm.component';
-import { AppDataGlobalStorageService } from '../../core/services/app-data-global-storage.service';
 import { FilterService } from '../../core/shared/filter/filter.service';
 import { SortingHelper } from '../../core/helpers/sorting-helper';
 import { ProjectSettingsDialogComponent } from './project-settings-dialog/project-settings-dialog.component';
@@ -45,7 +44,6 @@ export class ProjectsComponent extends SortingHelper implements OnInit, OnDestro
     private dialog: MatDialog,
     private projectService: ProjectService,
     private router: Router,
-    private appDataGlobalStorageService: AppDataGlobalStorageService,
     public filterService: FilterService,
     private store: Store<AppStateModel>,
   ) {
@@ -107,7 +105,6 @@ export class ProjectsComponent extends SortingHelper implements OnInit, OnDestro
     const id = project.uuid;
     const tagName = event.target['tagName'].toLowerCase();
     // @ts-ignore
-    this.appDataGlobalStorageService.currentProject = project;
     if (tagName === 'svg') {
       if (event.target['className'].baseVal.search('lz_download_svg') > -1) {
         this.exportProjectAction(id);

@@ -60,7 +60,6 @@ export class ProjectComponent implements OnInit, OnDestroy {
   }
 
   onActiveLocaleEmit(activeLocale: string): void {
-    console.log('activeLocale', activeLocale);
     this.activeLocale = activeLocale;
   }
 }

@@ -21,13 +21,12 @@ import { Store } from '@ngrx/store';
 import { TranslationsService } from '../../../../core/services/api-interaction/translations.service';
 import { TranslationModel } from '../../../../core/models/translation.model';
 import { TranslationEditorComponent } from './translation-editor/translation-editor.component';
-import { AppDataGlobalStorageService } from '../../../../core/services/app-data-global-storage.service';
 import { TranslationAddDialogComponent } from '../../../translation-add-dialog/translation-add-dialog.component';
 import { ProjectModel } from '../../../../core/models/project.model';
 import { RemoveDialogConfirmComponent } from '../../../../core/shared/remove-dialog-confirm/remove-dialog-confirm.component';
 import { UserModel } from '../../../../core/models/user.model';
 import { LocalesModel } from '../../../../core/models/locales.model';
-import { LocalesHelper } from '../../../../core/helpers/locales-helper';
+import { LanguagesHelper } from '../../../../core/helpers/languages-helper';
 import { AppStateModel } from '../../../../store/models/app-state.model';
 import { LoadTranslationsAction, RemoveTranslationAction } from '../../../../store/actions/translations.action';
 
@@ -37,19 +36,19 @@ import { LoadTranslationsAction, RemoveTranslationAction } from '../../../../sto
   styleUrls: ['translations.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TranslationsComponent extends LocalesHelper implements OnInit, OnChanges, OnDestroy {
+export class TranslationsComponent extends LanguagesHelper implements OnInit, OnChanges, OnDestroy {
   @ViewChildren('translationEditor', { read: ViewContainerRef }) translationContainers: QueryList<ViewContainerRef>;
   @Input() activeLocale: string;
   @Input() projectData: ProjectModel;
 
   private previousElement: ViewContainerRef;
   private previousClickedElementId: number;
-  private localesData: LocalesModel;
+  private languagesData: LocalesModel;
   private projectId: string;
   private translationAdded$: Observable<boolean>;
   private addTranslationDialogRef: MatDialogRef<TranslationAddDialogComponent>;
   private projectData$: Observable<ProjectModel>;
-  private localesData$: Observable<LocalesModel>;
+  private languagesData$: Observable<LocalesModel>;
   private userData$: Observable<UserModel>;
   public translationsLoading$: Observable<boolean>;
   public translationsData$: Observable<any>;
@@ -63,7 +62,6 @@ export class TranslationsComponent extends LocalesHelper implements OnInit, OnCh
     private route: ActivatedRoute,
     private translationService: TranslationsService,
     private resolver: ComponentFactoryResolver,
-    private appDataGlobalStorageService: AppDataGlobalStorageService,
     private translationsService: TranslationsService,
     private dialog: MatDialog,
     private store: Store<AppStateModel>,
@@ -95,14 +93,14 @@ export class TranslationsComponent extends LocalesHelper implements OnInit, OnCh
     }, 10);
     this.translationsLoading$ = this.store.select((store: AppStateModel) => store.translationsData.loading);
 
-    this.localesData$ = this.store.select((store: AppStateModel) => store.localesData.data);
+    this.languagesData$ = this.store.select((store: AppStateModel) => store.languagesData.data);
 
-    this.localesData$
-      .subscribe((localesData) => {
-        if (localesData && this.activeLocale) {
-          const localesDataForFilter = this.formatData(localesData);
-          this.localesData = localesDataForFilter;
-          this.activeLocaleCountryName = this.getActiveLocaleCountryName(this.activeLocale, localesDataForFilter);
+    this.languagesData$
+      .subscribe((languagesData) => {
+        if (languagesData && this.activeLocale) {
+          const languagesDataForFilter = this.formatData(languagesData);
+          this.languagesData = languagesDataForFilter;
+          this.activeLocaleCountryName = this.getActiveLocaleCountryName(this.activeLocale, languagesDataForFilter);
         }
       });
 
@@ -179,7 +177,7 @@ export class TranslationsComponent extends LocalesHelper implements OnInit, OnCh
     this.componentRef.instance.projectData = this.projectData;
     this.componentRef.instance.activeLocale = this.activeLocale;
     this.componentRef.instance.activeLocaleCountryName = this.activeLocaleCountryName;
-    this.componentRef.instance.localesData = this.localesData;
+    this.componentRef.instance.languagesData = this.languagesData;
   }
 
   private removeTranslation(translation: TranslationModel): void {

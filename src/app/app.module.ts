@@ -20,11 +20,10 @@ import { AuthGuardService } from './core/services/guards/auth-guard.service';
 import { AuthService } from './core/services/api/auth.service';
 import { TokenInterceptor } from './core/services/interceptors/token-interceptor';
 import { AppRouteRootModule } from './app-route-root/app-route-root.module';
-import { PubSubEventsHandlerModule } from './core/shared/pub-sub-events-handler/pub-sub-events-handler.module';
 import { environment } from '../environments/environment';
 import { ProjectsReducer } from './store/reducers/projects.reducer';
 import { UserReducer } from './store/reducers/user.reducer';
-import { LocalesReducer } from './store/reducers/locales.reducer';
+import { LanguagesReducer } from './store/reducers/languages.reducer';
 import { ProjectReducer } from './store/reducers/project.reducer';
 import { TranslationsReducer } from './store/reducers/translations.reducer';
 
@@ -53,13 +52,12 @@ import { TranslationsReducer } from './store/reducers/translations.reducer';
     }),
 
     AppRoutingModule,
-    PubSubEventsHandlerModule,
     HeaderModule,
     StoreModule.forRoot({
       projects: ProjectsReducer,
       project: ProjectReducer,
       userData: UserReducer,
-      localesData: LocalesReducer,
+      languagesData: LanguagesReducer,
       translationsData: TranslationsReducer,
     }),
     EffectsModule.forRoot([]),

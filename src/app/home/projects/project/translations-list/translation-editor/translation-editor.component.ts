@@ -4,7 +4,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { TranslationModel } from '../../../../../core/models/translation.model';
 import { ProjectModel } from '../../../../../core/models/project.model';
 import { LocalesModel } from '../../../../../core/models/locales.model';
-import { LocalesHelper } from '../../../../../core/helpers/locales-helper';
+import { LanguagesHelper } from '../../../../../core/helpers/languages-helper';
 import { AppStateModel } from '../../../../../store/models/app-state.model';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
@@ -21,7 +21,7 @@ interface TranslateEditorModel {
   styleUrls: ['translation-editor.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TranslationEditorComponent extends LocalesHelper implements OnInit, OnDestroy {
+export class TranslationEditorComponent extends LanguagesHelper implements OnInit, OnDestroy {
   @Input() translation: TranslationModel;
   @Input() projectData: ProjectModel;
 
@@ -60,7 +60,7 @@ export class TranslationEditorComponent extends LocalesHelper implements OnInit,
 
   localeIndex: number;
   translateForm: FormGroup;
-  localesData: LocalesModel;
+  languagesData: LocalesModel;
   locales: any[];
   textareaEnabled: boolean;
 
@@ -101,7 +101,7 @@ export class TranslationEditorComponent extends LocalesHelper implements OnInit,
 
   onLanguageEditChange(lang: string): void {
     this.translateForm.controls['translation'].patchValue(this.translation.translations[lang]);
-    this.activeLocaleCountryName = this.getActiveLocaleCountryName(lang, this.localesData);
+    this.activeLocaleCountryName = this.getActiveLocaleCountryName(lang, this.languagesData);
 
     this.textareaEnabled = this.locales.find((l) => l.code === lang).active;
     if (this.textareaEnabled) {

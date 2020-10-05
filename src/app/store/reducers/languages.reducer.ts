@@ -1,32 +1,32 @@
-import { LocalesAction, LocalesActionTypes } from '../actions/locales.actions';
+import { LanguagesAction, LanguagesActionTypes } from '../actions/languages.actions';
 
-export interface LocalesState {
+export interface LanguagesState {
   data: any;
   loading: boolean;
   error: Error;
 }
 
-const initialState: LocalesState = {
+const initialState: LanguagesState = {
   data: {},
   loading: false,
   error: undefined,
 };
 
-export function LocalesReducer(state: LocalesState = initialState, action: LocalesAction) {
+export function LanguagesReducer(state: LanguagesState = initialState, action: LanguagesAction) {
   switch (action.type) {
     // LOAD LOCALES
-    case LocalesActionTypes.LOAD_LOCALES:
+    case LanguagesActionTypes.LOAD_LANGUAGES:
       return {
         ...state,
         loading: true,
       };
-    case LocalesActionTypes.LOAD_LOCALES_SUCCESS:
+    case LanguagesActionTypes.LOAD_LANGUAGES_SUCCESS:
       return {
         ...state,
         data: action.payload,
         loading: false,
       };
-    case LocalesActionTypes.LOAD_LOCALES_FAILURE:
+    case LanguagesActionTypes.LOAD_LANGUAGES_FAILURE:
       return {
         ...state,
         error: action.payload,

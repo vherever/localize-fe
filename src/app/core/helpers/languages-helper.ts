@@ -1,4 +1,4 @@
-export class LocalesHelper {
+export class LanguagesHelper {
   formatData(data) {
     const countries = {...data.countries};
     const languages = {...data.languages};
@@ -84,7 +84,7 @@ export class LocalesHelper {
     }, []);
   }
 
-  getActiveLocaleCountryName(locale: string, localesData): string {
+  getActiveLocaleCountryName(locale: string, languagesData): string {
     const splitted = locale.split('-');
 
     let language;
@@ -92,11 +92,11 @@ export class LocalesHelper {
     let result;
 
     if (splitted.length > 1) {
-      country = localesData['countries'].find((c) => c.key === splitted[0]).name;
-      language = localesData['languages'][splitted[1]].name;
+      country = languagesData['countries'].find((c) => c.key === splitted[0]).name;
+      language = languagesData['languages'][splitted[1]].name;
       result = `${language} (${country})`;
     } else {
-      language = localesData['languages'][splitted[0]].name;
+      language = languagesData['languages'][splitted[0]].name;
       result = language;
     }
 

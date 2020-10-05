@@ -9,7 +9,7 @@ import { UserModel } from '../../core/models/user.model';
 import { UserService } from '../../core/services/api-interaction/user.service';
 import { UPLOADS_ENDPOINT } from '../../core/app-constants';
 import { AppStateModel } from '../../store/models/app-state.model';
-import { UpdateUserAction } from '../../store/actions/user.actions';
+import { ResetState, UpdateUserAction } from '../../store/actions/user.actions';
 
 @Component({
   templateUrl: 'account.component.html',
@@ -67,6 +67,7 @@ export class AccountComponent implements OnInit, OnDestroy {
           );
           this.formChanged = false;
           this.nameFieldRef.nativeElement.blur();
+          this.store.dispatch(new ResetState());
         }
       });
   }

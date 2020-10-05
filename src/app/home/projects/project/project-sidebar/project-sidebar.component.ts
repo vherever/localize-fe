@@ -27,13 +27,13 @@ export class ProjectSidebarComponent implements OnInit, OnDestroy {
   private projectLocales: string[];
   private defaultLocale: string;
   private activeLocale: string;
-  private localesData: LocalesModel;
+  private languagesData: LocalesModel;
   private userData: UserModel;
 
   private projectData$: Observable<ProjectModel>;
   private userData$: Observable<UserModel>;
   private projectLoading$: Observable<boolean>;
-  private localesData$: Observable<LocalesModel>;
+  private languagesData$: Observable<LocalesModel>;
 
   constructor(
     private dialog: MatDialog,
@@ -66,11 +66,11 @@ export class ProjectSidebarComponent implements OnInit, OnDestroy {
         this.userData = userData;
       });
 
-    this.localesData$ = this.store.select((store: AppStateModel) => store.localesData.data);
-    this.localesData$
+    this.languagesData$ = this.store.select((store: AppStateModel) => store.languagesData.data);
+    this.languagesData$
       .pipe(untilComponentDestroyed(this))
-      .subscribe((localesData: LocalesModel) => {
-        this.localesData = localesData;
+      .subscribe((languagesData: LocalesModel) => {
+        this.languagesData = languagesData;
       });
   }
 
@@ -78,7 +78,6 @@ export class ProjectSidebarComponent implements OnInit, OnDestroy {
   }
 
   get flag(): string {
-    // this.localesData
     // TODO: get flag
     return '';
   }

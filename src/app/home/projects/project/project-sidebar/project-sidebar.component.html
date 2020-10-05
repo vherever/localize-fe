@@ -10,7 +10,7 @@
 <!--        <span class="lz_locale_isdefault"-->
 <!--              *ngIf="activeLocale === defaultLocale">(default)</span>-->
 <!--      </a>-->
-      <a href="javascript:;" *ngFor="let locale of projectLocales"
+      <a href="javascript:;" *ngFor="let locale of localesData$ | async"
          (click)="onLocaleClick(locale)"
          [ngClass]="{'isActive': activeLocale === locale}">
         <span class="flag"></span>

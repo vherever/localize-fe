@@ -47,7 +47,6 @@ export class TranslationsComponent extends LanguagesHelper implements OnInit, On
   private projectId: string;
   private translationAdded$: Observable<boolean>;
   private addTranslationDialogRef: MatDialogRef<TranslationAddDialogComponent>;
-  private projectData$: Observable<ProjectModel>;
   private languagesData$: Observable<LocalesModel>;
   private userData$: Observable<UserModel>;
   public translationsLoading$: Observable<boolean>;
@@ -75,7 +74,6 @@ export class TranslationsComponent extends LanguagesHelper implements OnInit, On
   }
 
   ngOnInit() {
-    this.projectData$ = this.store.select((store: AppStateModel) => store.project.data);
     this.translationAdded$ = this.store.select((store: AppStateModel) => store.translationsData.added);
     this.getTranslationsById(this.projectId);
 

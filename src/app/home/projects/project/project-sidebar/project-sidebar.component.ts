@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { MatDialog } from '@angular/material';
@@ -18,6 +18,7 @@ import { AppStateModel } from '../../../../store/models/app-state.model';
   selector: 'app-project-sidebar',
   templateUrl: 'project-sidebar.component.html',
   styleUrls: ['project-sidebar.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProjectSidebarComponent implements OnInit, OnDestroy {
   @Output() activeLocaleEmit: EventEmitter<string> = new EventEmitter();
@@ -35,6 +36,8 @@ export class ProjectSidebarComponent implements OnInit, OnDestroy {
   private projectLoading$: Observable<boolean>;
   private languagesData$: Observable<LocalesModel>;
 
+  public localesData$: Observable<any>;
+
   constructor(
     private dialog: MatDialog,
     private store: Store<AppStateModel>,
@@ -44,6 +47,7 @@ export class ProjectSidebarComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.projectLoading$ = this.store.select((store: AppStateModel) => store.project.loading);
     this.projectData$ = this.store.select((store: AppStateModel) => store.project.data);
+    this.localesData$ = this.store.select((store: AppStateModel) => store.localesData.data);
 
     setTimeout(() => {
       this.projectData$

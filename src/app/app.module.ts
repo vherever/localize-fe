@@ -26,6 +26,7 @@ import { UserReducer } from './store/reducers/user.reducer';
 import { LanguagesReducer } from './store/reducers/languages.reducer';
 import { ProjectReducer } from './store/reducers/project.reducer';
 import { TranslationsReducer } from './store/reducers/translations.reducer';
+import { LocalesReducer } from './store/reducers/locales.reducer';
 
 @NgModule({
   declarations: [
@@ -59,6 +60,7 @@ import { TranslationsReducer } from './store/reducers/translations.reducer';
       userData: UserReducer,
       languagesData: LanguagesReducer,
       translationsData: TranslationsReducer,
+      localesData: LocalesReducer,
     }),
     EffectsModule.forRoot([]),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),

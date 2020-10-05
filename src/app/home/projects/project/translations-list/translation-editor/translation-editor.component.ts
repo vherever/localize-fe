@@ -28,6 +28,8 @@ export class TranslationEditorComponent extends LanguagesHelper implements OnIni
   public translationUpdated$: Observable<boolean>;
 
   public translationUpdating$: Observable<boolean>;
+  public localesData$: Observable<any[]>;
+  private availableTranslations: any;
 
   @Input() set activeLocale(val: string) {
     this.cdr.markForCheck();
@@ -84,6 +86,12 @@ export class TranslationEditorComponent extends LanguagesHelper implements OnIni
     this.initializeAvailableLocales();
 
     this.translationUpdated$ = this.store.select((store: AppStateModel) => store.translationsData.updated);
+    this.localesData$ = this.store.select((store: AppStateModel) => store.localesData.data);
+
+    this.localesData$
+      .subscribe((localesData) => {
+        this.availableTranslations = localesData.join(',');
+      });
   }
 
   ngOnDestroy() {

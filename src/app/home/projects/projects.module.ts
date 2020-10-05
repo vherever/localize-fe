@@ -19,6 +19,7 @@ import { ProjectsFiltersBarModule } from './projects-filters-bar/projects-filter
 import { ProjectSettingsDialogModule } from './project-settings-dialog/project-settings-dialog.module';
 import { ProjectsEffects } from '../../store/effects/projects.effects';
 import { EffectsModule } from '@ngrx/effects';
+import { LocalesEffects } from '../../store/effects/locales.effects';
 
 @NgModule({
   imports: [
@@ -31,7 +32,7 @@ import { EffectsModule } from '@ngrx/effects';
     SpriteModule,
     NgxPopperModule.forRoot({}),
     ProjectsFiltersBarModule,
-    EffectsModule.forFeature([ProjectsEffects]),
+    EffectsModule.forFeature([ProjectsEffects, LocalesEffects]),
   ],
   providers: [
     ProjectApiService,

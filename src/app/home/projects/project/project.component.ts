@@ -1,14 +1,15 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
-import { Observable } from 'rxjs';
-import { filter } from 'rxjs/operators';
-import { Store } from '@ngrx/store';
+import { Observable, Subject } from 'rxjs';
+import { debounceTime, distinctUntilChanged, filter, first, last, skip, skipWhile, take, takeLast, throttleTime, withLatestFrom } from 'rxjs/operators';
+import { select, Store } from '@ngrx/store';
 import { NgxPubSubService } from '@pscoped/ngx-pub-sub';
 import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
 // app imports
 import { ProjectModel } from '../../../core/models/project.model';
 import { AppStateModel } from '../../../store/models/app-state.model';
 import { CancelProjectLoadingAction, LoadProjectByIdAction } from '../../../store/actions/project.actions';
+import { LoadLocalesAction } from '../../../store/actions/locales.actions';
 
 @Component({
   templateUrl: 'project.component.html',
@@ -21,6 +22,7 @@ export class ProjectComponent implements OnInit, OnDestroy {
   public projectData$: Observable<ProjectModel>;
   public projectLoading$: Observable<boolean>;
   public projectData: ProjectModel;
+  private localesData$: Observable<any>;
 
   constructor(
     private pubSubService: NgxPubSubService,
@@ -48,11 +50,20 @@ export class ProjectComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.projectLoading$ = this.store.select((store: AppStateModel) => store.project.loading);
-    this.projectData$ = this.store.select((store: AppStateModel) => {
-      this.projectData = store.project.data;
-      return store.project.data;
-    });
-
+    this.projectData$ = this.store
+      .pipe(
+        filter((t) => {
+          return !t.project.loading && t.project.data;
+        }),
+        first(),
+        select((store: AppStateModel) => {
+          if (store.project) {
+            this.store.dispatch(new LoadLocalesAction(this.prepareLocales(store.project.data.defaultLocale, store.project.data.translationsLocales)));
+          }
+          this.projectData = store.project.data;
+          return store.project.data;
+        }),
+      );
   }
 
   ngOnDestroy() {
@@ -61,5 +72,15 @@ export class ProjectComponent implements OnInit, OnDestroy {
 
   onActiveLocaleEmit(activeLocale: string): void {
     this.activeLocale = activeLocale;
+  }
+
+  private prepareLocales(defaultLocale: string, translationsLocales: string): string[] {
+    let result;
+    if (translationsLocales) {
+      result = `${defaultLocale},${translationsLocales}`.split(',');
+    } else {
+      result = `${defaultLocale}`.split(',');
+    }
+    return result;
   }
 }

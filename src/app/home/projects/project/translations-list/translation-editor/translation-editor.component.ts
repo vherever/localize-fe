@@ -83,14 +83,12 @@ export class TranslationEditorComponent extends LanguagesHelper implements OnIni
       translation: [this.translation.translations[projectDefaultLocale]],
     });
 
-    this.initializeAvailableLocales();
-
     this.translationUpdated$ = this.store.select((store: AppStateModel) => store.translationsData.updated);
     this.localesData$ = this.store.select((store: AppStateModel) => store.localesData.data);
-
     this.localesData$
-      .subscribe((localesData) => {
-        this.availableTranslations = localesData.join(',');
+      .pipe(untilComponentDestroyed(this))
+      .subscribe((localesData: string[]) => {
+        this.initializeAvailableLocales(localesData);
       });
   }
 
@@ -126,36 +124,28 @@ export class TranslationEditorComponent extends LanguagesHelper implements OnIni
     return Object.assign(translationsCloned, currentTranslation);
   }
 
-  private initializeAvailableLocales(): any {
-    if (this.projectData.role === 'administrator') {
-      const availableTranslations = `${this.projectData.defaultLocale},${this.projectData.translationsLocales}`;
-      this.locales = this.prepareAvailableTranslations(this.translation.translations, availableTranslations);
-    } else {
-      const availableTranslations = this.projectData.availableTranslationLocales;
-      this.locales = this.prepareAvailableTranslations(this.translation.translations, availableTranslations);
-    }
+  private initializeAvailableLocales(localesData: string[]): any {
+    this.locales = this.prepareAvailableTranslations(this.translation.translations, localesData);
   }
 
-  private prepareAvailableTranslations(translations: any, availableTranslations: string) {
-    const res: any = [];
-    for (const key in translations) {
-      if (translations.hasOwnProperty(key)) {
-        res.push({ code: key, translation: translations[key], active: false });
-      }
-    }
+  private prepareAvailableTranslations(translations: any, availableTranslations: string[]) {
+    const result: any[] = [];
+    availableTranslations.forEach((value: string) => {
+      result.push({ code: value, translation: translations[value], active: false });
+    });
 
-    const availableLocations_ = availableTranslations.split(',')
+    const availableLocations_ = availableTranslations
       .map((v) => v.trim())
-      .filter((v) => v !== '');
+      .filter((v) => v !== '' && v !== null);
 
-    res.forEach((t) => {
-      availableLocations_.forEach((tt) => {
+    availableLocations_.forEach((tt) => {
+      result.forEach((t) => {
         if (t.code === tt) {
           t.active = true;
         }
       });
     });
 
-    return res;
+    return result;
   }
 }

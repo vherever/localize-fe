@@ -58,7 +58,7 @@ export class ProjectComponent implements OnInit, OnDestroy {
         first(),
         select((store: AppStateModel) => {
           if (store.project) {
-            this.store.dispatch(new LoadLocalesAction(this.prepareLocales(store.project.data.defaultLocale, store.project.data.translationsLocales)));
+            this.store.dispatch(new LoadLocalesAction(this.prepareLocales(store.project.data)));
           }
           this.projectData = store.project.data;
           return store.project.data;
@@ -74,13 +74,14 @@ export class ProjectComponent implements OnInit, OnDestroy {
     this.activeLocale = activeLocale;
   }
 
-  private prepareLocales(defaultLocale: string, translationsLocales: string): string[] {
-    let result;
-    if (translationsLocales) {
-      result = `${defaultLocale},${translationsLocales}`.split(',');
+  private prepareLocales(projectData: ProjectModel): string[] {
+    let result: string[];
+    const translationsLocales: string = projectData.translationsLocales ? projectData.translationsLocales : '';
+    if (projectData.role === 'administrator') {
+      result = `${projectData.defaultLocale},${translationsLocales}`.split(',');
     } else {
-      result = `${defaultLocale}`.split(',');
+      result = `${projectData.availableTranslationLocales}`.split(',');
     }
-    return result;
+    return result.filter((val: string) => val !== '');
   }
 }

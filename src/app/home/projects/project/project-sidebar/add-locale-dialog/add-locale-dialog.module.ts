@@ -8,8 +8,6 @@ import { MatInputModule } from '@angular/material/input';
 import { MatDialogModule } from '@angular/material/dialog';
 import { AddLocaleDialogComponent } from './add-locale-dialog.component';
 import { CountrySearchAutocompleteModule } from '../../../../../core/shared/country-search-autocomplete/country-search-autocomplete.module';
-import { LocaleService } from '../../../../../core/services/api-interaction/locale.service';
-import { LocaleApiService } from '../../../../../core/services/api/locale-api.service';
 
 @NgModule({
   imports: [
@@ -26,10 +24,6 @@ import { LocaleApiService } from '../../../../../core/services/api/locale-api.se
   ],
   declarations: [AddLocaleDialogComponent],
   entryComponents: [AddLocaleDialogComponent],
-  providers: [
-    LocaleApiService,
-    LocaleService,
-  ],
 })
 export class AddLocaleDialogModule {
 }

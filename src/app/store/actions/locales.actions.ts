@@ -30,7 +30,7 @@ export class LoadLocalesFailureAction implements Action {
 
 export class AddLocaleAction implements Action {
   readonly type = LocalesActionTypes.ADD_LOCALE;
-  constructor(public payload: string) {
+  constructor(public projectUuid: string, public payload: string) {
   }
 }
 

@@ -11,6 +11,9 @@ import { ProjectApiService } from '../../../core/services/api/project-api.servic
 import { ProjectService } from '../../../core/services/api-interaction/project.service';
 import { ProjectSidebarModule } from './project-sidebar/project-sidebar.module';
 import { ProjectEffects } from '../../../store/effects/project.effects';
+import { LocalesEffects } from '../../../store/effects/locales.effects';
+import { LocaleService } from '../../../core/services/api-interaction/locale.service';
+import { LocaleApiService } from '../../../core/services/api/locale-api.service';
 
 @NgModule({
   imports: [
@@ -20,7 +23,7 @@ import { ProjectEffects } from '../../../store/effects/project.effects';
     TranslationsModule,
     ProjectSidebarModule,
     FlexLayoutModule,
-    EffectsModule.forFeature([ProjectEffects]),
+    EffectsModule.forFeature([ProjectEffects, LocalesEffects]),
   ],
   declarations: [
     ProjectComponent,

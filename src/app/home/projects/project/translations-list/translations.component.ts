@@ -25,7 +25,7 @@ import { TranslationAddDialogComponent } from '../../../translation-add-dialog/t
 import { ProjectModel } from '../../../../core/models/project.model';
 import { RemoveDialogConfirmComponent } from '../../../../core/shared/remove-dialog-confirm/remove-dialog-confirm.component';
 import { UserModel } from '../../../../core/models/user.model';
-import { LocalesModel } from '../../../../core/models/locales.model';
+import { LanguagesModel } from '../../../../core/models/languages.model';
 import { LanguagesHelper } from '../../../../core/helpers/languages-helper';
 import { AppStateModel } from '../../../../store/models/app-state.model';
 import { LoadTranslationsAction, RemoveTranslationAction } from '../../../../store/actions/translations.action';
@@ -43,11 +43,11 @@ export class TranslationsComponent extends LanguagesHelper implements OnInit, On
 
   private previousElement: ViewContainerRef;
   private previousClickedElementId: number;
-  private languagesData: LocalesModel;
+  private languagesData: LanguagesModel;
   private projectId: string;
   private translationAdded$: Observable<boolean>;
   private addTranslationDialogRef: MatDialogRef<TranslationAddDialogComponent>;
-  private languagesData$: Observable<LocalesModel>;
+  private languagesData$: Observable<LanguagesModel>;
   private userData$: Observable<UserModel>;
   public translationsLoading$: Observable<boolean>;
   public translationsData$: Observable<any>;

@@ -1,4 +1,4 @@
-export interface LocalesModel {
+export interface LanguagesModel {
   countries: CountryModel[];
   languages: LanguageModel;
 }

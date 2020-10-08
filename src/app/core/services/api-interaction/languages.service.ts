@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 // app imports
 import { LanguagesApiService } from '../api/languages-api.service';
-import { LocalesModel } from '../../models/locales.model';
+import { LanguagesModel } from '../../models/languages.model';
 
 @Injectable()
 export class LanguagesService {
@@ -11,7 +11,7 @@ export class LanguagesService {
   ) {
   }
 
-  getLanguages(): Observable<LocalesModel> {
+  getLanguages(): Observable<LanguagesModel> {
     return this.languagesApiService.getLanguages();
   }
 }

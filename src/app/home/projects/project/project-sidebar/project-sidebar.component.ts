@@ -7,7 +7,7 @@ import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
 // app imports
 import { ProjectModel } from '../../../../core/models/project.model';
 import { UPLOADS_ENDPOINT } from '../../../../core/app-constants';
-import { LocalesModel } from '../../../../core/models/locales.model';
+import { LanguagesModel } from '../../../../core/models/languages.model';
 import { UserModel } from '../../../../core/models/user.model';
 import { ManageUserDialogComponent } from './manage-user-dialog/manage-user-dialog.component';
 import { InviteUserDialogComponent } from './invite-user-dialog/invite-user-dialog.component';
@@ -23,20 +23,21 @@ import { AppStateModel } from '../../../../store/models/app-state.model';
 export class ProjectSidebarComponent implements OnInit, OnDestroy {
   @Output() activeLocaleEmit: EventEmitter<string> = new EventEmitter();
 
-  private readonly uploadsEndpoint: string = UPLOADS_ENDPOINT;
-  private projectData: ProjectModel;
+  private languagesData: LanguagesModel;
   private projectLocales: string[];
-  private defaultLocale: string;
-  private activeLocale: string;
-  private languagesData: LocalesModel;
-  private userData: UserModel;
-
-  private projectData$: Observable<ProjectModel>;
   private userData$: Observable<UserModel>;
-  private projectLoading$: Observable<boolean>;
-  private languagesData$: Observable<LocalesModel>;
+  private languagesData$: Observable<LanguagesModel>;
+  private localeAdded$: Observable<boolean>;
+  private addLocaleDialogRef: MatDialogRef<AddLocaleDialogComponent>;
 
+  public readonly uploadsEndpoint: string = UPLOADS_ENDPOINT;
+  public projectData: ProjectModel;
+  public defaultLocale: string;
+  public activeLocale: string;
+  public userData: UserModel;
+  public projectData$: Observable<ProjectModel>;
   public localesData$: Observable<any>;
+  public projectLoading$: Observable<boolean>;
 
   constructor(
     private dialog: MatDialog,
@@ -73,8 +74,17 @@ export class ProjectSidebarComponent implements OnInit, OnDestroy {
     this.languagesData$ = this.store.select((store: AppStateModel) => store.languagesData.data);
     this.languagesData$
       .pipe(untilComponentDestroyed(this))
-      .subscribe((languagesData: LocalesModel) => {
+      .subscribe((languagesData: LanguagesModel) => {
         this.languagesData = languagesData;
+      });
+
+    this.localeAdded$ = this.store.select((store: AppStateModel) => store.localesData.added);
+    this.localeAdded$
+      .pipe(untilComponentDestroyed(this))
+      .subscribe((state: boolean) => {
+        if (state) {
+          this.addLocaleDialogRef.close();
+        }
       });
   }
 
@@ -153,20 +163,13 @@ export class ProjectSidebarComponent implements OnInit, OnDestroy {
   }
 
   private addLocale(): void {
-    const dialogRef: MatDialogRef<AddLocaleDialogComponent> =
-      this.dialog.open(AddLocaleDialogComponent, {
+    this.addLocaleDialogRef = this.dialog.open(AddLocaleDialogComponent, {
         width: '500px',
         autoFocus: false,
         data: {
           projectUuid: this.projectData.uuid,
           projectTitle: this.projectData.title,
         },
-      });
-
-    dialogRef.componentInstance.addedLocale
-      .subscribe((locale: string) => {
-        this.projectLocales.push(locale);
-        dialogRef.close();
       });
   }
 
@@ -192,7 +195,6 @@ export class ProjectSidebarComponent implements OnInit, OnDestroy {
       if (found) {
         return projectData.defaultLocale;
       }
-      // return localesArray[0];
       return projectData.defaultLocale;
     }
   }

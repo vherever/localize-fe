@@ -13,7 +13,7 @@
       Locale is required.
     </div>
 
-    <div class="lz_error_message" *ngIf="this.errorMessage">{{ this.errorMessage }}</div>
+    <div class="lz_error_message" *ngIf="(localeAddError$ | async)">{{ (localeAddError$ | async).message }}</div>
   </div>
 
   <button [disabled]="!localeAddForm.valid" style="margin-left: 10px">Save</button>

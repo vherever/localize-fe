@@ -6,7 +6,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { NgSelectComponent } from '@ng-select/ng-select';
 // app imports
 import { LanguagesHelper } from '../../helpers/languages-helper';
-import { LocaleModelFormatted, LocalesModel } from '../../models/locales.model';
+import { LocaleModelFormatted, LanguagesModel } from '../../models/languages.model';
 import { AppStateModel } from '../../../store/models/app-state.model';
 
 @Component({
@@ -27,7 +27,7 @@ export class CountrySearchAutocompleteComponent extends LanguagesHelper implemen
   private dropdownIsOpen: boolean;
   private group: FormGroup;
   private readonly defaultLanguage: string = 'gb-en';
-  private languagesData$: Observable<LocalesModel>;
+  private languagesData$: Observable<LanguagesModel>;
 
   constructor(
     private fb: FormBuilder,

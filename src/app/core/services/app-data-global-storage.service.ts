@@ -5,7 +5,7 @@ import { NgxPubSubService } from '@pscoped/ngx-pub-sub';
 import { UserModel } from '../models/user.model';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { ProjectModel } from '../models/project.model';
-import { LocalesModel } from '../models/locales.model';
+import { LanguagesModel } from '../models/languages.model';
 
 @Injectable({
   providedIn: 'root',
@@ -13,7 +13,7 @@ import { LocalesModel } from '../models/locales.model';
 export class AppDataGlobalStorageService {
   private userData_: BehaviorSubject<UserModel> = new BehaviorSubject(null);
   private currentProject_: BehaviorSubject<ProjectModel> = new BehaviorSubject(null);
-  private localesData_: BehaviorSubject<LocalesModel> = new BehaviorSubject(null);
+  private localesData_: BehaviorSubject<LanguagesModel> = new BehaviorSubject(null);
 
   constructor(
     private pubSubService: NgxPubSubService,
@@ -43,7 +43,7 @@ export class AppDataGlobalStorageService {
     return this.userData_.asObservable();
   }
 
-  get localesData(): Observable<LocalesModel> {
+  get localesData(): Observable<LanguagesModel> {
     let cachedData = this.cacheService.get('localesData');
     this.localesData_.next(cachedData);
     if (!cachedData) {

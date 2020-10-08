@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 // app imports
 import { TranslationModel } from '../../../../../core/models/translation.model';
 import { ProjectModel } from '../../../../../core/models/project.model';
-import { LocalesModel } from '../../../../../core/models/locales.model';
+import { LanguagesModel } from '../../../../../core/models/languages.model';
 import { LanguagesHelper } from '../../../../../core/helpers/languages-helper';
 import { AppStateModel } from '../../../../../store/models/app-state.model';
 import { Store } from '@ngrx/store';
@@ -62,7 +62,7 @@ export class TranslationEditorComponent extends LanguagesHelper implements OnIni
 
   localeIndex: number;
   translateForm: FormGroup;
-  languagesData: LocalesModel;
+  languagesData: LanguagesModel;
   locales: any[];
   textareaEnabled: boolean;
 

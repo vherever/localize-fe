@@ -1,24 +1,26 @@
-import { Component, EventEmitter, Inject, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
 // app imports
 import { LocaleService } from '../../../../../core/services/api-interaction/locale.service';
 import { ErrorModel } from '../../../../../core/models/error.model';
+import { Store } from '@ngrx/store';
+import { AppStateModel } from '../../../../../store/models/app-state.model';
+import { AddLocaleAction } from '../../../../../store/actions/locales.actions';
+import { Observable, of } from 'rxjs';
 
 @Component({
   templateUrl: 'add-locale-dialog.component.html',
   styleUrls: ['add-locale-dialog.component.scss'],
 })
 export class AddLocaleDialogComponent implements OnInit, OnDestroy {
-  @Output() addedLocale: EventEmitter<string> = new EventEmitter();
-
-  private localeAddForm: FormGroup;
-  private errorMessage: string;
+  public localeAddForm: FormGroup;
+  public localeAddError$: Observable<any>;
 
   constructor(
     private fb: FormBuilder,
     private localeService: LocaleService,
+    private store: Store<AppStateModel>,
     @Inject(MAT_DIALOG_DATA) public dialogData: { projectUuid: string, projectTitle: string },
   ) {
   }
@@ -27,6 +29,7 @@ export class AddLocaleDialogComponent implements OnInit, OnDestroy {
     this.localeAddForm = this.fb.group({
       locale: ['', Validators.required],
     });
+    this.localeAddError$ = this.store.select((store: AppStateModel) => store.localesData.error);
   }
 
   ngOnDestroy() {}
@@ -44,17 +47,19 @@ export class AddLocaleDialogComponent implements OnInit, OnDestroy {
   }
 
   private onFormSave(): void {
+    this.store.dispatch(new AddLocaleAction(this.dialogData.projectUuid, this.localeAddForm.value));
     this.clearErrorMessage();
-    this.localeService.addLocale(this.dialogData.projectUuid, this.localeAddForm.value)
-      .pipe(untilComponentDestroyed(this))
-      .subscribe(() => {
-        this.addedLocale.emit(this.localeAddForm.value.locale);
-      }, (error: ErrorModel) => {
-        this.errorMessage = error.message;
-      });
+    // this.localeService.addLocale(this.dialogData.projectUuid, this.localeAddForm.value)
+    //   .pipe(untilComponentDestroyed(this))
+    //   .subscribe(() => {
+    //     this.addedLocale.emit(this.localeAddForm.value.locale);
+    //   }, (error: ErrorModel) => {
+    //     this.errorMessage = error.message;
+    //   });
   }
 
   private clearErrorMessage(): void {
-    this.errorMessage = '';
+    // this.errorMessage = '';
+    // this.localeAddError$ = of(null);
   }
 }

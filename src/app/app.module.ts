@@ -27,6 +27,8 @@ import { LanguagesReducer } from './store/reducers/languages.reducer';
 import { ProjectReducer } from './store/reducers/project.reducer';
 import { TranslationsReducer } from './store/reducers/translations.reducer';
 import { LocalesReducer } from './store/reducers/locales.reducer';
+import { LocaleService } from './core/services/api-interaction/locale.service';
+import { LocaleApiService } from './core/services/api/locale-api.service';
 
 @NgModule({
   declarations: [
@@ -84,6 +86,8 @@ import { LocalesReducer } from './store/reducers/locales.reducer';
       provide: MAT_RIPPLE_GLOBAL_OPTIONS,
       useValue: { disabled: true },
     },
+    LocaleService,
+    LocaleApiService,
   ],
   bootstrap: [AppComponent],
 })

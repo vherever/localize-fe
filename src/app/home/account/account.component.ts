@@ -9,7 +9,7 @@ import { UserModel } from '../../core/models/user.model';
 import { UserService } from '../../core/services/api-interaction/user.service';
 import { UPLOADS_ENDPOINT } from '../../core/app-constants';
 import { AppStateModel } from '../../store/models/app-state.model';
-import { ResetState, UpdateUserAction } from '../../store/actions/user.actions';
+import { ResetUserStateAction, UpdateUserAction } from '../../store/actions/user.actions';
 
 @Component({
   templateUrl: 'account.component.html',
@@ -18,13 +18,13 @@ import { ResetState, UpdateUserAction } from '../../store/actions/user.actions';
 export class AccountComponent implements OnInit, OnDestroy {
   @ViewChild('nameFieldRef', {static: false}) nameFieldRef: ElementRef;
 
-  private readonly uploadsEndpoint: string = UPLOADS_ENDPOINT;
   private formCurrentState: any;
-  private accountSettingsForm: FormGroup;
-  private fileInput: ElementRef;
-  private formChanged: boolean;
-  private userData: UserModel;
-  private avatar: string;
+  public readonly uploadsEndpoint: string = UPLOADS_ENDPOINT;
+  public accountSettingsForm: FormGroup;
+  public fileInput: ElementRef;
+  public formChanged: boolean;
+  public userData: UserModel;
+  public avatar: string;
 
   private userData$: Observable<UserModel>;
   private userUpdated$: Observable<boolean>;
@@ -67,7 +67,7 @@ export class AccountComponent implements OnInit, OnDestroy {
           );
           this.formChanged = false;
           this.nameFieldRef.nativeElement.blur();
-          this.store.dispatch(new ResetState());
+          this.store.dispatch(new ResetUserStateAction());
         }
       });
   }

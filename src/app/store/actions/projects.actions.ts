@@ -1,9 +1,9 @@
 import { Action } from '@ngrx/store';
 
 export enum ProjectsActionTypes {
-  LOAD_PROJECTS = '[PROJECT] Load Projects',
-  LOAD_PROJECTS_SUCCESS = '[PROJECT] Load Projects Success',
-  LOAD_PROJECTS_FAILURE = '[PROJECT] Load Projects Failure',
+  LOAD_PROJECTS = '[PROJECTS] Load Projects',
+  LOAD_PROJECTS_SUCCESS = '[PROJECTS] Load Projects Success',
+  LOAD_PROJECTS_FAILURE = '[PROJECTS] Load Projects Failure',
   ADD_PROJECT = '[PROJECT] Add Project',
   ADD_PROJECT_SUCCESS = '[PROJECT] Add Project Success',
   ADD_PROJECT_FAILURE = '[PROJECT] Add Project Failure',
@@ -14,6 +14,7 @@ export enum ProjectsActionTypes {
   DELETE_PROJECT_SUCCESS = '[PROJECT] Delete Project Success',
   DELETE_PROJECT_FAILURE = '[PROJECT] Delete Project Failure',
   CANCEL_PROJECTS_LOADING_ACTION = '[PROJECT] Cancel Project loading',
+  CLEAR_PROJECTS = '[PROJECTS] Clear Projects',
 }
 
 export class LoadProjectsAction implements Action {
@@ -90,9 +91,13 @@ export class DeleteProjectFailureAction implements Action {
   }
 }
 
+export class ClearProjectsAction implements Action {
+  readonly type = ProjectsActionTypes.CLEAR_PROJECTS;
+}
+
 export type ProjectsAction =
   LoadProjectsAction | LoadProjectsSuccessAction | LoadProjectsFailureAction |
   AddProjectAction | AddProjectSuccessAction | AddProjectFailureAction |
   DeleteProjectAction | DeleteProjectSuccessAction | DeleteProjectFailureAction |
   UpdateProjectAction | UpdateProjectSuccessAction | UpdateProjectFailureAction |
-  CancelProjectsLoadingAction;
+  CancelProjectsLoadingAction | ClearProjectsAction;

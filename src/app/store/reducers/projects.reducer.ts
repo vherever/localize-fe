@@ -99,6 +99,12 @@ export function ProjectsReducer(state: ProjectState = initialState, action: Proj
         ...state,
         loading: false,
       };
+    case ProjectsActionTypes.CLEAR_PROJECTS:
+      return {
+        ...state,
+        loading: false,
+        list: [],
+      };
     default:
       return state;
   }

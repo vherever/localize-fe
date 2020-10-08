@@ -10,7 +10,8 @@ export enum UserActionTypes {
   UPDATE_USER_AVATAR = '[USER] Update User avatar',
   UPDATE_USER_AVATAR_SUCCESS = '[USER] Update User avatar Success',
   UPDATE_USER_AVATAR_FAILURE = '[USER] Update User avatar Failure',
-  RESET_STATE = '[USER] Reset state',
+  RESET_USER = '[USER] Reset User state',
+  CLEAR_USER = '[USER] Clear User',
 }
 
 export class LoadUserAction implements Action {
@@ -67,13 +68,17 @@ export class UpdateUserAvatarFailureAction implements Action {
   }
 }
 
-export class ResetState implements Action {
-  readonly type = UserActionTypes.RESET_STATE;
+export class ResetUserStateAction implements Action {
+  readonly type = UserActionTypes.RESET_USER;
   constructor() {
   }
+}
+
+export class ClearUserAction implements Action {
+  readonly type = UserActionTypes.CLEAR_USER;
 }
 
 export type UserAction = LoadUserAction | LoadUserActionSuccess | LoadUserActionFailure |
   UpdateUserAction | UpdateUserActionSuccess | UpdateUserActionFailure |
   UpdateUserAvatarAction | UpdateUserAvatarSuccessAction | UpdateUserAvatarFailureAction |
-  ResetState;
+  ResetUserStateAction | ClearUserAction;

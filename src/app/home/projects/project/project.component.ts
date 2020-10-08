@@ -1,9 +1,8 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
-import { Observable, Subject } from 'rxjs';
-import { debounceTime, distinctUntilChanged, filter, first, last, skip, skipWhile, take, takeLast, throttleTime, withLatestFrom } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { filter, first } from 'rxjs/operators';
 import { select, Store } from '@ngrx/store';
-import { NgxPubSubService } from '@pscoped/ngx-pub-sub';
 import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
 // app imports
 import { ProjectModel } from '../../../core/models/project.model';
@@ -22,10 +21,8 @@ export class ProjectComponent implements OnInit, OnDestroy {
   public projectData$: Observable<ProjectModel>;
   public projectLoading$: Observable<boolean>;
   public projectData: ProjectModel;
-  private localesData$: Observable<any>;
 
   constructor(
-    private pubSubService: NgxPubSubService,
     private router: Router,
     private route: ActivatedRoute,
     private store: Store<AppStateModel>,

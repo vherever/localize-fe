@@ -74,10 +74,16 @@ export function UserReducer(state: UserState = initialState, action: UserAction)
         error: action.payload,
         loading: false,
       };
-    case UserActionTypes.RESET_STATE:
+    case UserActionTypes.RESET_USER:
       return {
         ...state,
         updated: false,
+      };
+    case UserActionTypes.CLEAR_USER:
+      return {
+        ...state,
+        updated: false,
+        user: {},
       };
     default:
       return state;

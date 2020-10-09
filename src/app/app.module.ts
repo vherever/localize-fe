@@ -29,6 +29,7 @@ import { TranslationsReducer } from './store/reducers/translations.reducer';
 import { LocalesReducer } from './store/reducers/locales.reducer';
 import { LocaleService } from './core/services/api-interaction/locale.service';
 import { LocaleApiService } from './core/services/api/locale-api.service';
+import { ShareProjectReducer } from './store/reducers/share-project.reducer';
 
 @NgModule({
   declarations: [
@@ -63,6 +64,7 @@ import { LocaleApiService } from './core/services/api/locale-api.service';
       languagesData: LanguagesReducer,
       translationsData: TranslationsReducer,
       localesData: LocalesReducer,
+      shareProject: ShareProjectReducer,
     }),
     EffectsModule.forRoot([]),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),

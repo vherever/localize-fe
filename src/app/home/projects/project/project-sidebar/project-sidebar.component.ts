@@ -24,7 +24,7 @@ export class ProjectSidebarComponent implements OnInit, OnDestroy {
   @Output() activeLocaleEmit: EventEmitter<string> = new EventEmitter();
 
   private languagesData: LanguagesModel;
-  private projectLocales: string[];
+  private localesData: string[];
   private userData$: Observable<UserModel>;
   private languagesData$: Observable<LanguagesModel>;
   private localeAdded$: Observable<boolean>;
@@ -56,7 +56,7 @@ export class ProjectSidebarComponent implements OnInit, OnDestroy {
         .subscribe((projectData: ProjectModel) => {
           if (projectData) {
             this.projectData = projectData;
-            this.projectLocales = this.getProjectLocales(this.projectData);
+            // this.projectLocales = this.getProjectLocales(this.projectData);
             this.defaultLocale = this.getDefaultLocale(this.projectData);
             this.activeLocale = this.defaultLocale;
             this.activeLocaleEmit.emit(this.activeLocale);
@@ -86,6 +86,12 @@ export class ProjectSidebarComponent implements OnInit, OnDestroy {
           this.addLocaleDialogRef.close();
         }
       });
+
+    this.localesData$
+      .pipe(untilComponentDestroyed(this))
+      .subscribe((localesData: string[]) => {
+        this.localesData = localesData;
+      });
   }
 
   ngOnDestroy() {
@@ -105,8 +111,8 @@ export class ProjectSidebarComponent implements OnInit, OnDestroy {
     const dialogRef = this.dialog.open(ManageUserDialogComponent, {
       width: '600px',
       data: {
-        userId: user.id,
-        projectId: this.projectData.id,
+        targetUuid: user.uuid,
+        projectUuid: this.projectData.uuid,
         userEmail: user.email,
         defaultLocale: this.projectData.defaultLocale,
         projectLocales: this.getAvailableTranslationLocalesForUser(user.id),
@@ -121,8 +127,10 @@ export class ProjectSidebarComponent implements OnInit, OnDestroy {
 
     dialogRef.componentInstance.onAvailableTranslationsUpdate
       .pipe(untilComponentDestroyed(this))
-      .subscribe((res) => {
-        this.projectData.sharedWith.find((u) => u.targetId === user.id).availableTranslationLocales = res;
+      .subscribe((availableTranslationLocales: string) => {
+        const foundUser = this.projectData.sharedWith.find((u) => u.targetId === user.id);
+        const foundUserCloned = {...foundUser};
+        foundUserCloned.availableTranslationLocales = availableTranslationLocales;
       });
   }
 
@@ -135,14 +143,13 @@ export class ProjectSidebarComponent implements OnInit, OnDestroy {
     this.dialog.open(InviteUserDialogComponent, {
       width: '400px',
       data: {
-        projectId: this.projectData.id,
+        projectUuid: this.projectData.uuid,
       },
     });
   }
 
   private getAvailableTranslationLocalesForUser(userId: number): any[] {
-    const projectLocalesCopy = [...this.projectLocales];
-    projectLocalesCopy.unshift(this.projectData.defaultLocale);
+    const projectLocalesCopy = [...this.localesData];
     const projectLocales = projectLocalesCopy.map((l) => {
       return {
         checked: false,

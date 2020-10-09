@@ -1,6 +1,6 @@
 export interface InviteUserModel {
   targetEmail: string;
-  projectId: number;
+  projectUuid: string;
   role?: string;
   userId?: number;
 }

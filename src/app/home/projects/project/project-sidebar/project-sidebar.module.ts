@@ -10,6 +10,8 @@ import { InviteUserDialogComponent } from './invite-user-dialog/invite-user-dial
 import { ShareProjectApiService } from '../../../../core/services/api/share-project-api.service';
 import { ShareProjectService } from '../../../../core/services/api-interaction/share-project.service';
 import { AddLocaleDialogModule } from './add-locale-dialog/add-locale-dialog.module';
+import { EffectsModule } from '@ngrx/effects';
+import { ShareProjectEffects } from '../../../../store/effects/share-project.effects';
 
 @NgModule({
   imports: [
@@ -18,6 +20,7 @@ import { AddLocaleDialogModule } from './add-locale-dialog/add-locale-dialog.mod
     MatDialogModule,
     ReactiveFormsModule,
     AddLocaleDialogModule,
+    EffectsModule.forFeature([ShareProjectEffects]),
   ],
   declarations: [
     ProjectSidebarComponent,

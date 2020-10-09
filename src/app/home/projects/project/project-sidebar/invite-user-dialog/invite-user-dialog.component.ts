@@ -17,7 +17,7 @@ export class InviteUserDialogComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private shareProjectService: ShareProjectService,
-    @Inject(MAT_DIALOG_DATA) public data: { projectId: number },
+    @Inject(MAT_DIALOG_DATA) public data: { projectUuid: string },
   ) {
   }
 
@@ -39,7 +39,7 @@ export class InviteUserDialogComponent implements OnInit {
     const targetEmail = this.inviteUserGroup.get('email').value;
     const req: InviteUserModel = {
       targetEmail,
-      projectId: this.data.projectId,
+      projectUuid: this.data.projectUuid,
       role: 'developer',
     };
     return this.shareProjectService.addUser(req)

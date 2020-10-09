@@ -9,8 +9,8 @@ import { ManagePermissionsModel } from '../../../../../core/models/manage-permis
 
 interface DialogData {
   targetEmail: string;
-  projectId: number;
-  userId: number;
+  projectUuid: string;
+  targetUuid: string;
   defaultLocale: string;
   projectLocales?: any;
 }
@@ -26,7 +26,7 @@ export class ManageUserDialogComponent implements OnInit, OnDestroy {
   private defaultValues;
   private projectLocales: string;
 
-  managePermissionsForm: FormGroup;
+  public managePermissionsForm: FormGroup;
 
   constructor(
     private shareProjectService: ShareProjectService,
@@ -49,8 +49,7 @@ export class ManageUserDialogComponent implements OnInit, OnDestroy {
   onRemoveUserFromProjectClick(): void {
     const req: InviteUserModel = {
       targetEmail: this.data.targetEmail,
-      projectId: this.data.projectId,
-      userId: this.data.userId,
+      projectUuid: this.data.projectUuid,
     };
 
     this.shareProjectService.removeUser(req)
@@ -71,13 +70,16 @@ export class ManageUserDialogComponent implements OnInit, OnDestroy {
     }, []).join(',');
 
     const req: ManagePermissionsModel = {
-      targetId: this.data.userId,
-      projectId: this.data.projectId,
+      targetUuid: this.data.targetUuid,
+      projectUuid: this.data.projectUuid,
       availableTranslationLocales,
     };
 
+    console.log('req', req);
+
     this.shareProjectService.managePermissions(req)
-      .subscribe(() => {
+      .pipe(untilComponentDestroyed(this))
+      .subscribe((res) => {
         this.onAvailableTranslationsUpdate.emit(availableTranslationLocales);
         this.dialogRef.close();
       });

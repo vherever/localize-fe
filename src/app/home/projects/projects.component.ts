@@ -16,6 +16,7 @@ import { SortingHelper } from '../../core/helpers/sorting-helper';
 import { ProjectSettingsDialogComponent } from './project-settings-dialog/project-settings-dialog.component';
 import { AppStateModel } from '../../store/models/app-state.model';
 import { CancelProjectsLoadingAction, DeleteProjectAction, LoadProjectsAction } from '../../store/actions/projects.actions';
+import { UPLOADS_ENDPOINT } from '../../core/app-constants';
 
 @Component({
   selector: 'app-projects',
@@ -38,6 +39,8 @@ export class ProjectsComponent extends SortingHelper implements OnInit, OnDestro
   private error$: Observable<Error>;
   private dialogProjectAddRef: MatDialogRef<ProjectAddDialogComponent>;
   private dialogProjectUpdateRef: MatDialogRef<ProjectSettingsDialogComponent>;
+
+  public readonly uploadsEndpoint: string = UPLOADS_ENDPOINT;
 
   constructor(
     private pubSubService: NgxPubSubService,

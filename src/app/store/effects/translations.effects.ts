@@ -1,26 +1,23 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { TranslationsService } from '../../core/services/api-interaction/translations.service';
+import { of } from 'rxjs';
+import { catchError, map, mergeMap, switchMap } from 'rxjs/operators';
+// app imports
 import {
   AddTranslationAction, AddTranslationFailureAction, AddTranslationSuccessAction,
   CancelLoadTranslationsAction,
   LoadTranslationsAction,
   LoadTranslationsFailureAction,
-  LoadTranslationsSuccessAction, RemoveTranslationAction, RemoveTranslationFailureAction, RemoveTranslationSuccessAction,
+  LoadTranslationsSuccessAction,
+  RemoveTranslationAction,
+  RemoveTranslationFailureAction,
+  RemoveTranslationSuccessAction,
   TranslationsActionTypes,
-  UpdateTranslationAction, UpdateTranslationFailureAction, UpdateTranslationSuccessAction,
+  UpdateTranslationAction,
+  UpdateTranslationFailureAction,
+  UpdateTranslationSuccessAction,
 } from '../actions/translations.action';
-import { catchError, map, mergeMap, switchMap } from 'rxjs/operators';
-import { of } from 'rxjs';
-import {
-  AddProjectAction,
-  AddProjectFailureAction,
-  AddProjectSuccessAction,
-  DeleteProjectAction,
-  DeleteProjectFailureAction,
-  DeleteProjectSuccessAction,
-  ProjectsActionTypes,
-} from '../actions/projects.actions';
 
 @Injectable()
 export class TranslationsEffects {

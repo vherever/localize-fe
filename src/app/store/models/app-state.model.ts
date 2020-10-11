@@ -5,4 +5,5 @@ export interface AppStateModel {
   readonly project: any;
   readonly translationsData: any;
   readonly localesData: any;
+  readonly shareProject: any;
 }

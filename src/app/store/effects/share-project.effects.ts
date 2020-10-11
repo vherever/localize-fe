@@ -24,7 +24,7 @@ export class ShareProjectEffects {
             availableTranslationLocales: data.availableTranslationLocales,
           })
             .pipe(
-              map((project) => new ManageUserPermissionSuccessAction(project)),
+              map(() => new ManageUserPermissionSuccessAction(data.availableTranslationLocales)),
               catchError((error) => of(new ManageUserPermissionFailureAction(error))),
             ),
         ),

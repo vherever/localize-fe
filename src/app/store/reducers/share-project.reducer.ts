@@ -1,13 +1,14 @@
 import { ShareProjectAction, ShareProjectActionTypes } from '../actions/share-project.actions';
 
 export interface ShareProjectState {
-  data: any;
+  data: string;
   loading: boolean;
   error: Error;
+  updating?: boolean;
 }
 
 const initialState: ShareProjectState = {
-  data: {},
+  data: '',
   loading: false,
   error: undefined,
 };
@@ -17,13 +18,13 @@ export function ShareProjectReducer(state: ShareProjectState = initialState, act
     case ShareProjectActionTypes.MANAGE_USER_PERMISSION:
       return {
         ...state,
-        loading: false,
+        loading: true,
       };
     case ShareProjectActionTypes.MANAGE_USER_PERMISSION_SUCCESS:
       return {
-        data: action.availableTranslationLocales,
         ...state,
-        loading: true,
+        data: action.availableTranslationLocales,
+        loading: false,
       };
     case ShareProjectActionTypes.MANAGE_USER_PERMISSION_FAILURE: {
       return {
@@ -32,6 +33,18 @@ export function ShareProjectReducer(state: ShareProjectState = initialState, act
         loading: false,
       };
     }
+    case ShareProjectActionTypes.MANAGE_USER_PERMISSION_UPDATED:
+      return {
+        ...state,
+        data: '',
+        loading: false,
+      };
+    case ShareProjectActionTypes.UPDATING_PERMISSION:
+      return {
+        ...state,
+        loading: false,
+        updating: true,
+      };
     default:
       return state;
   }

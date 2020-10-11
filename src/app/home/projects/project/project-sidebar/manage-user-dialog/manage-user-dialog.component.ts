@@ -1,18 +1,22 @@
 import { Component, EventEmitter, Inject, OnDestroy, OnInit, Output } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
+import { Store } from '@ngrx/store';
 import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 // app imports
 import { ShareProjectService } from '../../../../../core/services/api-interaction/share-project.service';
 import { InviteUserModel } from '../../../../../core/models/invite-user.model';
-import { ManagePermissionsModel } from '../../../../../core/models/manage-permissions.model';
+import { AppStateModel } from '../../../../../store/models/app-state.model';
+import { ManageUserPermissionAction } from '../../../../../store/actions/share-project.actions';
+import { LoadProjectByIdAction } from '../../../../../store/actions/project.actions';
 
 interface DialogData {
   targetEmail: string;
   projectUuid: string;
   targetUuid: string;
   defaultLocale: string;
-  projectLocales?: any;
+  enabledUserLocales: any;
+  projectLocales: any;
 }
 
 @Component({
@@ -24,7 +28,7 @@ export class ManageUserDialogComponent implements OnInit, OnDestroy {
   onAvailableTranslationsUpdate: EventEmitter<any> = new EventEmitter();
 
   private defaultValues;
-  private projectLocales: string;
+  public projectLocales: any[];
 
   public managePermissionsForm: FormGroup;
 
@@ -32,7 +36,8 @@ export class ManageUserDialogComponent implements OnInit, OnDestroy {
     private shareProjectService: ShareProjectService,
     private dialogRef: MatDialogRef<ManageUserDialogComponent>,
     private fb: FormBuilder,
-    @Inject(MAT_DIALOG_DATA) public data: DialogData,
+    private store: Store<AppStateModel>,
+    @Inject(MAT_DIALOG_DATA) private data: DialogData,
   ) {
   }
 
@@ -40,6 +45,7 @@ export class ManageUserDialogComponent implements OnInit, OnDestroy {
     this.managePermissionsForm = this.fb.group({
       availableTranslationLocales: new FormArray([]),
     });
+    this.projectLocales = this.data.projectLocales;
     this.initCheckboxes();
   }
 
@@ -69,21 +75,13 @@ export class ManageUserDialogComponent implements OnInit, OnDestroy {
       return acc;
     }, []).join(',');
 
-    const req: ManagePermissionsModel = {
-      targetUuid: this.data.targetUuid,
-      projectUuid: this.data.projectUuid,
+    this.store.dispatch(new ManageUserPermissionAction(
+      this.data.targetUuid,
+      this.data.projectUuid,
       availableTranslationLocales,
-    };
-
-    console.log('req', req);
-
-    this.shareProjectService.managePermissions(req)
-      .pipe(untilComponentDestroyed(this))
-      .subscribe((res) => {
-        this.onAvailableTranslationsUpdate.emit(availableTranslationLocales);
-        this.dialogRef.close();
-      });
-
+    ));
+    this.store.dispatch(new LoadProjectByIdAction(this.data.projectUuid, true));
+    this.dialogRef.close();
   }
 
   onCheckboxChange(control: { checked: boolean, value: string }, state: boolean): void {
@@ -91,8 +89,7 @@ export class ManageUserDialogComponent implements OnInit, OnDestroy {
   }
 
   private initCheckboxes(): void {
-    this.projectLocales = this.data.defaultLocale + ',' + this.data.projectLocales;
-    this.data.projectLocales.forEach((o) => {
+    this.projectLocales.forEach((o) => {
       const control = new FormControl(o);
       (this.managePermissionsForm.controls.availableTranslationLocales as FormArray).push(control);
     });

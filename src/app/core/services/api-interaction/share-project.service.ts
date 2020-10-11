@@ -4,6 +4,9 @@ import { Observable } from 'rxjs';
 import { InviteUserModel } from '../../models/invite-user.model';
 import { ShareProjectApiService } from '../api/share-project-api.service';
 import { ManagePermissionsModel } from '../../models/manage-permissions.model';
+import { delay } from 'rxjs/operators';
+
+const delay_ms = 2000;
 
 @Injectable()
 export class ShareProjectService {
@@ -21,6 +24,9 @@ export class ShareProjectService {
   }
 
   managePermissions(req: ManagePermissionsModel): Observable<any> {
-    return this.shareProjectApiService.managePermissions(req);
+    return this.shareProjectApiService.managePermissions(req)
+      .pipe(
+        delay(delay_ms),
+      );
   }
 }

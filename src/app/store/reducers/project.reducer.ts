@@ -4,6 +4,7 @@ export interface ProjectState {
   data: any;
   loading: boolean;
   error: Error;
+  updating?: boolean;
 }
 
 const initialState: ProjectState = {
@@ -19,22 +20,30 @@ export function ProjectReducer(state: ProjectState = initialState, action: Proje
       return {
         ...state,
         loading: true,
+        updating: action.updating,
       };
     case ProjectActionTypes.LOAD_PROJECT_BY_ID_SUCCESS:
       return {
         ...state,
         data: action.payload,
         loading: false,
+        updating: false,
       };
     case ProjectActionTypes.LOAD_PROJECT_BY_ID_FAILURE:
       return {
         ...state,
         loading: false,
+        updating: false,
       };
     case ProjectActionTypes.CANCEL_PROJECT_LOADING_ACTION:
       return {
         ...state,
         loading: false,
+      };
+    case ProjectActionTypes.UPDATING_PROJECT:
+      return {
+        ...state,
+        updating: true,
       };
     default:
       return state;

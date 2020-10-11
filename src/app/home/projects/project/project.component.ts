@@ -22,6 +22,8 @@ export class ProjectComponent implements OnInit, OnDestroy {
   public projectLoading$: Observable<boolean>;
   public projectData: ProjectModel;
 
+  public projectUpdating$: Observable<boolean>;
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -61,6 +63,8 @@ export class ProjectComponent implements OnInit, OnDestroy {
           return store.project.data;
         }),
       );
+
+    this.projectUpdating$ = this.store.select((store: AppStateModel) => store.project.updating);
   }
 
   ngOnDestroy() {

@@ -1,4 +1,4 @@
-<div class="lz_project_sidebar_wrapper" *ngIf="(projectData$ | async) && !(projectLoading$ | async)">
+<div class="lz_project_sidebar_wrapper" *ngIf="(projectData$ | async) && !(projectLoading$ | async) || (projectUpdating$ | async)">
   <ng-container *ngIf="projectData">
     <div class="lz_section_title">Locales</div>
     <div class="lz_locales_list">

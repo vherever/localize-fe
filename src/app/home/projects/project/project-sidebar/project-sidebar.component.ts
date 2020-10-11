@@ -39,6 +39,12 @@ export class ProjectSidebarComponent implements OnInit, OnDestroy {
   public localesData$: Observable<any>;
   public projectLoading$: Observable<boolean>;
 
+  private userProjectLocales: any;
+
+  public projectUpdating$: Observable<boolean>;
+
+  private manageUserPermissionDialog: MatDialogRef<ManageUserDialogComponent>;
+
   constructor(
     private dialog: MatDialog,
     private store: Store<AppStateModel>,
@@ -56,7 +62,6 @@ export class ProjectSidebarComponent implements OnInit, OnDestroy {
         .subscribe((projectData: ProjectModel) => {
           if (projectData) {
             this.projectData = projectData;
-            // this.projectLocales = this.getProjectLocales(this.projectData);
             this.defaultLocale = this.getDefaultLocale(this.projectData);
             this.activeLocale = this.defaultLocale;
             this.activeLocaleEmit.emit(this.activeLocale);
@@ -92,6 +97,8 @@ export class ProjectSidebarComponent implements OnInit, OnDestroy {
       .subscribe((localesData: string[]) => {
         this.localesData = localesData;
       });
+
+    this.projectUpdating$ = this.store.select((store: AppStateModel) => store.project.updating);
   }
 
   ngOnDestroy() {
@@ -108,24 +115,30 @@ export class ProjectSidebarComponent implements OnInit, OnDestroy {
   }
 
   onManageUSerClick(user: UserModel): void {
-    const dialogRef = this.dialog.open(ManageUserDialogComponent, {
+    this.userProjectLocales = this.getAvailableTranslationLocalesForUser(
+      this.projectData.defaultLocale + ',' + this.projectData.translationsLocales,
+      user.availableTranslationLocales + '',
+    );
+
+    this.manageUserPermissionDialog = this.dialog.open(ManageUserDialogComponent, {
       width: '600px',
       data: {
         targetUuid: user.uuid,
         projectUuid: this.projectData.uuid,
         userEmail: user.email,
         defaultLocale: this.projectData.defaultLocale,
-        projectLocales: this.getAvailableTranslationLocalesForUser(user.id),
+        enabledUserLocales: user.availableTranslationLocales,
+        projectLocales: this.userProjectLocales,
       },
     });
 
-    dialogRef.componentInstance.removeUserEmit
+    this.manageUserPermissionDialog.componentInstance.removeUserEmit
       .pipe(untilComponentDestroyed(this))
       .subscribe((res) => {
         this.projectData.sharedUsers = this.projectData.sharedUsers.filter((u: UserModel) => u.id !== res.userId);
       });
 
-    dialogRef.componentInstance.onAvailableTranslationsUpdate
+    this.manageUserPermissionDialog.componentInstance.onAvailableTranslationsUpdate
       .pipe(untilComponentDestroyed(this))
       .subscribe((availableTranslationLocales: string) => {
         const foundUser = this.projectData.sharedWith.find((u) => u.targetId === user.id);
@@ -148,25 +161,27 @@ export class ProjectSidebarComponent implements OnInit, OnDestroy {
     });
   }
 
-  private getAvailableTranslationLocalesForUser(userId: number): any[] {
-    const projectLocalesCopy = [...this.localesData];
-    const projectLocales = projectLocalesCopy.map((l) => {
-      return {
-        checked: false,
-        value: l.trim(),
-      };
-    });
-
-    const userLocales = this.getUserTranslations(userId);
-    projectLocales.forEach((l) => {
-      userLocales.forEach((ll) => {
-        if (l.value === ll) {
-          l.checked = true;
-        }
+  private getAvailableTranslationLocalesForUser(projectLocales: string, availableTranslationLocales: string): any[] {
+    const locales = projectLocales
+      .split(',')
+      .map((l) => {
+        return {
+          checked: false,
+          value: l.trim(),
+        };
       });
+
+    locales.forEach((l) => {
+      availableTranslationLocales
+        .split(',')
+        .forEach((ll) => {
+          if (l.value === ll) {
+            l.checked = true;
+          }
+        });
     });
 
-    return projectLocales;
+    return locales;
   }
 
   private addLocale(): void {
@@ -178,19 +193,6 @@ export class ProjectSidebarComponent implements OnInit, OnDestroy {
           projectTitle: this.projectData.title,
         },
       });
-  }
-
-  private getProjectLocales(projectData: ProjectModel): string[] {
-    const projectLocalesByRole = projectData.isShared ?
-      projectData.translationsLocales : projectData.translationsLocales;
-    const projectLocales: string = projectLocalesByRole ? projectLocalesByRole : '';
-    const projectLocalesArray = projectLocales
-      .split(',')
-      .filter((value, index, self) => {
-        return self.indexOf(value) === index && value !== '';
-      });
-    projectLocalesArray.unshift(projectData.defaultLocale);
-    return projectLocalesArray;
   }
 
   private getDefaultLocale(projectData: ProjectModel): string {

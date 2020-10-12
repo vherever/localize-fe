@@ -1,15 +1,15 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { Observable } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
 // app imports
 import { TranslationModel } from '../../../../../core/models/translation.model';
 import { ProjectModel } from '../../../../../core/models/project.model';
 import { LanguagesModel } from '../../../../../core/models/languages.model';
 import { LanguagesHelper } from '../../../../../core/helpers/languages-helper';
 import { AppStateModel } from '../../../../../store/models/app-state.model';
-import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
 import { UpdateTranslationAction } from '../../../../../store/actions/translations.action';
-import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
 
 interface TranslateEditorModel {
   editInLanguage: string;
@@ -109,7 +109,7 @@ export class TranslationEditorComponent extends LanguagesHelper implements OnIni
     this.translateForm.controls['translation'].patchValue(this.translation.translations[lang]);
     this.activeLocaleCountryName = this.getActiveLocaleCountryName(lang, this.languagesData);
 
-    this.textareaEnabled = this.locales.find((l) => l.code === lang).active;
+    this.textareaEnabled = this.locales.find((l) => l.code === lang).editable;
     if (this.textareaEnabled) {
       this.translateForm.get('translation').enable();
     } else {
@@ -125,23 +125,18 @@ export class TranslationEditorComponent extends LanguagesHelper implements OnIni
   }
 
   private initializeAvailableLocales(localesData: string[]): any {
-    this.locales = this.prepareAvailableTranslations(this.translation.translations, localesData);
+    const projectLocales: string[] = (this.projectData.defaultLocale + ',' + this.projectData.translationsLocales).split(',');
+    this.locales = this.prepareAvailableTranslations(this.translation.translations, projectLocales, localesData);
   }
 
-  private prepareAvailableTranslations(translations: any, availableTranslations: string[]) {
+  private prepareAvailableTranslations(translations: any, projectLocales: string[], availableTranslations: string[]) {
     const result: any[] = [];
-    availableTranslations.forEach((value: string) => {
-      result.push({ code: value, translation: translations[value], active: false });
-    });
-
-    const availableLocations_ = availableTranslations
-      .map((v) => v.trim())
-      .filter((v) => v !== '' && v !== null);
-
-    availableLocations_.forEach((tt) => {
-      result.forEach((t) => {
-        if (t.code === tt) {
-          t.active = true;
+    projectLocales.forEach((loc1: string) => {
+      result.push({ code: loc1, translation: translations[loc1] ? translations[loc1] : '', editable: false });
+      const d = result.find((loc) => loc.code === loc1);
+      availableTranslations.forEach((loc2: string) => {
+        if (loc1 === loc2) {
+          d.editable = true;
         }
       });
     });

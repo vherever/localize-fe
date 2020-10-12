@@ -105,7 +105,7 @@ export class TranslationsComponent extends LanguagesHelper implements OnInit, On
     this.translationAdded$
       .pipe(untilComponentDestroyed(this))
       .subscribe((state: boolean) => {
-        if (state) {
+        if (state && this.addTranslationDialogRef) {
           this.addTranslationDialogRef.close();
         }
       });

@@ -8,6 +8,7 @@ import { ProjectModel } from '../../core/models/project.model';
 import { Store } from '@ngrx/store';
 import { AppStateModel } from '../../store/models/app-state.model';
 import { AddTranslationAction } from '../../store/actions/translations.action';
+import { LocaleHelper } from '../../core/helpers/locale-helper';
 
 @Component({
   templateUrl: 'translation-add-dialog.component.html',
@@ -28,10 +29,10 @@ export class TranslationAddDialogComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.addTranslationForm = this.fb.group({
-      defaultLocaleValue: ['', Validators.required],
+      assetValue: ['', Validators.required],
       assetCode: ['', Validators.required],
     });
-    this.defaultLocale = this.projectData.defaultLocale;
+    this.defaultLocale = LocaleHelper.getDefaultLocale(this.projectData);
   }
 
   ngOnDestroy() {
@@ -39,13 +40,13 @@ export class TranslationAddDialogComponent implements OnInit, OnDestroy {
 
   onTranslationSave(): void {
     const data = {
-      translations: this.createTranslations(this.addTranslationForm.controls['defaultLocaleValue'].value),
+      translations: this.createTranslations(this.addTranslationForm.controls['assetValue'].value),
       assetCode: this.addTranslationForm.controls['assetCode'].value,
     };
     this.store.dispatch(new AddTranslationAction(this.projectData.uuid, data));
   }
 
-  private createTranslations(defaultLocaleValue: string): string {
+  private createTranslations(assetValue: string): string {
     const localesObj = {};
     if (this.projectData.translationsLocales) {
       const localesArray = this.projectData.translationsLocales.split(',');
@@ -53,7 +54,7 @@ export class TranslationAddDialogComponent implements OnInit, OnDestroy {
         localesObj[l] = '';
       });
     }
-    localesObj[this.projectData.defaultLocale] = defaultLocaleValue;
+    localesObj[this.defaultLocale] = assetValue;
     return JSON.stringify(localesObj);
   }
 }

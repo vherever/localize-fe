@@ -13,6 +13,7 @@ import { ManageUserDialogComponent } from './manage-user-dialog/manage-user-dial
 import { InviteUserDialogComponent } from './invite-user-dialog/invite-user-dialog.component';
 import { AddLocaleDialogComponent } from './add-locale-dialog/add-locale-dialog.component';
 import { AppStateModel } from '../../../../store/models/app-state.model';
+import { LocaleHelper } from '../../../../core/helpers/locale-helper';
 
 @Component({
   selector: 'app-project-sidebar',
@@ -61,8 +62,7 @@ export class ProjectSidebarComponent implements OnInit, OnDestroy {
         .subscribe((projectData: ProjectModel) => {
           if (projectData) {
             this.projectData = projectData;
-            console.log('ddd', this.getDefaultLocale(this.projectData));
-            this.defaultLocale = this.getDefaultLocale(this.projectData);
+            this.defaultLocale = LocaleHelper.getDefaultLocale(this.projectData);
             this.activeLocale = this.defaultLocale;
             this.activeLocaleEmit.emit(this.activeLocale);
           }
@@ -187,18 +187,5 @@ export class ProjectSidebarComponent implements OnInit, OnDestroy {
           projectTitle: this.projectData.title,
         },
       });
-  }
-
-  private getDefaultLocale(projectData: ProjectModel): string {
-    if (!projectData.isShared) {
-      return projectData.defaultLocale;
-    } else {
-      const localesArray = this.projectData.availableTranslationLocales.split(',');
-      const found = localesArray.find((locale: string) => locale === projectData.defaultLocale);
-      if (found) {
-        return projectData.defaultLocale;
-      }
-      return localesArray[0];
-    }
   }
 }

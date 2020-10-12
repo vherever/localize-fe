@@ -1,4 +1,5 @@
 <form [formGroup]="addTranslationForm" (submit)="onTranslationSave()">
+  <h1 mat-dialog-title>Add Translation</h1>
   <div>
     <mat-form-field>
       <input matInput placeholder="Source text" formControlName="defaultLocaleValue" autocomplete="off">

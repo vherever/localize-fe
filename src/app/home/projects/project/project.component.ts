@@ -7,7 +7,7 @@ import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
 // app imports
 import { ProjectModel } from '../../../core/models/project.model';
 import { AppStateModel } from '../../../store/models/app-state.model';
-import { CancelProjectLoadingAction, LoadProjectByIdAction } from '../../../store/actions/project.actions';
+import { CancelProjectLoadingAction, ClearProjectAction, LoadProjectByIdAction } from '../../../store/actions/project.actions';
 import { LoadLocalesAction } from '../../../store/actions/locales.actions';
 
 @Component({
@@ -69,6 +69,7 @@ export class ProjectComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.store.dispatch(new CancelProjectLoadingAction());
+    this.store.dispatch(new ClearProjectAction());
   }
 
   onActiveLocaleEmit(activeLocale: string): void {

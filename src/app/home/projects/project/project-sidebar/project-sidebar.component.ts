@@ -24,7 +24,6 @@ export class ProjectSidebarComponent implements OnInit, OnDestroy {
   @Output() activeLocaleEmit: EventEmitter<string> = new EventEmitter();
 
   private languagesData: LanguagesModel;
-  private localesData: string[];
   private userData$: Observable<UserModel>;
   private languagesData$: Observable<LanguagesModel>;
   private localeAdded$: Observable<boolean>;
@@ -62,6 +61,7 @@ export class ProjectSidebarComponent implements OnInit, OnDestroy {
         .subscribe((projectData: ProjectModel) => {
           if (projectData) {
             this.projectData = projectData;
+            console.log('ddd', this.getDefaultLocale(this.projectData));
             this.defaultLocale = this.getDefaultLocale(this.projectData);
             this.activeLocale = this.defaultLocale;
             this.activeLocaleEmit.emit(this.activeLocale);
@@ -90,12 +90,6 @@ export class ProjectSidebarComponent implements OnInit, OnDestroy {
         if (state) {
           this.addLocaleDialogRef.close();
         }
-      });
-
-    this.localesData$
-      .pipe(untilComponentDestroyed(this))
-      .subscribe((localesData: string[]) => {
-        this.localesData = localesData;
       });
 
     this.projectUpdating$ = this.store.select((store: AppStateModel) => store.project.updating);
@@ -204,7 +198,7 @@ export class ProjectSidebarComponent implements OnInit, OnDestroy {
       if (found) {
         return projectData.defaultLocale;
       }
-      return projectData.defaultLocale;
+      return localesArray[0];
     }
   }
 }

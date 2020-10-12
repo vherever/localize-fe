@@ -6,6 +6,7 @@ export enum ProjectActionTypes {
   LOAD_PROJECT_BY_ID_FAILURE = '[PROJECT] Load Project by id Failure',
   CANCEL_PROJECT_LOADING_ACTION = '[PROJECT] Cancel Project loading Action',
   UPDATING_PROJECT = '[PROJECT] Updating project',
+  CLEAR_PROJECT_ACTION = '[PROJECT] Clear Project',
 }
 
 export class LoadProjectByIdAction implements Action {
@@ -34,5 +35,9 @@ export class UpdatingProjectAction implements Action {
   readonly type = ProjectActionTypes.UPDATING_PROJECT;
 }
 
+export class ClearProjectAction implements Action {
+  readonly type = ProjectActionTypes.CLEAR_PROJECT_ACTION;
+}
+
 export type ProjectAction = LoadProjectByIdAction | LoadProjectByIdSuccessAction | LoadProjectByIdFailureAction |
-  CancelProjectLoadingAction | UpdatingProjectAction;
+  CancelProjectLoadingAction | UpdatingProjectAction | ClearProjectAction;

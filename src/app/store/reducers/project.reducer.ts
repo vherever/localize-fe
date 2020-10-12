@@ -45,6 +45,11 @@ export function ProjectReducer(state: ProjectState = initialState, action: Proje
         ...state,
         updating: true,
       };
+    case ProjectActionTypes.CLEAR_PROJECT_ACTION:
+      return {
+        ...state,
+        data: null,
+      };
     default:
       return state;
   }

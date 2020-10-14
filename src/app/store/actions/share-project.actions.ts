@@ -6,6 +6,7 @@ export enum ShareProjectActionTypes {
   MANAGE_USER_PERMISSION_FAILURE = '[MANAGE USER PERMISSION] Manage User permission Failure',
   MANAGE_USER_PERMISSION_UPDATED = '[MANAGE USER PERMISSION] Manage User permission Updated',
   UPDATING_PERMISSION = '[UPDATING PERMISSION] Updating Permission',
+  MANAGE_USER_PERMISSION_CLEAR_STATE = '[MANAGE USER PERMISSION] Clear State',
 }
 
 export class ManageUserPermissionAction implements Action {
@@ -40,6 +41,10 @@ export class UpdatingPermission implements Action {
   readonly type = ShareProjectActionTypes.UPDATING_PERMISSION;
 }
 
+export class ManageUserPermissionClearState implements Action {
+  readonly type = ShareProjectActionTypes.MANAGE_USER_PERMISSION_CLEAR_STATE;
+}
+
 export type ShareProjectAction =
   ManageUserPermissionAction | ManageUserPermissionSuccessAction | ManageUserPermissionFailureAction |
-  ManageUserPermissionUpdated | UpdatingPermission;
+  ManageUserPermissionUpdated | UpdatingPermission | ManageUserPermissionClearState;

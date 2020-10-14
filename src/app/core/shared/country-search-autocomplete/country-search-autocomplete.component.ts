@@ -8,6 +8,7 @@ import { NgSelectComponent } from '@ng-select/ng-select';
 import { LanguagesHelper } from '../../helpers/languages-helper';
 import { LocaleModelFormatted, LanguagesModel } from '../../models/languages.model';
 import { AppStateModel } from '../../../store/models/app-state.model';
+import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
 
 @Component({
   selector: 'app-country-search-autocomplete',
@@ -43,6 +44,7 @@ export class CountrySearchAutocompleteComponent extends LanguagesHelper implemen
 
     this.languagesData$ = this.store.select((store: AppStateModel) => store.languagesData.data);
     this.languagesData$
+      .pipe(untilComponentDestroyed(this))
       .subscribe((languagesData) => {
         this.languagesDataForFilter = this.formatData(languagesData);
         this.originalData = JSON.parse(JSON.stringify(this.languagesDataForFilter));
@@ -56,6 +58,7 @@ export class CountrySearchAutocompleteComponent extends LanguagesHelper implemen
     this.inputLanguageSearch.pipe(
       debounceTime(200),
       distinctUntilChanged())
+      .pipe(untilComponentDestroyed(this))
       .subscribe((value: any) => {
         if (value.term) {
           this.languagesDataTransformed = this.getResult(value.term, this.originalData);

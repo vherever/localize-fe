@@ -4,7 +4,7 @@
 
     <div>translation in <b>{{ activeLocaleCountryName }}</b></div>
     <select #t formControlName="editInLanguage" (ngModelChange)="onLanguageEditChange(t.value)">
-      <ng-container *ngFor="let item of locales">
+      <ng-container *ngFor="let item of (localesData$ | async)">
         <option [selected]="localeIndex"
                 [ngValue]="item.translation"
                 [attr.data-test]="item.translation"
@@ -17,6 +17,6 @@
     <textarea formControlName="translation" name="" id="" cols="30" rows="10"></textarea>
 
     <br>
-    <button type="submit" [disabled]="!textareaEnabled">Save</button>
+    <button type="submit" [disabled]="!(textareaEnabled$ | async)">Save</button>
   </div>
 </form>

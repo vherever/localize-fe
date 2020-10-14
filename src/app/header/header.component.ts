@@ -14,8 +14,9 @@ import { AppStateModel } from '../store/models/app-state.model';
   styleUrls: ['header.component.scss'],
 })
 export class HeaderComponent implements OnInit, OnDestroy {
-  private isAuthenticated: boolean;
-  private userData$: Observable<UserModel>;
+  public isAuthenticated: boolean;
+
+  public userData$: Observable<UserModel>;
 
   constructor(
     private authService: AuthService,

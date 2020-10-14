@@ -1,4 +1,7 @@
 <button class="lz_header_avatar"
+        #menuTrigger
+        (menuOpened)="menuTrigger.disabled = true"
+        (menuClosed)="menuTrigger.disabled = false"
         [matMenuTriggerFor]="menu">
   <img *ngIf="avatar" src="{{ uploadsEndpoint }}/{{ avatar }}" alt="">
 </button>

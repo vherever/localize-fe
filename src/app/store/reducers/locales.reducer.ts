@@ -43,7 +43,7 @@ export function LocalesReducer(state: LocaleState = initialState, action: Locale
     case LocalesActionTypes.ADD_LOCALE_SUCCESS:
       return {
         ...state,
-        data: [...state.data, action.payload['locale']],
+        data: [...state.data, { code: action.payload['locale'], editable: true }],
         loading: false,
         added: true,
       };
@@ -52,6 +52,12 @@ export function LocalesReducer(state: LocaleState = initialState, action: Locale
         ...state,
         error: action.payload,
         loading: false,
+        added: false,
+      };
+    case LocalesActionTypes.LOCALES_CLEAR_STATE:
+      return {
+        ...state,
+        error: undefined,
         added: false,
       };
     default:

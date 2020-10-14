@@ -9,6 +9,7 @@ import { InviteUserModel } from '../../../../../core/models/invite-user.model';
 import { AppStateModel } from '../../../../../store/models/app-state.model';
 import { ManageUserPermissionAction } from '../../../../../store/actions/share-project.actions';
 import { LoadProjectByIdAction } from '../../../../../store/actions/project.actions';
+import { NgxPubSubService } from '@pscoped/ngx-pub-sub';
 
 interface DialogData {
   targetEmail: string;
@@ -37,6 +38,7 @@ export class ManageUserDialogComponent implements OnInit, OnDestroy {
     private dialogRef: MatDialogRef<ManageUserDialogComponent>,
     private fb: FormBuilder,
     private store: Store<AppStateModel>,
+    private pubSubService: NgxPubSubService,
     @Inject(MAT_DIALOG_DATA) private data: DialogData,
   ) {
   }
@@ -80,7 +82,7 @@ export class ManageUserDialogComponent implements OnInit, OnDestroy {
       this.data.projectUuid,
       availableTranslationLocales,
     ));
-    this.store.dispatch(new LoadProjectByIdAction(this.data.projectUuid, true));
+    this.pubSubService.publishEvent('EVENT:LOAD_PROJECT_BY_ID', this.data.projectUuid);
     this.dialogRef.close();
   }
 

@@ -7,8 +7,8 @@ import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
 // app imports
 import { ProjectModel } from '../../../core/models/project.model';
 import { AppStateModel } from '../../../store/models/app-state.model';
-import { CancelProjectLoadingAction, ClearProjectAction, LoadProjectByIdAction } from '../../../store/actions/project.actions';
-import { LoadLocalesAction } from '../../../store/actions/locales.actions';
+import { CancelProjectLoadingAction, ClearProjectAction } from '../../../store/actions/project.actions';
+import { NgxPubSubService } from '@pscoped/ngx-pub-sub';
 
 @Component({
   templateUrl: 'project.component.html',
@@ -28,6 +28,7 @@ export class ProjectComponent implements OnInit, OnDestroy {
     private router: Router,
     private route: ActivatedRoute,
     private store: Store<AppStateModel>,
+    private pubSubService: NgxPubSubService,
   ) {
     this.route.params
       .pipe(untilComponentDestroyed(this))
@@ -42,7 +43,7 @@ export class ProjectComponent implements OnInit, OnDestroy {
       )
       .subscribe(() => {
         setTimeout(() => {
-          this.store.dispatch(new LoadProjectByIdAction(this.projectId));
+          this.pubSubService.publishEvent('EVENT:LOAD_PROJECT_BY_ID', this.projectId);
         }, 1);
       });
   }
@@ -51,14 +52,11 @@ export class ProjectComponent implements OnInit, OnDestroy {
     this.projectLoading$ = this.store.select((store: AppStateModel) => store.project.loading);
     this.projectData$ = this.store
       .pipe(
-        filter((t) => {
-          return !t.project.loading && t.project.data;
+        filter((store: AppStateModel) => {
+          return !store.project.loading && store.project.data;
         }),
         first(),
         select((store: AppStateModel) => {
-          if (store.project) {
-            this.store.dispatch(new LoadLocalesAction(this.prepareLocales(store.project.data)));
-          }
           this.projectData = store.project.data;
           return store.project.data;
         }),
@@ -74,16 +72,5 @@ export class ProjectComponent implements OnInit, OnDestroy {
 
   onActiveLocaleEmit(activeLocale: string): void {
     this.activeLocale = activeLocale;
-  }
-
-  private prepareLocales(projectData: ProjectModel): string[] {
-    let result: string[];
-    const translationsLocales: string = projectData.translationsLocales ? projectData.translationsLocales : '';
-    if (projectData.role === 'administrator') {
-      result = `${projectData.defaultLocale},${translationsLocales}`.split(',');
-    } else {
-      result = `${projectData.availableTranslationLocales}`.split(',');
-    }
-    return result.filter((val: string) => val !== '');
   }
 }

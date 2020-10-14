@@ -15,10 +15,10 @@ import { AppStateModel } from '../../store/models/app-state.model';
 export class MenuComponent implements OnInit, OnDestroy {
   @Output() logOutClickedEvent: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-  private readonly uploadsEndpoint: string = UPLOADS_ENDPOINT;
-  private userData: UserModel;
-  private userData$: Observable<UserModel>;
-  private avatar: string;
+  public readonly uploadsEndpoint: string = UPLOADS_ENDPOINT;
+  public userData: UserModel;
+  public userData$: Observable<UserModel>;
+  public avatar: string;
   private avatar$: Observable<string>;
 
   constructor(

@@ -8,6 +8,7 @@ export enum LocalesActionTypes {
   ADD_LOCALE = '[LOCALE] Add Locale',
   ADD_LOCALE_SUCCESS = '[LOCALE] Add Locale Success',
   ADD_LOCALE_FAILURE = '[LOCALE] Add Locale Failure',
+  LOCALES_CLEAR_STATE = '[LOCALE] Clear State',
 }
 
 export class LoadLocalesAction implements Action {
@@ -46,5 +47,9 @@ export class AddLocaleFailureAction implements Action {
   }
 }
 
+export class ClearLocalesStateAction implements Action {
+  readonly type = LocalesActionTypes.LOCALES_CLEAR_STATE;
+}
+
 export type LocalesAction = LoadLocalesAction | LoadLocalesSuccessAction | LoadLocalesFailureAction |
-  AddLocaleAction | AddLocaleSuccessAction | AddLocaleFailureAction;
+  AddLocaleAction | AddLocaleSuccessAction | AddLocaleFailureAction | ClearLocalesStateAction;

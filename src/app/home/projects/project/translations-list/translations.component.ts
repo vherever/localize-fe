@@ -8,7 +8,6 @@ import {
   OnDestroy,
   OnInit,
   QueryList,
-  SimpleChanges,
   ViewChildren,
   ViewContainerRef,
 } from '@angular/core';
@@ -38,7 +37,7 @@ import { LoadTranslationsAction, RemoveTranslationAction } from '../../../../sto
 })
 export class TranslationsComponent extends LanguagesHelper implements OnInit, OnChanges, OnDestroy {
   @ViewChildren('translationEditor', { read: ViewContainerRef }) translationContainers: QueryList<ViewContainerRef>;
-  @Input() activeLocale: string;
+  @Input() activeLocale: any;
   @Input() projectData: ProjectModel;
 
   private previousElement: ViewContainerRef;
@@ -51,6 +50,9 @@ export class TranslationsComponent extends LanguagesHelper implements OnInit, On
   private userData$: Observable<UserModel>;
   public translationsLoading$: Observable<boolean>;
   public translationsData$: Observable<any>;
+  public localesData$: Observable<any>;
+
+  private localesData: string[];
 
   componentRef: ComponentRef<TranslationEditorComponent>;
   currentClickedElementId: number;
@@ -109,9 +111,16 @@ export class TranslationsComponent extends LanguagesHelper implements OnInit, On
           this.addTranslationDialogRef.close();
         }
       });
+
+    this.localesData$ = this.store.select((store: AppStateModel) => store.localesData.data);
+    this.localesData$
+      .pipe(untilComponentDestroyed(this))
+      .subscribe((localesData: string[]) => {
+        this.localesData = localesData;
+      });
   }
 
-  ngOnChanges(changes: SimpleChanges) {
+  ngOnChanges() {
     if (!this.componentRef) {
       return;
     }
@@ -173,6 +182,7 @@ export class TranslationsComponent extends LanguagesHelper implements OnInit, On
     this.componentRef = nativeEl.createComponent(factory);
     this.componentRef.instance.translation = translation;
     this.componentRef.instance.projectData = this.projectData;
+    this.componentRef.instance.localesData = this.localesData;
     this.componentRef.instance.activeLocale = this.activeLocale;
     this.componentRef.instance.activeLocaleCountryName = this.activeLocaleCountryName;
     this.componentRef.instance.languagesData = this.languagesData;

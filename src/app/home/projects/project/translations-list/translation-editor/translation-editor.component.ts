@@ -1,7 +1,8 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { Observable } from 'rxjs';
+import { Observable, of, Subject } from 'rxjs';
 import { Store } from '@ngrx/store';
+import { map } from 'rxjs/operators';
 import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
 // app imports
 import { TranslationModel } from '../../../../../core/models/translation.model';
@@ -24,12 +25,12 @@ interface TranslateEditorModel {
 export class TranslationEditorComponent extends LanguagesHelper implements OnInit, OnDestroy {
   @Input() translation: TranslationModel;
   @Input() projectData: ProjectModel;
+  @Input() localesData: string[];
 
   public translationUpdated$: Observable<boolean>;
 
   public translationUpdating$: Observable<boolean>;
   public localesData$: Observable<any[]>;
-  private availableTranslations: any;
 
   @Input() set activeLocale(val: string) {
     this.cdr.markForCheck();
@@ -37,7 +38,6 @@ export class TranslationEditorComponent extends LanguagesHelper implements OnIni
     setTimeout(() => {
       if (this.translateForm) {
         this.translateForm.controls['editInLanguage'].patchValue(this.activeLocale);
-        // this.onLanguageEditChange(this.activeLocale);
       }
     }, 10);
   }
@@ -64,7 +64,7 @@ export class TranslationEditorComponent extends LanguagesHelper implements OnIni
   translateForm: FormGroup;
   languagesData: LanguagesModel;
   locales: any[];
-  textareaEnabled: boolean;
+  textareaEnabled$: Subject<boolean> = new Subject<boolean>();
 
   constructor(
     private fb: FormBuilder,
@@ -85,10 +85,15 @@ export class TranslationEditorComponent extends LanguagesHelper implements OnIni
 
     this.translationUpdated$ = this.store.select((store: AppStateModel) => store.translationsData.updated);
     this.localesData$ = this.store.select((store: AppStateModel) => store.localesData.data);
-    this.localesData$
+
+    this.textareaEnabled$
       .pipe(untilComponentDestroyed(this))
-      .subscribe((localesData: string[]) => {
-        this.initializeAvailableLocales(localesData);
+      .subscribe((state: boolean) => {
+        if (state) {
+          this.translateForm.get('translation').enable();
+        } else {
+          this.translateForm.get('translation').disable();
+        }
       });
   }
 
@@ -101,7 +106,6 @@ export class TranslationEditorComponent extends LanguagesHelper implements OnIni
       translations: JSON.stringify(this.buildFullTranslation(this.translateForm.value.editInLanguage, this.translateForm.value)),
     };
 
-    // this.newTranslationData.emit(data);
     this.store.dispatch(new UpdateTranslationAction(this.projectData.uuid, this.translation.uuid, data));
   }
 
@@ -109,12 +113,15 @@ export class TranslationEditorComponent extends LanguagesHelper implements OnIni
     this.translateForm.controls['translation'].patchValue(this.translation.translations[lang]);
     this.activeLocaleCountryName = this.getActiveLocaleCountryName(lang, this.languagesData);
 
-    this.textareaEnabled = this.locales.find((l) => l.code === lang).editable;
-    if (this.textareaEnabled) {
-      this.translateForm.get('translation').enable();
-    } else {
-      this.translateForm.get('translation').disable();
-    }
+    this.localesData$
+      .pipe(
+        untilComponentDestroyed(this),
+        map((data: []) => {
+          const found: any = data.find((l: any) => l.code === lang);
+          this.textareaEnabled$.next(found.editable);
+        }),
+      )
+      .subscribe();
   }
 
   private buildFullTranslation(currentLang: string, currentFormValue: TranslateEditorModel): any {
@@ -122,25 +129,5 @@ export class TranslationEditorComponent extends LanguagesHelper implements OnIni
     const translationsCloned = JSON.parse(JSON.stringify(this.translation.translations));
     delete translationsCloned[currentLang];
     return Object.assign(translationsCloned, currentTranslation);
-  }
-
-  private initializeAvailableLocales(localesData: string[]): any {
-    const projectLocales: string[] = (this.projectData.defaultLocale + ',' + this.projectData.translationsLocales).split(',');
-    this.locales = this.prepareAvailableTranslations(this.translation.translations, projectLocales, localesData);
-  }
-
-  private prepareAvailableTranslations(translations: any, projectLocales: string[], availableTranslations: string[]) {
-    const result: any[] = [];
-    projectLocales.forEach((loc1: string) => {
-      result.push({ code: loc1, translation: translations[loc1] ? translations[loc1] : '', editable: false });
-      const d = result.find((loc) => loc.code === loc1);
-      availableTranslations.forEach((loc2: string) => {
-        if (loc1 === loc2) {
-          d.editable = true;
-        }
-      });
-    });
-
-    return result;
   }
 }

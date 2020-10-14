@@ -5,6 +5,7 @@ export interface ShareProjectState {
   loading: boolean;
   error: Error;
   updating?: boolean;
+  updated?: boolean;
 }
 
 const initialState: ShareProjectState = {
@@ -25,6 +26,7 @@ export function ShareProjectReducer(state: ShareProjectState = initialState, act
         ...state,
         data: action.availableTranslationLocales,
         loading: false,
+        updated: true,
       };
     case ShareProjectActionTypes.MANAGE_USER_PERMISSION_FAILURE: {
       return {

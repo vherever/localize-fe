@@ -1,6 +1,6 @@
 <div class="container">
   <div>projectLoading$: {{ projectLoading$ | async }}</div>
-  <h2 class="lz_h_bordered" *ngIf="(projectData$ | async) && !(projectLoading$ | async) && (projectUpdating$ | async)">{{ (projectData$ | async).title }}</h2>
+  <h2 class="lz_h_bordered" *ngIf="(projectData$ | async) && (!(projectLoading$ | async) || (projectUpdating$ | async))">{{ (projectData$ | async).title }}</h2>
 
   <div class="lz_project_wrapper" fxLayout>
     <div fxFlex="70%" class="lz_card lz_col_left">

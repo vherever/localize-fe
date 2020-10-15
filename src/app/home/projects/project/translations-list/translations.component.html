@@ -14,13 +14,17 @@
 
           <ng-template #noTranslation><span class="lz_p_needs_translation">*requires translation*</span></ng-template>
 
-          <span class="lz_p_current_locale">[{{ activeLocaleCountryName }}, {{ activeLocale }}]</span>
+          <span class="lz_p_current_locale">
+            <span class="lz_language">{{ activeLocaleObj.language }}</span>
+            <span class="lz_country">{{ activeLocaleObj.country }}</span>
+            <span class="lz_flag">{{ activeLocaleObj.flag }}</span>
+          </span>
           <span class="lz_p_latest_update" fxLayout>
             <span>{{ translation.latestUpdatedAtFormatted }}</span>
 
             <ng-container *ngIf="translation.updatedBy && userId">
               <span *ngIf="translation.updatedBy.id === userId; else updatedByOther">
-                &nbsp;by
+                &nbsp;bylz_p_title
                 <b>you</b>
               </span>
             </ng-container>

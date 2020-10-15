@@ -46,19 +46,19 @@ export class TranslationEditorComponent implements OnInit, OnDestroy {
     return this._activeLocale;
   }
 
-  @Input() set activeLocaleCountryName(val: string) {
+  @Input() set activeLocaleObj(val: any) {
     this.cdr.markForCheck();
-    this._activeLocaleCountryName = val;
+    this._activeLocaleObj = val;
   }
 
-  get activeLocaleCountryName(): string {
-    return this._activeLocaleCountryName;
+  get activeLocaleObjResult(): any {
+    return this._activeLocaleObj;
   }
 
   @Output() newTranslationData: EventEmitter<any> = new EventEmitter();
 
   private _activeLocale: string;
-  private _activeLocaleCountryName: string;
+  private _activeLocaleObj: any;
 
   localeIndex: number;
   translateForm: FormGroup;
@@ -110,7 +110,7 @@ export class TranslationEditorComponent implements OnInit, OnDestroy {
 
   onLanguageEditChange(lang: string): void {
     this.translateForm.controls['translation'].patchValue(this.translation.translations[lang]);
-    this.activeLocaleCountryName = LanguagesHelper.getActiveLocaleCountryName(lang, this.languagesData);
+    this.activeLocaleObj = LanguagesHelper.getActiveLocaleObj(lang, this.languagesData);
 
     this.localesData$
       .pipe(

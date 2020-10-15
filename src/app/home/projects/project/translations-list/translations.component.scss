@@ -3,12 +3,30 @@
   height: calc(100% - 100px);
   .lz_project_name_description {
     .lz_p_title {
-      display: inline-block;
+      display: block;
     }
     .lz_p_current_locale {
-      display: inline-block;
+      display: block;
       font-size: 12px;
-      margin-left: 3px;
+      span {
+        display: inline-block;
+      }
+      .lz_language {
+        font-weight: bold;
+        color: #000000;
+      }
+      .lz_country {
+        margin-left: 3px;
+      }
+      .lz_flag {
+        font-size: 17px;
+        margin-left: 5px;
+      }
+    }
+    .lz_p_latest_update {
+      &:before {
+        top: 6px !important;
+      }
     }
     .lz_p_needs_translation {
       display: inline-block;

@@ -7,7 +7,7 @@ import {
   OnChanges,
   OnDestroy,
   OnInit,
-  QueryList,
+  QueryList, SimpleChanges,
   ViewChildren,
   ViewContainerRef,
 } from '@angular/core';
@@ -56,7 +56,7 @@ export class TranslationsComponent implements OnInit, OnChanges, OnDestroy {
 
   componentRef: ComponentRef<TranslationEditorComponent>;
   currentClickedElementId: number;
-  activeLocaleCountryName: string;
+  activeLocaleObj: any;
   userId: number;
 
   constructor(
@@ -96,7 +96,7 @@ export class TranslationsComponent implements OnInit, OnChanges, OnDestroy {
         if (languagesData && this.activeLocale) {
           const languagesDataForFilter = LanguagesHelper.formatData(languagesData);
           this.languagesData = languagesDataForFilter;
-          this.activeLocaleCountryName = LanguagesHelper.getActiveLocaleCountryName(this.activeLocale, languagesDataForFilter);
+          this.activeLocaleObj = LanguagesHelper.getActiveLocaleObj(this.activeLocale, languagesDataForFilter);
         }
       });
 
@@ -116,13 +116,17 @@ export class TranslationsComponent implements OnInit, OnChanges, OnDestroy {
       });
   }
 
-  ngOnChanges() {
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.activeLocale.currentValue && this.languagesData) {
+      this.activeLocaleObj = LanguagesHelper.getActiveLocaleObj(this.activeLocale, this.languagesData);
+    }
+
     if (!this.componentRef) {
       return;
     }
 
     this.componentRef.instance.activeLocale = this.activeLocale;
-    this.componentRef.instance.activeLocaleCountryName = this.activeLocaleCountryName;
+    this.componentRef.instance.activeLocaleObj = this.activeLocaleObj;
   }
 
   ngOnDestroy() {
@@ -182,7 +186,7 @@ export class TranslationsComponent implements OnInit, OnChanges, OnDestroy {
     this.componentRef.instance.projectData = this.projectData;
     this.componentRef.instance.localesData = this.localesData;
     this.componentRef.instance.activeLocale = this.activeLocale;
-    this.componentRef.instance.activeLocaleCountryName = this.activeLocaleCountryName;
+    this.componentRef.instance.activeLocaleObj = this.activeLocaleObj;
     this.componentRef.instance.languagesData = this.languagesData;
   }
 

@@ -86,20 +86,24 @@ export class LanguagesHelper {
     };
   }
 
-  static getActiveLocaleCountryName(locale: string, languagesData): string {
+  static getActiveLocaleObj(locale: string, languagesData): string {
     const splitted = locale.split('-');
 
     let language;
     let country;
     let result;
+    let flag;
+
+    const foundC = languagesData['countries'].find((c) => c.key === splitted[0]);
 
     if (splitted.length > 1) {
-      country = languagesData['countries'].find((c) => c.key === splitted[0]).name;
+      country = foundC.name;
       language = languagesData['languages'][splitted[1]].name;
-      result = `${language} (${country})`;
+      flag = foundC.emoji;
+      result = { language, country, flag };
     } else {
       language = languagesData['languages'][splitted[0]].name;
-      result = language;
+      result = { language };
     }
 
     return result;

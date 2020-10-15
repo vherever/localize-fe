@@ -2,14 +2,14 @@
   <div *ngIf="translationUpdating$ | async">updating...</div>
   <div style="border: 1px solid">
 
-    <div>translation in <b>{{ activeLocaleCountryName }}</b></div>
+    <div>translation in <b>{{ activeLocaleObjResult | json }}</b></div>
     <select #t formControlName="editInLanguage" (ngModelChange)="onLanguageEditChange(t.value)">
       <ng-container *ngFor="let item of (localesData$ | async)">
         <option [selected]="localeIndex"
                 [ngValue]="item.translation"
                 [attr.data-test]="item.translation"
                 [value]="item.code"
-                [innerHtml]="item.code"></option>
+                [innerHtml]="item.flag + item.name"></option>
       </ng-container>
     </select>
 

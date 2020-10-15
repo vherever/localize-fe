@@ -35,7 +35,9 @@ export class LanguagesHelper {
       if (o.locales) {
         o.locales.forEach((l) => {
           const d = {
-            value: o.locales ? l.name + ' (' + o.name + ')' : o.name,
+            name1: l.name,
+            name2: o.name,
+            value: o.locales ? l.name + ' [' + o.name + ']' : o.name,
             filter: o.locales ? l.name + ' ' + o.name : o.name,
             code: o.key ? o.key : o.code,
             emoji: o.emoji,

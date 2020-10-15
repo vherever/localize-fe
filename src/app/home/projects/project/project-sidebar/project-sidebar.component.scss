@@ -7,15 +7,27 @@
   .lz_locales_list {
     margin-top: 10px;
     > a {
+      place-content: center space-between;
+      align-items: center;
       position: relative;
-      padding: 5px 7px 5px 14px;
+      padding: 5px 7px 5px 7px;
       text-decoration: none;
       display: flex;
       font-size: 13px;
       color: #6d6c6c;
+      .lz_locale_isdefault,
+      .lz_locale_is_readonly {
+        margin-left: 3px;
+        font-size: 9px;
+        color: #fff;
+        padding: 2px 3px;
+        border-radius: 3px;
+      }
       .lz_locale_isdefault {
-        font-size: 11px;
-        color: #9b9b9b;
+        background-color: #e67e22;
+      }
+      .lz_locale_is_readonly {
+        background-color: #ababab;
       }
       &:hover {
         background-color: #e8e8e8;
@@ -24,21 +36,42 @@
         background-color: #e4e4e4;
         color: #000000;
       }
-      .locale_disabled_warn {
-        font-size: 11px;
-        position: absolute;
-        left: 6px;
-        top: 6px;
-        font-weight: bold;
-        color: #e74c3c;
-      }
       .flag {
         font-size: 17px;
       }
+      .code {
+        margin-left: 3px;
+        font-size: 10px;
+        background-color: #27ae60;
+        color: #fff;
+        padding: 2px 3px;
+        border-radius: 3px;
+        font-weight: bold;
+      }
       .locale_full_name {
-        //max-width: 100px;
-        //text-overflow: ellipsis;
-        //overflow: hidden;
+        font-size: 12px;
+        line-height: 18px;
+        margin-left: 5px;
+        max-width: 185px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        .name1 {
+          color: #000000;
+          font-weight: bold;
+        }
+        .name2 {
+          margin-left: 5px;
+        }
+        &.no_flag {
+          font-weight: bold;
+          color: #000000;
+        }
+      }
+      .inner_wrapper {
+        display: flex;
+        place-content: center flex-start;
+        align-items: center;
       }
     }
   }

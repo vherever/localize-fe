@@ -14,12 +14,21 @@
         <a href="javascript:;"
            (click)="onLocaleClick(locale.code)"
            [ngClass]="{'isActive': activeLocale === locale.code}">
-          <span *ngIf="!locale.editable" class="locale_disabled_warn" title="Disabled translation">!</span>
-          <span class="flag">{{ locale.flag }}</span>
-          <span>{{ locale.code.toUpperCase() }}</span>,
-          <span class="locale_full_name">{{ locale.name }}</span>
-          <span class="lz_locale_isdefault"
-            *ngIf="locale.code === defaultLocale">(default)</span>
+          <span class="inner_wrapper">
+
+            <span class="flag">{{ locale.flag }}</span>
+            <span class="code">{{ locale.code.toUpperCase() }}</span>
+            <span class="locale_full_name" *ngIf="locale.flag">
+              <span class="name1">{{ locale.name1 }}</span>
+              <span class="name2" title="{{ locale.name2 }}">{{ locale.name2 }}</span>
+            </span>
+            <span class="locale_full_name no_flag" *ngIf="!locale.flag">{{ locale.name }}</span>
+
+          </span>
+
+          <span class="lz_locale_isdefault" *ngIf="locale.code === defaultLocale">default</span>
+
+          <span class="lz_locale_is_readonly" *ngIf="!locale.editable">readonly</span>
         </a>
       </ng-container>
     </div>

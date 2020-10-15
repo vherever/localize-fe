@@ -78,7 +78,7 @@ export class AppRouteRootComponent implements AfterViewInit, OnDestroy {
     const result: any[] = [];
     projectLocales.split(',').forEach((loc1: string) => {
       const found: any = languagesData.find((l) => l.keyCode === loc1);
-      result.push({ code: loc1, name: found.value, flag: found.emoji || '', editable: false });
+      result.push({ code: loc1, name: found.value, flag: found.emoji || '', editable: false, name1: found.name1 || '', name2: found.name2 || '' });
       const d = result.find((loc) => loc.code === loc1);
       availableTranslations.forEach((loc2: string) => {
         if (loc1 === loc2) {

@@ -1,5 +1,5 @@
 <div class="container">
-  <div>projectLoading$: {{ projectLoading$ | async }}</div>
+  <em style="font-size: 9px">projectLoading$: {{ projectLoading$ | async }}</em>
   <h2 class="lz_h_bordered" *ngIf="(projectData$ | async) && (!(projectLoading$ | async) || (projectUpdating$ | async))">{{ (projectData$ | async).title }}</h2>
 
   <div class="lz_project_wrapper" fxLayout>

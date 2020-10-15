@@ -1,7 +1,15 @@
 <button (click)="onAddTranslationClick()">Add Translation</button>
 <h5 class="lz_h_bordered">Translations</h5>
 <div class="lz_list">
-  <div>translationsLoading$: {{ translationsLoading$ | async }}</div>
+  <em style="font-size: 9px">translationsLoading$: {{ translationsLoading$ | async }}</em>
+
+  <span class="lz_p_current_locale">
+    <span class="lz_translations_label">Translations in: </span>
+    <span class="lz_language">{{ activeLocaleObj.language }}</span>
+    <span class="lz_country">{{ activeLocaleObj.country }}</span>
+    <span class="lz_flag">{{ activeLocaleObj.flag }}</span>
+  </span>
+
   <ng-container>
   <a href="javascript:;"
      *ngFor="let translation of (translationsData$ | async); let i = index"
@@ -14,11 +22,6 @@
 
           <ng-template #noTranslation><span class="lz_p_needs_translation">*requires translation*</span></ng-template>
 
-          <span class="lz_p_current_locale">
-            <span class="lz_language">{{ activeLocaleObj.language }}</span>
-            <span class="lz_country">{{ activeLocaleObj.country }}</span>
-            <span class="lz_flag">{{ activeLocaleObj.flag }}</span>
-          </span>
           <span class="lz_p_latest_update" fxLayout>
             <span>{{ translation.latestUpdatedAtFormatted }}</span>
 

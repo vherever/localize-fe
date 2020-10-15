@@ -7,7 +7,7 @@ export interface LanguagesState {
 }
 
 const initialState: LanguagesState = {
-  data: {},
+  data: null,
   loading: false,
   error: undefined,
 };

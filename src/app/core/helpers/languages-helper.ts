@@ -1,38 +1,5 @@
 export class LanguagesHelper {
-  formatData(data) {
-    const countries = {...data.countries};
-    const languages = {...data.languages};
-    const countries_ = [];
-
-    Object.keys(countries).forEach((key) => {
-      countries[key] = {...countries[key]};
-      countries[key]['key'] = key.toLowerCase();
-      countries_.push(countries[key]);
-      countries[key].locales = [];
-
-      Object.keys(languages).forEach((l) => {
-        countries[key].languages.forEach((k) => {
-          if (l === k) {
-            countries[key].locales.push({ name: languages[l].name, native: languages[l].native, code: k });
-          }
-        });
-      });
-
-      countries[key].languages = countries[key].locales;
-      delete countries[key].phone;
-      delete countries[key].continent;
-      delete countries[key].capital;
-      delete countries[key].currency;
-      delete countries[key].emojiU;
-    });
-
-    return {
-      countries: countries_,
-      languages,
-    };
-  }
-
-  getResult(value, data: any) {
+  static getResult(value, data: any) {
     const val = value.toLowerCase();
     const temp = [];
 
@@ -84,7 +51,40 @@ export class LanguagesHelper {
     }, []);
   }
 
-  getActiveLocaleCountryName(locale: string, languagesData): string {
+  static formatData(data) {
+    const countries = {...data.countries};
+    const languages = {...data.languages};
+    const countries_ = [];
+
+    Object.keys(countries).forEach((key) => {
+      countries[key] = {...countries[key]};
+      countries[key]['key'] = key.toLowerCase();
+      countries_.push(countries[key]);
+      countries[key].locales = [];
+
+      Object.keys(languages).forEach((l) => {
+        countries[key].languages.forEach((k) => {
+          if (l === k) {
+            countries[key].locales.push({ name: languages[l].name, native: languages[l].native, code: k });
+          }
+        });
+      });
+
+      countries[key].languages = countries[key].locales;
+      delete countries[key].phone;
+      delete countries[key].continent;
+      delete countries[key].capital;
+      delete countries[key].currency;
+      delete countries[key].emojiU;
+    });
+
+    return {
+      countries: countries_,
+      languages,
+    };
+  }
+
+  static getActiveLocaleCountryName(locale: string, languagesData): string {
     const splitted = locale.split('-');
 
     let language;

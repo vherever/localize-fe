@@ -24,9 +24,7 @@ import { LocaleHelper } from '../../../../core/helpers/locale-helper';
 export class ProjectSidebarComponent implements OnInit, OnDestroy {
   @Output() activeLocaleEmit: EventEmitter<string> = new EventEmitter();
 
-  private languagesData: LanguagesModel;
   private userData$: Observable<UserModel>;
-  private languagesData$: Observable<LanguagesModel>;
   private localeAdded$: Observable<boolean>;
   private addLocaleDialogRef: MatDialogRef<AddLocaleDialogComponent>;
 
@@ -76,18 +74,11 @@ export class ProjectSidebarComponent implements OnInit, OnDestroy {
         this.userData = userData;
       });
 
-    this.languagesData$ = this.store.select((store: AppStateModel) => store.languagesData.data);
-    this.languagesData$
-      .pipe(untilComponentDestroyed(this))
-      .subscribe((languagesData: LanguagesModel) => {
-        this.languagesData = languagesData;
-      });
-
     this.localeAdded$ = this.store.select((store: AppStateModel) => store.localesData.added);
     this.localeAdded$
       .pipe(untilComponentDestroyed(this))
       .subscribe((state: boolean) => {
-        if (state) {
+        if (state && this.addLocaleDialogRef) {
           this.addLocaleDialogRef.close();
         }
       });
@@ -96,11 +87,6 @@ export class ProjectSidebarComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-  }
-
-  get flag(): string {
-    // TODO: get flag
-    return '';
   }
 
   onLocaleClick(locale: string): void {

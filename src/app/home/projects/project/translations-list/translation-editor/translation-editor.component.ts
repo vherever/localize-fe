@@ -22,7 +22,7 @@ interface TranslateEditorModel {
   styleUrls: ['translation-editor.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TranslationEditorComponent extends LanguagesHelper implements OnInit, OnDestroy {
+export class TranslationEditorComponent implements OnInit, OnDestroy {
   @Input() translation: TranslationModel;
   @Input() projectData: ProjectModel;
   @Input() localesData: string[];
@@ -71,7 +71,6 @@ export class TranslationEditorComponent extends LanguagesHelper implements OnIni
     private cdr: ChangeDetectorRef,
     private store: Store<AppStateModel>,
   ) {
-    super();
   }
 
   ngOnInit() {
@@ -111,7 +110,7 @@ export class TranslationEditorComponent extends LanguagesHelper implements OnIni
 
   onLanguageEditChange(lang: string): void {
     this.translateForm.controls['translation'].patchValue(this.translation.translations[lang]);
-    this.activeLocaleCountryName = this.getActiveLocaleCountryName(lang, this.languagesData);
+    this.activeLocaleCountryName = LanguagesHelper.getActiveLocaleCountryName(lang, this.languagesData);
 
     this.localesData$
       .pipe(

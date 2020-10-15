@@ -35,7 +35,7 @@ import { LoadTranslationsAction, RemoveTranslationAction } from '../../../../sto
   styleUrls: ['translations.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TranslationsComponent extends LanguagesHelper implements OnInit, OnChanges, OnDestroy {
+export class TranslationsComponent implements OnInit, OnChanges, OnDestroy {
   @ViewChildren('translationEditor', { read: ViewContainerRef }) translationContainers: QueryList<ViewContainerRef>;
   @Input() activeLocale: any;
   @Input() projectData: ProjectModel;
@@ -67,7 +67,6 @@ export class TranslationsComponent extends LanguagesHelper implements OnInit, On
     private dialog: MatDialog,
     private store: Store<AppStateModel>,
   ) {
-    super();
     this.route.params
       .pipe(untilComponentDestroyed(this))
       .subscribe((params) => {
@@ -87,10 +86,7 @@ export class TranslationsComponent extends LanguagesHelper implements OnInit, On
         }
       });
 
-    this.translationsData$ = of([]);
-    setTimeout(() => {
-      this.translationsData$ = this.store.select((store: AppStateModel) => store.translationsData.data);
-    }, 10);
+    this.translationsData$ = this.store.select((store: AppStateModel) => store.translationsData.data);
     this.translationsLoading$ = this.store.select((store: AppStateModel) => store.translationsData.loading);
 
     this.languagesData$ = this.store.select((store: AppStateModel) => store.languagesData.data);
@@ -98,9 +94,9 @@ export class TranslationsComponent extends LanguagesHelper implements OnInit, On
     this.languagesData$
       .subscribe((languagesData) => {
         if (languagesData && this.activeLocale) {
-          const languagesDataForFilter = this.formatData(languagesData);
+          const languagesDataForFilter = LanguagesHelper.formatData(languagesData);
           this.languagesData = languagesDataForFilter;
-          this.activeLocaleCountryName = this.getActiveLocaleCountryName(this.activeLocale, languagesDataForFilter);
+          this.activeLocaleCountryName = LanguagesHelper.getActiveLocaleCountryName(this.activeLocale, languagesDataForFilter);
         }
       });
 

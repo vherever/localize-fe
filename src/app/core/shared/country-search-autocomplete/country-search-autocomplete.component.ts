@@ -4,29 +4,29 @@ import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { NgSelectComponent } from '@ng-select/ng-select';
+import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
 // app imports
 import { LanguagesHelper } from '../../helpers/languages-helper';
 import { LocaleModelFormatted, LanguagesModel } from '../../models/languages.model';
 import { AppStateModel } from '../../../store/models/app-state.model';
-import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
 
 @Component({
   selector: 'app-country-search-autocomplete',
   templateUrl: 'country-search-autocomplete.component.html',
   styleUrls: ['country-search-autocomplete.component.scss'],
 })
-export class CountrySearchAutocompleteComponent extends LanguagesHelper implements OnInit, OnDestroy {
+export class CountrySearchAutocompleteComponent implements OnInit, OnDestroy {
   @Input() labelForId: string;
   @Output() languageSelectedEmit: EventEmitter<string> = new EventEmitter<string>();
   @ViewChild('selectEl', {static: false}) select: NgSelectComponent;
 
   private inputLanguageSearch: Subject<string> = new Subject<string>();
   private originalData: any[];
-  private languagesDataTransformed: any = [];
+  public languagesDataTransformed: any = [];
   private languagesDataForFilter: any;
-  private selectDataLoading: boolean;
-  private dropdownIsOpen: boolean;
-  private group: FormGroup;
+  public selectDataLoading: boolean;
+  public dropdownIsOpen: boolean;
+  public group: FormGroup;
   private readonly defaultLanguage: string = 'gb-en';
   private languagesData$: Observable<LanguagesModel>;
 
@@ -34,7 +34,6 @@ export class CountrySearchAutocompleteComponent extends LanguagesHelper implemen
     private fb: FormBuilder,
     private store: Store<AppStateModel>,
   ) {
-    super();
   }
 
   ngOnInit() {
@@ -46,9 +45,9 @@ export class CountrySearchAutocompleteComponent extends LanguagesHelper implemen
     this.languagesData$
       .pipe(untilComponentDestroyed(this))
       .subscribe((languagesData) => {
-        this.languagesDataForFilter = this.formatData(languagesData);
+        this.languagesDataForFilter = LanguagesHelper.formatData(languagesData);
         this.originalData = JSON.parse(JSON.stringify(this.languagesDataForFilter));
-        this.languagesDataTransformed = this.getResult('', this.originalData);
+        this.languagesDataTransformed = LanguagesHelper.getResult('', this.originalData);
         this.languageSelectedEmit.emit(this.defaultLanguage);
         setTimeout(() => {
           this.select.blur();
@@ -61,7 +60,7 @@ export class CountrySearchAutocompleteComponent extends LanguagesHelper implemen
       .pipe(untilComponentDestroyed(this))
       .subscribe((value: any) => {
         if (value.term) {
-          this.languagesDataTransformed = this.getResult(value.term, this.originalData);
+          this.languagesDataTransformed = LanguagesHelper.getResult(value.term, this.originalData);
           this.dropdownIsOpen = true;
         } else {
           this.languagesDataTransformed = [];
@@ -103,6 +102,6 @@ export class CountrySearchAutocompleteComponent extends LanguagesHelper implemen
 
   private onClearSearchBar(): void {
     this.dropdownIsOpen = false;
-    this.languagesDataTransformed = this.getResult('', this.originalData);
+    this.languagesDataTransformed = LanguagesHelper.getResult('', this.originalData);
   }
 }

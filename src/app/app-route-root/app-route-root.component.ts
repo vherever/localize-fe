@@ -1,14 +1,13 @@
 import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { combineLatest, Observable } from 'rxjs';
 import { select, Store } from '@ngrx/store';
 // app imports
 import { AppStateModel } from '../store/models/app-state.model';
 import { NgxPubSubService } from '@pscoped/ngx-pub-sub';
 import { LoadProjectByIdAction } from '../store/actions/project.actions';
-import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
 import { ProjectModel } from '../core/models/project.model';
 import { LoadLocalesAction } from '../store/actions/locales.actions';
-import { filter, first, skip } from 'rxjs/operators';
+import { LanguagesHelper } from '../core/helpers/languages-helper';
 
 @Component({
   selector: 'app-app-route-root',
@@ -17,11 +16,11 @@ import { filter, first, skip } from 'rxjs/operators';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppRouteRootComponent implements AfterViewInit, OnDestroy {
-  private loadingProjects$: Observable<boolean>;
-  private loadingUser$: Observable<boolean>;
-  private loadingProject$: Observable<boolean>;
+  public loadingProjects$: Observable<boolean>;
+  public loadingUser$: Observable<boolean>;
+  public loadingProject$: Observable<boolean>;
 
-  private projectData$: Observable<any>;
+  private languagesData$: Observable<any>;
 
   constructor(
     private store: Store<AppStateModel>,
@@ -35,32 +34,31 @@ export class AppRouteRootComponent implements AfterViewInit, OnDestroy {
     this.loadingProject$ = this.store.select((store: AppStateModel) => store.project.loading);
     this.loadingUser$ = this.store.select((store: AppStateModel) => store.userData.loading);
 
-    this.projectData$ = this.store
-      .pipe(
-        filter((t) => {
-          return !t.project.loading && t.project.data;
-        }),
-        skip(1),
-        first(),
-        select((store: AppStateModel) => {
-          if (store.project) {
-            this.store.dispatch(new LoadLocalesAction(this.prepareLocales(store.project.data)));
-          }
-        }),
-      );
+    this.languagesData$ = this.store.select((store: AppStateModel) => store.languagesData.data);
+
+    combineLatest(
+      this.store.select((store: AppStateModel) => store.project.data),
+      this.store.select((store: AppStateModel) => store.languagesData.data),
+    ).subscribe((data: any) => {
+      if (data[0] && data[1]) {
+        const languagesData = LanguagesHelper.formatData(data[1]);
+        const languagesDataFormatted = LanguagesHelper.getResult('', languagesData);
+        this.store.dispatch(new LoadLocalesAction(
+          this.prepareLocales(data[0],
+            languagesDataFormatted,
+          )));
+      }
+    });
 
     this.pubSubService
       .subscribe('EVENT:LOAD_PROJECT_BY_ID', (projectId: string) => {
         this.store.dispatch(new LoadProjectByIdAction(projectId, true));
-        this.projectData$
-          .pipe(untilComponentDestroyed(this))
-          .subscribe();
       });
 
     this.cdr.detectChanges();
   }
 
-  private prepareLocales(projectData: ProjectModel): any[] {
+  private prepareLocales(projectData: ProjectModel, languagesData: any): any[] {
     let result: string[];
     const translationsLocales: string = projectData.translationsLocales ? projectData.translationsLocales : '';
     if (projectData.role === 'administrator') {
@@ -72,13 +70,15 @@ export class AppRouteRootComponent implements AfterViewInit, OnDestroy {
     return this.prepareAvailableTranslations(
       projectData.translationsLocales ? projectData.defaultLocale + ',' + projectData.translationsLocales : projectData.defaultLocale,
       result,
+      languagesData,
     );
   }
 
-  private prepareAvailableTranslations(projectLocales: string, availableTranslations: string[]) {
+  private prepareAvailableTranslations(projectLocales: string, availableTranslations: string[], languagesData: any) {
     const result: any[] = [];
     projectLocales.split(',').forEach((loc1: string) => {
-      result.push({ code: loc1, editable: false });
+      const found: any = languagesData.find((l) => l.keyCode === loc1);
+      result.push({ code: loc1, name: found.value, flag: found.emoji || '', editable: false });
       const d = result.find((loc) => loc.code === loc1);
       availableTranslations.forEach((loc2: string) => {
         if (loc1 === loc2) {
@@ -87,6 +87,7 @@ export class AppRouteRootComponent implements AfterViewInit, OnDestroy {
       });
     });
 
+    // console.log('result', result);
     return result;
   }
 

@@ -15,8 +15,9 @@
            (click)="onLocaleClick(locale.code)"
            [ngClass]="{'isActive': activeLocale === locale.code}">
           <span *ngIf="!locale.editable" class="locale_disabled_warn" title="Disabled translation">!</span>
-          <span class="flag"></span>
-          {{ locale.code.toUpperCase() }}
+          <span class="flag">{{ locale.flag }}</span>
+          <span>{{ locale.code.toUpperCase() }}</span>,
+          <span class="locale_full_name">{{ locale.name }}</span>
           <span class="lz_locale_isdefault"
             *ngIf="locale.code === defaultLocale">(default)</span>
         </a>

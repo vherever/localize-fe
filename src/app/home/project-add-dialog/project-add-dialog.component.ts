@@ -11,7 +11,7 @@ import { AddProjectAction } from '../../store/actions/projects.actions';
   templateUrl: 'project-add-dialog.component.html',
   styleUrls: ['project-add-dialog.component.scss'],
 })
-export class ProjectAddDialogComponent extends LanguagesHelper implements OnInit {
+export class ProjectAddDialogComponent implements OnInit {
   // @Output() addedProject: EventEmitter<ProjectModel> = new EventEmitter();
 
   projectAddForm: FormGroup;
@@ -20,7 +20,6 @@ export class ProjectAddDialogComponent extends LanguagesHelper implements OnInit
     private fb: FormBuilder,
     private store: Store<AppStateModel>,
   ) {
-    super();
   }
 
   ngOnInit() {

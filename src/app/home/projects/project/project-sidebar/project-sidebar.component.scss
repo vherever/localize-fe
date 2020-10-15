@@ -10,7 +10,7 @@
       position: relative;
       padding: 5px 7px 5px 14px;
       text-decoration: none;
-      display: block;
+      display: flex;
       font-size: 13px;
       color: #6d6c6c;
       .lz_locale_isdefault {
@@ -31,6 +31,14 @@
         top: 6px;
         font-weight: bold;
         color: #e74c3c;
+      }
+      .flag {
+        font-size: 17px;
+      }
+      .locale_full_name {
+        //max-width: 100px;
+        //text-overflow: ellipsis;
+        //overflow: hidden;
       }
     }
   }

@@ -14,6 +14,7 @@ export enum TranslationsActionTypes {
   REMOVE_TRANSLATION = '[TRANSLATION] Remove Translation Action',
   REMOVE_TRANSLATION_SUCCESS = '[TRANSLATION] Remove Translation Success Action',
   REMOVE_TRANSLATION_FAILURE = '[TRANSLATION] Remove Translation Failure Action',
+  CLEAR_TRANSLATIONS = '[TRANSLATIONS] Clear Translations',
 }
 
 export class LoadTranslationsAction implements Action {
@@ -92,8 +93,12 @@ export class RemoveTranslationFailureAction implements Action {
   }
 }
 
+export class ClearTranslationsAction implements Action {
+  readonly type = TranslationsActionTypes.CLEAR_TRANSLATIONS;
+}
+
 export type TranslationsAction = LoadTranslationsAction | LoadTranslationsSuccessAction | LoadTranslationsFailureAction |
   AddTranslationAction | AddTranslationSuccessAction | AddTranslationFailureAction |
   UpdateTranslationAction | UpdateTranslationSuccessAction | UpdateTranslationFailureAction |
   RemoveTranslationAction | RemoveTranslationSuccessAction | RemoveTranslationFailureAction |
-  CancelLoadTranslationsAction;
+  CancelLoadTranslationsAction | ClearTranslationsAction;

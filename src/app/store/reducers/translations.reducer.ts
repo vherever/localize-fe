@@ -106,6 +106,11 @@ export function TranslationsReducer(state: TranslationsState = initialState, act
         error: action.payload,
         loading: false,
       };
+    case TranslationsActionTypes.CLEAR_TRANSLATIONS:
+      return {
+        ...state,
+        data: [],
+      };
     default:
       return state;
   }

@@ -27,7 +27,7 @@ import { UserModel } from '../../../../core/models/user.model';
 import { LanguagesModel } from '../../../../core/models/languages.model';
 import { LanguagesHelper } from '../../../../core/helpers/languages-helper';
 import { AppStateModel } from '../../../../store/models/app-state.model';
-import { LoadTranslationsAction, RemoveTranslationAction } from '../../../../store/actions/translations.action';
+import { CancelLoadTranslationsAction, ClearTranslationsAction, LoadTranslationsAction, RemoveTranslationAction } from '../../../../store/actions/translations.action';
 
 @Component({
   selector: 'app-translations',
@@ -129,6 +129,8 @@ export class TranslationsComponent implements OnInit, OnChanges, OnDestroy {
     if (this.componentRef) {
       this.componentRef.destroy();
     }
+    this.store.dispatch(new CancelLoadTranslationsAction());
+    this.store.dispatch(new ClearTranslationsAction());
   }
 
   onTranslationEditClick(event: MouseEvent, translation: TranslationModel, index: number): void {

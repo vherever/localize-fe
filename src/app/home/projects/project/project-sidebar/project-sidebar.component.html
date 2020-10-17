@@ -1,15 +1,7 @@
 <div class="lz_project_sidebar_wrapper" *ngIf="(projectData$ | async) && !(projectLoading$ | async) || (projectUpdating$ | async)">
-  <ng-container *ngIf="projectData">
+  <ng-container *ngIf="(this.projectData$ | async)">
     <div class="lz_section_title">Locales</div>
     <div class="lz_locales_list">
-<!--      <a href="javascript:;" *ngIf="projectData.role === 'administrator'"-->
-<!--         (click)="onLocaleClick(defaultLocale)"-->
-<!--         [ngClass]="{'isActive': activeLocale === defaultLocale}">-->
-<!--        <span class="flag"></span>-->
-<!--        {{ defaultLocale.toUpperCase() }}-->
-<!--        <span class="lz_locale_isdefault"-->
-<!--              *ngIf="activeLocale === defaultLocale">(default)</span>-->
-<!--      </a>-->
       <ng-container *ngFor="let locale of localesData$ | async">
         <a href="javascript:;"
            (click)="onLocaleClick(locale.code)"
@@ -33,26 +25,26 @@
       </ng-container>
     </div>
     <button style="margin-top: 5px"
-            *ngIf="projectData.role === 'administrator'"
+            *ngIf="(projectData$ | async).role === 'administrator'"
             (click)="addLocale()"
     >Add locale</button>
   </ng-container>
 
-  <div class="lz_users_list" *ngIf="projectData">
+  <div class="lz_users_list" *ngIf="(this.projectData$ | async)">
     <div class="lz_section_title">Project team</div>
     <div fxLayout fxLayoutAlign="space-between stretch">
       <div fxLayoutAlign="start center">
               <span class="lz_list_u_avatar">
                  <img *ngIf="userData && userData.avatar" src="{{ uploadsEndpoint }}/{{ userData.avatar }}" alt="">
               </span>
-        <span class="lz_list_u_name">You</span>,&nbsp;
-        <span class="lz_list_u_role">{{ projectData.role }}</span>
+        <span class="lz_list_u_name">You</span>,
+        <span class="lz_list_u_role">{{ (this.projectData$ | async).role }}</span>
       </div>
     </div>
 
-    <ng-container *ngIf="projectData.sharedUsers && projectData.sharedUsers.length">
+    <ng-container *ngIf="(this.sharedUsers$ | async) && (this.sharedUsers$ | async).length">
 
-      <ng-container *ngFor="let user of projectData.sharedUsers">
+      <ng-container *ngFor="let user of (this.sharedUsers$ | async)">
         <div fxLayout fxLayoutAlign="space-between stretch">
           <div fxLayoutAlign="start center">
             <span class="lz_list_u_avatar">
@@ -62,7 +54,7 @@
             <span class="lz_list_u_role">{{ user.role }}</span>
           </div>
 
-          <div class="lz_list_item_controls" *ngIf="projectData.role === 'administrator'" fxFlex
+          <div class="lz_list_item_controls" *ngIf="(this.projectData$ | async).role === 'administrator'" fxFlex
                fxLayoutAlign="end center">
             <a href="javascript:;" class="lz_settings" style="margin-right: 0" (click)="onManageUSerClick(user)">
               <svg class="lz_settings_svg">
@@ -76,7 +68,7 @@
     </ng-container>
   </div>
 
-  <div class="lz_invite_user_to_project" *ngIf="projectData && projectData.role === 'administrator'">
+  <div class="lz_invite_user_to_project" *ngIf="(this.projectData$ | async) && (this.projectData$ | async).role === 'administrator'">
     <br>
     <div class="lz_section_title">Invite user to project</div>
     <button style="margin-top: 10px" (click)="onInviteUserClick()">Invite user</button>

@@ -1,37 +1,46 @@
-import { Component, EventEmitter, Inject, OnDestroy, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Inject, OnDestroy, OnInit, Output } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
 import { Store } from '@ngrx/store';
 import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { NgxPubSubService } from '@pscoped/ngx-pub-sub';
 // app imports
 import { ShareProjectService } from '../../../../../core/services/api-interaction/share-project.service';
 import { InviteUserModel } from '../../../../../core/models/invite-user.model';
 import { AppStateModel } from '../../../../../store/models/app-state.model';
-import { ManageUserPermissionAction } from '../../../../../store/actions/share-project.actions';
-import { LoadProjectByIdAction } from '../../../../../store/actions/project.actions';
-import { NgxPubSubService } from '@pscoped/ngx-pub-sub';
+import { ManageUserPermissionAction, ManageUserPermissionClearState } from '../../../../../store/actions/share-project.actions';
+import { UPLOADS_ENDPOINT } from '../../../../../core/app-constants';
+import { Observable } from 'rxjs';
 
 interface DialogData {
   targetEmail: string;
   projectUuid: string;
   targetUuid: string;
   defaultLocale: string;
-  enabledUserLocales: any;
+  enabledUserLocales: string;
   projectLocales: any;
+  userAvatar: string;
+  userName: string;
+  userRole: string;
+  projectTitle: string;
 }
 
 @Component({
   templateUrl: 'manage-user-dialog.component.html',
   styleUrls: ['manage-user-dialog.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ManageUserDialogComponent implements OnInit, OnDestroy {
   @Output() removeUserEmit: EventEmitter<any> = new EventEmitter<any>();
   onAvailableTranslationsUpdate: EventEmitter<any> = new EventEmitter();
 
+  public readonly uploadsEndpoint: string = UPLOADS_ENDPOINT;
+
   private defaultValues;
   public projectLocales: any[];
 
   public managePermissionsForm: FormGroup;
+  public userProjectPermissionUpdated$: Observable<boolean>;
 
   constructor(
     private shareProjectService: ShareProjectService,
@@ -39,7 +48,7 @@ export class ManageUserDialogComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private store: Store<AppStateModel>,
     private pubSubService: NgxPubSubService,
-    @Inject(MAT_DIALOG_DATA) private data: DialogData,
+    @Inject(MAT_DIALOG_DATA) public data: DialogData,
   ) {
   }
 
@@ -49,6 +58,15 @@ export class ManageUserDialogComponent implements OnInit, OnDestroy {
     });
     this.projectLocales = this.data.projectLocales;
     this.initCheckboxes();
+
+    this.userProjectPermissionUpdated$ = this.store.select((store: AppStateModel) => store.shareProject.updated);
+    this.userProjectPermissionUpdated$
+      .subscribe((state) => {
+        if (state) {
+          this.pubSubService.publishEvent('EVENT:LOAD_PROJECT_BY_ID', this.data.projectUuid);
+        }
+        this.store.dispatch(new ManageUserPermissionClearState());
+      });
   }
 
   ngOnDestroy() {
@@ -71,7 +89,7 @@ export class ManageUserDialogComponent implements OnInit, OnDestroy {
   onUpdatePermissionsClick(): void {
     const availableTranslationLocales = this.defaultValues.reduce((acc, curr) => {
       if (curr.checked) {
-        acc.push(curr.value);
+        acc.push(curr.code);
         return acc;
       }
       return acc;
@@ -82,11 +100,10 @@ export class ManageUserDialogComponent implements OnInit, OnDestroy {
       this.data.projectUuid,
       availableTranslationLocales,
     ));
-    this.pubSubService.publishEvent('EVENT:LOAD_PROJECT_BY_ID', this.data.projectUuid);
     this.dialogRef.close();
   }
 
-  onCheckboxChange(control: { checked: boolean, value: string }, state: boolean): void {
+  onCheckboxChange(control: { checked: boolean, code: string }, state: boolean): void {
     control.checked = state;
   }
 

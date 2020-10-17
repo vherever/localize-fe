@@ -1,17 +1,37 @@
 <form [formGroup]="managePermissionsForm" (submit)="onUpdatePermissionsClick()">
-  <h1 mat-dialog-title>Manage user permissions</h1>
+  <h1 mat-dialog-title>Manage project permission, <b>{{ data.projectTitle }}</b></h1>
 
-  <div>Which project languages can this user translate?</div>
-  <br>
-  <ng-container *ngFor="let lang of managePermissionsForm.get('availableTranslationLocales').controls; let i = index">
-    <label style="margin-right: 15px" formArrayName="availableTranslationLocales">
-      {{ projectLocales[i].value }}
-      <input type="checkbox" [checked]="projectLocales[i].checked"
-             [formControlName]="i"
-             (change)="onCheckboxChange(projectLocales[i], managePermissionsForm.value.availableTranslationLocales[i])"
-      />
-    </label>
-  </ng-container>
+  <div class="lz_user_information_wrapper">
+    <div class="lz_user_avatar">
+      <img *ngIf="data.userAvatar" src="{{ uploadsEndpoint }}/{{ data.userAvatar }}" alt="">
+    </div>
+    <div class="lz_user_information">
+      <div class="lz_user_name" *ngIf="data.userName">{{ data.userName }}</div>
+      <div class="lz_user_email" *ngIf="data.targetEmail">{{ data.targetEmail }}</div>
+      <div class="lz_user_role">{{ data.userRole }}</div>
+    </div>
+  </div>
+
+  <h4>Which project languages can this user translate?</h4>
+  <div class="lz_available_locale_wrapper">
+    <ng-container *ngFor="let lang of managePermissionsForm.get('availableTranslationLocales').controls; let i = index">
+      <label class="lz_available_locale"
+             formArrayName="availableTranslationLocales">
+        <input type="checkbox"
+               [checked]="projectLocales[i].checked"
+               [formControlName]="i"
+               (change)="onCheckboxChange(projectLocales[i], managePermissionsForm.value.availableTranslationLocales[i])"
+        />
+        <span class="lz_locale_flag" *ngIf="projectLocales[i].flag">{{ projectLocales[i].flag }}</span>
+        <span class="lz_locale_language" *ngIf="projectLocales[i].name1">{{ projectLocales[i].name1 }}</span>
+        <span class="lz_locale_country" *ngIf="projectLocales[i].name2" title="{{ projectLocales[i].name2 }}">{{ projectLocales[i].name2 }}</span>
+        <span class="lz_locale_language" *ngIf="!projectLocales[i].flag">
+          <span class="lz_locale_code">{{ projectLocales[i].code }}</span>
+          {{ projectLocales[i].name }}
+        </span>
+      </label>
+    </ng-container>
+  </div>
   <br><br>
   <div class="lz_dialog_controls" fxLayout fxLayoutAlign="space-between center">
     <div>

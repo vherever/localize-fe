@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { MatDialog } from '@angular/material';
 import { MatDialogRef } from '@angular/material/dialog';
@@ -34,8 +34,11 @@ export class ProjectSidebarComponent implements OnInit, OnDestroy {
   public activeLocale: string;
   public userData: UserModel;
   public projectData$: Observable<ProjectModel>;
+  public sharedUsers$: Observable<any>;
   public localesData$: Observable<any>;
   public projectLoading$: Observable<boolean>;
+
+  private localesData: any[];
 
   private userProjectLocales: any;
 
@@ -52,13 +55,17 @@ export class ProjectSidebarComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.projectLoading$ = this.store.select((store: AppStateModel) => store.project.loading);
     this.projectData$ = this.store.select((store: AppStateModel) => store.project.data);
-    this.localesData$ = this.store.select((store: AppStateModel) => store.localesData.data);
+    this.localesData$ = this.store.select((store: AppStateModel) => {
+      this.localesData = store.localesData.data;
+      return store.localesData.data;
+    });
 
     setTimeout(() => {
       this.projectData$
         .pipe(untilComponentDestroyed(this))
         .subscribe((projectData: ProjectModel) => {
           if (projectData) {
+            this.sharedUsers$ = of(projectData.sharedUsers);
             this.projectData = projectData;
             this.defaultLocale = LocaleHelper.getDefaultLocale(this.projectData);
             this.activeLocale = this.defaultLocale;
@@ -96,18 +103,22 @@ export class ProjectSidebarComponent implements OnInit, OnDestroy {
 
   onManageUSerClick(user: UserModel): void {
     this.userProjectLocales = this.getAvailableTranslationLocalesForUser(
-      this.projectData.defaultLocale + ',' + this.projectData.translationsLocales,
+      this.localesData,
       user.availableTranslationLocales + '',
     );
 
     this.manageUserPermissionDialog = this.dialog.open(ManageUserDialogComponent, {
       width: '600px',
       data: {
+        userAvatar: user.avatar,
+        userName: user.name,
         targetUuid: user.uuid,
-        projectUuid: this.projectData.uuid,
-        userEmail: user.email,
-        defaultLocale: this.projectData.defaultLocale,
+        targetEmail: user.email,
+        userRole: user.role,
         enabledUserLocales: user.availableTranslationLocales,
+        projectUuid: this.projectData.uuid,
+        projectTitle: this.projectData.title,
+        defaultLocale: this.projectData.defaultLocale,
         projectLocales: this.userProjectLocales,
       },
     });
@@ -141,27 +152,21 @@ export class ProjectSidebarComponent implements OnInit, OnDestroy {
     });
   }
 
-  private getAvailableTranslationLocalesForUser(projectLocales: string, availableTranslationLocales: string): any[] {
-    const locales = projectLocales
-      .split(',')
-      .map((l) => {
-        return {
-          checked: false,
-          value: l.trim(),
-        };
-      });
-
-    locales.forEach((l) => {
+  private getAvailableTranslationLocalesForUser(projectLocales: any[], availableTranslationLocales: string): any[] {
+    return projectLocales.reduce((acc: any[], curr: any) => {
+      const o: any = {};
+      o.checked = false;
+      curr = {...curr, ...o};
       availableTranslationLocales
         .split(',')
-        .forEach((ll) => {
-          if (l.value === ll) {
-            l.checked = true;
+        .forEach((code: string) => {
+          if (curr.code === code) {
+            curr.checked = true;
           }
         });
-    });
-
-    return locales;
+      acc.push(curr);
+      return acc;
+    }, []);
   }
 
   private addLocale(): void {

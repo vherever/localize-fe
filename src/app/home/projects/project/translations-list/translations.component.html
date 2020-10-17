@@ -1,15 +1,14 @@
 <button (click)="onAddTranslationClick()">Add Translation</button>
-<h5 class="lz_h_bordered">Translations</h5>
-<div class="lz_list">
-  <em style="font-size: 9px">translationsLoading$: {{ translationsLoading$ | async }}</em>
-
+<h5 class="lz_h_bordered">
   <span class="lz_p_current_locale">
     <span class="lz_translations_label">Translations in: </span>
     <span class="lz_language">{{ activeLocaleObj.language }}</span>
     <span class="lz_country">{{ activeLocaleObj.country }}</span>
     <span class="lz_flag">{{ activeLocaleObj.flag }}</span>
   </span>
-
+  <em style="font-size: 9px">translationsLoading$: {{ translationsLoading$ | async }}</em>
+</h5>
+<div class="lz_list">
   <ng-container>
   <a href="javascript:;"
      *ngFor="let translation of (translationsData$ | async); let i = index"

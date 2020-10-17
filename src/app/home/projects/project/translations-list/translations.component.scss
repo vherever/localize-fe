@@ -1,30 +1,30 @@
+.lz_p_current_locale {
+  display: flex;
+  place-content: center flex-start;
+  align-items: center;
+  padding: 10px 0;
+  font-size: 12px;
+  span {
+    display: inline-block;
+  }
+  .lz_translations_label {
+    margin-right: 3px;
+  }
+  .lz_language {
+    font-weight: bold;
+    color: #000000;
+  }
+  .lz_country {
+    margin-left: 3px;
+  }
+  .lz_flag {
+    font-size: 17px;
+    margin-left: 5px;
+  }
+}
 .lz_list {
   overflow: auto;
   height: calc(100% - 100px);
-  .lz_p_current_locale {
-    display: flex;
-    place-content: center flex-start;
-    align-items: center;
-    padding: 10px 0;
-    font-size: 12px;
-    span {
-      display: inline-block;
-    }
-    .lz_translations_label {
-      margin-right: 3px;
-    }
-    .lz_language {
-      font-weight: bold;
-      color: #000000;
-    }
-    .lz_country {
-      margin-left: 3px;
-    }
-    .lz_flag {
-      font-size: 17px;
-      margin-left: 5px;
-    }
-  }
   .lz_project_name_description {
     .lz_p_title {
       display: block;

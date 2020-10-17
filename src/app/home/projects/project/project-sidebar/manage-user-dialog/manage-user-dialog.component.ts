@@ -5,10 +5,9 @@ import { Store } from '@ngrx/store';
 import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { NgxPubSubService } from '@pscoped/ngx-pub-sub';
 // app imports
-import { ShareProjectService } from '../../../../../core/services/api-interaction/share-project.service';
 import { InviteUserModel } from '../../../../../core/models/invite-user.model';
 import { AppStateModel } from '../../../../../store/models/app-state.model';
-import { ManageUserPermissionAction, ManageUserPermissionClearState } from '../../../../../store/actions/share-project.actions';
+import { ExcludeUserFromProjectAction, ManageUserPermissionAction, ManageUserPermissionClearState } from '../../../../../store/actions/share-project.actions';
 import { UPLOADS_ENDPOINT } from '../../../../../core/app-constants';
 import { Observable } from 'rxjs';
 
@@ -40,10 +39,11 @@ export class ManageUserDialogComponent implements OnInit, OnDestroy {
   public projectLocales: any[];
 
   public managePermissionsForm: FormGroup;
+
   public userProjectPermissionUpdated$: Observable<boolean>;
+  public userIsExcludedFromProject$: Observable<boolean>;
 
   constructor(
-    private shareProjectService: ShareProjectService,
     private dialogRef: MatDialogRef<ManageUserDialogComponent>,
     private fb: FormBuilder,
     private store: Store<AppStateModel>,
@@ -61,11 +61,22 @@ export class ManageUserDialogComponent implements OnInit, OnDestroy {
 
     this.userProjectPermissionUpdated$ = this.store.select((store: AppStateModel) => store.shareProject.updated);
     this.userProjectPermissionUpdated$
-      .subscribe((state) => {
+      .pipe(untilComponentDestroyed(this))
+      .subscribe((state: boolean) => {
         if (state) {
           this.pubSubService.publishEvent('EVENT:LOAD_PROJECT_BY_ID', this.data.projectUuid);
         }
         this.store.dispatch(new ManageUserPermissionClearState());
+      });
+
+    this.userIsExcludedFromProject$ = this.store.select((store: AppStateModel) => store.shareProject.deleted);
+    this.userIsExcludedFromProject$
+      .pipe(untilComponentDestroyed(this))
+      .subscribe((state: boolean) => {
+        if (state) {
+          this.dialogRef.close();
+          this.pubSubService.publishEvent('EVENT:LOAD_PROJECT_BY_ID', this.data.projectUuid);
+        }
       });
   }
 
@@ -73,17 +84,7 @@ export class ManageUserDialogComponent implements OnInit, OnDestroy {
   }
 
   onRemoveUserFromProjectClick(): void {
-    const req: InviteUserModel = {
-      targetEmail: this.data.targetEmail,
-      projectUuid: this.data.projectUuid,
-    };
-
-    this.shareProjectService.removeUser(req)
-      .pipe(untilComponentDestroyed(this))
-      .subscribe(() => {
-        this.dialogRef.close();
-        this.removeUserEmit.emit(req);
-      });
+    this.store.dispatch(new ExcludeUserFromProjectAction(this.data.projectUuid, this.data.targetEmail));
   }
 
   onUpdatePermissionsClick(): void {

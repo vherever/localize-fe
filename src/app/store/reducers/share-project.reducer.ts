@@ -6,6 +6,7 @@ export interface ShareProjectState {
   error: Error;
   updating?: boolean;
   updated?: boolean;
+  deleted?: boolean;
 }
 
 const initialState: ShareProjectState = {
@@ -54,6 +55,25 @@ export function ShareProjectReducer(state: ShareProjectState = initialState, act
         ...state,
         updating: false,
         updated: false,
+        deleted: false,
+      };
+    case ShareProjectActionTypes.EXCLUDE_USER_FROM_PROJECT:
+      return {
+        ...state,
+        loading: true,
+      };
+    case ShareProjectActionTypes.EXCLUDE_USER_FROM_PROJECT_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        deleted: true,
+      };
+    case ShareProjectActionTypes.EXCLUDE_USER_FROM_PROJECT_FAILURE:
+      return {
+        ...state,
+        loading: false,
+        error: action.payload,
+        deleted: false,
       };
     default:
       return state;

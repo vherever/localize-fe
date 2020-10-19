@@ -1,0 +1,22 @@
+<div [formGroup]="languagesForm">
+  <h4>Which project languages can this user translate?</h4>
+  <div class="lz_available_locale_wrapper">
+    <ng-container *ngFor="let lang of languagesForm.get('availableTranslationLocales')['controls']; let i = index">
+      <label class="lz_available_locale"
+             formArrayName="availableTranslationLocales">
+        <input type="checkbox"
+               [checked]="projectLocales[i].checked"
+               [formControlName]="i"
+               (change)="onCheckboxChange(projectLocales[i], languagesForm.value.availableTranslationLocales[i])"
+        />
+        <span class="lz_locale_flag" *ngIf="projectLocales[i].flag">{{ projectLocales[i].flag }}</span>
+        <span class="lz_locale_language" *ngIf="projectLocales[i].name1">{{ projectLocales[i].name1 }}</span>
+        <span class="lz_locale_country" *ngIf="projectLocales[i].name2" title="{{ projectLocales[i].name2 }}">{{ projectLocales[i].name2 }}</span>
+        <span class="lz_locale_language" *ngIf="!projectLocales[i].flag">
+            <span class="lz_locale_code">{{ projectLocales[i].code }}</span>
+          {{ projectLocales[i].name }}
+          </span>
+      </label>
+    </ng-container>
+  </div>
+</div>

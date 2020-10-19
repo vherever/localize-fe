@@ -21,7 +21,7 @@ export function ShareProjectReducer(state: ShareProjectState = initialState, act
       return {
         ...state,
         loading: true,
-        updated: false,
+        // updated: false,
       };
     case ShareProjectActionTypes.MANAGE_USER_PERMISSION_SUCCESS:
       return {
@@ -43,6 +43,7 @@ export function ShareProjectReducer(state: ShareProjectState = initialState, act
         ...state,
         data: '',
         loading: false,
+        updated: true,
       };
     case ShareProjectActionTypes.UPDATING_PERMISSION:
       return {

@@ -12,6 +12,7 @@ import { ShareProjectService } from '../../../../core/services/api-interaction/s
 import { AddLocaleDialogModule } from './add-locale-dialog/add-locale-dialog.module';
 import { EffectsModule } from '@ngrx/effects';
 import { ShareProjectEffects } from '../../../../store/effects/share-project.effects';
+import { AvailableLanguagesListComponent } from '../../../../core/shared/available-languages-list/available-languages-list.component';
 
 @NgModule({
   imports: [
@@ -26,6 +27,7 @@ import { ShareProjectEffects } from '../../../../store/effects/share-project.eff
     ProjectSidebarComponent,
     ManageUserDialogComponent,
     InviteUserDialogComponent,
+    AvailableLanguagesListComponent,
   ],
   providers: [
     ShareProjectApiService,

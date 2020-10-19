@@ -1,15 +1,18 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Inject, OnDestroy, OnInit, Output } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Inject, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
+import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
-import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { NgxPubSubService } from '@pscoped/ngx-pub-sub';
 // app imports
-import { InviteUserModel } from '../../../../../core/models/invite-user.model';
 import { AppStateModel } from '../../../../../store/models/app-state.model';
-import { ExcludeUserFromProjectAction, ManageUserPermissionAction, ManageUserPermissionClearState } from '../../../../../store/actions/share-project.actions';
+import {
+  ExcludeUserFromProjectAction,
+  ManageUserPermissionAction,
+  ManageUserPermissionClearState
+} from '../../../../../store/actions/share-project.actions';
 import { UPLOADS_ENDPOINT } from '../../../../../core/app-constants';
-import { Observable } from 'rxjs';
 
 interface DialogData {
   targetEmail: string;
@@ -29,13 +32,16 @@ interface DialogData {
   styleUrls: ['manage-user-dialog.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ManageUserDialogComponent implements OnInit, OnDestroy {
+export class ManageUserDialogComponent implements OnInit, AfterViewInit, OnDestroy {
   @Output() removeUserEmit: EventEmitter<any> = new EventEmitter<any>();
+
+  @ViewChild('languagesList', { static: false }) languagesList: ElementRef;
+
   onAvailableTranslationsUpdate: EventEmitter<any> = new EventEmitter();
 
   public readonly uploadsEndpoint: string = UPLOADS_ENDPOINT;
 
-  private defaultValues;
+  private availableTranslationLocales: any[];
   public projectLocales: any[];
 
   public managePermissionsForm: FormGroup;
@@ -57,13 +63,13 @@ export class ManageUserDialogComponent implements OnInit, OnDestroy {
       availableTranslationLocales: new FormArray([]),
     });
     this.projectLocales = this.data.projectLocales;
-    this.initCheckboxes();
 
     this.userProjectPermissionUpdated$ = this.store.select((store: AppStateModel) => store.shareProject.updated);
     this.userProjectPermissionUpdated$
       .pipe(untilComponentDestroyed(this))
       .subscribe((state: boolean) => {
         if (state) {
+          this.dialogRef.close();
           this.pubSubService.publishEvent('EVENT:LOAD_PROJECT_BY_ID', this.data.projectUuid);
         }
         this.store.dispatch(new ManageUserPermissionClearState());
@@ -80,6 +86,10 @@ export class ManageUserDialogComponent implements OnInit, OnDestroy {
       });
   }
 
+  ngAfterViewInit() {
+    this.availableTranslationLocales = (this.languagesList as any).languagesForm.controls['availableTranslationLocales'].value;
+  }
+
   ngOnDestroy() {
   }
 
@@ -88,7 +98,7 @@ export class ManageUserDialogComponent implements OnInit, OnDestroy {
   }
 
   onUpdatePermissionsClick(): void {
-    const availableTranslationLocales = this.defaultValues.reduce((acc, curr) => {
+    const availableTranslationLocales = this.availableTranslationLocales.reduce((acc, curr) => {
       if (curr.checked) {
         acc.push(curr.code);
         return acc;
@@ -101,18 +111,5 @@ export class ManageUserDialogComponent implements OnInit, OnDestroy {
       this.data.projectUuid,
       availableTranslationLocales,
     ));
-    this.dialogRef.close();
-  }
-
-  onCheckboxChange(control: { checked: boolean, code: string }, state: boolean): void {
-    control.checked = state;
-  }
-
-  private initCheckboxes(): void {
-    this.projectLocales.forEach((o) => {
-      const control = new FormControl(o);
-      (this.managePermissionsForm.controls.availableTranslationLocales as FormArray).push(control);
-    });
-    this.defaultValues = this.managePermissionsForm.controls.availableTranslationLocales.value;
   }
 }

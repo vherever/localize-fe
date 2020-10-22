@@ -87,7 +87,7 @@ button {
     text-align: right;
     padding-right: 10px;
   }
-  input {
+  input[type="text"] {
     height: 32px;
     box-sizing: border-box;
     border: 1px solid #828282;
@@ -110,6 +110,32 @@ button {
     font-size: 11px;
     padding-left: 115px;
     padding-top: 2px;
+  }
+  &.lz_control_check {
+    > div {
+      display: flex;
+      place-content: center flex-start;
+      .lz_section_group {
+        display: flex;
+        place-content: center flex-start;
+        align-items: center;
+        width: 100%;
+        .lz_section_variant {
+          display: flex;
+          width: 100%;
+          padding-bottom: 7px;
+          label {
+            min-width: auto;
+            //font-weight: normal;
+            margin-left: 5px;
+            padding: 0;
+          }
+        }
+        &.lz_group_col {
+          flex-direction: column;
+        }
+      }
+    }
   }
 }
 

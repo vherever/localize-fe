@@ -68,14 +68,14 @@ export class ProjectsComponent extends SortingHelper implements OnInit, OnDestro
     this.projectItemsCountOnlyMy$ = this.projects$
       .pipe(
         map((projects: ProjectModel[]) => {
-          return projects.slice().filter((project: ProjectModel) => project.role === 'administrator').length;
+          return projects.slice().filter((project: ProjectModel) => project.role === 'ADMINISTRATOR').length;
         }),
       );
 
     this.projectItemsCountSharedWithMe$ = this.projects$
       .pipe(
         map((projects: ProjectModel[]) => {
-          return projects.slice().filter((project: ProjectModel) => project.role !== 'administrator').length;
+          return projects.slice().filter((project: ProjectModel) => project.role !== 'ADMINISTRATOR').length;
         }),
       );
 
@@ -172,7 +172,7 @@ export class ProjectsComponent extends SortingHelper implements OnInit, OnDestro
           .pipe(
             map((projects: ProjectModel[]) => {
               this.closeDialog();
-              return projects.slice().filter((project: ProjectModel) => project.role === 'administrator');
+              return projects.slice().filter((project: ProjectModel) => project.role === 'ADMINISTRATOR');
             }),
           );
       case 'shared':
@@ -180,7 +180,7 @@ export class ProjectsComponent extends SortingHelper implements OnInit, OnDestro
           .pipe(
             map((projects: ProjectModel[]) => {
               this.closeDialog();
-              return projects.slice().filter((project: ProjectModel) => project.role !== 'administrator');
+              return projects.slice().filter((project: ProjectModel) => project.role !== 'ADMINISTRATOR');
             }),
           );
       default:

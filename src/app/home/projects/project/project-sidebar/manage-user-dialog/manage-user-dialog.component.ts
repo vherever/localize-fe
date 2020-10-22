@@ -3,7 +3,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
 import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
-import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgxPubSubService } from '@pscoped/ngx-pub-sub';
 // app imports
 import { AppStateModel } from '../../../../../store/models/app-state.model';
@@ -20,7 +20,7 @@ interface DialogData {
   targetUuid: string;
   defaultLocale: string;
   enabledUserLocales: string;
-  projectLocales: any;
+  userProjectLocales: any;
   userAvatar: string;
   userName: string;
   userRole: string;
@@ -42,7 +42,6 @@ export class ManageUserDialogComponent implements OnInit, AfterViewInit, OnDestr
   public readonly uploadsEndpoint: string = UPLOADS_ENDPOINT;
 
   private availableTranslationLocales: any[];
-  public projectLocales: any[];
 
   public managePermissionsForm: FormGroup;
 
@@ -60,9 +59,8 @@ export class ManageUserDialogComponent implements OnInit, AfterViewInit, OnDestr
 
   ngOnInit() {
     this.managePermissionsForm = this.fb.group({
-      availableTranslationLocales: new FormArray([]),
+      // availableTranslationLocales: ['', [Validators.required]],
     });
-    this.projectLocales = this.data.projectLocales;
 
     this.userProjectPermissionUpdated$ = this.store.select((store: AppStateModel) => store.shareProject.updated);
     this.userProjectPermissionUpdated$
@@ -111,5 +109,8 @@ export class ManageUserDialogComponent implements OnInit, AfterViewInit, OnDestr
       this.data.projectUuid,
       availableTranslationLocales,
     ));
+  }
+
+  onListChangeEventEmit(value: any): void {
   }
 }

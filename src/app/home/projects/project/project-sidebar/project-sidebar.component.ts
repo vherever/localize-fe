@@ -40,8 +40,6 @@ export class ProjectSidebarComponent implements OnInit, OnDestroy {
 
   private localesData: any[];
 
-  private userProjectLocales: any;
-
   public projectUpdating$: Observable<boolean>;
 
   private manageUserPermissionDialog: MatDialogRef<ManageUserDialogComponent>;
@@ -102,11 +100,6 @@ export class ProjectSidebarComponent implements OnInit, OnDestroy {
   }
 
   onManageUSerClick(user: UserModel): void {
-    this.userProjectLocales = this.getAvailableTranslationLocalesForUser(
-      this.localesData,
-      user.availableTranslationLocales + '',
-    );
-
     this.manageUserPermissionDialog = this.dialog.open(ManageUserDialogComponent, {
       width: '600px',
       data: {
@@ -114,12 +107,15 @@ export class ProjectSidebarComponent implements OnInit, OnDestroy {
         userName: user.name,
         targetUuid: user.uuid,
         targetEmail: user.email,
-        userRole: user.role,
+        userRole: user.role.toLocaleLowerCase(),
         enabledUserLocales: user.availableTranslationLocales,
         projectUuid: this.projectData.uuid,
         projectTitle: this.projectData.title,
         defaultLocale: this.projectData.defaultLocale,
-        projectLocales: this.userProjectLocales,
+        userProjectLocales: this.getAvailableTranslationLocalesForUser(
+          this.localesData,
+          user.availableTranslationLocales + '',
+        ),
       },
     });
 
@@ -145,9 +141,14 @@ export class ProjectSidebarComponent implements OnInit, OnDestroy {
 
   onInviteUserClick(): void {
     this.dialog.open(InviteUserDialogComponent, {
-      width: '400px',
+      width: '600px',
       data: {
         projectUuid: this.projectData.uuid,
+        projectTitle: this.projectData.title,
+        userProjectLocales: this.getAvailableTranslationLocalesForUser(
+          this.localesData,
+          '',
+        ),
       },
     });
   }
@@ -156,6 +157,7 @@ export class ProjectSidebarComponent implements OnInit, OnDestroy {
     return projectLocales.reduce((acc: any[], curr: any) => {
       const o: any = {};
       o.checked = false;
+      o.disabled = false;
       curr = {...curr, ...o};
       availableTranslationLocales
         .split(',')

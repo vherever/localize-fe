@@ -1,3 +1,40 @@
 .lz_dialog_controls {
   float: right;
 }
+.lz_invite_user_information_wrapper {
+  display: flex;
+  .lz_user_avatar {
+    border: 1px solid #ececec;
+    box-sizing: border-box;
+    width: 100px;
+    height: 100px;
+    overflow: hidden;
+    position: relative;
+    border-radius: 5px;
+  }
+  .lz_user_information {
+    padding-left: 10px;
+    .lz_user_name {
+      font-size: 17px;
+      margin-bottom: 3px;
+    }
+    .lz_user_email {
+      font-size: 14px;
+    }
+    .lz_user_role {
+      font-size: 14px;
+      margin-top: 5px;
+    }
+  }
+}
+
+.lz_section_project_role {
+  //label:not(.lz_section_label) {
+  //  font-weight: normal;
+  //  min-width: auto;
+  //}
+  .lz_section_description {
+    font-size: 12px;
+    margin-left: 3px;
+  }
+}

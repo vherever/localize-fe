@@ -25,7 +25,7 @@
       </ng-container>
     </div>
     <button style="margin-top: 5px"
-            *ngIf="(projectData$ | async).role === 'administrator'"
+            *ngIf="(projectData$ | async).role === 'ADMINISTRATOR'"
             (click)="addLocale()"
     >Add locale</button>
   </ng-container>
@@ -38,7 +38,7 @@
                  <img *ngIf="userData && userData.avatar" src="{{ uploadsEndpoint }}/{{ userData.avatar }}" alt="">
               </span>
         <span class="lz_list_u_name">You</span>,
-        <span class="lz_list_u_role">{{ (this.projectData$ | async).role }}</span>
+        <span class="lz_list_u_role" style="margin-left: 3px">{{ (this.projectData$ | async).role.toLocaleLowerCase() }}</span>
       </div>
     </div>
 
@@ -51,10 +51,10 @@
                <img *ngIf="user.avatar" src="{{ uploadsEndpoint }}/{{ user.avatar }}" alt="">
             </span>
             <span class="lz_list_u_name">{{ user.name ? user.name : user.email }}</span>,&nbsp;
-            <span class="lz_list_u_role">{{ user.role }}</span>
+            <span class="lz_list_u_role">{{ user.role.toLocaleLowerCase() }}</span>
           </div>
 
-          <div class="lz_list_item_controls" *ngIf="(this.projectData$ | async).role === 'administrator'" fxFlex
+          <div class="lz_list_item_controls" *ngIf="(this.projectData$ | async).role === 'ADMINISTRATOR'" fxFlex
                fxLayoutAlign="end center">
             <a href="javascript:;" class="lz_settings" style="margin-right: 0" (click)="onManageUSerClick(user)">
               <svg class="lz_settings_svg">
@@ -68,7 +68,7 @@
     </ng-container>
   </div>
 
-  <div class="lz_invite_user_to_project" *ngIf="(this.projectData$ | async) && (this.projectData$ | async).role === 'administrator'">
+  <div class="lz_invite_user_to_project" *ngIf="(this.projectData$ | async) && (this.projectData$ | async).role === 'ADMINISTRATOR'">
     <br>
     <div class="lz_section_title">Invite user to project</div>
     <button style="margin-top: 10px" (click)="onInviteUserClick()">Invite user</button>

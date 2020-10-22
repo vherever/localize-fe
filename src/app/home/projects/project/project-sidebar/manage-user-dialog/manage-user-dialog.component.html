@@ -12,7 +12,10 @@
     </div>
   </div>
 
-  <app-available-languages-list #languagesList [projectLocales]="data.projectLocales"></app-available-languages-list>
+  <app-available-languages-list #languagesList
+                                [userProjectLocales]="data.userProjectLocales"
+                                (listChangeEventEmit)="onListChangeEventEmit($event)"
+  ></app-available-languages-list>
 
   <br><br>
   <div class="lz_dialog_controls" fxLayout fxLayoutAlign="space-between center">
@@ -21,7 +24,7 @@
     </div>
     <div>
       <button class="lz_button_light" mat-dialog-close>Cancel</button>
-      <button type="button" (click)="onUpdatePermissionsClick()">Save</button>
+      <button type="button" (click)="onUpdatePermissionsClick()" [disabled]="!managePermissionsForm.valid">Save</button>
     </div>
   </div>
 </form>

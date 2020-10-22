@@ -1,3 +1,12 @@
+.lz_check_all {
+  display: flex;
+  font-size: 11px;
+  font-weight: bold;
+  padding: 2px 15px 2px 0;
+  input {
+    margin: 0 3px;
+  }
+}
 .lz_available_locale_wrapper {
   display: flex;
   flex-wrap: wrap;
@@ -13,6 +22,7 @@
     .lz_locale_flag {
       font-size: 13px;
       padding-left: 17px;
+      margin-left: 2px;
     }
     .lz_locale_language {
       font-size: 11px;

@@ -1,5 +1,21 @@
-<form [formGroup]="inviteUserGroup" (submit)="onUserInviteClick()">
-  <h1 mat-dialog-title>Invite user to project</h1>
+<form [formGroup]="inviteUserForm" (submit)="onUserInviteClick()">
+  <h1 mat-dialog-title>Invite user to project, <b>{{ data.projectTitle }}</b></h1>
+
+  <div class="lz_invite_user_information_wrapper">
+    <div class="lz_user_avatar"></div>
+    <div class="lz_user_information">
+      <div class="lz_user_name">New User</div>
+      <div class="lz_user_email">
+      </div>
+      <div class="lz_user_role"></div>
+    </div>
+  </div>
+
+  <app-available-languages-list #languagesList
+                                [userProjectLocales]="data.userProjectLocales"
+                                (listChangeEventEmit)="onListChangeEventEmit($event)"></app-available-languages-list>
+
+  <br>
   <div class="lz_form_control">
     <div fxLayout>
       <label for="s_user_email">User email:</label>
@@ -10,9 +26,26 @@
     </div>
   </div>
 
+  <div class="lz_section_project_role lz_form_control lz_control_check">
+    <div fxLayout>
+      <label class="lz_section_label" style="padding-top: 0">Project role:</label>
+      <div class="lz_section_group lz_group_col">
+        <div *ngFor="let userRole of userRoles; let i = index" class="lz_section_variant">
+          <input type="radio" id="user_role_{{ i }}" value="{{ userRole.value }}"
+                 [checked]="userRole.active"
+                 (change)="onUserModelChange(userRole)">
+          <label for="user_role_{{ i }}">
+            {{ userRole.name }}
+            <span class="lz_section_description"> - {{ userRole.description }}</span>
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <br>
   <div class="lz_dialog_controls">
-    <button class="lz_button_light" mat-dialog-close>Cancel</button>
-    <button type="submit" [disabled]="inviteUserGroup.invalid">Invite user</button>
+    <button class="lz_button_light" mat-dialog-close style="margin-right: 7px">Cancel</button>
+    <button type="submit" [disabled]="inviteUserForm.invalid">Invite user</button>
   </div>
 </form>

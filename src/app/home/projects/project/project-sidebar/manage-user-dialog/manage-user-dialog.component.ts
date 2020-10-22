@@ -3,7 +3,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
 import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { NgxPubSubService } from '@pscoped/ngx-pub-sub';
 // app imports
 import { AppStateModel } from '../../../../../store/models/app-state.model';
@@ -59,7 +59,7 @@ export class ManageUserDialogComponent implements OnInit, AfterViewInit, OnDestr
 
   ngOnInit() {
     this.managePermissionsForm = this.fb.group({
-      // availableTranslationLocales: ['', [Validators.required]],
+      availableTranslationLocales: ['', [Validators.required]],
     });
 
     this.userProjectPermissionUpdated$ = this.store.select((store: AppStateModel) => store.shareProject.updated);
@@ -86,16 +86,21 @@ export class ManageUserDialogComponent implements OnInit, AfterViewInit, OnDestr
 
   ngAfterViewInit() {
     this.availableTranslationLocales = (this.languagesList as any).languagesForm.controls['availableTranslationLocales'].value;
+    this.availableTranslationLocalesField.patchValue(this.availableTranslationLocales);
   }
 
   ngOnDestroy() {
   }
 
-  onRemoveUserFromProjectClick(): void {
+  private get availableTranslationLocalesField(): FormControl {
+    return this.managePermissionsForm.get('availableTranslationLocales') as FormControl;
+  }
+
+  public onRemoveUserFromProjectClick(): void {
     this.store.dispatch(new ExcludeUserFromProjectAction(this.data.projectUuid, this.data.targetEmail));
   }
 
-  onUpdatePermissionsClick(): void {
+  public onUpdatePermissionsClick(): void {
     const availableTranslationLocales = this.availableTranslationLocales.reduce((acc, curr) => {
       if (curr.checked) {
         acc.push(curr.code);
@@ -111,6 +116,7 @@ export class ManageUserDialogComponent implements OnInit, AfterViewInit, OnDestr
     ));
   }
 
-  onListChangeEventEmit(value: any): void {
+  public onListChangeEventEmit(value: any): void {
+    this.availableTranslationLocalesField.patchValue(this.availableTranslationLocales);
   }
 }

@@ -157,7 +157,6 @@ export class ProjectSidebarComponent implements OnInit, OnDestroy {
     return projectLocales.reduce((acc: any[], curr: any) => {
       const o: any = {};
       o.checked = false;
-      o.disabled = false;
       curr = {...curr, ...o};
       availableTranslationLocales
         .split(',')

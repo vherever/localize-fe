@@ -66,12 +66,8 @@ export class InviteUserDialogComponent implements OnInit, AfterViewInit {
     return this.inviteUserForm.get('role') as FormControl;
   }
 
-  get availableTranslationLocalesField(): FormControl {
+  private get availableTranslationLocalesField(): FormControl {
     return this.inviteUserForm.get('availableTranslationLocales') as FormControl;
-  }
-
-  onUserInviteClick(): void {
-    this.generateInvitationLink();
   }
 
   private generateInvitationLink(): any {
@@ -104,5 +100,9 @@ export class InviteUserDialogComponent implements OnInit, AfterViewInit {
 
   public onListChangeEventEmit(value: any): void {
     this.availableTranslationLocalesField.patchValue(this.availableTranslations);
+  }
+
+  public onUserInviteClick(): void {
+    this.generateInvitationLink();
   }
 }

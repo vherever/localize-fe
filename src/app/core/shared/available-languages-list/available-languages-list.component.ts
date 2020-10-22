@@ -23,6 +23,7 @@ export class AvailableLanguagesListComponent implements OnInit {
   private defaultValues: any;
 
   public languagesForm: FormGroup;
+  // public checkAll: boolean;
 
   constructor(
     private fb: FormBuilder,
@@ -36,6 +37,11 @@ export class AvailableLanguagesListComponent implements OnInit {
     });
 
     this.initCheckboxes();
+    this.checkIfAllLocalesChecked();
+  }
+
+  private get availableTranslationLocalesControl(): FormControl {
+    return this.languagesForm.controls.availableTranslationLocales as FormControl;
   }
 
   private initCheckboxes(): void {
@@ -43,12 +49,20 @@ export class AvailableLanguagesListComponent implements OnInit {
       const control = new FormControl(o);
       (this.languagesForm.controls.availableTranslationLocales as FormArray).push(control);
     });
-    this.defaultValues = this.languagesForm.controls.availableTranslationLocales.value;
+    this.defaultValues = this.availableTranslationLocalesControl.value;
+  }
+
+  private checkIfAllLocalesChecked(): void {
+    const isCheckedAll = this.defaultValues.every((value, index, array) => value.checked);
+    if (isCheckedAll) {
+      this.languagesForm.controls.checkAll.patchValue(true);
+      this.availableTranslationLocalesControl.disable();
+    }
   }
 
   public onCheckboxChange(control: { checked: boolean, code: string }, state: boolean): void {
     control.checked = state;
-    this.listChangeEventEmit.emit(this.languagesForm.controls.availableTranslationLocales.value);
+    this.listChangeEventEmit.emit(this.availableTranslationLocalesControl.value);
   }
 
   public onCheckAllCheck(state: boolean): void {
@@ -58,6 +72,6 @@ export class AvailableLanguagesListComponent implements OnInit {
     state ?
       this.languagesForm.controls.availableTranslationLocales.disable() :
       this.languagesForm.controls.availableTranslationLocales.enable();
-    this.listChangeEventEmit.emit(this.languagesForm.controls.availableTranslationLocales.value);
+    this.listChangeEventEmit.emit(this.availableTranslationLocalesControl.value);
   }
 }

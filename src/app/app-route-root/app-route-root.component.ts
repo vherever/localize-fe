@@ -62,13 +62,13 @@ export class AppRouteRootComponent implements AfterViewInit, OnDestroy {
     let result: string[];
     const translationsLocales: string = projectData.translationsLocales ? projectData.translationsLocales : '';
     if (projectData.role === 'ADMINISTRATOR') {
-      result = `${projectData.defaultLocale},${translationsLocales}`.split(',');
+      result = translationsLocales.split(',');
     } else {
       result = `${projectData.availableTranslationLocales}`.split(',');
     }
 
     return this.prepareAvailableTranslations(
-      projectData.translationsLocales ? projectData.defaultLocale + ',' + projectData.translationsLocales : projectData.defaultLocale,
+      projectData.translationsLocales ? projectData.translationsLocales : '',
       result,
       languagesData,
     );

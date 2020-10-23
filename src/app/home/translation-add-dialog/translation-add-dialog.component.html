@@ -3,6 +3,7 @@
   <div>
     <mat-form-field>
       <input matInput placeholder="Source text" formControlName="assetValue" autocomplete="off">
+      <em>activeLocaleObj: {{ data.activeLocaleObj | json }}</em>
       <mat-hint>initial translation in {{ defaultLocale }}.</mat-hint>
       <mat-error *ngIf="addTranslationForm.controls['assetValue'].hasError('required')">
         Translation is required.

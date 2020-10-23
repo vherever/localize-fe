@@ -86,7 +86,7 @@ export class ProjectsComponent extends SortingHelper implements OnInit, OnDestro
     this.projectUpdated$
       .pipe(untilComponentDestroyed(this))
       .subscribe((projectUpdated: boolean) => {
-        if (projectUpdated) {
+        if (projectUpdated && this.dialogProjectUpdateRef) {
           this.dialogProjectUpdateRef.close();
         }
       });
@@ -232,6 +232,7 @@ export class ProjectsComponent extends SortingHelper implements OnInit, OnDestro
           title: project.title,
           description: project.description,
           defaultLocale: project.defaultLocale,
+          translationsLocales: project.translationsLocales,
         },
       });
   }

@@ -46,11 +46,9 @@ export class ProjectSettingsDialogComponent implements OnInit {
   }
 
   private getLocales(projectData: any): string[] {
-    let locales: string[] = [];
     if (projectData.translationsLocales) {
-      locales = projectData.translationsLocales.split(',');
+      return projectData.translationsLocales.split(',');
     }
-    locales.push(projectData.defaultLocale);
-    return locales;
+    return [];
   }
 }

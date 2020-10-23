@@ -1,8 +1,8 @@
-<form [formGroup]="translateForm" (submit)="onSaveTranslation()">
+<div [formGroup]="translateForm"
+     (submit)="onSaveTranslation()" class="lz_editor_container">
   <div *ngIf="translationUpdating$ | async">updating...</div>
   <div style="border: 1px solid">
 
-    <div>translation in <b>{{ activeLocaleObjResult | json }}</b></div>
     <select #t formControlName="editInLanguage" (ngModelChange)="onLanguageEditChange(t.value)">
       <ng-container *ngFor="let item of (localesData$ | async)">
         <option [selected]="localeIndex"
@@ -14,9 +14,11 @@
     </select>
 
     <br>
-    <textarea formControlName="translation" name="" id="" cols="30" rows="10"></textarea>
+    <div class="lz_editor_textarea_wrapper">
+      <textarea formControlName="translation"></textarea>
+    </div>
 
     <br>
     <button type="submit" [disabled]="!(textareaEnabled$ | async)">Save</button>
   </div>
-</form>
+</div>

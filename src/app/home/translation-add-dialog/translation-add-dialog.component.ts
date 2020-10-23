@@ -15,15 +15,15 @@ import { LocaleHelper } from '../../core/helpers/locale-helper';
   styleUrls: ['translation-add-dialog.scss'],
 })
 export class TranslationAddDialogComponent implements OnInit, OnDestroy {
-  addTranslationForm: FormGroup;
-  defaultLocale: string;
+  public addTranslationForm: FormGroup;
+  public defaultLocale: string;
 
   constructor(
     private fb: FormBuilder,
     private cacheService: CacheService,
     private translationService: TranslationsService,
     private store: Store<AppStateModel>,
-    @Inject(MAT_DIALOG_DATA) private projectData: ProjectModel,
+    @Inject(MAT_DIALOG_DATA) public data: { projectData: ProjectModel, activeLocaleObj: any, activeLocale: string },
   ) {
   }
 
@@ -32,7 +32,7 @@ export class TranslationAddDialogComponent implements OnInit, OnDestroy {
       assetValue: ['', Validators.required],
       assetCode: ['', Validators.required],
     });
-    this.defaultLocale = LocaleHelper.getDefaultLocale(this.projectData);
+    this.defaultLocale = LocaleHelper.getDefaultLocale(this.data.projectData);
   }
 
   ngOnDestroy() {
@@ -43,13 +43,13 @@ export class TranslationAddDialogComponent implements OnInit, OnDestroy {
       translations: this.createTranslations(this.addTranslationForm.controls['assetValue'].value),
       assetCode: this.addTranslationForm.controls['assetCode'].value,
     };
-    this.store.dispatch(new AddTranslationAction(this.projectData.uuid, data));
+    this.store.dispatch(new AddTranslationAction(this.data.projectData.uuid, data));
   }
 
   private createTranslations(assetValue: string): string {
     const localesObj = {};
-    if (this.projectData.translationsLocales) {
-      const localesArray = this.projectData.translationsLocales.split(',');
+    if (this.data.projectData.translationsLocales) {
+      const localesArray = this.data.projectData.translationsLocales.split(',');
       localesArray.forEach((l: string) => {
         localesObj[l] = '';
       });

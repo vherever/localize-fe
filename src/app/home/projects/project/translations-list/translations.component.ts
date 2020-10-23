@@ -168,7 +168,11 @@ export class TranslationsComponent implements OnInit, OnChanges, OnDestroy {
   onAddTranslationClick(): void {
     this.addTranslationDialogRef = this.dialog.open(TranslationAddDialogComponent, {
         width: '500px',
-        data: this.projectData,
+        data: {
+          projectData: this.projectData,
+          activeLocaleObj: this.activeLocaleObj,
+          activeLocale: this.activeLocale,
+        },
       });
     this.translationAdded$ = of(false);
   }

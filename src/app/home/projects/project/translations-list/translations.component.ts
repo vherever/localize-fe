@@ -138,29 +138,30 @@ export class TranslationsComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   onTranslationEditClick(event: MouseEvent, translation: TranslationModel, index: number): void {
-    // TODO refactor this.
-    // console.log('___ event', event); // todo
-    if (event.srcElement['nodeName'].toLocaleLowerCase() === 'span' ||
-      event.srcElement['nodeName'].toLocaleLowerCase() === 'a') {
-      this.currentClickedElementId = null;
-      if (this.previousElement) {
+    if (event.target['localName'] === 'span' || event.target['localName'] === 'a') {
+      if (this.previousElement && event.target['className'] !== 'lz_remove' && event.target['className'] !== 'lz_settings') {
+        this.currentClickedElementId = null;
         this.previousElement.clear();
       }
       if (this.previousClickedElementId === index) {
-        this.previousElement.clear();
-        this.previousClickedElementId = null; // reset value to make checking again
+        if (event.target['className'] !== 'lz_remove' && event.target['className'] !== 'lz_settings') {
+          this.previousClickedElementId = null; // reset value to make checking again
+          this.previousElement.clear();
+        } else if (event.target['className'] === 'lz_remove') {
+          this.removeTranslation(translation);
+        } else if (event.target['className'] === 'lz_settings') {
+          console.log('lz_settings');
+        }
       } else {
         if (event.target['className'] === 'lz_remove') {
           this.removeTranslation(translation);
+        } else if (event.target['className'] === 'lz_settings') {
+          console.log('lz_settings');
         } else {
           this.currentClickedElementId = index;
           this.previousClickedElementId = index;
           this.createComponent(translation, index);
         }
-      }
-    } else {
-      if (event.target['parentNode'].className === 'lz_remove' || event.target['parentNode'].className.baseVal === 'lz_remove_svg') {
-        this.removeTranslation(translation);
       }
     }
   }

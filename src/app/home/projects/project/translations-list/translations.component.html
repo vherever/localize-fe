@@ -1,5 +1,5 @@
 <button (click)="onAddTranslationClick()">Add Translation</button>
-<h5 class="lz_h_bordered">
+<h5>
   <span class="lz_p_current_locale">
     <span class="lz_translations_label">Translations in: </span>
     <span class="lz_language">{{ activeLocaleObj.language }}</span>
@@ -8,14 +8,14 @@
   </span>
   <em style="font-size: 9px">translationsLoading$: {{ translationsLoading$ | async }}</em>
 </h5>
-<div class="lz_list">
+<div class="lz_list" style="padding: 0; border-top: 1px solid lightgrey">
   <ng-container>
   <a href="javascript:;"
      *ngFor="let translation of (translationsData$ | async); let i = index"
      class="lz_list_item lz_list_item_link lz_translation"
      (click)="onTranslationEditClick($event, translation, i);">
       <span fxLayout fxLayoutAlign="space-between start">
-        <div class="lz_project_name_description"
+        <span class="lz_project_name_description"
              [ngClass]="{'lz_opened': currentClickedElementId === i}">
           <span class="lz_p_title" *ngIf="translation.translations[activeLocale]; else noTranslation">{{ translation.translations[activeLocale] }}</span>
 
@@ -37,7 +37,7 @@
               </span>
             </ng-template>
           </span>
-        </div>
+        </span>
 
         <div class="lz_list_item_controls" fxLayout>
           <a href="javascript:;" class="lz_settings">

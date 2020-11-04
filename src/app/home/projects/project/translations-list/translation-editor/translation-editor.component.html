@@ -1,4 +1,4 @@
-<div [formGroup]="translateForm"
+<form [formGroup]="translateForm"
      (submit)="onSaveTranslation()" class="lz_editor_container">
   <div *ngIf="translationUpdating$ | async">updating...</div>
   <div style="border: 1px solid">
@@ -21,4 +21,4 @@
     <br>
     <button type="submit" [disabled]="!(textareaEnabled$ | async)">Save</button>
   </div>
-</div>
+</form>

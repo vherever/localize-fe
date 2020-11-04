@@ -26,23 +26,6 @@
     </div>
   </div>
 
-  <div class="lz_section_project_role lz_form_control lz_control_check">
-    <div fxLayout>
-      <label class="lz_section_label" style="padding-top: 0">Project role:</label>
-      <div class="lz_section_group lz_group_col">
-        <div *ngFor="let userRole of userRoles; let i = index" class="lz_section_variant">
-          <input type="radio" id="user_role_{{ i }}" value="{{ userRole.value }}"
-                 [checked]="userRole.active"
-                 (change)="onUserModelChange(userRole)">
-          <label for="user_role_{{ i }}">
-            {{ userRole.name }}
-            <span class="lz_section_description"> - {{ userRole.description }}</span>
-          </label>
-        </div>
-      </div>
-    </div>
-  </div>
-
   <br>
   <div class="lz_dialog_controls">
     <button class="lz_button_light" mat-dialog-close style="margin-right: 7px">Cancel</button>

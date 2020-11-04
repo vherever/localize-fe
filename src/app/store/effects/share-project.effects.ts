@@ -25,6 +25,7 @@ export class ShareProjectEffects {
             targetUuid: data.targetUuid,
             projectUuid: data.projectUuid,
             availableTranslationLocales: data.availableTranslationLocales,
+            role: data.role,
           })
             .pipe(
               map(() => new ManageUserPermissionSuccessAction(data.availableTranslationLocales)),

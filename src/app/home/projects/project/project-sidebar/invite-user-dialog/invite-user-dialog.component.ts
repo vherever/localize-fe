@@ -29,6 +29,7 @@ export class InviteUserDialogComponent implements OnInit, AfterViewInit {
   @ViewChild('languagesList', { static: false }) languagesList: ElementRef;
 
   private availableTranslationLocales: any;
+  private userRole: string;
 
   public inviteUserForm: FormGroup;
   public userRoles: UserRoleInterface[];
@@ -45,12 +46,13 @@ export class InviteUserDialogComponent implements OnInit, AfterViewInit {
     this.inviteUserForm = this.fb.group({
       availableTranslationLocales: ['', [Validators.required]],
       email: ['', [Validators.required]],
-      role: [UserRoles.TRANSLATOR, [Validators.required]],
+      // role: [UserRoles.TRANSLATOR, [Validators.required]],
     });
   }
 
   ngAfterViewInit() {
     this.availableTranslationLocales = (this.languagesList as any).languagesForm.controls['availableTranslationLocales'].value;
+    this.userRole = (this.languagesList as any).languagesForm.controls['userRole'].value;
     this.availableTranslationLocalesField.patchValue(this.availableTranslations);
   }
 
@@ -62,8 +64,8 @@ export class InviteUserDialogComponent implements OnInit, AfterViewInit {
     return this.inviteUserForm.get('email') as FormControl;
   }
 
-  get roleField(): FormControl {
-    return this.inviteUserForm.get('role') as FormControl;
+  private get userRoleField(): FormControl {
+    return (this.languagesList as any).languagesForm.controls['userRole'] as FormControl;
   }
 
   private get availableTranslationLocalesField(): FormControl {
@@ -75,7 +77,7 @@ export class InviteUserDialogComponent implements OnInit, AfterViewInit {
     const req: InviteUserModel = {
       targetEmail,
       projectUuid: this.data.projectUuid,
-      role: this.roleField.value,
+      role: this.userRoleField.value,
       availableTranslationLocales: this.availableTranslations,
     };
     return this.shareProjectService.addUser(req)
@@ -95,7 +97,7 @@ export class InviteUserDialogComponent implements OnInit, AfterViewInit {
       role.active = false;
     });
     userRole.active = true;
-    this.roleField.patchValue(userRole.value);
+    this.userRoleField.patchValue(userRole.value);
   }
 
   public onListChangeEventEmit(value: any): void {

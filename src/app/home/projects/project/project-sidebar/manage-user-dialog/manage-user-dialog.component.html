@@ -8,12 +8,13 @@
     <div class="lz_user_information">
       <div class="lz_user_name" *ngIf="data.userName">{{ data.userName }}</div>
       <div class="lz_user_email" *ngIf="data.targetEmail">{{ data.targetEmail }}</div>
-      <div class="lz_user_role">{{ data.userRole }}</div>
+      <div class="lz_user_role">{{ data.userRole.toLocaleLowerCase() }}</div>
     </div>
   </div>
 
   <app-available-languages-list #languagesList
                                 [userProjectLocales]="data.userProjectLocales"
+                                [userRole]="data.userRole"
                                 (listChangeEventEmit)="onListChangeEventEmit($event)"
   ></app-available-languages-list>
 

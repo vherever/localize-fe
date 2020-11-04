@@ -18,6 +18,7 @@ export class ManageUserPermissionAction implements Action {
     public targetUuid: string,
     public projectUuid: string,
     public availableTranslationLocales: string,
+    public role: string,
   ) {
   }
 }

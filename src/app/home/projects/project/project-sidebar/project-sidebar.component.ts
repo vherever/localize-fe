@@ -107,7 +107,7 @@ export class ProjectSidebarComponent implements OnInit, OnDestroy {
         userName: user.name,
         targetUuid: user.uuid,
         targetEmail: user.email,
-        userRole: user.role.toLocaleLowerCase(),
+        userRole: user.role,
         enabledUserLocales: user.availableTranslationLocales,
         projectUuid: this.projectData.uuid,
         projectTitle: this.projectData.title,

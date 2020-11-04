@@ -3,16 +3,16 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
 import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
-import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { NgxPubSubService } from '@pscoped/ngx-pub-sub';
 // app imports
 import { AppStateModel } from '../../../../../store/models/app-state.model';
 import {
   ExcludeUserFromProjectAction,
   ManageUserPermissionAction,
-  ManageUserPermissionClearState
+  ManageUserPermissionClearState,
 } from '../../../../../store/actions/share-project.actions';
-import { UPLOADS_ENDPOINT } from '../../../../../core/app-constants';
+import { UPLOADS_ENDPOINT, UserRoles } from '../../../../../core/app-constants';
 
 interface DialogData {
   targetEmail: string;
@@ -23,7 +23,7 @@ interface DialogData {
   userProjectLocales: any;
   userAvatar: string;
   userName: string;
-  userRole: string;
+  userRole: UserRoles;
   projectTitle: string;
 }
 
@@ -42,6 +42,7 @@ export class ManageUserDialogComponent implements OnInit, AfterViewInit, OnDestr
   public readonly uploadsEndpoint: string = UPLOADS_ENDPOINT;
 
   private availableTranslationLocales: any[];
+  private userRole: string;
 
   public managePermissionsForm: FormGroup;
 
@@ -86,7 +87,8 @@ export class ManageUserDialogComponent implements OnInit, AfterViewInit, OnDestr
 
   ngAfterViewInit() {
     this.availableTranslationLocales = (this.languagesList as any).languagesForm.controls['availableTranslationLocales'].value;
-    this.availableTranslationLocalesField.patchValue(this.availableTranslationLocales);
+    this.userRole = (this.languagesList as any).languagesForm.controls['userRole'].value;
+    this.patchAvailableTranslationLocalesField(this.availableTranslationLocales);
   }
 
   ngOnDestroy() {
@@ -94,6 +96,10 @@ export class ManageUserDialogComponent implements OnInit, AfterViewInit, OnDestr
 
   private get availableTranslationLocalesField(): FormControl {
     return this.managePermissionsForm.get('availableTranslationLocales') as FormControl;
+  }
+
+  private get userRoleField(): FormControl {
+    return (this.languagesList as any).languagesForm.controls['userRole'] as FormControl;
   }
 
   public onRemoveUserFromProjectClick(): void {
@@ -113,10 +119,20 @@ export class ManageUserDialogComponent implements OnInit, AfterViewInit, OnDestr
       this.data.targetUuid,
       this.data.projectUuid,
       availableTranslationLocales,
+      this.userRoleField.value,
     ));
   }
 
-  public onListChangeEventEmit(value: any): void {
-    this.availableTranslationLocalesField.patchValue(this.availableTranslationLocales);
+  public onListChangeEventEmit(translationLocales: any[]): void {
+    this.patchAvailableTranslationLocalesField(translationLocales);
+  }
+
+  private patchAvailableTranslationLocalesField(translationLocales: any[]): void {
+    const isExist = translationLocales.some((o: any) => o.checked);
+    if (isExist) {
+      this.availableTranslationLocalesField.patchValue(translationLocales);
+    } else {
+      this.availableTranslationLocalesField.patchValue('');
+    }
   }
 }

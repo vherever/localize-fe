@@ -7,33 +7,40 @@
     <span class="lz_flag">{{ activeLocaleObj.flag }}</span>
   </span>
   <em style="font-size: 9px">translationsLoading$: {{ translationsLoading$ | async }}</em>
+  <br>
+  <app-translations-controls-bar></app-translations-controls-bar>
 </h5>
 <div class="lz_list" style="padding: 0; border-top: 1px solid lightgrey">
   <ng-container>
-  <a href="javascript:;"
+  <a href="javascript:;" [ngClass]="{'lz_opened': currentClickedElementId === i}"
      *ngFor="let translation of (translationsData$ | async); let i = index"
-     class="lz_list_item lz_list_item_link lz_translation"
+     class="lz_list_item lz_list_item_link lz_translation lz_clickable"
      (click)="onTranslationEditClick($event, translation, i);">
-      <span fxLayout fxLayoutAlign="space-between start">
-        <span class="lz_project_name_description"
-             [ngClass]="{'lz_opened': currentClickedElementId === i}">
-          <span class="lz_p_title" *ngIf="translation.translations[activeLocale]; else noTranslation">{{ translation.translations[activeLocale] }}</span>
+      <span fxLayout fxLayoutAlign="space-between start" class="lz_clickable">
+        <span class="lz_project_name_description lz_clickable">
+          <span class="lz_p_title lz_clickable" *ngIf="translation.translations[activeLocale]; else noTranslation">
+            {{ translation.translations[activeLocale] }}
+          </span>
 
-          <ng-template #noTranslation><span class="lz_p_needs_translation">*requires translation*</span></ng-template>
+          <ng-template #noTranslation>
+            <span class="lz_p_needs_translation lz_clickable">*requires translation*</span>
+          </ng-template>
 
-          <span class="lz_p_latest_update" fxLayout>
-            <span>{{ translation.latestUpdatedAtFormatted }}</span>
+          <span class="lz_p_latest_update lz_clickable" fxLayout>
+            <span class="lz_clickable">{{ translation.latestUpdatedAtFormatted }}</span>
 
             <ng-container *ngIf="translation.updatedBy && userId">
-              <span *ngIf="translation.updatedBy.id === userId; else updatedByOther">
-                &nbsp;bylz_p_title
-                <b>you</b>
+              <span *ngIf="translation.updatedBy.id === userId; else updatedByOther" class="lz_clickable">
+                &nbsp;by
+                <b class="lz_clickable">you</b>
               </span>
             </ng-container>
 
             <ng-template #updatedByOther>
-              <span>&nbsp;by
-                <b>{{ translation.updatedBy.name ? translation.updatedBy.name : translation.updatedBy.email }}</b>
+              <span class="lz_clickable">&nbsp;by
+                <b class="lz_clickable">
+                  {{ translation.updatedBy.name ? translation.updatedBy.name : translation.updatedBy.email }}
+                </b>
               </span>
             </ng-template>
           </span>

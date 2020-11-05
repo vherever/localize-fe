@@ -138,7 +138,8 @@ export class TranslationsComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   onTranslationEditClick(event: MouseEvent, translation: TranslationModel, index: number): void {
-    if (event.target['localName'] === 'span' || event.target['localName'] === 'a') {
+    // if (event.target['localName'] === 'span' || event.target['localName'] === 'a') {
+    if (event.target['className'].includes('lz_clickable')) {
       if (this.previousElement && event.target['className'] !== 'lz_remove' && event.target['className'] !== 'lz_settings') {
         this.currentClickedElementId = null;
         this.previousElement.clear();
@@ -162,6 +163,12 @@ export class TranslationsComponent implements OnInit, OnChanges, OnDestroy {
           this.previousClickedElementId = index;
           this.createComponent(translation, index);
         }
+      }
+    } else {
+      if (event.target['className'] === 'lz_settings') {
+        console.log('lz_settings');
+      } else if (event.target['className'] === 'lz_remove') {
+        this.removeTranslation(translation);
       }
     }
   }

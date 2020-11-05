@@ -1,24 +1,25 @@
 <form [formGroup]="translateForm"
      (submit)="onSaveTranslation()" class="lz_editor_container">
   <div *ngIf="translationUpdating$ | async">updating...</div>
-  <div style="border: 1px solid">
+  <ng-select #tt appearance="outline"
+             labelForId="default_locale"
+             [searchable]="false"
+             [clearable]="false"
+             [dropdownPosition]="'bottom'"
+             (ngModelChange)="onLanguageEditChange(this.translateForm.controls['editInLanguage'].value)"
+             formControlName="editInLanguage">
+    <ng-option *ngFor="let locale of (localesData$ | async)"
+               [value]="locale.code">
+      <span *ngIf="locale.flag">{{ locale.flag }} {{ locale.name1 }}, {{ locale.name2 }}</span>
+      <span *ngIf="!locale.flag">{{ locale.name }}</span>
+    </ng-option>
+  </ng-select>
 
-    <select #t formControlName="editInLanguage" (ngModelChange)="onLanguageEditChange(t.value)">
-      <ng-container *ngFor="let item of (localesData$ | async)">
-        <option [selected]="localeIndex"
-                [ngValue]="item.translation"
-                [attr.data-test]="item.translation"
-                [value]="item.code"
-                [innerHtml]="item.flag + item.name"></option>
-      </ng-container>
-    </select>
-
-    <br>
-    <div class="lz_editor_textarea_wrapper">
-      <textarea formControlName="translation"></textarea>
-    </div>
-
-    <br>
-    <button type="submit" [disabled]="!(textareaEnabled$ | async)">Save</button>
+  <br>
+  <div class="lz_editor_textarea_wrapper">
+    <textarea formControlName="translation"></textarea>
   </div>
+
+  <br>
+  <button type="submit" [disabled]="!(textareaEnabled$ | async)">Save</button>
 </form>

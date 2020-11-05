@@ -31,6 +31,7 @@ h4 {
   font-size: 16px;
 }
 h5 {
+  margin: 10px 0;
   color: #6d6c6c;
   &.lz_h_bordered {
     border-bottom: 1px solid #cdcdcd;
@@ -145,12 +146,13 @@ button {
   height: 100%;
   overflow: auto;
   .lz_list_item {
+    font-size: 13px;
     background-color: #ffffff;
     &:not(:last-child) {
       border-bottom: 1px solid #e8e8e8;
     }
     &.lz_list_item_link {
-      padding: 15px 15px;
+      padding: 10px 10px;
       display: block;
       width: 100%;
       color: #5d5d5d;
@@ -185,7 +187,7 @@ button {
       a {
         overflow: hidden;
         padding: 4px 4px 1px 4px;
-        border: 1px solid #e0e0e0;
+        //border: 1px solid #e0e0e0;
         border-radius: 50%;
         position: relative;
         &.lz_settings {

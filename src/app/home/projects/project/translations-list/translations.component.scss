@@ -2,7 +2,7 @@
   display: flex;
   place-content: center flex-start;
   align-items: center;
-  padding: 10px 0;
+  //padding: 10px 0;
   font-size: 12px;
   span {
     display: inline-block;
@@ -38,6 +38,11 @@
       display: inline-block;
       font-size: 13px;
       color: #e67e22;
+    }
+  }
+  .lz_list_item {
+    &.lz_opened {
+      background-color: #95a5a61a;
     }
   }
 }

@@ -19,7 +19,7 @@ interface TranslateEditorModel {
 
 @Component({
   templateUrl: 'translation-editor.component.html',
-  styleUrls: ['translation-editor.component.scss'],
+  styleUrls: ['translation-editor.component.scss', '../../../../../core/shared/country-search-autocomplete/country-search-autocomplete.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TranslationEditorComponent implements OnInit, OnDestroy {

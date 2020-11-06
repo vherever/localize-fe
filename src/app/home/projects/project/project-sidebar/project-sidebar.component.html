@@ -4,21 +4,21 @@
     <div class="lz_locales_list">
       <ng-container *ngFor="let locale of localesData$ | async">
         <a href="javascript:;"
-           (click)="onLocaleClick(locale.code)"
-           [ngClass]="{'isActive': activeLocale === locale.code}">
+           (click)="onLocaleClick(locale.keyCode)"
+           [ngClass]="{'isActive': activeLocale === locale.keyCode}">
           <span class="inner_wrapper">
 
-            <span class="flag">{{ locale.flag }}</span>
-            <span class="code">{{ locale.code.toUpperCase() }}</span>
-            <span class="locale_full_name" *ngIf="locale.flag">
-              <span class="name1">{{ locale.name1 }}</span>
-              <span class="name2" title="{{ locale.name2 }}">{{ locale.name2 }}</span>
+            <span class="flag">{{ locale.emoji }}</span>
+            <span class="code">{{ locale.keyCode.toUpperCase() }}</span>
+            <span class="locale_full_name" *ngIf="locale.emoji">
+              <span class="name1">{{ locale.lang }}</span>
+              <span class="name2" title="{{ locale.country }}">{{ locale.country }}</span>
             </span>
-            <span class="locale_full_name no_flag" *ngIf="!locale.flag">{{ locale.name }}</span>
+            <span class="locale_full_name no_flag" *ngIf="!locale.emoji">{{ locale.name }}</span>
 
           </span>
 
-          <span class="lz_locale_isdefault" *ngIf="locale.code === defaultLocale">default</span>
+          <span class="lz_locale_isdefault" *ngIf="locale.keyCode === defaultLocale">default</span>
 
           <span class="lz_locale_is_readonly" *ngIf="!locale.editable">readonly</span>
         </a>

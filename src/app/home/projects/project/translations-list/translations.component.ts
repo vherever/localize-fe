@@ -27,7 +27,12 @@ import { UserModel } from '../../../../core/models/user.model';
 import { LanguagesModel } from '../../../../core/models/languages.model';
 import { LanguagesHelper } from '../../../../core/helpers/languages-helper';
 import { AppStateModel } from '../../../../store/models/app-state.model';
-import { CancelLoadTranslationsAction, ClearTranslationsAction, LoadTranslationsAction, RemoveTranslationAction } from '../../../../store/actions/translations.action';
+import {
+  CancelLoadTranslationsAction,
+  ClearTranslationsAction,
+  LoadTranslationsAction,
+  RemoveTranslationAction
+} from '../../../../store/actions/translations.action';
 
 @Component({
   selector: 'app-translations',
@@ -42,11 +47,11 @@ export class TranslationsComponent implements OnInit, OnChanges, OnDestroy {
 
   private previousElement: ViewContainerRef;
   private previousClickedElementId: number;
-  private languagesData: LanguagesModel;
+  private languagesData: LanguagesModel[];
   private projectId: string;
   private translationAdded$: Observable<boolean>;
   private addTranslationDialogRef: MatDialogRef<TranslationAddDialogComponent>;
-  private languagesData$: Observable<LanguagesModel>;
+  private languagesData$: Observable<LanguagesModel[]>;
   private userData$: Observable<UserModel>;
   public translationsLoading$: Observable<boolean>;
   public translationsData$: Observable<any>;
@@ -92,11 +97,11 @@ export class TranslationsComponent implements OnInit, OnChanges, OnDestroy {
     this.languagesData$ = this.store.select((store: AppStateModel) => store.languagesData.data);
 
     this.languagesData$
-      .subscribe((languagesData) => {
+      .pipe(untilComponentDestroyed(this))
+      .subscribe((languagesData: any[]) => {
         if (languagesData && this.activeLocale) {
-          const languagesDataForFilter = LanguagesHelper.formatData(languagesData);
-          this.languagesData = languagesDataForFilter;
-          this.activeLocaleObj = LanguagesHelper.getActiveLocaleObj(this.activeLocale, languagesDataForFilter);
+          this.languagesData = languagesData;
+          this.activeLocaleObj = LanguagesHelper.getActiveLocaleObj(this.activeLocale, languagesData);
         }
       });
 
@@ -138,7 +143,6 @@ export class TranslationsComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   onTranslationEditClick(event: MouseEvent, translation: TranslationModel, index: number): void {
-    // if (event.target['localName'] === 'span' || event.target['localName'] === 'a') {
     if (event.target['className'].includes('lz_clickable')) {
       if (this.previousElement && event.target['className'] !== 'lz_remove' && event.target['className'] !== 'lz_settings') {
         this.currentClickedElementId = null;

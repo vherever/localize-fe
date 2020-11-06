@@ -1,8 +1,6 @@
-import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 // app imports
-import { ProjectModel } from '../../core/models/project.model';
-import { LanguagesHelper } from '../../core/helpers/languages-helper';
 import { AppStateModel } from '../../store/models/app-state.model';
 import { Store } from '@ngrx/store';
 import { AddProjectAction } from '../../store/actions/projects.actions';
@@ -12,8 +10,6 @@ import { AddProjectAction } from '../../store/actions/projects.actions';
   styleUrls: ['project-add-dialog.component.scss'],
 })
 export class ProjectAddDialogComponent implements OnInit {
-  // @Output() addedProject: EventEmitter<ProjectModel> = new EventEmitter();
-
   projectAddForm: FormGroup;
 
   constructor(

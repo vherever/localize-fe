@@ -43,7 +43,7 @@ export function LocalesReducer(state: LocaleState = initialState, action: Locale
     case LocalesActionTypes.ADD_LOCALE_SUCCESS:
       return {
         ...state,
-        data: [...state.data, { code: action.payload['locale'], editable: true }],
+        data: [...state.data, { keyCode: action.payload['locale'], editable: true }],
         loading: false,
         added: true,
       };

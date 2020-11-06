@@ -23,12 +23,11 @@ export class CountrySearchAutocompleteComponent implements OnInit, OnDestroy {
   private inputLanguageSearch: Subject<string> = new Subject<string>();
   private originalData: any[];
   public languagesDataTransformed: any = [];
-  private languagesDataForFilter: any;
   public selectDataLoading: boolean;
   public dropdownIsOpen: boolean;
   public group: FormGroup;
   private readonly defaultLanguage: string = 'gb-en';
-  private languagesData$: Observable<LanguagesModel>;
+  private languagesData$: Observable<LanguagesModel[]>;
 
   constructor(
     private fb: FormBuilder,
@@ -44,10 +43,9 @@ export class CountrySearchAutocompleteComponent implements OnInit, OnDestroy {
     this.languagesData$ = this.store.select((store: AppStateModel) => store.languagesData.data);
     this.languagesData$
       .pipe(untilComponentDestroyed(this))
-      .subscribe((languagesData) => {
-        this.languagesDataForFilter = LanguagesHelper.formatData(languagesData);
-        this.originalData = JSON.parse(JSON.stringify(this.languagesDataForFilter));
-        this.languagesDataTransformed = LanguagesHelper.getResult('', this.originalData);
+      .subscribe((languagesData: any[]) => {
+        this.originalData = [...languagesData];
+        this.languagesDataTransformed = languagesData;
         this.languageSelectedEmit.emit(this.defaultLanguage);
         setTimeout(() => {
           this.select.blur();
@@ -102,6 +100,6 @@ export class CountrySearchAutocompleteComponent implements OnInit, OnDestroy {
 
   private onClearSearchBar(): void {
     this.dropdownIsOpen = false;
-    this.languagesDataTransformed = LanguagesHelper.getResult('', this.originalData);
+    this.languagesDataTransformed = this.originalData;
   }
 }

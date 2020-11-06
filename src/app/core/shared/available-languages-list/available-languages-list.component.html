@@ -18,11 +18,11 @@
                [formControlName]="i"
                (change)="onCheckboxChange(userProjectLocales[i], languagesForm.value.availableTranslationLocales[i])"
         />
-        <span class="lz_locale_flag" *ngIf="userProjectLocales[i].flag">{{ userProjectLocales[i].flag }}</span>
-        <span class="lz_locale_language" *ngIf="userProjectLocales[i].name1">{{ userProjectLocales[i].name1 }}</span>
-        <span class="lz_locale_country" *ngIf="userProjectLocales[i].name2" title="{{ userProjectLocales[i].name2 }}">{{ userProjectLocales[i].name2 }}</span>
-        <span class="lz_locale_language" *ngIf="!userProjectLocales[i].flag">
-            <span class="lz_locale_code">{{ userProjectLocales[i].code }}</span>
+        <span class="lz_locale_flag" *ngIf="userProjectLocales[i].emoji">{{ userProjectLocales[i].emoji }}</span>
+        <span class="lz_locale_language" *ngIf="userProjectLocales[i].lang">{{ userProjectLocales[i].lang }}</span>
+        <span class="lz_locale_country" *ngIf="userProjectLocales[i].country" title="{{ userProjectLocales[i].country }}">{{ userProjectLocales[i].country }}</span>
+        <span class="lz_locale_language" *ngIf="!userProjectLocales[i].emoji">
+            <span class="lz_locale_code">{{ userProjectLocales[i].keyCode }}</span>
           {{ userProjectLocales[i].name }}
           </span>
       </label>

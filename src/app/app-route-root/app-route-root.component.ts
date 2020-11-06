@@ -1,13 +1,12 @@
 import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { combineLatest, Observable } from 'rxjs';
-import { select, Store } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 // app imports
 import { AppStateModel } from '../store/models/app-state.model';
 import { NgxPubSubService } from '@pscoped/ngx-pub-sub';
 import { LoadProjectByIdAction } from '../store/actions/project.actions';
 import { ProjectModel } from '../core/models/project.model';
 import { LoadLocalesAction } from '../store/actions/locales.actions';
-import { LanguagesHelper } from '../core/helpers/languages-helper';
 
 @Component({
   selector: 'app-app-route-root',
@@ -41,11 +40,9 @@ export class AppRouteRootComponent implements AfterViewInit, OnDestroy {
       this.store.select((store: AppStateModel) => store.languagesData.data),
     ).subscribe((data: any) => {
       if (data[0] && data[1]) {
-        const languagesData = LanguagesHelper.formatData(data[1]);
-        const languagesDataFormatted = LanguagesHelper.getResult('', languagesData);
         this.store.dispatch(new LoadLocalesAction(
           this.prepareLocales(data[0],
-            languagesDataFormatted,
+            data[1],
           )));
       }
     });
@@ -77,9 +74,10 @@ export class AppRouteRootComponent implements AfterViewInit, OnDestroy {
   private prepareAvailableTranslations(projectLocales: string, availableTranslations: string[], languagesData: any) {
     const result: any[] = [];
     projectLocales.split(',').forEach((loc1: string) => {
-      const found: any = languagesData.find((l) => l.keyCode === loc1);
-      result.push({ code: loc1, name: found.value, flag: found.emoji || '', editable: false, name1: found.name1 || '', name2: found.name2 || '' });
-      const d = result.find((loc) => loc.code === loc1);
+      let found: any = languagesData.find((l) => l.keyCode === loc1);
+      found = { ...found, editable: false };
+      result.push(found);
+      const d = result.find((loc) => loc.keyCode === loc1);
       availableTranslations.forEach((loc2: string) => {
         if (loc1 === loc2) {
           d.editable = true;
@@ -87,7 +85,6 @@ export class AppRouteRootComponent implements AfterViewInit, OnDestroy {
       });
     });
 
-    // console.log('result', result);
     return result;
   }
 

@@ -161,7 +161,7 @@ export class ProjectSidebarComponent implements OnInit, OnDestroy {
       availableTranslationLocales
         .split(',')
         .forEach((code: string) => {
-          if (curr.code === code) {
+          if (curr.keyCode === code) {
             curr.checked = true;
           }
         });

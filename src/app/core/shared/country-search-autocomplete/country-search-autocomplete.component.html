@@ -19,7 +19,10 @@
 
     <ng-template ng-option-tmp let-item="item">
       <span class="flag">{{ item.emoji }}</span>
-      <span class="text">{{item.value}}</span>
+      <span class="text">{{item.lang}}
+        <ng-container *ngIf="item.country">, {{ item.country }}</ng-container>
+        <ng-container *ngIf="!item.country">{{ item.name }}</ng-container>
+      </span>
       <span *ngIf="item.type === 'lang'" class="code">{{ item.code }}</span>
     </ng-template>
 
@@ -35,7 +38,8 @@
     <ng-template ng-label-tmp let-item="item">
       <span *ngIf="item.type === 'lang';" class="code">{{ item.code }}</span>
       <span *ngIf="item.type !== 'lang'" class="flag">{{ item.emoji }}</span>
-      <span class="value-selected">{{ item.value }}</span>
+      <span class="value-selected" *ngIf="item.country">{{item.lang}}, {{ item.country }}</span>
+      <span class="value-selected" *ngIf="!item.country">{{item.name}}</span>
     </ng-template>
   </ng-select>
 </form>

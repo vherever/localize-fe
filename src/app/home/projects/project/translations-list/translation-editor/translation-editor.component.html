@@ -9,9 +9,9 @@
              (ngModelChange)="onLanguageEditChange(this.translateForm.controls['editInLanguage'].value)"
              formControlName="editInLanguage">
     <ng-option *ngFor="let locale of (localesData$ | async)"
-               [value]="locale.code">
-      <span *ngIf="locale.flag">{{ locale.flag }} {{ locale.name1 }}, {{ locale.name2 }}</span>
-      <span *ngIf="!locale.flag">{{ locale.name }}</span>
+               [value]="locale.keyCode">
+      <span *ngIf="locale.emoji">{{ locale.emoji }} {{ locale.lang }}, {{ locale.country }}</span>
+      <span *ngIf="!locale.emoji">{{ locale.name }}</span>
     </ng-option>
   </ng-select>
 

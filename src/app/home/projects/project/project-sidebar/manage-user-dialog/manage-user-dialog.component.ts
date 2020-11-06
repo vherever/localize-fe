@@ -109,7 +109,7 @@ export class ManageUserDialogComponent implements OnInit, AfterViewInit, OnDestr
   public onUpdatePermissionsClick(): void {
     const availableTranslationLocales = this.availableTranslationLocales.reduce((acc, curr) => {
       if (curr.checked) {
-        acc.push(curr.code);
+        acc.push(curr.keyCode);
         return acc;
       }
       return acc;

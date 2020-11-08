@@ -328,3 +328,19 @@ a {
 mat-dialog-container {
   overflow: visible !important;
 }
+
+.lz_modal_buttons_wrapper {
+  float: right;
+}
+
+div[mat-dialog-actions] {
+  float: right;
+  padding-bottom: 20px;
+  button[mat-dialog-close] {
+    margin-right: 10px;
+  }
+}
+
+.mat-form-field.mat-form-field-invalid .mat-form-field-label {
+  color: rgba(0,0,0,.54);
+}

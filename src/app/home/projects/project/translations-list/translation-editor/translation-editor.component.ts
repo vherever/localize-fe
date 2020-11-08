@@ -109,7 +109,6 @@ export class TranslationEditorComponent implements OnInit, OnDestroy {
   }
 
   onLanguageEditChange(lang: string): void {
-    console.log('lang', lang);
     this.translateForm.controls['translation'].patchValue(this.translation.translations[lang]);
     this.activeLocaleObj = LanguagesHelper.getActiveLocaleObj(lang, this.languagesData);
 
@@ -117,9 +116,7 @@ export class TranslationEditorComponent implements OnInit, OnDestroy {
       .pipe(
         untilComponentDestroyed(this),
         map((data: []) => {
-          console.log('data', data);
           const found: any = data.find((l: any) => l.keyCode === lang);
-          console.log('found', found);
           this.textareaEnabled$.next(found.editable);
         }),
       )

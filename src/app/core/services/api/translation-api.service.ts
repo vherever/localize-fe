@@ -16,8 +16,8 @@ export class TranslationApiService {
     return this.http.get(`${environment.apiUrl}/projects/${id}/translations`) as Observable<any>;
   }
 
-  updateTranslation(projectId: string, translationId: string, data: any): Observable<TranslationModel[]> {
-    return this.http.put(`${environment.apiUrl}/projects/${projectId}/translations/${translationId}`, data) as Observable<any>;
+  updateTranslation(projectId: string, translationId: string, data: any, isAssetSettings: boolean): Observable<TranslationModel[]> {
+    return this.http.put(`${environment.apiUrl}/projects/${projectId}/translations/${translationId}?isAssetSettings=${isAssetSettings}`, data) as Observable<any>;
   }
 
   createTranslation(projectId: string, data: any): Observable<TranslationModel[]> {

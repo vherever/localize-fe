@@ -1,19 +1,19 @@
 import { LocalesAction, LocalesActionTypes } from '../actions/locales.actions';
 
-export interface LocaleState {
+interface LocalesState {
   data: string[];
   loading: boolean;
   error: Error;
   added?: boolean;
 }
 
-const initialState: LocaleState = {
+const initialState: LocalesState = {
   data: [],
   loading: false,
   error: undefined,
 };
 
-export function LocalesReducer(state: LocaleState = initialState, action: LocalesAction) {
+export function LocalesReducer(state: LocalesState = initialState, action: LocalesAction) {
   switch (action.type) {
     // LOAD_LOCALES
     case LocalesActionTypes.LOAD_LOCALES:

@@ -1,0 +1,20 @@
+<form [formGroup]="translationSettingsForm" (submit)="onTranslationSave()">
+  <h1 mat-dialog-title>Edit Asset settings.</h1>
+
+  <div class="lz_form_control">
+    <div fxLayout>
+      <label for="s_project_name">Asset code:</label>
+      <input type="text" id="s_project_name" formControlName="assetCode" autocomplete="off" placeholder="">
+    </div>
+    <div class="lz_error_message" *ngIf="(assetCodeField.dirty || assetCodeField.touched) && assetCodeField.hasError('required')">
+      Asset code is required.
+    </div>
+  </div>
+
+  <br><br>
+  <div class="lz_modal_buttons_wrapper">
+    <button class="lz_button_light" mat-dialog-close>Cancel</button>
+    <button type="submit"
+            [disabled]="!translationSettingsForm.valid" style="margin-left: 10px">Save</button>
+  </div>
+</form>

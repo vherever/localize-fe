@@ -1,14 +1,12 @@
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA } from '@angular/material';
-import { CacheService } from '@ngx-cache/core';
 // app imports
 import { TranslationsService } from '../../core/services/api-interaction/translations.service';
 import { ProjectModel } from '../../core/models/project.model';
 import { Store } from '@ngrx/store';
 import { AppStateModel } from '../../store/models/app-state.model';
 import { AddTranslationAction } from '../../store/actions/translations.action';
-import { LocaleHelper } from '../../core/helpers/locale-helper';
 
 @Component({
   templateUrl: 'translation-add-dialog.component.html',
@@ -20,10 +18,14 @@ export class TranslationAddDialogComponent implements OnInit, OnDestroy {
 
   constructor(
     private fb: FormBuilder,
-    private cacheService: CacheService,
     private translationService: TranslationsService,
     private store: Store<AppStateModel>,
-    @Inject(MAT_DIALOG_DATA) public data: { projectData: ProjectModel, activeLocaleObj: any, activeLocale: string },
+    @Inject(MAT_DIALOG_DATA) public data: {
+      projectData: ProjectModel,
+      activeLocaleObj: any,
+      activeLocale: string,
+      defaultLocaleObj: any,
+    },
   ) {
   }
 
@@ -32,10 +34,14 @@ export class TranslationAddDialogComponent implements OnInit, OnDestroy {
       assetValue: ['', Validators.required],
       assetCode: ['', Validators.required],
     });
-    this.defaultLocale = LocaleHelper.getDefaultLocale(this.data.projectData);
+    this.defaultLocale = this.data.defaultLocaleObj.keyCode;
   }
 
   ngOnDestroy() {
+  }
+
+  get assetValueControl(): FormControl {
+    return this.addTranslationForm.controls['assetValue'] as FormControl;
   }
 
   onTranslationSave(): void {

@@ -73,7 +73,6 @@ export class AvailableLanguagesListComponent implements OnInit {
   }
 
   private initCheckboxes(): void {
-    console.log('this.userProjectLocales', this.userProjectLocales);
     this.userProjectLocales.forEach((o) => {
       const control = new FormControl(o);
       (this.languagesForm.controls.availableTranslationLocales as FormArray).push(control);

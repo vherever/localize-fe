@@ -54,7 +54,7 @@ export class TranslationsEffects {
       .pipe(
         ofType<UpdateTranslationAction>(TranslationsActionTypes.UPDATE_TRANSLATION),
         mergeMap(
-          (data: any) => this.translationService.updateTranslation(data.projectUuid, data.translationUuid, data.payload)
+          (data: any) => this.translationService.updateTranslation(data.projectUuid, data.translationUuid, data.payload, data.isAssetSettings)
             .pipe(
               map((project) => new UpdateTranslationSuccessAction(project)),
               catchError((error) => of(new UpdateTranslationFailureAction(error))),

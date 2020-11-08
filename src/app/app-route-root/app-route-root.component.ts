@@ -7,6 +7,8 @@ import { NgxPubSubService } from '@pscoped/ngx-pub-sub';
 import { LoadProjectByIdAction } from '../store/actions/project.actions';
 import { ProjectModel } from '../core/models/project.model';
 import { LoadLocalesAction } from '../store/actions/locales.actions';
+import { LoadDefaultLocaleAction } from '../store/actions/locale.actions';
+import { LocaleHelper } from '../core/helpers/locale-helper';
 
 @Component({
   selector: 'app-app-route-root',
@@ -40,6 +42,8 @@ export class AppRouteRootComponent implements AfterViewInit, OnDestroy {
       this.store.select((store: AppStateModel) => store.languagesData.data),
     ).subscribe((data: any) => {
       if (data[0] && data[1]) {
+        const locale = LocaleHelper.getDefaultLocale(data[0], data[1]);
+        this.store.dispatch(new LoadDefaultLocaleAction(locale));
         this.store.dispatch(new LoadLocalesAction(
           this.prepareLocales(data[0],
             data[1],

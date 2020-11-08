@@ -59,7 +59,7 @@ export class AddTranslationFailureAction implements Action {
 
 export class UpdateTranslationAction implements Action {
   readonly type = TranslationsActionTypes.UPDATE_TRANSLATION;
-  constructor(public projectUuid: string, public translationUuid: string, public payload: any) {
+  constructor(public projectUuid: string, public translationUuid: string, public payload: any, public isAssetSettings: boolean = false) {
   }
 }
 

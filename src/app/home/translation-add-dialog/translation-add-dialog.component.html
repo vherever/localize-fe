@@ -1,28 +1,34 @@
 <form [formGroup]="addTranslationForm" (submit)="onTranslationSave()">
-  <h1 mat-dialog-title>Add Translation</h1>
-  <div>
-    <mat-form-field>
-      <input matInput placeholder="Source text" formControlName="assetValue" autocomplete="off">
-      <em>activeLocaleObj: {{ data.activeLocaleObj | json }}</em>
-      <mat-hint>initial translation in {{ defaultLocale }}.</mat-hint>
-      <mat-error *ngIf="addTranslationForm.controls['assetValue'].hasError('required')">
-        Translation is required.
-      </mat-error>
-    </mat-form-field>
+  <div mat-dialog-title>Add new translation asset to {{ data.projectData.title }}</div>
+  <div mat-dialog-content>
+    <div>
+      <mat-form-field [floatLabel]="'always'">
+        <input matInput placeholder="Source text" formControlName="assetValue" autocomplete="off" #assetValueInput="matInput">
+        <mat-label>initial translation in
+          {{ data.defaultLocaleObj.lang }}, {{ data.defaultLocaleObj.country }} {{ data.defaultLocaleObj.emoji }}
+        </mat-label>
+        <mat-error *ngIf="assetValueControl.hasError('required')">
+          Source text is required.
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div>
+      <mat-form-field [floatLabel]="'always'">
+        <input matInput placeholder="Asset ID" formControlName="assetCode" autocomplete="off">
+        <mat-label>An unique asset identifier.</mat-label>
+        <mat-error *ngIf="assetValueControl.hasError('required')">
+          Asset ID is required.
+        </mat-error>
+        <mat-error *ngIf="assetValueControl.hasError('assetCodeExists')">
+          Another asset exists with this ID.
+        </mat-error>
+      </mat-form-field>
+    </div>
   </div>
 
-  <div>
-    <mat-form-field>
-      <input matInput placeholder="Asset ID" formControlName="assetCode" autocomplete="off">
-      <mat-hint>An unique asset identifier.</mat-hint>
-      <mat-error *ngIf="addTranslationForm.controls['assetCode'].hasError('required')">
-        assetCode is required.
-      </mat-error>
-      <mat-error *ngIf="addTranslationForm.controls['assetCode'].hasError('assetCodeExists')">
-        Another asset exists with this ID.
-      </mat-error>
-    </mat-form-field>
+  <div mat-dialog-actions>
+    <button class="lz_button_light" mat-dialog-close>Cancel</button>
+    <button type="submit" [disabled]="!addTranslationForm.valid">Save</button>
   </div>
-
-  <button [disabled]="!addTranslationForm.valid">Save</button>
 </form>

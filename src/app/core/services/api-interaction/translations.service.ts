@@ -21,8 +21,8 @@ export class TranslationsService {
       );
   }
 
-  updateTranslation(projectId: string, translationId: string, data: any): Observable<TranslationModel[]> {
-    return this.translationApiService.updateTranslation(projectId, translationId, data)
+  updateTranslation(projectId: string, translationId: string, data: any, isAssetSettings: boolean): Observable<TranslationModel[]> {
+    return this.translationApiService.updateTranslation(projectId, translationId, data, isAssetSettings)
       .pipe(
         delay(delay_ms),
       );

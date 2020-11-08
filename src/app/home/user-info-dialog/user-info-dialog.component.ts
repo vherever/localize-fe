@@ -46,14 +46,10 @@ export class UserInfoDialogComponent implements OnInit, OnDestroy {
         // @ts-ignore
         catchError((error: ErrorModel) => {
           if (error.statusCode === 409) {
-            this.userSettingsForm.controls['email'].setErrors({emailExists: true});
+            this.userSettingsForm.controls['email'].setErrors({ emailExists: true });
           }
         }),
       )
-      .subscribe((res) => {
-        this.cacheService.set('userData', res);
-        this.pubSubService.publishEvent('userDataCached', true);
-        this.pubSubService.publishEvent('accountSettingsDialogOpened', false);
-      });
+      .subscribe();
   }
 }

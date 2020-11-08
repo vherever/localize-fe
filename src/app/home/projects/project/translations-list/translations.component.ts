@@ -31,8 +31,9 @@ import {
   CancelLoadTranslationsAction,
   ClearTranslationsAction,
   LoadTranslationsAction,
-  RemoveTranslationAction
+  RemoveTranslationAction,
 } from '../../../../store/actions/translations.action';
+import { TranslationSettingsDialogComponent } from './translation-settings-dialog/translation-settings-dialog.component';
 
 @Component({
   selector: 'app-translations',
@@ -53,9 +54,13 @@ export class TranslationsComponent implements OnInit, OnChanges, OnDestroy {
   private addTranslationDialogRef: MatDialogRef<TranslationAddDialogComponent>;
   private languagesData$: Observable<LanguagesModel[]>;
   private userData$: Observable<UserModel>;
+  private translationSettingsDialogRef: MatDialogRef<TranslationSettingsDialogComponent>;
+  private defaultLocaleObj: any;
+
   public translationsLoading$: Observable<boolean>;
   public translationsData$: Observable<any>;
   public localesData$: Observable<any>;
+  private defaultLocaleObj$: Observable<any>;
 
   private localesData: string[];
 
@@ -119,6 +124,13 @@ export class TranslationsComponent implements OnInit, OnChanges, OnDestroy {
       .subscribe((localesData: string[]) => {
         this.localesData = localesData;
       });
+
+    this.defaultLocaleObj$ = this.store.select((store: AppStateModel) => store.localeData.data);
+    this.defaultLocaleObj$
+      .pipe(untilComponentDestroyed(this))
+      .subscribe((defaultLocaleObj) => {
+        this.defaultLocaleObj = defaultLocaleObj;
+      });
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -155,13 +167,13 @@ export class TranslationsComponent implements OnInit, OnChanges, OnDestroy {
         } else if (event.target['className'] === 'lz_remove') {
           this.removeTranslation(translation);
         } else if (event.target['className'] === 'lz_settings') {
-          console.log('lz_settings');
+          this.showTranslationSettingsModal(translation);
         }
       } else {
         if (event.target['className'] === 'lz_remove') {
           this.removeTranslation(translation);
         } else if (event.target['className'] === 'lz_settings') {
-          console.log('lz_settings');
+          this.showTranslationSettingsModal(translation);
         } else {
           this.currentClickedElementId = index;
           this.previousClickedElementId = index;
@@ -170,7 +182,7 @@ export class TranslationsComponent implements OnInit, OnChanges, OnDestroy {
       }
     } else {
       if (event.target['className'] === 'lz_settings') {
-        console.log('lz_settings');
+        this.showTranslationSettingsModal(translation);
       } else if (event.target['className'] === 'lz_remove') {
         this.removeTranslation(translation);
       }
@@ -184,6 +196,7 @@ export class TranslationsComponent implements OnInit, OnChanges, OnDestroy {
           projectData: this.projectData,
           activeLocaleObj: this.activeLocaleObj,
           activeLocale: this.activeLocale,
+          defaultLocaleObj: this.defaultLocaleObj,
         },
       });
     this.translationAdded$ = of(false);
@@ -220,6 +233,18 @@ export class TranslationsComponent implements OnInit, OnChanges, OnDestroy {
         if (state) {
           this.store.dispatch(new RemoveTranslationAction(this.projectData.uuid, translation.uuid));
         }
+      });
+  }
+
+  private showTranslationSettingsModal(translation: any): void {
+    this.translationSettingsDialogRef =
+      this.dialog.open(TranslationSettingsDialogComponent, {
+        width: '500px',
+        data: {
+          projectUuid: this.projectData.uuid,
+          translationUuid: translation.uuid,
+          assetCode: translation.assetCode,
+        },
       });
   }
 

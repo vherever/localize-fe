@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { combineLatest, Observable, of } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { MatDialog } from '@angular/material';
 import { MatDialogRef } from '@angular/material/dialog';
@@ -13,7 +13,6 @@ import { ManageUserDialogComponent } from './manage-user-dialog/manage-user-dial
 import { InviteUserDialogComponent } from './invite-user-dialog/invite-user-dialog.component';
 import { AddLocaleDialogComponent } from './add-locale-dialog/add-locale-dialog.component';
 import { AppStateModel } from '../../../../store/models/app-state.model';
-import { LocaleHelper } from '../../../../core/helpers/locale-helper';
 
 @Component({
   selector: 'app-project-sidebar',
@@ -37,6 +36,9 @@ export class ProjectSidebarComponent implements OnInit, OnDestroy {
   public sharedUsers$: Observable<any>;
   public localesData$: Observable<any>;
   public projectLoading$: Observable<boolean>;
+  private defaultLocaleObj$: Observable<any>;
+
+  public defaultLocaleObj: any;
 
   private localesData: any[];
 
@@ -53,24 +55,29 @@ export class ProjectSidebarComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.projectLoading$ = this.store.select((store: AppStateModel) => store.project.loading);
     this.projectData$ = this.store.select((store: AppStateModel) => store.project.data);
-    this.localesData$ = this.store.select((store: AppStateModel) => {
-      this.localesData = store.localesData.data;
-      return store.localesData.data;
-    });
+    this.localesData$ = this.store.select((store: AppStateModel) => store.localesData.data);
+    this.projectUpdating$ = this.store.select((store: AppStateModel) => store.project.updating);
+    this.defaultLocaleObj$ = this.store.select((store: AppStateModel) => store.localeData.data);
 
-    setTimeout(() => {
-      this.projectData$
-        .pipe(untilComponentDestroyed(this))
-        .subscribe((projectData: ProjectModel) => {
-          if (projectData) {
-            this.sharedUsers$ = of(projectData.sharedUsers);
-            this.projectData = projectData;
-            this.defaultLocale = LocaleHelper.getDefaultLocale(this.projectData);
-            this.activeLocale = this.defaultLocale;
-            this.activeLocaleEmit.emit(this.activeLocale);
-          }
-        });
-    }, 1);
+    this.localesData$
+      .pipe(untilComponentDestroyed(this))
+      .subscribe((localesData) => {
+        this.localesData = localesData;
+      });
+
+    combineLatest(
+      this.defaultLocaleObj$,
+      this.projectData$,
+    ).subscribe((data) => {
+      if (data[0] && data[1]) {
+        this.defaultLocaleObj = data[0];
+        this.sharedUsers$ = of(data[1].sharedUsers);
+        this.projectData = data[1];
+        this.defaultLocale = this.defaultLocaleObj.keyCode;
+        this.activeLocale = this.defaultLocale;
+        this.activeLocaleEmit.emit(this.activeLocale);
+      }
+    });
 
     this.userData$ = this.store.select((store: AppStateModel) => store.userData.user);
     this.userData$
@@ -87,8 +94,6 @@ export class ProjectSidebarComponent implements OnInit, OnDestroy {
           this.addLocaleDialogRef.close();
         }
       });
-
-    this.projectUpdating$ = this.store.select((store: AppStateModel) => store.project.updating);
   }
 
   ngOnDestroy() {

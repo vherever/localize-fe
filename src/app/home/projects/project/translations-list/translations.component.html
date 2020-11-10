@@ -7,6 +7,7 @@
     <span class="lz_flag">{{ activeLocaleObj.emoji }}</span>
   </span>
   <em style="font-size: 9px">translationsLoading$: {{ translationsLoading$ | async }}</em>
+  <em *ngIf="translationUpdating$ | async">updating...</em>
   <br>
   <app-translations-controls-bar></app-translations-controls-bar>
 </h5>

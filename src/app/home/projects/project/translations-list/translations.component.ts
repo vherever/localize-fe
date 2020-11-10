@@ -62,7 +62,11 @@ export class TranslationsComponent implements OnInit, OnChanges, OnDestroy {
   public localesData$: Observable<any>;
   private defaultLocaleObj$: Observable<any>;
 
+  public translationUpdating$: Observable<boolean>;
+
   private localesData: string[];
+
+  private translationUpdated$: Observable<boolean>;
 
   componentRef: ComponentRef<TranslationEditorComponent>;
   currentClickedElementId: number;
@@ -130,6 +134,24 @@ export class TranslationsComponent implements OnInit, OnChanges, OnDestroy {
       .pipe(untilComponentDestroyed(this))
       .subscribe((defaultLocaleObj) => {
         this.defaultLocaleObj = defaultLocaleObj;
+      });
+
+    this.translationUpdating$ = this.store.select((store: AppStateModel) => store.translationsData.updating);
+
+    this.translationUpdated$ = this.store.select((store: AppStateModel) => store.translationsData.updated);
+    this.translationUpdated$
+      .pipe(untilComponentDestroyed(this))
+      .subscribe((state) => {
+        if (state) {
+          if (this.previousElement) {
+            this.currentClickedElementId = null;
+            this.previousClickedElementId = null;
+            this.previousElement.clear();
+          }
+          if (this.translationSettingsDialogRef) {
+            this.translationSettingsDialogRef.close();
+          }
+        }
       });
   }
 

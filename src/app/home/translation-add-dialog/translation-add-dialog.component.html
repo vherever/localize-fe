@@ -5,13 +5,19 @@
       <mat-form-field [floatLabel]="'always'">
         <input matInput placeholder="Source text" formControlName="assetValue" autocomplete="off" #assetValueInput="matInput">
         <mat-label>initial translation in
-          {{ data.defaultLocaleObj.lang }}, {{ data.defaultLocaleObj.country }} {{ data.defaultLocaleObj.emoji }}
+          <ng-container *ngIf="data.defaultLocaleObj.emoji; else noFlagTpl">
+            {{ data.defaultLocaleObj.lang }}, {{ data.defaultLocaleObj.country }} {{ data.defaultLocaleObj.emoji }}
+          </ng-container>
         </mat-label>
         <mat-error *ngIf="assetValueControl.hasError('required')">
           Source text is required.
         </mat-error>
       </mat-form-field>
     </div>
+
+    <ng-template #noFlagTpl>
+      {{ data.defaultLocaleObj.name }}.
+    </ng-template>
 
     <div>
       <mat-form-field [floatLabel]="'always'">

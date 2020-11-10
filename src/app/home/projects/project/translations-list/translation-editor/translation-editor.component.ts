@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, Output, EventEmitter, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Observable, of, Subject } from 'rxjs';
 import { Store } from '@ngrx/store';
@@ -29,7 +29,6 @@ export class TranslationEditorComponent implements OnInit, OnDestroy {
 
   public translationUpdated$: Observable<boolean>;
 
-  public translationUpdating$: Observable<boolean>;
   public localesData$: Observable<any[]>;
 
   @Input() set activeLocale(val: string) {
@@ -74,7 +73,6 @@ export class TranslationEditorComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.translationUpdating$ = this.store.select((store: AppStateModel) => store.translationsData.updating);
     const projectDefaultLocale = this.projectData.defaultLocale;
 
     this.translateForm = this.fb.group({

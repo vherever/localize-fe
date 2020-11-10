@@ -1,6 +1,5 @@
 <form [formGroup]="translateForm"
      (submit)="onSaveTranslation()" class="lz_editor_container">
-  <div *ngIf="translationUpdating$ | async">updating...</div>
   <ng-select #tt appearance="outline"
              labelForId="default_locale"
              [searchable]="false"

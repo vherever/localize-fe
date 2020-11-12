@@ -1,35 +1,58 @@
 <form [formGroup]="addTranslationForm" (submit)="onTranslationSave()">
   <div mat-dialog-title>Add new translation asset to {{ data.projectData.title }}</div>
   <div mat-dialog-content>
-    <div>
-      <mat-form-field [floatLabel]="'always'">
-        <input matInput placeholder="Source text" formControlName="assetValue" autocomplete="off" #assetValueInput="matInput">
-        <mat-label>initial translation in
-          <ng-container *ngIf="data.defaultLocaleObj.emoji; else noFlagTpl">
-            {{ data.defaultLocaleObj.lang }}, {{ data.defaultLocaleObj.country }} {{ data.defaultLocaleObj.emoji }}
-          </ng-container>
-        </mat-label>
-        <mat-error *ngIf="assetValueControl.hasError('required')">
-          Source text is required.
-        </mat-error>
-      </mat-form-field>
+    <div class="lz_form_control lz_hinted">
+      <div fxLayout>
+        <label for="s_field_source_text">* Source text:</label>
+        <div class="lz_form_control_input_wrapper">
+          <div class="lz_form_control_hint">
+            Initial translation in
+            <ng-container *ngIf="data.defaultLocaleObj.emoji; else noFlagTpl">
+              {{ data.defaultLocaleObj.lang }}, {{ data.defaultLocaleObj.country }} {{ data.defaultLocaleObj.emoji }}
+            </ng-container>
+          </div>
+          <input type="text" id="s_field_source_text" formControlName="assetValue" autocomplete="off" placeholder="">
+        </div>
+      </div>
+      <div class="lz_error_message" *ngIf="(assetValueControl.dirty || assetValueControl.touched) && assetValueControl.hasError('required')">
+        Source text is required.
+      </div>
     </div>
 
     <ng-template #noFlagTpl>
       {{ data.defaultLocaleObj.name }}.
     </ng-template>
 
-    <div>
-      <mat-form-field [floatLabel]="'always'">
-        <input matInput placeholder="Asset ID" formControlName="assetCode" autocomplete="off">
-        <mat-label>An unique asset identifier.</mat-label>
-        <mat-error *ngIf="assetValueControl.hasError('required')">
-          Asset ID is required.
-        </mat-error>
-        <mat-error *ngIf="assetValueControl.hasError('assetCodeExists')">
-          Another asset exists with this ID.
-        </mat-error>
-      </mat-form-field>
+    <div class="lz_form_control lz_hinted">
+      <div fxLayout>
+        <label for="s_field_asset_id">* Asset ID:</label>
+        <div class="lz_form_control_input_wrapper">
+          <div class="lz_form_control_hint">
+            A primary unique identifier.
+          </div>
+          <input type="text" id="s_field_asset_id" formControlName="assetCode" autocomplete="off" placeholder="Asset ID">
+        </div>
+      </div>
+      <div class="lz_error_message" *ngIf="(assetCodeControl.dirty || assetCodeControl.touched) && assetCodeControl.hasError('required')">
+        Asset id ID required.
+      </div>
+      <div class="lz_error_message" *ngIf="assetCodeControl.hasError('assetCodeExists')">
+        Another asset exists with this ID.
+      </div>
+    </div>
+
+    <div class="lz_form_control">
+      <div fxLayout>
+        <label for="s_field_tags">Tags:</label>
+        <input type="text" id="s_field_tags" formControlName="tags" autocomplete="off" placeholder="">
+      </div>
+    </div>
+
+    <div class="lz_form_control">
+      <div fxLayout>
+        <label for="s_field_notes">Notes:</label>
+        <input type="text" id="s_field_notes" formControlName="notes" autocomplete="off" placeholder="">
+      </div>
     </div>
   </div>
 

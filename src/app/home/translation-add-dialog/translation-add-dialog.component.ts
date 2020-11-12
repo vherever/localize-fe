@@ -1,5 +1,5 @@
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Form, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA } from '@angular/material';
 // app imports
 import { TranslationsService } from '../../core/services/api-interaction/translations.service';
@@ -33,6 +33,8 @@ export class TranslationAddDialogComponent implements OnInit, OnDestroy {
     this.addTranslationForm = this.fb.group({
       assetValue: ['', Validators.required],
       assetCode: ['', Validators.required],
+      tags: [''],
+      notes: [''],
     });
     this.defaultLocale = this.data.defaultLocaleObj.keyCode;
   }
@@ -44,10 +46,24 @@ export class TranslationAddDialogComponent implements OnInit, OnDestroy {
     return this.addTranslationForm.controls['assetValue'] as FormControl;
   }
 
+  get assetCodeControl():  FormControl {
+    return this.addTranslationForm.controls['assetCode'] as FormControl;
+  }
+
+  get tagsControl(): FormControl {
+    return this.addTranslationForm.controls['tags'] as FormControl;
+  }
+
+  get notesControl(): FormControl {
+    return this.addTranslationForm.controls['notes'] as FormControl;
+  }
+
   onTranslationSave(): void {
     const data = {
-      translations: this.createTranslations(this.addTranslationForm.controls['assetValue'].value),
-      assetCode: this.addTranslationForm.controls['assetCode'].value,
+      translations: this.createTranslations(this.assetValueControl.value),
+      assetCode: this.assetCodeControl.value,
+      tags: this.tagsControl.value,
+      notes: this.notesControl.value,
     };
     this.store.dispatch(new AddTranslationAction(this.data.projectData.uuid, data));
   }

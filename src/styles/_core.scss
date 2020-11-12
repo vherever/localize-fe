@@ -80,7 +80,7 @@ button {
   width: 100%;
   padding-bottom: 10px;
   label {
-    padding-top: 9px;
+    padding-top: 8px;
     font-weight: 600;
     font-size: 12px;
     display: inline-block;
@@ -136,6 +136,19 @@ button {
           flex-direction: column;
         }
       }
+    }
+  }
+  &.lz_hinted {
+    .lz_form_control_input_wrapper {
+      width: 100%;
+    }
+    .lz_form_control_hint {
+      font-size: 11px;
+      color: #72727d;
+      margin-bottom: 2px;
+    }
+    label {
+      padding-top: 21px;
     }
   }
 }

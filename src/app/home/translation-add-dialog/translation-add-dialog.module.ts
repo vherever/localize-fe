@@ -6,6 +6,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { TranslationAddDialogComponent } from './translation-add-dialog.component';
 import { TranslationsService } from '../../core/services/api-interaction/translations.service';
 import { TranslationApiService } from '../../core/services/api/translation-api.service';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 @NgModule({
   imports: [
@@ -15,6 +16,7 @@ import { TranslationApiService } from '../../core/services/api/translation-api.s
     MatDialogModule,
     MatInputModule,
     MatButtonModule,
+    FlexLayoutModule,
   ],
   declarations: [TranslationAddDialogComponent],
   providers: [

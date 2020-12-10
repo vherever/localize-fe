@@ -347,8 +347,13 @@ mat-dialog-container {
 }
 
 div[mat-dialog-actions] {
-  float: right;
+  display: flex;
+  place-content: center flex-end;;
+  align-items: center;
   padding-bottom: 20px;
+  &.flex-space-between {
+    place-content: center space-between;
+  }
   button[mat-dialog-close] {
     margin-right: 10px;
   }

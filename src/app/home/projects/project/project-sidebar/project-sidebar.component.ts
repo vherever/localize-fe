@@ -13,6 +13,8 @@ import { ManageUserDialogComponent } from './manage-user-dialog/manage-user-dial
 import { InviteUserDialogComponent } from './invite-user-dialog/invite-user-dialog.component';
 import { AddLocaleDialogComponent } from './add-locale-dialog/add-locale-dialog.component';
 import { AppStateModel } from '../../../../store/models/app-state.model';
+import { TagsManagerDialogComponent } from '../../../../core/shared/tags-manager-dialog/tags-manager-dialog.component';
+import { TagInterface } from '../../../../core/shared/tags-manager-dialog/tags-list/tag.model';
 
 @Component({
   selector: 'app-project-sidebar',
@@ -37,6 +39,8 @@ export class ProjectSidebarComponent implements OnInit, OnDestroy {
   public localesData$: Observable<any>;
   public projectLoading$: Observable<boolean>;
   private defaultLocaleObj$: Observable<any>;
+
+  private tagsManagerDialogRef: MatDialogRef<TagsManagerDialogComponent>;
 
   public defaultLocaleObj: any;
 
@@ -155,6 +159,25 @@ export class ProjectSidebarComponent implements OnInit, OnDestroy {
           '',
         ),
       },
+    });
+  }
+
+  public onAddNewTagClick(): void {
+    console.log('onAddNewTagClick');
+    this.tagsManagerDialogRef = this.dialog.open(TagsManagerDialogComponent, {
+      width: '400px',
+      data: {
+        labels: this.prepareTagsList(),
+      },
+    });
+  }
+
+  private prepareTagsList(): TagInterface[] {
+    return this.projectData.labels.map((label) => {
+      return {
+        ...label,
+        selected: false,
+      };
     });
   }
 

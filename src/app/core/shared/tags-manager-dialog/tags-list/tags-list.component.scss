@@ -1,0 +1,54 @@
+.lz_tags_list {
+  padding: 5px 0;
+  .lz_tags_list_tag {
+    height: 28px;
+    position: relative;
+    text-decoration: none;
+    display: flex;
+    place-content: center flex-start;
+    align-items: center;
+    padding: 0 7px;
+    margin-bottom: 4px;
+    border-radius: 3px;
+    &.lz_colored {
+      .lz_tag_name {
+        color: #ffffff;
+      }
+    }
+    &:not(.lz_colored) {
+      -webkit-box-shadow: inset 0 0 0 1px rgba(0,0,0,1);
+      -moz-box-shadow: inset 0 0 0 1px rgba(0,0,0,1);
+      box-shadow: inset 0 0 0 1px rgba(0,0,0,1);
+    }
+    .lz_tag_name {
+      font-size: 12px;
+    }
+    .lz_check_mark {
+      width: 8px;
+      height: 8px;
+      position: absolute;
+      right: 4px;
+      top: 4px;
+      z-index: 11;
+      fill: #FFFFFF;
+    }
+    width: calc(100% - 33px);
+  }
+  .lz_tag_edit {
+    position: relative;
+    height: 28px;
+    width: 28px;
+    margin-left: 5px;
+    border-radius: 3px;
+    .lz_control_edit {
+      width: 14px;
+      height: 15px;
+      position: absolute;
+      top: 6px;
+      right: 6px;
+    }
+    &:hover {
+      background-color: #e0e0e0;
+    }
+  }
+}

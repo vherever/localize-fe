@@ -10,8 +10,6 @@ import { ProjectApiService } from '../../core/services/api/project-api.service';
 import { RemoveDialogConfirmModule } from '../../core/shared/remove-dialog-confirm/remove-dialog-confirm.module';
 import { SpriteModule } from '../../core/shared/sprite/sprite.module';
 import { NgxPopperModule } from 'ngx-popper';
-import { FilterModule } from '../../core/shared/filter/filter.module';
-import { FilterPipe } from '../../core/pipes/filter.pipe';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { AppProjectsFilterSelectComponent } from './projects-filters-bar/filter-select/projects-filter-select.component';
 import { FormsModule } from '@angular/forms';
@@ -20,6 +18,7 @@ import { ProjectSettingsDialogModule } from './project-settings-dialog/project-s
 import { ProjectsEffects } from '../../store/effects/projects.effects';
 import { EffectsModule } from '@ngrx/effects';
 import { LocalesEffects } from '../../store/effects/locales.effects';
+import { FilterPipeModule } from '../../core/pipes/filter/filter-pipe.module';
 
 @NgModule({
   imports: [
@@ -33,6 +32,7 @@ import { LocalesEffects } from '../../store/effects/locales.effects';
     NgxPopperModule.forRoot({}),
     ProjectsFiltersBarModule,
     EffectsModule.forFeature([ProjectsEffects, LocalesEffects]),
+    FilterPipeModule.forRoot(),
   ],
   providers: [
     ProjectApiService,
@@ -41,7 +41,6 @@ import { LocalesEffects } from '../../store/effects/locales.effects';
   ],
   declarations: [
     ProjectsComponent,
-    FilterPipe,
   ],
   exports: [ProjectsComponent],
 })

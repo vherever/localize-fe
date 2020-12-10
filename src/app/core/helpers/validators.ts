@@ -1,5 +1,4 @@
 import { FormControl } from '@angular/forms';
-import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
 
 export function matchOtherValidator(otherControlName: string) {
 
@@ -20,7 +19,6 @@ export function matchOtherValidator(otherControlName: string) {
         throw new Error('matchOtherValidator(): other control is not found in parent group');
       }
       otherControl.valueChanges
-        .pipe(untilComponentDestroyed(this))
         .subscribe(() => {
           thisControl.updateValueAndValidity();
         });

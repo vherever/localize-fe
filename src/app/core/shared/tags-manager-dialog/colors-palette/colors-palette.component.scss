@@ -1,0 +1,21 @@
+.lz_color_palette {
+  padding: 6px 0 12px 0;
+  display: flex;
+  place-content: center space-between;
+  align-items: center;
+  .lz_color_block {
+    width: 42px;
+    height: 32px;
+    border-radius: 3px;
+    position: relative;
+    .lz_check_mark {
+      width: 8px;
+      height: 8px;
+      position: absolute;
+      right: 4px;
+      top: 4px;
+      z-index: 11;
+      fill: #FFFFFF;
+    }
+  }
+}

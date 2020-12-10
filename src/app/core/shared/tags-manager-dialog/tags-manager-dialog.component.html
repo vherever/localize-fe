@@ -1,0 +1,29 @@
+<form [formGroup]="tagsManagerForm">
+  <div mat-dialog-title *ngIf="dialogMode !== 'tags-list'">
+    <button (click)="onBackClick()" style="margin-right: 10px"><</button>
+    <span *ngIf="dialogMode === 'add-tag'">Add new Tag</span>
+    <span *ngIf="dialogMode === 'edit-tag'">Edit Tag</span>
+  </div>
+
+  <ng-container *ngIf="dialogMode === 'tags-list'">
+    <app-tags-manager-dialog-tags-list
+      [tagsList]="data.labels"
+      (onEditTagClickEmit)="onEditTagClickEvent($event)"
+    ></app-tags-manager-dialog-tags-list>
+    <div mat-dialog-actions  class="flex-space-between">
+      <button (click)="onAddNewTagClick()">Add new tag</button>
+      <div>
+        <button mat-dialog-close>Close</button>
+        <button (click)="onSaveSelectedTags()">Okay</button>
+      </div>
+    </div>
+  </ng-container>
+
+  <ng-container *ngIf="dialogMode === 'add-tag'">
+    <app-tags-manager-dialog-add-tag></app-tags-manager-dialog-add-tag>
+  </ng-container>
+
+  <ng-container *ngIf="dialogMode === 'edit-tag'">
+    <app-tags-manager-dialog-add-tag [tagDataToEdit]="selectedTagData"></app-tags-manager-dialog-add-tag>
+  </ng-container>
+</form>

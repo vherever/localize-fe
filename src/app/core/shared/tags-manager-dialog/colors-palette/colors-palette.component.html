@@ -1,0 +1,14 @@
+<form [formGroup]="colorsPaletteGroup" class="lz_color_palette">
+  <a href="javascript:;" *ngFor="let color of colorsPreset" #colorRef
+     class="lz_color_block"
+     [ngStyle]="{'background-color': color.hex}"
+     (mouseenter)="onHoverColorIn(color, colorRef)"
+     (mouseleave)="onHoverColorOut(color, colorRef)"
+     (click)="onColorSelect(color)">
+    <svg class="lz_check_mark" *ngIf="color.selected">
+      <use xlink:href="#s_icon_check"></use>
+    </svg>
+  </a>
+</form>
+
+<app-sprite [spriteKey]="'controls'"></app-sprite>

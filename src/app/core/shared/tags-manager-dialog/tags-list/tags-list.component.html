@@ -1,0 +1,28 @@
+<div mat-dialog-title>Manage tags list</div>
+<app-filter (notifyFilter)="onFilterNotify($event)"
+            [placeholder]="'Filter by name or color...'"
+            [cssClass]="'lz_projects_input_filter'"
+></app-filter>
+<div mat-dialog-content>
+  <div class="lz_tags_list">
+    <div *ngFor="let tag of tagsList | filter: {name: filterService.filterText}" style="display: flex">
+      <a #tagRef href="javascript:;" [ngClass]="{'lz_colored': !!tag.color}"
+         (mouseenter)="onTagHoverIn(tag.color, tagRef)"
+         (mouseleave)="onTagHoverOut(tagRef)"
+         (click)="onTagSelect(tag.uuid)"
+         [ngStyle]="{'background-color': tag.color ? tag.color : 'transparent'}" class="lz_tags_list_tag">
+        <span class="lz_tag_name">{{ tag.name }}</span>
+        <svg class="lz_check_mark" *ngIf="tag.selected">
+          <use xlink:href="#s_icon_check"></use>
+        </svg>
+      </a>
+      <a href="javascript:;" class="lz_tag_edit" (click)="onEditTagClick(tag)">
+        <svg class="lz_control_edit">
+          <use xlink:href="#icon_pencil_edit"></use>
+        </svg>
+      </a>
+    </div>
+  </div>
+</div>
+
+<app-sprite [spriteKey]="'check'"></app-sprite>

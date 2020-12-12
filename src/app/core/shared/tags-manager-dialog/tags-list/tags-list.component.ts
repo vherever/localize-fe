@@ -20,11 +20,15 @@ import { TagInterface } from './tag.model';
 })
 export class TagsListComponent {
   @Input() tagsList: TagInterface[];
-  @Output() onEditTagClickEmit: EventEmitter<any> = new EventEmitter<any>();
+  @Output() editTagClickEmit: EventEmitter<any> = new EventEmitter<any>();
 
   constructor(
     public filterService: FilterService,
   ) {
+  }
+
+  ngOnInit() {
+    this.tagsList = this.prepareTags();
   }
 
   public onFilterNotify(value: string): void {
@@ -44,10 +48,13 @@ export class TagsListComponent {
   public onTagSelect(tagUuid: string): void {
     const selectedTag = this.tagsList.find((tag: TagInterface) => tag.uuid === tagUuid);
     selectedTag.selected = !selectedTag.selected;
-    console.log('selectedTag', selectedTag);
   }
 
   public onEditTagClick(tag: TagInterface): void {
-    this.onEditTagClickEmit.emit(tag);
+    this.editTagClickEmit.emit(tag);
+  }
+
+  private prepareTags(): any {
+    return this.tagsList.map((tag) => ({...tag, selected: false}));
   }
 }

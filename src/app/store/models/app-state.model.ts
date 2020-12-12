@@ -7,4 +7,5 @@ export interface AppStateModel {
   readonly localesData: any;
   readonly localeData: any;
   readonly shareProject: any;
+  readonly tagsData: any;
 }

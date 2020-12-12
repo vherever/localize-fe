@@ -1,29 +1,50 @@
-import { Component, Inject, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { TagInterface } from './tags-list/tag.model';
+import { Store } from '@ngrx/store';
+// app imports
+import { AppStateModel } from '../../../store/models/app-state.model';
+import { ClearTagStateAction, LoadTagsAction } from '../../../store/actions/tag.actions';
+import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
   templateUrl: 'tags-manager-dialog.component.html',
   styleUrls: ['tags-manager-dialog.component.scss'],
 })
-export class TagsManagerDialogComponent implements OnInit {
+export class TagsManagerDialogComponent implements OnInit, OnDestroy {
   public tagsManagerForm: FormGroup;
   public dialogMode = 'tags-list'; // add-tag, edit-tag
   public selectedTagData: any;
 
+  public tags$ = this.store.select((store: AppStateModel) => store.tagsData.data);
+  public tagUpdated$ = this.store.select((store: AppStateModel) => store.tagsData.updated);
+
+  public projectUuid: string;
+
   constructor(
-    private fb: FormBuilder,
-    @Inject(MAT_DIALOG_DATA) public data: { labels: TagInterface[], content: HTMLElement },
+    private readonly fb: FormBuilder,
+    private readonly store: Store<AppStateModel>,
+    @Inject(MAT_DIALOG_DATA) private data: { projectUuid: string },
   ) {
-    console.log('data123', this.data);
+    this.projectUuid = this.data.projectUuid;
   }
 
   ngOnInit() {
     this.tagsManagerForm = this.fb.group({
       selectedTags: [''],
     });
+
+    this.tagUpdated$
+      .pipe(untilComponentDestroyed(this))
+      .subscribe((state: boolean) => {
+        if (state) {
+          this.store.dispatch(new ClearTagStateAction());
+          this.dialogMode = 'tags-list';
+        }
+      });
   }
+
+  ngOnDestroy() {}
 
   public onAddNewTagClick(): void {
     this.dialogMode = 'add-tag';
@@ -38,7 +59,7 @@ export class TagsManagerDialogComponent implements OnInit {
     console.log('onSaveSelectedTags');
   }
 
-  public onEditTagClickEvent(data: any): void {
+  public editTagClickEvent(data: any): void {
     this.selectedTagData = data;
     this.dialogMode = 'edit-tag';
   }

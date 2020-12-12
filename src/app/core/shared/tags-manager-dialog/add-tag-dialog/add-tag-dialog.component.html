@@ -15,7 +15,10 @@
     <div *ngIf="!tagDataToEdit"></div>
     <div>
       <button mat-dialog-close>Close</button>
-      <button (click)="onSaveNewTagClick()">Add</button>
+      <button *ngIf="!tagDataToEdit"
+              (click)="onSaveNewTagClick()">Add</button>
+      <button *ngIf="tagDataToEdit"
+              (click)="onUpdateTagClick()">Update</button>
     </div>
   </div>
 </form>

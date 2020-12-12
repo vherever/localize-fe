@@ -7,8 +7,8 @@
 
   <ng-container *ngIf="dialogMode === 'tags-list'">
     <app-tags-manager-dialog-tags-list
-      [tagsList]="data.labels"
-      (onEditTagClickEmit)="onEditTagClickEvent($event)"
+      [tagsList]="tags$ | async"
+      (editTagClickEmit)="editTagClickEvent($event)"
     ></app-tags-manager-dialog-tags-list>
     <div mat-dialog-actions  class="flex-space-between">
       <button (click)="onAddNewTagClick()">Add new tag</button>
@@ -20,10 +20,13 @@
   </ng-container>
 
   <ng-container *ngIf="dialogMode === 'add-tag'">
-    <app-tags-manager-dialog-add-tag></app-tags-manager-dialog-add-tag>
+    <app-tags-manager-dialog-add-tag [projectUuid]="projectUuid"
+    ></app-tags-manager-dialog-add-tag>
   </ng-container>
 
   <ng-container *ngIf="dialogMode === 'edit-tag'">
-    <app-tags-manager-dialog-add-tag [tagDataToEdit]="selectedTagData"></app-tags-manager-dialog-add-tag>
+    <app-tags-manager-dialog-add-tag [projectUuid]="projectUuid"
+                                     [tagDataToEdit]="selectedTagData"
+    ></app-tags-manager-dialog-add-tag>
   </ng-container>
 </form>

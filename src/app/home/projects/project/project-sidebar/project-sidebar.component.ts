@@ -7,7 +7,6 @@ import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
 // app imports
 import { ProjectModel } from '../../../../core/models/project.model';
 import { UPLOADS_ENDPOINT } from '../../../../core/app-constants';
-import { LanguagesModel } from '../../../../core/models/languages.model';
 import { UserModel } from '../../../../core/models/user.model';
 import { ManageUserDialogComponent } from './manage-user-dialog/manage-user-dialog.component';
 import { InviteUserDialogComponent } from './invite-user-dialog/invite-user-dialog.component';
@@ -47,6 +46,7 @@ export class ProjectSidebarComponent implements OnInit, OnDestroy {
   private localesData: any[];
 
   public projectUpdating$: Observable<boolean>;
+  public tagsLoading$: Observable<boolean>;
 
   private manageUserPermissionDialog: MatDialogRef<ManageUserDialogComponent>;
 
@@ -58,6 +58,7 @@ export class ProjectSidebarComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.projectLoading$ = this.store.select((store: AppStateModel) => store.project.loading);
+    this.tagsLoading$ = this.store.select((store: AppStateModel) => store.tagsData.loading);
     this.projectData$ = this.store.select((store: AppStateModel) => store.project.data);
     this.localesData$ = this.store.select((store: AppStateModel) => store.localesData.data);
     this.projectUpdating$ = this.store.select((store: AppStateModel) => store.project.updating);
@@ -162,12 +163,11 @@ export class ProjectSidebarComponent implements OnInit, OnDestroy {
     });
   }
 
-  public onAddNewTagClick(): void {
-    console.log('onAddNewTagClick');
+  public manageTagsClick(): void {
     this.tagsManagerDialogRef = this.dialog.open(TagsManagerDialogComponent, {
       width: '400px',
       data: {
-        labels: this.prepareTagsList(),
+        projectUuid: this.projectData.uuid,
       },
     });
   }

@@ -9,6 +9,7 @@ import { ProjectModel } from '../core/models/project.model';
 import { LoadLocalesAction } from '../store/actions/locales.actions';
 import { LoadDefaultLocaleAction } from '../store/actions/locale.actions';
 import { LocaleHelper } from '../core/helpers/locale-helper';
+import { LoadTagsAction } from '../store/actions/tag.actions';
 
 @Component({
   selector: 'app-app-route-root',
@@ -54,8 +55,13 @@ export class AppRouteRootComponent implements AfterViewInit, OnDestroy {
     this.pubSubService
       .subscribe('EVENT:LOAD_PROJECT_BY_ID', (projectId: string) => {
         this.store.dispatch(new LoadProjectByIdAction(projectId, true));
+        this.store.dispatch(new LoadTagsAction(projectId));
       });
 
+    // this.pubSubService
+    //   .subscribe('EVENT:LOAD_PROJECT_TAGS', (projectUuid: string) => {
+    //     this.store.dispatch(new LoadTagsAction(projectUuid));
+    //   });
     this.cdr.detectChanges();
   }
 

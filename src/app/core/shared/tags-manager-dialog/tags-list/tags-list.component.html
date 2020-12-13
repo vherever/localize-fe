@@ -5,7 +5,7 @@
 ></app-filter>
 <div mat-dialog-content>
   <div class="lz_tags_list">
-    <div *ngFor="let tag of tagsList | filter: {name: filterService.filterText}" style="display: flex">
+    <div *ngFor="let tag of tags | filter: {name: filterService.filterText, colorName: filterService.filterText}" style="display: flex">
       <a #tagRef href="javascript:;" [ngClass]="{'lz_colored': !!tag.color}"
          (mouseenter)="onTagHoverIn(tag.color, tagRef)"
          (mouseleave)="onTagHoverOut(tagRef)"

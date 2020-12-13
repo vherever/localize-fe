@@ -42,7 +42,6 @@ export function TagsReducer(state: TagState = initialState, action: TagAction) {
         updated: false,
       };
     case TagActionTypes.CREATE_PROJECT_TAG_SUCCESS:
-      console.log('action.payload', action, state);
       return {
         ...state,
         data: [action.payload, ...state.data],

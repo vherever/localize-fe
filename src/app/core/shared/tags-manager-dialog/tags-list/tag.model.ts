@@ -3,4 +3,5 @@ export interface TagInterface {
   color: string;
   uuid: string;
   selected?: boolean;
+  colorName?: string;
 }

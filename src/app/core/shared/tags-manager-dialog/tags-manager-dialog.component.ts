@@ -6,6 +6,7 @@ import { AppStateModel } from '../../../store/models/app-state.model';
 import { ClearTagStateAction, LoadTagsAction } from '../../../store/actions/tag.actions';
 import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { TagInterface } from './tags-list/tag.model';
 
 @Component({
   templateUrl: 'tags-manager-dialog.component.html',
@@ -13,8 +14,8 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 })
 export class TagsManagerDialogComponent implements OnInit, OnDestroy {
   public tagsManagerForm: FormGroup;
-  public dialogMode = 'tags-list'; // add-tag, edit-tag
-  public selectedTagData: any;
+  public dialogMode = 'tags-list'; // add-tag, edit-tag, remove-tag
+  public selectedTagData: TagInterface;
 
   public tags$ = this.store.select((store: AppStateModel) => store.tagsData.data);
   public tagUpdated$ = this.store.select((store: AppStateModel) => store.tagsData.updated);
@@ -51,16 +52,24 @@ export class TagsManagerDialogComponent implements OnInit, OnDestroy {
   }
 
   public onBackClick(): void {
-    this.selectedTagData = null;
-    this.dialogMode = 'tags-list';
+    if (this.dialogMode === 'remove-tag') {
+      this.dialogMode = 'edit-tag';
+    } else {
+      this.selectedTagData = null;
+      this.dialogMode = 'tags-list';
+    }
   }
 
   public onSaveSelectedTags(): void {
     console.log('onSaveSelectedTags');
   }
 
-  public editTagClickEvent(data: any): void {
-    this.selectedTagData = data;
+  public editTagClickEvent(selectedTagData: TagInterface): void {
+    this.selectedTagData = selectedTagData;
     this.dialogMode = 'edit-tag';
+  }
+
+  public removeTagClickEmitted(): void {
+    this.dialogMode = 'remove-tag';
   }
 }

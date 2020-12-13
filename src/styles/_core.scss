@@ -67,6 +67,16 @@ button {
       border: none;
     }
   }
+  &.lz_button_warn {
+    background-color: #e74c3c;
+    border: 1px solid #e74c3c;
+    color: #fff;
+    &:hover {
+      background-color: #e74c3c;
+      border: 1px solid #e74c3c;
+      color: #fff;
+    }
+  }
 }
 
 .container {

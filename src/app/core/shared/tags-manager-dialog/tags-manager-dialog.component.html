@@ -3,6 +3,7 @@
     <button (click)="onBackClick()" style="margin-right: 10px"><</button>
     <span *ngIf="dialogMode === 'add-tag'">Add new Tag</span>
     <span *ngIf="dialogMode === 'edit-tag'">Edit Tag</span>
+    <span *ngIf="dialogMode === 'remove-tag'">Remove Tag</span>
   </div>
 
   <ng-container *ngIf="dialogMode === 'tags-list'">
@@ -10,7 +11,7 @@
       [tagsList]="tags$ | async"
       (editTagClickEmit)="editTagClickEvent($event)"
     ></app-tags-manager-dialog-tags-list>
-    <div mat-dialog-actions  class="flex-space-between">
+    <div mat-dialog-actions class="flex-space-between">
       <button (click)="onAddNewTagClick()">Add new tag</button>
       <div>
         <button mat-dialog-close>Close</button>
@@ -20,13 +21,21 @@
   </ng-container>
 
   <ng-container *ngIf="dialogMode === 'add-tag'">
-    <app-tags-manager-dialog-add-tag [projectUuid]="projectUuid"
-    ></app-tags-manager-dialog-add-tag>
+    <app-tags-manager-add-edit-tag [projectUuid]="projectUuid"
+                                   [tagDataToEdit]="null"
+    ></app-tags-manager-add-edit-tag>
   </ng-container>
 
   <ng-container *ngIf="dialogMode === 'edit-tag'">
-    <app-tags-manager-dialog-add-tag [projectUuid]="projectUuid"
-                                     [tagDataToEdit]="selectedTagData"
-    ></app-tags-manager-dialog-add-tag>
+    <app-tags-manager-add-edit-tag [projectUuid]="projectUuid"
+                                   [tagDataToEdit]="selectedTagData"
+                                   (removeTagClickEmit)="removeTagClickEmitted()"
+    ></app-tags-manager-add-edit-tag>
+  </ng-container>
+
+  <ng-container *ngIf="dialogMode === 'remove-tag'">
+    <app-tags-manager-remove-tag [projectUuid]="projectUuid"
+                                 [tagUuid]="selectedTagData.uuid"
+    ></app-tags-manager-remove-tag>
   </ng-container>
 </form>

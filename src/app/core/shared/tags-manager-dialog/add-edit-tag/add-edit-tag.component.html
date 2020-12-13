@@ -2,7 +2,7 @@
   <div mat-dialog-content>
     <div class="lz_form_control" fxLayout>
       <label for="s_field_label">Tag name:</label>
-      <input type="text" id="s_field_label" formControlName="tagName" autocomplete="off" placeholder="">
+      <input type="text" id="s_field_label" formControlName="tagName" autocomplete="off" placeholder="" appAutofocus>
     </div>
 
     <div class="lz_section_title">Colors:</div>
@@ -11,7 +11,7 @@
     ></app-tags-manager-dialog-colors-palette>
   </div>
   <div mat-dialog-actions class="flex-space-between">
-    <button *ngIf="tagDataToEdit" (click)="onRemoveTagClick()">Remove</button>
+    <button *ngIf="tagDataToEdit" (click)="onRemoveTagClick()" class="lz_button_warn">Remove</button>
     <div *ngIf="!tagDataToEdit"></div>
     <div>
       <button mat-dialog-close>Close</button>

@@ -1,22 +1,8 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import Color from 'color';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-
-interface ColorModel {
-  hex: string;
-  name: string;
-  selected: boolean;
-}
-
-const colorsPreset: ColorModel[] = [
-  { hex: '#1abc9c', name: 'TURQUOISE', selected: false },
-  { hex: '#27ae60', name: 'NEPHRITIS', selected: false },
-  { hex: '#2980b9', name: 'BELIZE', selected: false },
-  { hex: '#e74c3c', name: 'ALIZARIN', selected: false },
-  { hex: '#f1c40f', name: 'SUNFLOWER', selected: false },
-  { hex: '#34495e', name: 'WETASPHALT', selected: false },
-  { hex: '#d35400', name: 'PUMPKIN', selected: false },
-];
+// app imports
+import { ColorModel, ColorsPreset } from '../colors-palette.helper';
 
 @Component({
   selector: 'app-tags-manager-dialog-colors-palette',
@@ -31,7 +17,7 @@ export class ColorsPaletteComponent implements OnInit, OnDestroy {
   constructor(
     private readonly fb: FormBuilder,
   ) {
-    this.colorsPreset = colorsPreset;
+    this.colorsPreset = ColorsPreset;
   }
 
   ngOnInit() {
@@ -39,12 +25,10 @@ export class ColorsPaletteComponent implements OnInit, OnDestroy {
       color: [this.selectedTagColor_, Validators.required],
     });
     this.markColorSelected();
-    // this.colorControl.patchValue(this.selectedTagColor_);
   }
 
   ngOnDestroy() {
     this.markAsUnselected();
-    // this.colorsPreset[0].selected = true;
   }
 
   private get selectedTagColor_(): string {

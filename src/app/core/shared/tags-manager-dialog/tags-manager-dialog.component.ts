@@ -1,4 +1,4 @@
-import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, EventEmitter, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Store } from '@ngrx/store';
 // app imports
@@ -7,6 +7,7 @@ import { ClearTagStateAction, LoadTagsAction } from '../../../store/actions/tag.
 import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { TagInterface } from './tags-list/tag.model';
+import { Observable } from 'rxjs';
 
 @Component({
   templateUrl: 'tags-manager-dialog.component.html',
@@ -17,15 +18,18 @@ export class TagsManagerDialogComponent implements OnInit, OnDestroy {
   public dialogMode = 'tags-list'; // add-tag, edit-tag, remove-tag
   public selectedTagData: TagInterface;
 
-  public tags$ = this.store.select((store: AppStateModel) => store.tagsData.data);
+  public projectAvailableTags$ = this.store.select((store: AppStateModel) => store.tagsData.data);
   public tagUpdated$ = this.store.select((store: AppStateModel) => store.tagsData.updated);
 
   public projectUuid: string;
+  public selectedTagsEmit: EventEmitter<TagInterface[]>  = new EventEmitter<TagInterface[]>();
+
+  private selectedTags: TagInterface[];
 
   constructor(
     private readonly fb: FormBuilder,
     private readonly store: Store<AppStateModel>,
-    @Inject(MAT_DIALOG_DATA) private data: { projectUuid: string },
+    @Inject(MAT_DIALOG_DATA) private data: { projectUuid: string, translationTags$?: Observable<any> },
   ) {
     this.projectUuid = this.data.projectUuid;
   }
@@ -61,7 +65,7 @@ export class TagsManagerDialogComponent implements OnInit, OnDestroy {
   }
 
   public onSaveSelectedTags(): void {
-    console.log('onSaveSelectedTags');
+    this.selectedTagsEmit.emit(this.selectedTags);
   }
 
   public editTagClickEvent(selectedTagData: TagInterface): void {
@@ -71,5 +75,9 @@ export class TagsManagerDialogComponent implements OnInit, OnDestroy {
 
   public removeTagClickEmitted(): void {
     this.dialogMode = 'remove-tag';
+  }
+
+  public selectedTagsEvent(selectedTags: TagInterface[]): void {
+    this.selectedTags = selectedTags;
   }
 }

@@ -1,4 +1,4 @@
-<form [formGroup]="translationSettingsForm" (submit)="onTranslationSave()">
+<form [formGroup]="translationSettingsForm">
   <h1 mat-dialog-title>Edit Asset settings.</h1>
 
   <div class="lz_form_control">
@@ -11,10 +11,25 @@
     </div>
   </div>
 
+  <div class="lz_form_control" fxLayout>
+    <label>Labels:</label>
+    <div class="lz_tags_list_container">
+      <div *ngFor="let tag of translationTags$ | async" class="lz_tag_item"
+           [ngStyle]="{'background-color': tag.color}">{{ tag.name }}
+      </div>
+      <button type="button" (click)="manageTagsClick()"
+              [disabled]="translationTagsLoading$ | async"
+              style="padding: 3px 6px; margin-left: 5px; border-radius: 3px;">
+        <mat-spinner diameter="16" *ngIf="translationTagsLoading$ | async; else addIcon"></mat-spinner>
+        <ng-template #addIcon>+</ng-template>
+      </button>
+    </div>
+  </div>
+
   <br><br>
   <div class="lz_modal_buttons_wrapper">
     <button class="lz_button_light" mat-dialog-close>Cancel</button>
-    <button type="submit"
+    <button type="submit" (click)="onTranslationSave()"
             [disabled]="!translationSettingsForm.valid" style="margin-left: 10px">Save</button>
   </div>
 </form>

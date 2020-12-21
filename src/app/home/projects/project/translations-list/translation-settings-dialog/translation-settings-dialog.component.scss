@@ -1,0 +1,17 @@
+.lz_tags_list_container {
+  padding-top: 3px;
+  display: flex;
+  place-content: center flex-start;
+  align-items: center;
+  .lz_tag_item {
+    height: 23px;
+    padding: 5px 5px;
+    font-size: 11px;
+    text-align: center;
+    color: #fff;
+    border-radius: 3px;
+    margin-left: 5px;
+    min-width: 23px;
+    white-space: nowrap;
+  }
+}

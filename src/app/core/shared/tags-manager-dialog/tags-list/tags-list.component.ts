@@ -11,8 +11,11 @@ import { ColorsPaletteHelper } from '../colors-palette.helper';
   styleUrls: ['tags-list.component.scss'],
 })
 export class TagsListComponent implements OnInit {
-  @Input() tagsList: TagInterface[];
-  @Output() editTagClickEmit: EventEmitter<any> = new EventEmitter<any>();
+  @Input() projectAvailableTags: TagInterface[];
+  @Input() translationTags: TagInterface[];
+
+  @Output() editTagClickEmit: EventEmitter<TagInterface> = new EventEmitter<TagInterface>();
+  @Output() selectedTagsEmit: EventEmitter<TagInterface[]> = new EventEmitter<TagInterface[]>();
 
   public tags: TagInterface[];
 
@@ -22,7 +25,7 @@ export class TagsListComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.tags = ColorsPaletteHelper.prepareColors(this.tagsList);
+    this.markTagsSelected();
   }
 
   public onFilterNotify(value: string): void {
@@ -42,9 +45,26 @@ export class TagsListComponent implements OnInit {
   public onTagSelect(tagUuid: string): void {
     const selectedTag = this.tags.find((tag: TagInterface) => tag.uuid === tagUuid);
     selectedTag.selected = !selectedTag.selected;
+    const selectedTags = this.tags.filter((tag) => tag.selected);
+    this.selectedTagsEmit.emit(selectedTags);
   }
 
   public onEditTagClick(tag: TagInterface): void {
     this.editTagClickEmit.emit(tag);
+  }
+
+  private markTagsSelected(): void {
+    const preparedTags = ColorsPaletteHelper.prepareColors(this.projectAvailableTags);
+    if (this.translationTags) {
+      this.selectedTagsEmit.emit(this.translationTags);
+      preparedTags.forEach((projectTag) => {
+        this.translationTags.forEach((translationTag) => {
+          if (projectTag.uuid === translationTag.uuid) {
+            projectTag.selected = true;
+          }
+        });
+      });
+    }
+    this.tags = preparedTags;
   }
 }

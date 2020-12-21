@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { MatDialogModule } from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { EffectsModule } from '@ngrx/effects';
+import { ReactiveFormsModule } from '@angular/forms';
 // app imports
 import { TranslationsComponent } from './translations.component';
 import { TranslationsRoutingModule } from './translations-routing.module';
@@ -15,7 +16,10 @@ import { RemoveDialogConfirmModule } from '../../../../core/shared/remove-dialog
 import { TranslationsEffects } from '../../../../store/effects/translations.effects';
 import { TranslationsControlsBarComponent } from './translations-controls-bar/translations-controls-bar.component';
 import { TranslationSettingsDialogComponent } from './translation-settings-dialog/translation-settings-dialog.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { TranslationTagsApiService } from '../../../../core/services/api/translation-tags-api.service';
+import { TranslationTagsService } from '../../../../core/services/api-interaction/translation-tags.service';
+import { TranslationTagsEffects } from '../../../../store/effects/translation-tags.effects';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @NgModule({
   imports: [
@@ -28,7 +32,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     MatDialogModule,
     TranslationAddDialogModule,
     RemoveDialogConfirmModule,
-    EffectsModule.forFeature([TranslationsEffects]),
+    MatProgressSpinnerModule,
+    EffectsModule.forFeature([TranslationsEffects, TranslationTagsEffects]),
   ],
   declarations: [
     TranslationsComponent,
@@ -38,6 +43,8 @@ import { ReactiveFormsModule } from '@angular/forms';
   providers: [
     TranslationApiService,
     TranslationsService,
+    TranslationTagsApiService,
+    TranslationTagsService,
   ],
   exports: [
     TranslationsComponent,

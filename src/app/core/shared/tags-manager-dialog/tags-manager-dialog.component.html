@@ -8,14 +8,16 @@
 
   <ng-container *ngIf="dialogMode === 'tags-list'">
     <app-tags-manager-dialog-tags-list
-      [tagsList]="tags$ | async"
+      [translationTags]="data.translationTags$ | async"
+      [projectAvailableTags]="projectAvailableTags$ | async"
       (editTagClickEmit)="editTagClickEvent($event)"
+      (selectedTagsEmit)="selectedTagsEvent($event)"
     ></app-tags-manager-dialog-tags-list>
     <div mat-dialog-actions class="flex-space-between">
       <button (click)="onAddNewTagClick()">Add new tag</button>
       <div>
         <button mat-dialog-close>Close</button>
-        <button (click)="onSaveSelectedTags()">Okay</button>
+        <button (click)="onSaveSelectedTags()" [mat-dialog-close]>Okay</button>
       </div>
     </div>
   </ng-container>

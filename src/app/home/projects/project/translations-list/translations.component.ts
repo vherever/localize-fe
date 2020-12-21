@@ -147,6 +147,7 @@ export class TranslationsComponent implements OnInit, OnChanges, OnDestroy {
             this.currentClickedElementId = null;
             this.previousClickedElementId = null;
             this.previousElement.clear();
+            // this.store.dispatch(new ClearSelectedTranslationAction());
           }
           if (this.translationSettingsDialogRef) {
             this.translationSettingsDialogRef.close();
@@ -177,6 +178,7 @@ export class TranslationsComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   onTranslationEditClick(event: MouseEvent, translation: TranslationModel, index: number): void {
+    // this.store.dispatch(new SetSelectedTranslationAction(translation));
     if (event.target['className'].includes('lz_clickable')) {
       if (this.previousElement && event.target['className'] !== 'lz_remove' && event.target['className'] !== 'lz_settings') {
         this.currentClickedElementId = null;
@@ -186,10 +188,12 @@ export class TranslationsComponent implements OnInit, OnChanges, OnDestroy {
         if (event.target['className'] !== 'lz_remove' && event.target['className'] !== 'lz_settings') {
           this.previousClickedElementId = null; // reset value to make checking again
           this.previousElement.clear();
+          // this.store.dispatch(new ClearSelectedTranslationAction());
         } else if (event.target['className'] === 'lz_remove') {
           this.removeTranslation(translation);
         } else if (event.target['className'] === 'lz_settings') {
           this.showTranslationSettingsModal(translation);
+          // this.store.dispatch(new SetSelectedTranslationAction(translation));
         }
       } else {
         if (event.target['className'] === 'lz_remove') {
@@ -262,11 +266,8 @@ export class TranslationsComponent implements OnInit, OnChanges, OnDestroy {
     this.translationSettingsDialogRef =
       this.dialog.open(TranslationSettingsDialogComponent, {
         width: '500px',
-        data: {
-          projectUuid: this.projectData.uuid,
-          translationUuid: translation.uuid,
-          assetCode: translation.assetCode,
-        },
+        disableClose: true,
+        data: { projectUuid: this.projectData.uuid, translation },
       });
   }
 

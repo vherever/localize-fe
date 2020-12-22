@@ -90,13 +90,15 @@ button {
   width: 100%;
   padding-bottom: 10px;
   label {
-    padding-top: 8px;
     font-weight: 600;
     font-size: 12px;
-    display: inline-block;
     min-width: 115px;
-    text-align: right;
     padding-right: 10px;
+    display: flex;
+    place-content: center flex-end;
+    -webkit-box-align: center;
+    align-items: center;
+    flex-wrap: wrap;
   }
   input[type="text"] {
     height: 32px;

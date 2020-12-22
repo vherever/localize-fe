@@ -20,6 +20,9 @@ import { TranslationTagsApiService } from '../../../../core/services/api/transla
 import { TranslationTagsService } from '../../../../core/services/api-interaction/translation-tags.service';
 import { TranslationTagsEffects } from '../../../../store/effects/translation-tags.effects';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { ExportAssetsSettingsDialogComponent } from './export-assets-settings-dialog/export-assets-settings-dialog.component';
+import { ImportExportApiService } from '../../../../core/services/api/import-export-api.service';
+import { ImportExportService } from '../../../../core/services/api-interaction/import-export.service';
 
 @NgModule({
   imports: [
@@ -39,17 +42,23 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     TranslationsComponent,
     TranslationsControlsBarComponent,
     TranslationSettingsDialogComponent,
+    ExportAssetsSettingsDialogComponent,
   ],
   providers: [
     TranslationApiService,
     TranslationsService,
     TranslationTagsApiService,
     TranslationTagsService,
+    ImportExportApiService,
+    ImportExportService,
   ],
   exports: [
     TranslationsComponent,
   ],
-  entryComponents: [TranslationSettingsDialogComponent],
+  entryComponents: [
+    TranslationSettingsDialogComponent,
+    ExportAssetsSettingsDialogComponent
+  ],
 })
 export class TranslationsModule {
 }

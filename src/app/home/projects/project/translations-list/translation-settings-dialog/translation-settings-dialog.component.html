@@ -19,7 +19,7 @@
       </div>
       <button type="button" (click)="manageTagsClick()"
               [disabled]="translationTagsLoading$ | async"
-              style="padding: 3px 6px; margin-left: 5px; border-radius: 3px;">
+              style="padding: 3px 6px; border-radius: 3px; margin-bottom: 5px">
         <mat-spinner diameter="16" *ngIf="translationTagsLoading$ | async; else addIcon"></mat-spinner>
         <ng-template #addIcon>+</ng-template>
       </button>

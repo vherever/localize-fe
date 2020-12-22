@@ -34,6 +34,7 @@ import {
   RemoveTranslationAction,
 } from '../../../../store/actions/translations.action';
 import { TranslationSettingsDialogComponent } from './translation-settings-dialog/translation-settings-dialog.component';
+import { ExportAssetsSettingsDialogComponent } from './export-assets-settings-dialog/export-assets-settings-dialog.component';
 
 @Component({
   selector: 'app-translations',
@@ -226,6 +227,20 @@ export class TranslationsComponent implements OnInit, OnChanges, OnDestroy {
         },
       });
     this.translationAdded$ = of(false);
+  }
+
+  public onExportTranslationsClick(): void {
+    console.log('onExportTranslationsClick');
+    this.dialog.open(ExportAssetsSettingsDialogComponent, {
+      width: '400px',
+      data: {
+        projectUuid: this.projectId,
+      },
+    });
+  }
+
+  public onImportTranslationsClick(): void {
+    console.log('onExportTranslationsClick');
   }
 
   private getTranslationsById(id: string): void {

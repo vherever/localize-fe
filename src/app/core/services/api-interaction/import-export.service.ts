@@ -10,7 +10,7 @@ export class ImportExportService {
   ) {
   }
 
-  public exportAssets(projectUuid: string): Observable<any> {
-    return this.importExportApiService.exportAssets(projectUuid);
+  public exportAssets(projectUuid: string, assetsType: string, languages: string, responseType: string): Observable<any> {
+    return this.importExportApiService.exportAssets(projectUuid, assetsType, languages, responseType);
   }
 }

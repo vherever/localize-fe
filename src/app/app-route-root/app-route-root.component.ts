@@ -66,17 +66,9 @@ export class AppRouteRootComponent implements AfterViewInit, OnDestroy {
   }
 
   private prepareLocales(projectData: ProjectModel, languagesData: any): any[] {
-    let result: string[];
-    const translationsLocales: string = projectData.translationsLocales ? projectData.translationsLocales : '';
-    if (projectData.role === 'ADMINISTRATOR') {
-      result = translationsLocales.split(',');
-    } else {
-      result = `${projectData.availableTranslationLocales}`.split(',');
-    }
-
     return this.prepareAvailableTranslations(
-      projectData.translationsLocales ? projectData.translationsLocales : '',
-      result,
+      projectData.translationsLocales,
+      projectData.availableTranslationLocales.split(','),
       languagesData,
     );
   }

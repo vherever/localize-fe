@@ -1,5 +1,6 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { FormBuilder, FormGroup } from '@angular/forms';
 // app imports
 import { FileSaver } from '../../../../../core/helpers/file-saver';
 import { ImportExportService } from '../../../../../core/services/api-interaction/import-export.service';
@@ -9,15 +10,27 @@ import { ImportExportService } from '../../../../../core/services/api-interactio
   templateUrl: 'export-assets-settings-dialog.component.html',
   styleUrls: ['export-assets-settings-dialog.component.scss'],
 })
-export class ExportAssetsSettingsDialogComponent {
+export class ExportAssetsSettingsDialogComponent implements OnInit {
+  public exportAssetsForm: FormGroup;
+
   constructor(
     @Inject(MAT_DIALOG_DATA) private readonly dialogData: { projectUuid: string },
     private readonly importExportService: ImportExportService,
+    private readonly fb: FormBuilder,
   ) {
   }
 
+  ngOnInit() {
+    this.exportAssetsForm = this.fb.group({
+    });
+  }
+
   public onExportAssetsClick(): void {
-    this.importExportService.exportAssets(this.dialogData.projectUuid)
+    const languages = 'gb-en,br-pt';
+    const languagesArray = languages.split(',');
+    const responseType = languagesArray.length > 1 ? 'arraybuffer' : 'json';
+
+    this.importExportService.exportAssets(this.dialogData.projectUuid, 'json', languages, responseType)
       .subscribe((res) => {
         FileSaver.saveToFileSystem(res);
       });

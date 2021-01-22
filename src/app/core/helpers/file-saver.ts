@@ -5,7 +5,7 @@ export class FileSaver {
     const contentDispositionHeader: string = response.headers.get('content-disposition');
     const parts: string[] = contentDispositionHeader.split(';');
     const filename = JSON.parse(parts[1].split('=')[1]);
-    const blob = new Blob([JSON.stringify(response.body)], { type: 'text/plain' });
+    const blob = new Blob([response.body]);
     saveAs(blob, filename);
   }
 }

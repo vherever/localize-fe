@@ -218,19 +218,18 @@ export class TranslationsComponent implements OnInit, OnChanges, OnDestroy {
 
   onAddTranslationClick(): void {
     this.addTranslationDialogRef = this.dialog.open(TranslationAddDialogComponent, {
-        width: '500px',
-        data: {
-          projectData: this.projectData,
-          activeLocaleObj: this.activeLocaleObj,
-          activeLocale: this.activeLocale,
-          defaultLocaleObj: this.defaultLocaleObj,
-        },
-      });
+      width: '500px',
+      data: {
+        projectData: this.projectData,
+        activeLocaleObj: this.activeLocaleObj,
+        activeLocale: this.activeLocale,
+        defaultLocaleObj: this.defaultLocaleObj,
+      },
+    });
     this.translationAdded$ = of(false);
   }
 
   public onExportTranslationsClick(): void {
-    console.log('onExportTranslationsClick');
     this.dialog.open(ExportAssetsSettingsDialogComponent, {
       width: '400px',
       data: {
@@ -287,9 +286,6 @@ export class TranslationsComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private get projectLocalesCount(): number {
-    if (this.projectData.translationsLocales) {
-      return this.projectData.translationsLocales.split(',').length;
-    }
-    return 1;
+    return this.projectData.availableTranslationLocales.split(',').length;
   }
 }

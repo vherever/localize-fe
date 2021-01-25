@@ -12,8 +12,8 @@ import { ShareProjectApiService } from '../../../../core/services/api/share-proj
 import { ShareProjectService } from '../../../../core/services/api-interaction/share-project.service';
 import { AddLocaleDialogModule } from './add-locale-dialog/add-locale-dialog.module';
 import { ShareProjectEffects } from '../../../../store/effects/share-project.effects';
-import { AvailableLanguagesListComponent } from '../../../../core/shared/available-languages-list/available-languages-list.component';
 import { TagsManagerDialogModule } from '../../../../core/shared/tags-manager-dialog/tags-manager-dialog.module';
+import { AvailableLanguagesListModule } from '../../../../core/shared/available-languages-list/available-languages-list.module';
 
 @NgModule({
   imports: [
@@ -23,13 +23,13 @@ import { TagsManagerDialogModule } from '../../../../core/shared/tags-manager-di
     ReactiveFormsModule,
     AddLocaleDialogModule,
     TagsManagerDialogModule,
+    AvailableLanguagesListModule,
     EffectsModule.forFeature([ShareProjectEffects]),
   ],
   declarations: [
     ProjectSidebarComponent,
     ManageUserDialogComponent,
     InviteUserDialogComponent,
-    AvailableLanguagesListComponent,
   ],
   providers: [
     ShareProjectApiService,

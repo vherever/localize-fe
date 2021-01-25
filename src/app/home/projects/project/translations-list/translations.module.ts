@@ -20,9 +20,7 @@ import { TranslationTagsApiService } from '../../../../core/services/api/transla
 import { TranslationTagsService } from '../../../../core/services/api-interaction/translation-tags.service';
 import { TranslationTagsEffects } from '../../../../store/effects/translation-tags.effects';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { ExportAssetsSettingsDialogComponent } from './export-assets-settings-dialog/export-assets-settings-dialog.component';
-import { ImportExportApiService } from '../../../../core/services/api/import-export-api.service';
-import { ImportExportService } from '../../../../core/services/api-interaction/import-export.service';
+import { ExportAssetsSettingsDialogModule } from './export-assets-settings-dialog/export-assets-settings-dialog.module';
 
 @NgModule({
   imports: [
@@ -36,28 +34,25 @@ import { ImportExportService } from '../../../../core/services/api-interaction/i
     TranslationAddDialogModule,
     RemoveDialogConfirmModule,
     MatProgressSpinnerModule,
+    ExportAssetsSettingsDialogModule,
     EffectsModule.forFeature([TranslationsEffects, TranslationTagsEffects]),
   ],
   declarations: [
     TranslationsComponent,
     TranslationsControlsBarComponent,
     TranslationSettingsDialogComponent,
-    ExportAssetsSettingsDialogComponent,
   ],
   providers: [
     TranslationApiService,
     TranslationsService,
     TranslationTagsApiService,
     TranslationTagsService,
-    ImportExportApiService,
-    ImportExportService,
   ],
   exports: [
     TranslationsComponent,
   ],
   entryComponents: [
     TranslationSettingsDialogComponent,
-    ExportAssetsSettingsDialogComponent
   ],
 })
 export class TranslationsModule {

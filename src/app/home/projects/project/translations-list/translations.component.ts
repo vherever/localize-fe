@@ -234,6 +234,7 @@ export class TranslationsComponent implements OnInit, OnChanges, OnDestroy {
       width: '400px',
       data: {
         projectUuid: this.projectId,
+        projectLocales: this.projectData.translationsLocales,
       },
     });
   }

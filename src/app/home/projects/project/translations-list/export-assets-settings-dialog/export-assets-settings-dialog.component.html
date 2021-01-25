@@ -2,7 +2,18 @@
   <div mat-dialog-title>Export assets</div>
 
   <div mat-dialog-content>
-    <em>type: json</em>
+    <div class="lz_form_control">
+      <div fxLayout>
+        <label for="s_locales">Locales:</label>
+        <input type="text" id="s_locales" autocomplete="off" placeholder="">
+      </div>
+    </div>
+
+    <br>
+    <label for="s_file_formats">File format:</label>
+    <select name="" id="s_file_formats">
+      <option *ngFor="let fileType of fileTypes" value="{{ fileType.value }}">{{ fileType.name }}</option>
+    </select>
   </div>
 
   <div mat-dialog-actions>

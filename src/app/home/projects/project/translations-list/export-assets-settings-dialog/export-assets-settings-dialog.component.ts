@@ -5,6 +5,28 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { FileSaver } from '../../../../../core/helpers/file-saver';
 import { ImportExportService } from '../../../../../core/services/api-interaction/import-export.service';
 
+interface FileType {
+  id: number;
+  name: string;
+  value: string;
+  description: string;
+}
+
+const fileTypes = [
+  {
+    id: 1,
+    name: 'JSON',
+    value: 'json',
+    description: 'key/value pairs',
+  },
+  {
+    id: 2,
+    name: 'PHP',
+    value: 'php',
+    description: 'PHP array',
+  },
+];
+
 @Component({
   selector: 'app-export-assets-settings-dialog',
   templateUrl: 'export-assets-settings-dialog.component.html',
@@ -12,6 +34,7 @@ import { ImportExportService } from '../../../../../core/services/api-interactio
 })
 export class ExportAssetsSettingsDialogComponent implements OnInit {
   public exportAssetsForm: FormGroup;
+  public fileTypes: FileType[] = fileTypes;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) private readonly dialogData: { projectUuid: string },

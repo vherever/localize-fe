@@ -1,6 +1,6 @@
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';

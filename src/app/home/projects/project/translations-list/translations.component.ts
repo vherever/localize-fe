@@ -12,7 +12,7 @@ import {
   ViewContainerRef,
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { MatDialog, MatDialogRef } from '@angular/material';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
 import { Observable, of } from 'rxjs';
 import { Store } from '@ngrx/store';

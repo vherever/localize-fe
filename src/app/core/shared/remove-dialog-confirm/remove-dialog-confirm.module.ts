@@ -2,7 +2,8 @@ import { RemoveDialogConfirmComponent } from './remove-dialog-confirm.component'
 // app imports
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatCheckboxModule, MatDialogModule } from '@angular/material';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatDialogModule } from '@angular/material/dialog';
 import { FormsModule } from '@angular/forms';
 
 @NgModule({

@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatCardModule } from '@angular/material';
+import { MatCardModule } from '@angular/material/card';
 // app imports
 import { TokenExpiredComponent } from './token-expired.component';
 import { TokenExpiredRoutingModule } from './token-expired-routing.module';

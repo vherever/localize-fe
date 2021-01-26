@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 import { combineLatest, Observable, of } from 'rxjs';
 import { Store } from '@ngrx/store';
-import { MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import { MatDialogRef } from '@angular/material/dialog';
 import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
 // app imports

@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatCardModule } from '@angular/material';
+import { MatCardModule } from '@angular/material/card';
 // app imports
 import { EmailSentComponent } from './email-sent.component';
 import { EmailSentRoutingModule } from './email-sent-routing.module';

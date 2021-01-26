@@ -16,7 +16,7 @@ import { ResetUserStateAction, UpdateUserAction } from '../../store/actions/user
   styleUrls: ['account.component.scss'],
 })
 export class AccountComponent implements OnInit, OnDestroy {
-  @ViewChild('nameFieldRef', {static: false}) nameFieldRef: ElementRef;
+  @ViewChild('nameFieldRef') nameFieldRef: ElementRef;
 
   private formCurrentState: any;
   public readonly uploadsEndpoint: string = UPLOADS_ENDPOINT;

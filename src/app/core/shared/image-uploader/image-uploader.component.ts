@@ -14,7 +14,7 @@ import { UpdateUserAvatarAction } from '../../../store/actions/user.actions';
   styleUrls: ['image-uploader.component.scss'],
 })
 export class ImageUploaderComponent extends ImageUploaderHelper implements AfterViewInit, OnDestroy {
-  @ViewChild('fileInput', {static: false}) fileInput: ElementRef;
+  @ViewChild('fileInput') fileInput: ElementRef;
 
   @Input() userId: number;
   @Input() uuid: string;

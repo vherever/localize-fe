@@ -35,7 +35,7 @@ interface DialogData {
 export class ManageUserDialogComponent implements OnInit, AfterViewInit, OnDestroy {
   @Output() removeUserEmit: EventEmitter<any> = new EventEmitter<any>();
 
-  @ViewChild('languagesList', { static: false }) languagesList: ElementRef;
+  @ViewChild('languagesList') languagesList: ElementRef;
 
   onAvailableTranslationsUpdate: EventEmitter<any> = new EventEmitter();
 

@@ -9,10 +9,10 @@ import { FilterPipe } from './filter.pipe';
   providers: [],
 })
 export class FilterPipeModule {
-  static forRoot() {
+  static forRoot(): ModuleWithProviders<FilterPipeModule> {
     return {
-      ngModule: FilterPipeModule,
-      providers: [],
+        ngModule: FilterPipeModule,
+        providers: [],
     };
-  }
+}
 }

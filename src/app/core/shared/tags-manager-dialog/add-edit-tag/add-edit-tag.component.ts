@@ -10,7 +10,7 @@ import { CreateTagAction, RemoveTagAction, UpdateTagAction } from '../../../../s
   templateUrl: 'add-edit-tag.component.html',
 })
 export class AddEditTagComponent implements OnInit, OnDestroy {
-  @ViewChild('colorsPalette', { static: false }) colorsPalette: ElementRef;
+  @ViewChild('colorsPalette') colorsPalette: ElementRef;
   @Output() removeTagClickEmit: EventEmitter<void> = new EventEmitter<void>();
   @Input() projectUuid: string;
   @Input() tagDataToEdit: any;

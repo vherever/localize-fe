@@ -26,7 +26,7 @@ const userRoles: UserRoleInterface[] = [
   styleUrls: ['invite-user-dialog.component.scss'],
 })
 export class InviteUserDialogComponent implements OnInit, AfterViewInit {
-  @ViewChild('languagesList', { static: false }) languagesList: ElementRef;
+  @ViewChild('languagesList') languagesList: ElementRef;
 
   private availableTranslationLocales: any;
   private userRole: string;

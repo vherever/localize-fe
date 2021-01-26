@@ -18,7 +18,7 @@ import { AppStateModel } from '../../../store/models/app-state.model';
 export class CountrySearchAutocompleteComponent implements OnInit, OnDestroy {
   @Input() labelForId: string;
   @Output() languageSelectedEmit: EventEmitter<string> = new EventEmitter<string>();
-  @ViewChild('selectEl', {static: false}) select: NgSelectComponent;
+  @ViewChild('selectEl') select: NgSelectComponent;
 
   private inputLanguageSearch: Subject<string> = new Subject<string>();
   private originalData: any[];

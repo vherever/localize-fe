@@ -1,5 +1,9 @@
 /* You can add global styles to this file, and also import other style files */
-@import "~@ng-select/ng-select/themes/default.theme.css";
-@import 'styles/normalize.min';
-@import 'styles/noto.min';
+//@import "~@ng-select/ng-select/themes/default.theme.css";
+//@import 'styles/normalize.min';
+//@import 'styles/noto.min';
 @import "styles/core";
+
+@import '~tailwindcss/base';
+@import '~tailwindcss/components';
+@import '~tailwindcss/utilities';

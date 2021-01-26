@@ -55,11 +55,11 @@ export class AddLocaleDialogComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {}
 
-  private get localeField(): FormControl {
+  public get localeField(): FormControl {
     return  this.localeAddForm.get('locale') as FormControl;
   }
 
-  private onLanguageSelectedEmit(lang: string): void {
+  public onLanguageSelectedEmit(lang: string): void {
     this.store.dispatch(new ClearLocalesStateAction());
     if (!lang) {
       this.localeAddForm.setErrors({ required: true });

@@ -10,7 +10,7 @@ import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { MAT_RIPPLE_GLOBAL_OPTIONS } from '@angular/material/core';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { BrowserCacheModule, MemoryCacheService } from '@ngx-cache/platform-browser';
+import { BrowserCacheModule } from '@ngx-cache/platform-browser';
 // app imports
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
@@ -48,12 +48,6 @@ import { TranslationTagsReducer } from './store/reducers/translation-tags.reduce
     AppRouteRootModule,
     NgxPubSubModule,
     CacheModule.forRoot(),
-    BrowserCacheModule.forRoot([
-      {
-        provide: CACHE,
-        useClass: MemoryCacheService, // or, LocalStorageCacheService
-      },
-    ]),
     JwtModule.forRoot({
       config: {
         tokenGetter: null,

@@ -29,7 +29,7 @@ export class ProjectsComponent extends SortingHelper implements OnInit, OnDestro
   private currentSortKey: string;
 
   private projectsOriginal$: Observable<ProjectModel[]>;
-  private projects$: Observable<ProjectModel[]>;
+  public projects$: Observable<ProjectModel[]>;
 
   private projectItemsCountAll$: Observable<number>;
   private projectItemsCountOnlyMy$: Observable<number>;

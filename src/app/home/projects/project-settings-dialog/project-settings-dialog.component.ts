@@ -14,8 +14,8 @@ import { UpdateProjectAction } from '../../../store/actions/projects.actions';
   ],
 })
 export class ProjectSettingsDialogComponent implements OnInit {
-  private settingsForm: FormGroup;
-  private locales: any;
+  public settingsForm: FormGroup;
+  public locales: any;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public projectData: ProjectModel,
@@ -36,7 +36,7 @@ export class ProjectSettingsDialogComponent implements OnInit {
     return this.settingsForm.get('title') as FormControl;
   }
 
-  private onFormSave(): void {
+  public onFormSave(): void {
     const data = {
       title: this.settingsForm.value.title,
       description: this.settingsForm.value.description,

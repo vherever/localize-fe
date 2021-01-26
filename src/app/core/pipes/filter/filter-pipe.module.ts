@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { ModuleWithProviders, NgModule } from '@angular/core';
 // app imports
 import { FilterPipe } from './filter.pipe';
 

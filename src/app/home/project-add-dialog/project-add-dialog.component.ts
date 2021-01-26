@@ -38,7 +38,7 @@ export class ProjectAddDialogComponent implements OnInit {
     this.store.dispatch(new AddProjectAction(this.projectAddForm.value));
   }
 
-  private onLanguageSelectedEmit(lang: string): void {
+  public onLanguageSelectedEmit(lang: string): void {
     if (!lang) {
       this.projectAddForm.get('defaultLocale').setErrors({ required: true });
     }

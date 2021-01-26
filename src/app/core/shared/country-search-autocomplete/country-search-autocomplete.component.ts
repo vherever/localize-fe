@@ -70,7 +70,7 @@ export class CountrySearchAutocompleteComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {}
 
-  private onLanguageSearch(event): void {
+  public onLanguageSearch(event): void {
     if (event.term !== null) {
       this.inputLanguageSearch.next(event);
       this.selectDataLoading = true;
@@ -80,15 +80,15 @@ export class CountrySearchAutocompleteComponent implements OnInit, OnDestroy {
     }
   }
 
-  private onCloseSearchBox(): void {
+  public onCloseSearchBox(): void {
     this.dropdownIsOpen = false;
   }
 
-  private onFocusSearchBar(e): void {
+  public onFocusSearchBar(e): void {
     this.dropdownIsOpen = true;
   }
 
-  private onChangeSearchBar(value: LocaleModelFormatted): void {
+  public onChangeSearchBar(value: LocaleModelFormatted): void {
     if (value) {
       this.languageSelectedEmit.emit(value.keyCode);
       this.dropdownIsOpen = false;
@@ -98,7 +98,7 @@ export class CountrySearchAutocompleteComponent implements OnInit, OnDestroy {
     this.select.blur();
   }
 
-  private onClearSearchBar(): void {
+  public onClearSearchBar(): void {
     this.dropdownIsOpen = false;
     this.languagesDataTransformed = this.originalData;
   }

@@ -11,27 +11,27 @@ const routes: Routes = [
   },
   {
     path: 'login',
-    loadChildren: './login/login.module#LoginModule',
+    loadChildren: () => import('./login/login.module').then(m => m.LoginModule),
   },
   {
     path: 'register',
-    loadChildren: './register/register.module#RegisterModule',
+    loadChildren: () => import('./register/register.module').then(m => m.RegisterModule),
   },
   {
     path: 'forgot-password',
-    loadChildren: './forgot-password/forgot-password.module#ForgotPasswordModule',
+    loadChildren: () => import('./forgot-password/forgot-password.module').then(m => m.ForgotPasswordModule),
   },
   {
     path: 'email-sent',
-    loadChildren: './email-sent/email-sent.module#EmailSentModule',
+    loadChildren: () => import('./email-sent/email-sent.module').then(m => m.EmailSentModule),
   },
   {
     path: 'reset-password',
-    loadChildren: './reset-password/reset-password.module#ResetPasswordModule',
+    loadChildren: () => import('./reset-password/reset-password.module').then(m => m.ResetPasswordModule),
   },
   {
     path: 'token-expired',
-    loadChildren: './token-expired/token-expired.module#TokenExpiredModule',
+    loadChildren: () => import('./token-expired/token-expired.module').then(m => m.TokenExpiredModule),
   },
   {
     path: '**',

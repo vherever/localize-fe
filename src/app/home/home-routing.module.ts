@@ -14,15 +14,15 @@ const routes: Routes = [
       },
       {
         path: 'dashboard',
-        loadChildren: 'app/home/dashboard/dashboard.module#DashboardModule',
+        loadChildren: () => import('app/home/dashboard/dashboard.module').then(m => m.DashboardModule),
       },
       {
         path: 'account',
-        loadChildren: 'app/home/account/account.module#AccountModule',
+        loadChildren: () => import('app/home/account/account.module').then(m => m.AccountModule),
       },
       {
         path: 'project/:id',
-        loadChildren: 'app/home/projects/project/project.module#ProjectModule',
+        loadChildren: () => import('app/home/projects/project/project.module').then(m => m.ProjectModule),
       },
     ],
   },

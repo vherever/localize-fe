@@ -11,16 +11,16 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        loadChildren: 'app/home/home.module#HomeModule',
+        loadChildren: () => import('app/home/home.module').then(m => m.HomeModule),
         canActivate: [AuthGuardService],
       },
       {
         path: 'auth',
-        loadChildren: 'app/auth/auth.module#AuthModule',
+        loadChildren: () => import('app/auth/auth.module').then(m => m.AuthModule),
       },
       {
         path: '404',
-        loadChildren: 'app/error404/error404.module#Error404Module',
+        loadChildren: () => import('app/error404/error404.module').then(m => m.Error404Module),
       },
       {
         path: '**',

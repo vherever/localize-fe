@@ -1,10 +1,8 @@
 <div mat-dialog-content>
   <h4>Do you really want to delete this tag? It will be removed from all translations.</h4>
 </div>
-<div mat-dialog-actions class="flex-space-between">
-  <div></div>
-  <div>
-    <button mat-dialog-close>Close</button>
-    <button type="submit" (click)="removeTag()">Okay</button>
-  </div>
+
+<div class="flex flex-row justify-end mt-2">
+  <button type="button" mat-dialog-close class="lc-btn-standard">Cancel</button>
+  <button type="submit" (click)="removeTag()" class="lc-btn-standard ml-2">Okay</button>
 </div>

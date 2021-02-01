@@ -1,23 +1,20 @@
 <form [formGroup]="exportAssetsForm">
-  <div mat-dialog-title>Export assets</div>
+  <h1 class="mb-2">Export assets</h1>
 
   <div mat-dialog-content>
-    <div class="lz_form_control">
-      <div fxLayout>
-        <label for="s_locales">Locales:</label>
-        <input type="text" id="s_locales" autocomplete="off" placeholder="">
-      </div>
+    <div class="lc-form-control">
+      <label for="s_locales" class="lc-form-control-label">Locales</label>
+      <input type="text" id="s_locales" class="lc-input" autocomplete="off" placeholder="">
     </div>
-
-    <br>
-    <label for="s_file_formats">File format:</label>
+    
+    <label for="s_file_formats">File format</label>
     <select name="" id="s_file_formats">
       <option *ngFor="let fileType of fileTypes" value="{{ fileType.value }}">{{ fileType.name }}</option>
     </select>
   </div>
 
-  <div mat-dialog-actions>
-    <button mat-dialog-close>Close</button>
-    <button type="submit" (click)="onExportAssetsClick()">Download</button>
+  <div class="flex flex-row justify-end">
+    <button type="button" mat-dialog-close class="lc-btn-standard">Close</button>
+    <button type="submit" (click)="onExportAssetsClick()" class="lc-btn-standard ml-2">Download</button>
   </div>
 </form>

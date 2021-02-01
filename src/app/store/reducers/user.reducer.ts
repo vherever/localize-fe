@@ -24,6 +24,7 @@ export function UserReducer(state: UserState = initialState, action: UserAction)
     case UserActionTypes.LOAD_USER_SUCCESS:
       return {
         ...state,
+        avatar: action.payload.avatar,
         user: action.payload,
         loading: false,
         updated: false,

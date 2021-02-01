@@ -24,10 +24,10 @@
         </a>
       </ng-container>
     </div>
-    <button style="margin-top: 5px"
+    <button class="lc-btn-standard my-2"
             *ngIf="(projectData$ | async).role === 'ADMINISTRATOR'"
-            (click)="addLocale()"
-    >Add locale</button>
+            (click)="addLocale()">Add locale
+    </button>
 
     <div class="lz_users_list" *ngIf="(this.projectData$ | async)">
       <div class="lz_section_title">Project team</div>
@@ -72,13 +72,13 @@
          *ngIf="(this.projectData$ | async) && (this.projectData$ | async).role === 'ADMINISTRATOR'">
       <br>
       <div class="lz_section_title">Invite user to project</div>
-      <button style="margin-top: 10px" (click)="onInviteUserClick()">Invite user</button>
+      <button (click)="onInviteUserClick()" class="lc-btn-standard my-2">Invite user</button>
     </div>
 
     <br>
     <div>
       <div class="lz_section_title">Tags Manager</div>
-      <button style="margin-top: 10px" (click)="manageTagsClick()">Manage tags</button>
+      <button (click)="manageTagsClick()" class="lc-btn-standard my-2">Manage tags</button>
     </div>
   </div>
 </ng-container>

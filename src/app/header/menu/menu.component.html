@@ -1,33 +1,57 @@
-<button class="lz_header_avatar"
-        #menuTrigger
-        (menuOpened)="menuTrigger.disabled = true"
-        (menuClosed)="menuTrigger.disabled = false"
-        [matMenuTriggerFor]="menu">
-  <img *ngIf="avatar" src="{{ uploadsEndpoint }}/{{ avatar }}" alt="">
-</button>
+<ng-container *ngLet="userData$ | async as userData">
+  <ng-container *ngLet="avatar$ | async as avatar">
+<!--    <button class="lz_header_avatar"-->
+<!--            #menuTrigger-->
+<!--            (menuOpened)="menuTrigger.disabled = true"-->
+<!--            (menuClosed)="menuTrigger.disabled = false"-->
+<!--            [matMenuTriggerFor]="menu">-->
+<!--      <img *ngIf="avatar" src="{{ uploadsEndpoint }}/{{ avatar }}" alt="">-->
+<!--    </button>-->
 
-<mat-menu #menu="matMenu" [overlapTrigger]="false">
-  <div class="lz_menu_category_top" (click)="$event.stopPropagation();" fxLayout>
-    <div class="lz_menu_avatar_wrapper">
-      <img *ngIf="avatar" src="{{ uploadsEndpoint }}/{{ avatar }}" alt="">
+<!--    <mat-menu #menu="matMenu" [overlapTrigger]="false">-->
+<!--      <div class="lz_menu_category_top" (click)="$event.stopPropagation();" fxLayout>-->
+<!--        <div class="lz_menu_avatar_wrapper">-->
+<!--          <img *ngIf="avatar" src="{{ uploadsEndpoint }}/{{ avatar }}" alt="">-->
+<!--        </div>-->
+<!--        <div class="lz_menu_user_name">{{ userData.name }}</div>-->
+<!--      </div>-->
+
+<!--      <a mat-menu-item routerLink="/account">-->
+<!--        <span>Account settings</span>-->
+<!--      </a>-->
+<!--      <div (click)="$event.stopPropagation();" class="lz_menu_category" fxLayout fxLayoutAlign="space-between center">-->
+<!--        <div>Dark mode</div>-->
+<!--        <div>-->
+<!--          <mat-slide-toggle-->
+<!--            [color]="'accent'">-->
+<!--          </mat-slide-toggle>-->
+<!--        </div>-->
+<!--      </div>-->
+
+<!--      <a mat-menu-item (click)="onLogOutClick()">-->
+<!--        <span>Log Out</span>-->
+<!--      </a>-->
+<!--    </mat-menu>-->
+
+    <div class="ml-3 relative">
+      <div>
+        <button (click)="openMenuClick()"
+                appClickOutside (clickOutsideEmitter)="onClickedOutside()"
+                class="transition duration-100 ease-in-out h-8 w-8 rounded-full
+                    bg-gray-800 flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
+                id="user-menu" aria-haspopup="true">
+          <span class="sr-only">Open user menu</span>
+          <img *ngIf="avatar" class="h-8 w-8 rounded-full" src="{{ uploadsEndpoint }}/{{ avatar }}" alt="Avatar">
+        </button>
+      </div>
+
+      <div *ngIf="menuOpened"
+           class="animate-growDown z-10
+               origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5"
+           role="menu" aria-orientation="vertical" aria-labelledby="user-menu">
+        <a routerLink="/account" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Your Profile</a>
+        <a href="javascript:;" (click)="onLogOutClick()" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Sign out</a>
+      </div>
     </div>
-    <div class="lz_menu_user_name">{{ userData.name }}</div>
-  </div>
-
-  <a mat-menu-item routerLink="/account">
-    <span>Account settings</span>
-  </a>
-
-  <div (click)="$event.stopPropagation();" class="lz_menu_category" fxLayout fxLayoutAlign="space-between center">
-    <div>Dark mode</div>
-    <div>
-      <mat-slide-toggle
-        [color]="'accent'">
-      </mat-slide-toggle>
-    </div>
-  </div>
-
-  <a mat-menu-item (click)="onLogOutClick()">
-    <span>Log Out</span>
-  </a>
-</mat-menu>
+  </ng-container>
+</ng-container>

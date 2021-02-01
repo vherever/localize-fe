@@ -10,15 +10,18 @@
                                             [selectedTagColor]="tagData.color"
     ></app-tags-manager-dialog-colors-palette>
   </div>
-  <div mat-dialog-actions class="flex-space-between">
-    <button *ngIf="tagDataToEdit" (click)="onRemoveTagClick()" class="lz_button_warn">Remove</button>
-    <div *ngIf="!tagDataToEdit"></div>
-    <div>
-      <button mat-dialog-close>Close</button>
-      <button *ngIf="!tagDataToEdit"
-              (click)="onSaveNewTagClick()">Add</button>
-      <button *ngIf="tagDataToEdit"
-              (click)="onUpdateTagClick()">Update</button>
+
+<!--  <div *ngIf="!tagDataToEdit"></div>-->
+  <div class="flex flex-row justify-between">
+    <button *ngIf="tagDataToEdit" (click)="onRemoveTagClick()" class="lc-btn-standard">Remove</button>
+    <div class="flex flex-row justify-end">
+      <button type="button" mat-dialog-close class="lc-btn-standard">Cancel</button>
+      <button type="submit" *ngIf="!tagDataToEdit" class="lc-btn-standard ml-2"
+              (click)="onSaveNewTagClick()">Add
+      </button>
+      <button type="submit" *ngIf="tagDataToEdit" class="lc-btn-standard ml-2"
+              (click)="onUpdateTagClick()">Update
+      </button>
     </div>
   </div>
 </form>

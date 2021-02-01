@@ -1,5 +1,5 @@
 <form [formGroup]="inviteUserForm" (submit)="onUserInviteClick()">
-  <h1 mat-dialog-title>Invite user to project, <b>{{ data.projectTitle }}</b></h1>
+  <h1 class="mb-2">Invite user to project, <b>{{ data.projectTitle }}</b></h1>
 
   <div class="lz_invite_user_information_wrapper">
     <div class="lz_user_avatar"></div>
@@ -27,8 +27,8 @@
   </div>
 
   <br>
-  <div class="lz_dialog_controls">
-    <button class="lz_button_light" mat-dialog-close style="margin-right: 7px">Cancel</button>
-    <button type="submit" [disabled]="inviteUserForm.invalid">Invite user</button>
+  <div class="flex flex-row justify-end">
+    <button type="button" mat-dialog-close class="lc-btn-standard">Cancel</button>
+    <button type="submit" [disabled]="inviteUserForm.invalid" class="lc-btn-standard ml-2">Invite user</button>
   </div>
 </form>

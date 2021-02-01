@@ -3,6 +3,39 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { ProjectsFilterSelectModel } from './projects-filter-select.model';
 import { UserConfigService } from '../../../../core/services/user-config/user-config.service';
 
+const menuData = [
+  {
+    id: 0,
+    isActive: false,
+    text: 'Last updated',
+    sortKey: 'updated_desc',
+  },
+  {
+    id: 1,
+    isActive: false,
+    text: 'Last created',
+    sortKey: 'created_desc',
+  },
+  {
+    id: 2,
+    isActive: false,
+    text: 'Name',
+    sortKey: 'title_asc',
+  },
+  {
+    id: 3,
+    isActive: false,
+    text: 'Oldest updated',
+    sortKey: 'updated_asc',
+  },
+  {
+    id: 4,
+    isActive: false,
+    text: 'Oldest created',
+    sortKey: 'created_asc',
+  },
+];
+
 @Component({
   selector: 'app-projects-filter-select',
   templateUrl: 'projects-filter-select.component.html',
@@ -22,10 +55,13 @@ export class AppProjectsFilterSelectComponent implements OnInit {
     'updated_desc',
   ];
 
-  activeSortKey: string;
+  public activeSortKey: string;
 
-  selectedId: number;
-  selectData: ProjectsFilterSelectModel[];
+  public selectedId: number;
+  public selectedSortKey: string;
+  public selectedSortName: string;
+  public selectData: ProjectsFilterSelectModel[];
+  public isMenuOpened: boolean;
 
   constructor(
     private userConfigService: UserConfigService,
@@ -33,38 +69,7 @@ export class AppProjectsFilterSelectComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.selectData = [
-      {
-        id: 0,
-        isActive: false,
-        text: 'Last updated',
-        sortKey: 'updated_desc',
-      },
-      {
-        id: 1,
-        isActive: false,
-        text: 'Last created',
-        sortKey: 'created_desc',
-      },
-      {
-        id: 2,
-        isActive: false,
-        text: 'Name',
-        sortKey: 'title_asc',
-      },
-      {
-        id: 3,
-        isActive: false,
-        text: 'Oldest updated',
-        sortKey: 'updated_asc',
-      },
-      {
-        id: 4,
-        isActive: false,
-        text: 'Oldest created',
-        sortKey: 'created_asc',
-      },
-    ];
+    this.selectData = menuData;
 
     this.activeSortKey = this.userConfigService.getItem('projectsActiveSortKey');
     if (this.activeSortKey && this.isConfigCorrect(this.activeSortKey)) {
@@ -79,10 +84,20 @@ export class AppProjectsFilterSelectComponent implements OnInit {
   }
 
   onSortChange(sortKey: string): void {
+    this.selectedSortKey = sortKey;
+    this.selectedSortName = this.selectData.find((item) => item.sortKey === sortKey).text;
     if (sortKey) {
       this.userConfigService.setItem('projectsActiveSortKey', sortKey);
     }
     this.sortKeySelected.emit(sortKey);
+  }
+
+  public openMenuClick(): void {
+    this.isMenuOpened = !this.isMenuOpened;
+  }
+
+  public onClickedOutside(): void {
+    this.isMenuOpened = false;
   }
 
   private isConfigCorrect(key: string): boolean {

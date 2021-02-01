@@ -1,38 +1,36 @@
 <form [formGroup]="settingsForm" (submit)="onFormSave()">
-  <h1 mat-dialog-title>Project settings</h1>
+  <h1 class="mb-2">Project settings</h1>
 
-  <div class="lz_form_control">
-    <div fxLayout>
-      <label for="s_project_name">Project name:</label>
-      <input type="text" id="s_project_name" formControlName="title" autocomplete="off" placeholder="e.g. My website">
-    </div>
-    <div class="lz_error_message" *ngIf="(titleField.dirty || titleField.touched) && titleField.hasError('required')">
+  <div class="lc-form-control"
+       [ngClass]="{'not-valid': (titleField.dirty || titleField.touched) && titleField.hasError('required')}">
+    <label for="s_project_name" class="lc-form-control-label"><span class="mr-1">*</span>Project name</label>
+    <input type="text" id="s_project_name" formControlName="title" class="lc-input" autocomplete="off"
+           placeholder="e.g. My website">
+    <div class="lc-form-control-error-message"
+         *ngIf="(titleField.dirty || titleField.touched) && titleField.hasError('required')">
       Project name is required.
     </div>
   </div>
 
-  <div class="lz_form_control">
-    <div fxLayout>
-      <label for="s_project_description">Description:</label>
-      <input type="text" id="s_project_description" formControlName="description" autocomplete="off">
-    </div>
+  <div class="lc-form-control">
+    <label for="s_project_description" class="lc-form-control-label">Description</label>
+    <input type="text" id="s_project_description" formControlName="description" class="lc-input" autocomplete="off">
   </div>
 
-  <div class="lz_form_control">
-    <div fxLayout>
-      <label for="default_locale">Starting locale:</label>
-      <ng-select appearance="outline"
-                 labelForId="default_locale"
-                 [searchable]="false"
-                 [clearable]="false"
-                 [dropdownPosition]="'top'"
-                 formControlName="defaultLocale">
-        <ng-option *ngFor="let locale of locales" [value]="locale">{{ locale }}</ng-option>
-      </ng-select>
-    </div>
+  <div class="lc-form-control">
+    <label for="default_locale" class="lc-form-control-label">Starting locale</label>
+    <ng-select appearance="outline"
+               labelForId="default_locale"
+               [searchable]="false"
+               [clearable]="false"
+               [dropdownPosition]="'top'"
+               formControlName="defaultLocale">
+      <ng-option *ngFor="let locale of locales" [value]="locale">{{ locale }}</ng-option>
+    </ng-select>
   </div>
 
-  <br><br>
-  <button [disabled]="!settingsForm.valid" style="margin-left: 10px">Save</button>
-  <button class="lz_button_light" mat-dialog-close>Cancel</button>
+  <div class="flex flex-row justify-end">
+    <button type="button" mat-dialog-close class="lc-btn-standard">Cancel</button>
+    <button type="submit" [disabled]="!settingsForm.valid" class="lc-btn-standard ml-2">Save</button>
+  </div>
 </form>

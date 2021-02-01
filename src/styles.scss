@@ -1,9 +1,49 @@
 /* You can add global styles to this file, and also import other style files */
-//@import "~@ng-select/ng-select/themes/default.theme.css";
+@import "~@ng-select/ng-select/themes/default.theme.css";
 //@import 'styles/normalize.min';
 //@import 'styles/noto.min';
 @import "styles/core";
 
 @import '~tailwindcss/base';
-@import '~tailwindcss/components';
+//@import '~tailwindcss/components';
 @import '~tailwindcss/utilities';
+
+h1 {
+  @apply text-lg;
+}
+
+.lc-btn-standard {
+  @apply inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-indigo-500;
+}
+
+.lc-btn-standard:disabled {
+  @apply disabled:opacity-50;
+}
+
+.lc-input {
+  @apply inline-flex focus:border-indigo-500 justify-center w-full rounded-md border border-gray-300 shadow-sm px-2 py-2 bg-white text-sm text-gray-700 focus:outline-none focus:ring-1 focus:ring-indigo-500 placeholder-gray-400 font-normal;
+}
+
+.lc-select {
+  @apply inline-flex focus:border-indigo-500 justify-center w-full rounded-md border border-gray-300 shadow-sm px-2 py-2 bg-white text-sm text-gray-700 focus:outline-none focus:ring-1 focus:ring-indigo-500 placeholder-gray-400 font-normal;
+}
+
+.lc-form-control {
+  @apply relative mb-5;
+}
+
+.lc-form-control-label {
+  @apply block text-xs font-medium text-gray-700 mb-1;
+}
+
+.lc-form-control-error-message {
+  @apply absolute flex items-center font-medium tracking-wide text-red-500 text-xs mt-1 ml-0;
+}
+
+.not-valid .lc-input {
+  @apply text-red-500 border-red-500 focus:ring-red-500;
+}
+
+//.lc-form-control {
+//  @apply
+//}

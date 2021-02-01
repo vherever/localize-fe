@@ -19,7 +19,7 @@ export class ProjectsListsSwitcherComponent implements OnInit {
     'shared',
   ];
 
-  activeTab: string;
+  public activeTab: string;
 
   constructor(
     private userConfigService: UserConfigService,
@@ -39,9 +39,11 @@ export class ProjectsListsSwitcherComponent implements OnInit {
       this.onProjectsListToggle('all');
       this.activeTab = 'all';
     }
+    console.log('this.activeTab', this.activeTab);
   }
 
   onProjectsListToggle(value: string): void {
+    this.activeTab = value;
     this.userConfigService.setItem('projectsActiveTab', value);
     this.projectsListToggleEvent.emit(value);
   }

@@ -1,21 +1,21 @@
 <form [formGroup]="localeAddForm" (submit)="onFormSave()">
-  <h1 mat-dialog-title>Add new locale to <span style="color: #2980b9; font-weight: bold">{{ dialogData.projectTitle }}</span></h1>
+  <h1 class="mb-2">Add new locale to <span style="color: #2980b9; font-weight: bold">{{ dialogData.projectTitle }}</span></h1>
 
-  <div class="lz_form_control">
-    <div fxLayout>
-      <label for="projectLocale">Locale:</label>
-      <app-country-search-autocomplete (languageSelectedEmit)="onLanguageSelectedEmit($event)"
-                                       labelForId="projectLocale"
-      ></app-country-search-autocomplete>
-    </div>
+  <div class="lc-form-control">
+    <label for="projectLocale" class="lc-form-control-label">Locale</label>
+    <app-country-search-autocomplete (languageSelectedEmit)="onLanguageSelectedEmit($event)"
+                                     labelForId="projectLocale"
+    ></app-country-search-autocomplete>
 
-    <div class="lz_error_message" *ngIf="localeField.hasError('required')">
+    <div class="lc-form-control-error-message" *ngIf="localeField.hasError('required')">
       Locale is required.
     </div>
 
     <div class="lz_error_message" *ngIf="(localeAddError$ | async)">{{ (localeAddError$ | async).message }}</div>
   </div>
 
-  <button [disabled]="!localeAddForm.valid" style="margin-left: 10px">Save</button>
-  <button class="lz_button_light" mat-dialog-close>Cancel</button>
+  <div class="flex flex-row justify-end">
+    <button type="button" class="lc-btn-standard" mat-dialog-close>Cancel</button>
+    <button type="submit" class="lc-btn-standard ml-2" [disabled]="!localeAddForm.valid">Save</button>
+  </div>
 </form>

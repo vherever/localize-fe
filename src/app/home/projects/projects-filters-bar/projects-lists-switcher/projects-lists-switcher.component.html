@@ -1,9 +1,27 @@
-<mat-button-toggle-group name="fontStyle" aria-label="Font Style"
-                         (change)="onProjectsListToggle($event.value)"
-                         value="{{ activeTab }}">
-  <mat-button-toggle value="all">All<span class="lz_pill_counter">{{ projectsAllCount }}</span></mat-button-toggle>
-  <mat-button-toggle value="yours">Yours<span class="lz_pill_counter">{{ yourProjectsCount }}</span>
-  </mat-button-toggle>
-  <mat-button-toggle value="shared">Shared<span class="lz_pill_counter">{{ sharedProjectsCount }}</span>
-  </mat-button-toggle>
-</mat-button-toggle-group>
+<div class="py-3 text-left">
+  <button type="button" (click)="onProjectsListToggle('all')" [ngClass]="{'bg-indigo-50 font-medium': activeTab === 'all'}"
+          class="ml-2 inline-block rounded-lg font-normal text-sm leading-none py-2 px-3 focus:outline-none text-gray-500 hover:text-indigo-600 focus:text-indigo-600">
+    All {{ projectsAllCount }}
+  </button>
+
+  <button type="button" (click)="onProjectsListToggle('yours')" [ngClass]="{'bg-indigo-50 font-medium': activeTab === 'yours'}"
+          class="ml-2 inline-block rounded-lg font-normal text-sm leading-none py-2 px-3 focus:outline-none text-gray-500 hover:text-indigo-600 focus:text-indigo-600">
+    Yours {{ yourProjectsCount }}
+  </button>
+
+  <button type="button" (click)="onProjectsListToggle('shared')" [ngClass]="{'bg-indigo-50 font-medium': activeTab === 'shared'}"
+          class="ml-2 inline-block rounded-lg font-normal text-sm leading-none py-2 px-3 focus:outline-none text-gray-500 hover:text-indigo-600 focus:text-indigo-600">
+    Shared {{ sharedProjectsCount }}
+  </button>
+</div>
+
+
+<!--<mat-button-toggle-group name="fontStyle" aria-label="Font Style"-->
+<!--                         (change)="onProjectsListToggle($event.value)"-->
+<!--                         value="{{ activeTab }}">-->
+<!--  <mat-button-toggle value="all">All<span class="lz_pill_counter">{{ projectsAllCount }}</span></mat-button-toggle>-->
+<!--  <mat-button-toggle value="yours">Yours<span class="lz_pill_counter">{{ yourProjectsCount }}</span>-->
+<!--  </mat-button-toggle>-->
+<!--  <mat-button-toggle value="shared">Shared<span class="lz_pill_counter">{{ sharedProjectsCount }}</span>-->
+<!--  </mat-button-toggle>-->
+<!--</mat-button-toggle-group>-->

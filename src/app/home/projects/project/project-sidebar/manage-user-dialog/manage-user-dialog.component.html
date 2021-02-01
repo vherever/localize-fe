@@ -1,5 +1,5 @@
 <form [formGroup]="managePermissionsForm" (submit)="onUpdatePermissionsClick()">
-  <h1 mat-dialog-title>Manage project permission, <b>{{ data.projectTitle }}</b></h1>
+  <h1 class="mb-2">Manage project permission, <b>{{ data.projectTitle }}</b></h1>
 
   <div class="lz_user_information_wrapper">
     <div class="lz_user_avatar">
@@ -19,13 +19,13 @@
   ></app-available-languages-list>
 
   <br><br>
-  <div class="lz_dialog_controls" fxLayout fxLayoutAlign="space-between center">
-    <div>
-      <button type="button" (click)="onRemoveUserFromProjectClick()">Remove from project</button>
-    </div>
-    <div>
-      <button class="lz_button_light" mat-dialog-close style="margin-right: 7px">Cancel</button>
-      <button type="button" (click)="onUpdatePermissionsClick()" [disabled]="!managePermissionsForm.valid">Save</button>
+  <div class="flex flex-row justify-between">
+    <button type="button" (click)="onRemoveUserFromProjectClick()" class="lc-btn-standard">Remove from project</button>
+    <div class="flex flex-row justify-end">
+      <button type="button" mat-dialog-close class="lc-btn-standard">Cancel</button>
+      <button type="submit" (click)="onUpdatePermissionsClick()" [disabled]="!managePermissionsForm.valid"
+              class="lc-btn-standard ml-2">Save
+      </button>
     </div>
   </div>
 </form>

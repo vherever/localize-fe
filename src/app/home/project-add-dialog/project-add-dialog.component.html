@@ -1,34 +1,35 @@
 <form [formGroup]="projectAddForm" (submit)="onProjectAddFormSave()">
-  <h1 mat-dialog-title>Create new project</h1>
-  <div class="lz_form_control">
-    <div fxLayout>
-      <label for="s_project_name">Project name:</label>
-      <input type="text" id="s_project_name" formControlName="title" autocomplete="off" placeholder="e.g. My website">
-    </div>
-    <div class="lz_error_message" *ngIf="(titleField.dirty || titleField.touched) && titleField.hasError('required')">
+  <h1 class="mb-2">Create new project</h1>
+
+  <div class="lc-form-control"
+       [ngClass]="{'not-valid': (titleField.dirty || titleField.touched) && titleField.hasError('required')}">
+    <label for="s_project_name" class="lc-form-control-label"><span class="mr-1">*</span>First name</label>
+    <input type="text" id="s_project_name" formControlName="title" class="lc-input" placeholder="e.g. My project"
+           autocomplete="off">
+    <div class="lc-form-control-error-message"
+         *ngIf="(titleField.dirty || titleField.touched) && titleField.hasError('required')">
       Project name is required.
     </div>
   </div>
 
-  <div class="lz_form_control">
-    <div fxLayout>
-      <label for="s_project_description">Description:</label>
-      <input type="text" id="s_project_description" formControlName="description" autocomplete="off">
+  <div class="lc-form-control">
+    <label for="s_project_description" class="lc-form-control-label">Description</label>
+    <input type="text" id="s_project_description" formControlName="description" class="lc-input"
+           placeholder="e.g. My project details" autocomplete="off">
+  </div>
+
+  <div class="lc-form-control">
+    <label for="projectLocale" class="lc-form-control-label"><span class="mr-1">*</span>Starting locale</label>
+    <app-country-search-autocomplete (languageSelectedEmit)="onLanguageSelectedEmit($event)"
+                                     labelForId="projectLocale"
+    ></app-country-search-autocomplete>
+    <div class="lc-form-control-error-message" *ngIf="defaultLocaleField.hasError('required')">
+      Starting locale is required.
     </div>
   </div>
 
-  <div class="lz_form_control">
-    <div fxLayout>
-      <label for="projectLocale">Starting locale:</label>
-      <app-country-search-autocomplete (languageSelectedEmit)="onLanguageSelectedEmit($event)"
-                                       labelForId="projectLocale"
-      ></app-country-search-autocomplete>
-    </div>
-    <div class="lz_error_message" *ngIf="defaultLocaleField.hasError('required')">
-      Default locale is required.
-    </div>
+  <div class="flex flex-row justify-end">
+    <button type="button" class="lc-btn-standard" mat-dialog-close>Cancel</button>
+    <button type="submit" [disabled]="!projectAddForm.valid" class="lc-btn-standard ml-2">Save</button>
   </div>
-
-  <button [disabled]="!projectAddForm.valid" style="margin-left: 10px">Save</button>
-  <button class="lz_button_light" mat-dialog-close>Cancel</button>
 </form>

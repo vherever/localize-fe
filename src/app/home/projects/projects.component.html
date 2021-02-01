@@ -1,8 +1,11 @@
-<div class="container">
+<div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
   <div class="lz-page-title-holder" fxLayout fxLayoutAlign="space-between center">
     <h1 class="lz-page-title">Projects</h1>
-    <div class="lz-page-title-controls">
-      <button (click)="onProjectAddClick()">New project</button>
+    <div class="py-3 text-right">
+      <button type="button" (click)="onProjectAddClick()"
+              class="lc-btn-standard">
+        New Project
+      </button>
     </div>
   </div>
 
@@ -29,22 +32,22 @@
               <div class="lz_p_description">{{ project.description }}</div>
             </div>
             <div class="lz_list_item_controls" fxLayout fxLayoutAlign="space-around start">
-            <a href="javascript:;" class="lz_download">
-              <svg class="icon lz_download_svg">
-                <use xlink:href="#download"></use>
-              </svg>
-            </a>
-            <a href="javascript:;" class="lz_settings" *ngIf="project.role === 'ADMINISTRATOR'">
-              <svg class="lz_settings_svg">
-                <use xlink:href="#settings"></use>
-              </svg>
-            </a>
-            <a href="javascript:;" class="lz_remove" *ngIf="project.role === 'ADMINISTRATOR'">
-              <svg class="lz_remove_svg">
-                <use xlink:href="#recycle_bin"></use>
-              </svg>
-            </a>
-          </div>
+              <a href="javascript:;" class="lz_download">
+                <svg class="icon lz_download_svg">
+                  <use xlink:href="#download"></use>
+                </svg>
+              </a>
+              <a href="javascript:;" class="lz_settings" *ngIf="project.role === 'ADMINISTRATOR'">
+                <svg class="lz_settings_svg">
+                  <use xlink:href="#settings"></use>
+                </svg>
+              </a>
+              <a href="javascript:;" class="lz_remove" *ngIf="project.role === 'ADMINISTRATOR'">
+                <svg class="lz_remove_svg">
+                  <use xlink:href="#recycle_bin"></use>
+                </svg>
+              </a>
+            </div>
           </div>
 
           <div fxLayout fxLayoutAlign="space-between stretch">

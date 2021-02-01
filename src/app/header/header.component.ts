@@ -7,6 +7,7 @@ import { Store } from '@ngrx/store';
 import { AuthService } from '../core/services/api/auth.service';
 import { UserModel } from '../core/models/user.model';
 import { AppStateModel } from '../store/models/app-state.model';
+import { UPLOADS_ENDPOINT } from '../core/app-constants';
 
 @Component({
   selector: 'app-header',
@@ -15,8 +16,9 @@ import { AppStateModel } from '../store/models/app-state.model';
 })
 export class HeaderComponent implements OnInit, OnDestroy {
   public isAuthenticated: boolean;
-
+  public readonly uploadsEndpoint: string = UPLOADS_ENDPOINT;
   public userData$: Observable<UserModel>;
+  public activePage: string; // which page is currently active
 
   constructor(
     private authService: AuthService,
@@ -46,5 +48,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
   onLogOutClick(): void {
     this.authService.onLogOut();
     this.pubSubService.publishEvent('isAuthenticated', false);
+    // this.menuOpened = false;
   }
 }

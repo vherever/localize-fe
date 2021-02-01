@@ -1,6 +1,8 @@
-<button (click)="onAddTranslationClick()">Add Translation</button>
-<button (click)="onExportTranslationsClick()" style="margin-left: 7px">Export</button>
-<button (click)="onImportTranslationsClick()" style="margin-left: 7px">Import</button>
+<div class="my-2">
+  <button (click)="onAddTranslationClick()" class="lc-btn-standard">Add Translation</button>
+  <button (click)="onExportTranslationsClick()" class="lc-btn-standard ml-2">Export</button>
+  <button (click)="onImportTranslationsClick()" class="lc-btn-standard ml-2" disabled>Import</button>
+</div>
 <h5>
   <span class="lz_p_current_locale">
     <span class="lz_translations_label">Translations in: </span>

@@ -9,6 +9,7 @@ import { ProjectsFiltersBarComponent } from './projects-filters-bar.component';
 import { FilterModule } from '../../../core/shared/filter/filter.module';
 import { AppProjectsFilterSelectComponent } from './filter-select/projects-filter-select.component';
 import { ProjectsListsSwitcherComponent } from './projects-lists-switcher/projects-lists-switcher.component';
+import { AppSharedModule } from '../../../core/shared/app-shared.module';
 
 @NgModule({
   imports: [
@@ -18,6 +19,7 @@ import { ProjectsListsSwitcherComponent } from './projects-lists-switcher/projec
     NgSelectModule,
     FlexLayoutModule,
     MatButtonToggleModule,
+    AppSharedModule,
   ],
   declarations: [
     ProjectsFiltersBarComponent,

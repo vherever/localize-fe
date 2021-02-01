@@ -13,11 +13,12 @@
       (editTagClickEmit)="editTagClickEvent($event)"
       (selectedTagsEmit)="selectedTagsEvent($event)"
     ></app-tags-manager-dialog-tags-list>
-    <div mat-dialog-actions class="flex-space-between">
-      <button (click)="onAddNewTagClick()">Add new tag</button>
-      <div>
-        <button mat-dialog-close>Close</button>
-        <button (click)="onSaveSelectedTags()" [mat-dialog-close]>Okay</button>
+
+    <div class="flex flex-row justify-between mt-2">
+      <button type="button" (click)="onAddNewTagClick()" class="lc-btn-standard">Add new tag</button>
+      <div class="flex flex-row justify-end">
+        <button type="button" mat-dialog-close class="lc-btn-standard">Cancel</button>
+        <button type="submit" (click)="onSaveSelectedTags()" mat-dialog-close class="lc-btn-standard ml-2">Okay</button>
       </div>
     </div>
   </ng-container>

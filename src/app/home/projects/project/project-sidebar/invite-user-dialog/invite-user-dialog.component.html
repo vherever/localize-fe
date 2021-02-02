@@ -15,13 +15,12 @@
                                 [userProjectLocales]="data.userProjectLocales"
                                 (listChangeEventEmit)="onListChangeEventEmit($event)"></app-available-languages-list>
 
-  <br>
-  <div class="lz_form_control">
-    <div fxLayout>
-      <label for="s_user_email">User email:</label>
-      <input type="text" id="s_user_email" formControlName="email" autocomplete="off" placeholder="">
-    </div>
-    <div class="lz_error_message" *ngIf="(emailField.dirty || emailField.touched) && emailField.hasError('required')">
+  <div class="lc-form-control mt-2"
+       [ngClass]="{'not-valid': (emailField.dirty || emailField.touched) && emailField.hasError('required')}">
+    <label for="s_user_email" class="lc-form-control-label">User email</label>
+    <input type="text" id="s_user_email" formControlName="email" class="lc-input" autocomplete="off" placeholder="">
+    <div class="lc-form-control-error-message"
+         *ngIf="(emailField.dirty || emailField.touched) && emailField.hasError('required')">
       Email is required.
     </div>
   </div>

@@ -44,6 +44,10 @@ h1 {
   @apply text-red-500 border-red-500 focus:ring-red-500;
 }
 
+input[type="checkbox"]:disabled {
+  @apply disabled:opacity-50;
+}
+
 //.lc-form-control {
 //  @apply
 //}

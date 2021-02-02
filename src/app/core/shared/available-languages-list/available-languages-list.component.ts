@@ -61,7 +61,7 @@ export class AvailableLanguagesListComponent implements OnInit {
     });
 
     this.initCheckboxes();
-    this.checkIfAllLocalesChecked();
+    // this.checkIfAllLocalesChecked();
   }
 
   get roleField(): FormControl {
@@ -80,16 +80,17 @@ export class AvailableLanguagesListComponent implements OnInit {
     this.defaultValues = this.availableTranslationLocalesControl.value;
   }
 
-  private checkIfAllLocalesChecked(): void {
-    const isCheckedAll = this.defaultValues.every((value, index, array) => value.checked);
-    if (isCheckedAll) {
-      this.languagesForm.controls.checkAll.patchValue(true);
-      this.availableTranslationLocalesControl.disable();
-    }
-  }
+  // private checkIfAllLocalesChecked(): void {
+  //   const isCheckedAll = this.defaultValues.every((value, index, array) => value.checked);
+  //   if (isCheckedAll) {
+  //     this.languagesForm.controls.checkAll.patchValue(true);
+  //     this.availableTranslationLocalesControl.disable();
+  //   }
+  // }
 
-  public onCheckboxChange(control: { checked: boolean, code: string }, state: boolean): void {
-    control.checked = state;
+  public onCheckboxChange(formControl: any): void {
+    formControl.value.checked = !formControl.value.checked;
+    this.languagesForm.controls.checkAll.patchValue(false);
     this.listChangeEventEmit.emit(this.defaultValues);
   }
 

@@ -57,7 +57,7 @@ export class InviteUserDialogComponent implements OnInit, AfterViewInit {
   }
 
   private get availableTranslations(): string {
-    return this.availableTranslationLocales.map((o) => o.checked ? o.code : '').filter((l) => l !== '').join(',');
+    return this.availableTranslationLocales.map((o) => o.checked ? o.keyCode : '').filter((l) => l !== '').join(',');
   }
 
   get emailField(): FormControl {

@@ -1,8 +1,8 @@
 <div [formGroup]="languagesForm">
-  <h4>Which project languages can this user translate?</h4>
+  <div class="text-sm my-3">Which project languages can this user translate?</div>
   <div>
-    <label for="s_check_all" class="lz_check_all">
-      <input type="checkbox" id="s_check_all"
+    <label for="s_check_all" class="text-xs font-bold mr-2">
+      <input type="checkbox" id="s_check_all" class="rounded text-indigo-500"
              #checkAll
              [formControlName]="'checkAll'"
              (change)="onCheckAllCheck($event.target['checked'])">
@@ -10,17 +10,17 @@
     </label>
   </div>
   <div class="lz_available_locale_wrapper">
-    <ng-container *ngFor="let lang of languagesForm.get('availableTranslationLocales')['controls']; let i = index">
+    <ng-container *ngFor="let formControl of languagesForm.get('availableTranslationLocales')['controls']; let i = index">
       <label class="lz_available_locale"
              formArrayName="availableTranslationLocales">
-        <input type="checkbox"
+        <input type="checkbox" class="rounded text-indigo-500"
                [checked]="userProjectLocales[i].checked"
-               [formControlName]="i"
-               (change)="onCheckboxChange(userProjectLocales[i], languagesForm.value.availableTranslationLocales[i])"
+               (change)="onCheckboxChange(formControl)"
         />
         <span class="lz_locale_flag" *ngIf="userProjectLocales[i].emoji">{{ userProjectLocales[i].emoji }}</span>
         <span class="lz_locale_language" *ngIf="userProjectLocales[i].lang">{{ userProjectLocales[i].lang }}</span>
-        <span class="lz_locale_country" *ngIf="userProjectLocales[i].country" title="{{ userProjectLocales[i].country }}">{{ userProjectLocales[i].country }}</span>
+        <span class="lz_locale_country" *ngIf="userProjectLocales[i].country"
+              title="{{ userProjectLocales[i].country }}">{{ userProjectLocales[i].country }}</span>
         <span class="lz_locale_language" *ngIf="!userProjectLocales[i].emoji">
             <span class="lz_locale_code">{{ userProjectLocales[i].keyCode }}</span>
           {{ userProjectLocales[i].name }}
@@ -30,20 +30,16 @@
   </div>
 
   <br>
-  <div class="lz_section_project_role lz_form_control lz_control_check">
-    <div fxLayout>
-      <label class="lz_section_label" style="padding-top: 0">Project role:</label>
-      <div class="lz_section_group lz_group_col">
-        <div *ngFor="let userRole of userRoles; let i = index" class="lz_section_variant">
-          <input type="radio" id="user_role_{{ i }}" value="{{ userRole.value }}"
-                 [checked]="userRole.active"
-                 (change)="onUserModelChange(userRole)">
-          <label for="user_role_{{ i }}">
-            {{ userRole.name }}
-            <span class="lz_section_description"> - {{ userRole.description }}</span>
-          </label>
-        </div>
-      </div>
+  <div class="lc-form-control">
+    <label class="lc-form-control-label">Project role</label>
+    <div *ngFor="let userRole of userRoles; let i = index" class="lz_section_variant">
+      <input type="radio" id="user_role_{{ i }}" value="{{ userRole.value }}"
+             [checked]="userRole.active" class="rounded text-indigo-500"
+             (change)="onUserModelChange(userRole)">
+      <label for="user_role_{{ i }}">
+        <span class="text-sm font-bold ml-2">{{ userRole.name }}</span>
+        <span class="text-sm"> - {{ userRole.description }}</span>
+      </label>
     </div>
   </div>
 </div>

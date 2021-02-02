@@ -9,30 +9,35 @@ const menuData = [
     isActive: false,
     text: 'Last updated',
     sortKey: 'updated_desc',
+    value: 'updated_desc',
   },
   {
     id: 1,
     isActive: false,
     text: 'Last created',
     sortKey: 'created_desc',
+    value: 'created_desc',
   },
   {
     id: 2,
     isActive: false,
     text: 'Name',
     sortKey: 'title_asc',
+    value: 'title_asc',
   },
   {
     id: 3,
     isActive: false,
     text: 'Oldest updated',
     sortKey: 'updated_asc',
+    value: 'updated_asc',
   },
   {
     id: 4,
     isActive: false,
     text: 'Oldest created',
     sortKey: 'created_asc',
+    value: 'created_asc',
   },
 ];
 
@@ -57,11 +62,8 @@ export class AppProjectsFilterSelectComponent implements OnInit {
 
   public activeSortKey: string;
 
-  public selectedId: number;
   public selectedSortKey: string;
-  public selectedSortName: string;
   public selectData: ProjectsFilterSelectModel[];
-  public isMenuOpened: boolean;
 
   constructor(
     private userConfigService: UserConfigService,
@@ -73,31 +75,20 @@ export class AppProjectsFilterSelectComponent implements OnInit {
 
     this.activeSortKey = this.userConfigService.getItem('projectsActiveSortKey');
     if (this.activeSortKey && this.isConfigCorrect(this.activeSortKey)) {
-      this.selectedId = this.selectData.find((o) => o.sortKey === this.activeSortKey).id;
       this.onSortChange(this.activeSortKey);
     } else {
       this.activeSortKey = 'updated_desc';
       this.userConfigService.setItem('projectsActiveSortKey', this.activeSortKey);
       this.onSortChange(this.activeSortKey);
-      this.selectedId = this.selectData.find((o) => o.sortKey === this.activeSortKey).id;
     }
   }
 
   onSortChange(sortKey: string): void {
     this.selectedSortKey = sortKey;
-    this.selectedSortName = this.selectData.find((item) => item.sortKey === sortKey).text;
     if (sortKey) {
       this.userConfigService.setItem('projectsActiveSortKey', sortKey);
     }
     this.sortKeySelected.emit(sortKey);
-  }
-
-  public openMenuClick(): void {
-    this.isMenuOpened = !this.isMenuOpened;
-  }
-
-  public onClickedOutside(): void {
-    this.isMenuOpened = false;
   }
 
   private isConfigCorrect(key: string): boolean {

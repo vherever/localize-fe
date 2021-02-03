@@ -14,6 +14,7 @@ import { AddLocaleDialogComponent } from './add-locale-dialog/add-locale-dialog.
 import { AppStateModel } from '../../../../store/models/app-state.model';
 import { TagsManagerDialogComponent } from '../../../../core/shared/tags-manager-dialog/tags-manager-dialog.component';
 import { TagInterface } from '../../../../core/shared/tags-manager-dialog/tags-list/tag.model';
+import { TranslationsHelper } from '../translations-list/translations-helper';
 
 @Component({
   selector: 'app-project-sidebar',
@@ -122,7 +123,7 @@ export class ProjectSidebarComponent implements OnInit, OnDestroy {
         projectUuid: this.projectData.uuid,
         projectTitle: this.projectData.title,
         defaultLocale: this.projectData.defaultLocale,
-        userProjectLocales: this.getAvailableTranslationLocalesForUser(
+        userProjectLocales: TranslationsHelper.getAvailableTranslationLocalesForUser(
           this.localesData,
           user.availableTranslationLocales + '',
         ),
@@ -155,7 +156,7 @@ export class ProjectSidebarComponent implements OnInit, OnDestroy {
       data: {
         projectUuid: this.projectData.uuid,
         projectTitle: this.projectData.title,
-        userProjectLocales: this.getAvailableTranslationLocalesForUser(
+        userProjectLocales: TranslationsHelper.getAvailableTranslationLocalesForUser(
           this.localesData,
           '',
         ),
@@ -181,22 +182,22 @@ export class ProjectSidebarComponent implements OnInit, OnDestroy {
     });
   }
 
-  private getAvailableTranslationLocalesForUser(projectLocales: any[], availableTranslationLocales: string): any[] {
-    return projectLocales.reduce((acc: any[], curr: any) => {
-      const o: any = {};
-      o.checked = false;
-      curr = {...curr, ...o};
-      availableTranslationLocales
-        .split(',')
-        .forEach((code: string) => {
-          if (curr.keyCode === code) {
-            curr.checked = true;
-          }
-        });
-      acc.push(curr);
-      return acc;
-    }, []);
-  }
+  // private getAvailableTranslationLocalesForUser(projectLocales: any[], availableTranslationLocales: string): any[] {
+  //   return projectLocales.reduce((acc: any[], curr: any) => {
+  //     const o: any = {};
+  //     o.checked = false;
+  //     curr = {...curr, ...o};
+  //     availableTranslationLocales
+  //       .split(',')
+  //       .forEach((code: string) => {
+  //         if (curr.keyCode === code) {
+  //           curr.checked = true;
+  //         }
+  //       });
+  //     acc.push(curr);
+  //     return acc;
+  //   }, []);
+  // }
 
   private addLocale(): void {
     this.addLocaleDialogRef = this.dialog.open(AddLocaleDialogComponent, {

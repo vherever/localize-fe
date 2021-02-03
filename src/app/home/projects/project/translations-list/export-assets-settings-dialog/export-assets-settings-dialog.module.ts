@@ -6,12 +6,16 @@ import { ExportAssetsSettingsDialogComponent } from './export-assets-settings-di
 import { ImportExportApiService } from '../../../../../core/services/api/import-export-api.service';
 import { ImportExportService } from '../../../../../core/services/api-interaction/import-export.service';
 import { MatDialogModule } from '@angular/material/dialog';
+import { LcSelectModule } from '../../../../../core/shared/ui/lc-select/lc-select.module';
+import { AvailableLanguagesListModule } from '../../../../../core/shared/available-languages-list/available-languages-list.module';
 
 @NgModule({
   imports: [
     CommonModule,
     ReactiveFormsModule,
     MatDialogModule,
+    LcSelectModule,
+    AvailableLanguagesListModule,
   ],
   declarations: [
     ExportAssetsSettingsDialogComponent,

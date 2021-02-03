@@ -35,6 +35,7 @@ const userRoles: UserRoleInterface[] = [
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AvailableLanguagesListComponent implements OnInit {
+  @Input() isOnlyLanguagesList: boolean;
   @Input() userProjectLocales: ProjectLocale[];
   @Input() userRole = UserRoles.TRANSLATOR;
   @Output() listChangeEventEmit: EventEmitter<any> = new EventEmitter<any>();

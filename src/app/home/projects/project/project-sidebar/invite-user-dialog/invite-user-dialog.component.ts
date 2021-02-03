@@ -43,6 +43,7 @@ export class InviteUserDialogComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
+    console.log('data1', this.data);
     this.inviteUserForm = this.fb.group({
       availableTranslationLocales: ['', [Validators.required]],
       email: ['', [Validators.required]],

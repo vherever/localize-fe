@@ -35,6 +35,7 @@ import {
 } from '../../../../store/actions/translations.action';
 import { TranslationSettingsDialogComponent } from './translation-settings-dialog/translation-settings-dialog.component';
 import { ExportAssetsSettingsDialogComponent } from './export-assets-settings-dialog/export-assets-settings-dialog.component';
+import { TranslationsHelper } from './translations-helper';
 
 @Component({
   selector: 'app-translations',
@@ -234,7 +235,10 @@ export class TranslationsComponent implements OnInit, OnChanges, OnDestroy {
       width: '400px',
       data: {
         projectUuid: this.projectId,
-        projectLocales: this.projectData.translationsLocales,
+        projectLocales: TranslationsHelper.getAvailableTranslationLocalesForUser(
+          this.localesData,
+          '',
+        ),
       },
     });
   }

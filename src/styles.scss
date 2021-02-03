@@ -20,12 +20,13 @@ h1 {
   @apply disabled:opacity-50;
 }
 
+//place-content: center space-between;
 .lc-input {
   @apply inline-flex focus:border-indigo-500 justify-center w-full rounded-md border border-gray-300 shadow-sm px-2 py-2 bg-white text-sm text-gray-700 focus:outline-none focus:ring-1 focus:ring-indigo-500 placeholder-gray-400 font-normal;
 }
 
 .lc-select {
-  @apply inline-flex focus:border-indigo-500 justify-center w-full rounded-md border border-gray-300 shadow-sm px-2 py-2 bg-white text-sm text-gray-700 focus:outline-none focus:ring-1 focus:ring-indigo-500 placeholder-gray-400 font-normal;
+  @apply inline-flex focus:border-indigo-500 justify-between w-full rounded-md border border-gray-300 shadow-sm px-2 py-2 bg-white text-sm text-gray-700 focus:outline-none focus:ring-1 focus:ring-indigo-500 placeholder-gray-400 font-normal;
 }
 
 .lc-form-control {

@@ -1,20 +1,29 @@
 <form [formGroup]="exportAssetsForm">
   <h1 class="mb-2">Export assets</h1>
 
-  <div mat-dialog-content>
+  <div>
     <div class="lc-form-control">
-      <label for="s_locales" class="lc-form-control-label">Locales</label>
-      <input type="text" id="s_locales" class="lc-input" autocomplete="off" placeholder="">
+      <label class="lc-form-control-label">Locales to export</label>
+      <app-available-languages-list
+                                    [userProjectLocales]="projectLocales"
+                                    [isOnlyLanguagesList]="true"
+                                    (listChangeEventEmit)="onListChangeEventEmit($event)"
+      ></app-available-languages-list>
     </div>
 
-    <label for="s_file_formats">File format</label>
-    <select name="" id="s_file_formats">
-      <option *ngFor="let fileType of fileTypes" value="{{ fileType.value }}">{{ fileType.name }}</option>
-    </select>
+    <div class="lc-form-control">
+      <label class="lc-form-control-label">File format</label>
+      <app-lc-select [selectData]="fileTypes"
+                     [selectWidthClass]="'w-24'"
+                     [dropdownWidthClass]="'w-24'"
+                     [currentKey]="currentSelectValue"
+                     (onOptionSelectEmit)="assetTypeChange($event)"></app-lc-select>
+    </div>
   </div>
 
   <div class="flex flex-row justify-end">
     <button type="button" mat-dialog-close class="lc-btn-standard">Close</button>
-    <button type="submit" (click)="onExportAssetsClick()" class="lc-btn-standard ml-2">Download</button>
+    <button type="submit" (click)="onExportAssetsClick()" class="lc-btn-standard ml-2"
+            [disabled]="!exportAssetsForm.valid">Download</button>
   </div>
 </form>

@@ -1,5 +1,5 @@
 <div [formGroup]="languagesForm">
-  <div class="text-sm my-3">Which project languages can this user translate?</div>
+  <div class="text-sm my-3" *ngIf="!isOnlyLanguagesList">Which project languages can this user translate?</div>
   <div>
     <label for="s_check_all" class="text-xs font-bold mr-2">
       <input type="checkbox" id="s_check_all" class="rounded text-indigo-500"
@@ -10,7 +10,8 @@
     </label>
   </div>
   <div class="lz_available_locale_wrapper">
-    <ng-container *ngFor="let formControl of languagesForm.get('availableTranslationLocales')['controls']; let i = index">
+    <ng-container
+      *ngFor="let formControl of languagesForm.get('availableTranslationLocales')['controls']; let i = index">
       <label class="lz_available_locale"
              formArrayName="availableTranslationLocales">
         <input type="checkbox" class="rounded text-indigo-500"
@@ -29,8 +30,7 @@
     </ng-container>
   </div>
 
-  <br>
-  <div class="lc-form-control">
+  <div class="lc-form-control mt-4" *ngIf="!isOnlyLanguagesList">
     <label class="lc-form-control-label">Project role</label>
     <div *ngFor="let userRole of userRoles; let i = index" class="lz_section_variant">
       <input type="radio" id="user_role_{{ i }}" value="{{ userRole.value }}"

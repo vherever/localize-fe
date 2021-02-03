@@ -1,5 +1,7 @@
 <div class="relative inline-block text-left">
   <app-lc-select [selectData]="selectData"
                  [currentKey]="selectedSortKey"
+                 [selectWidthClass]="'w-40'"
+                 [dropdownWidthClass]="'w-40'"
                  (onOptionSelectEmit)="onSortChange($event)"></app-lc-select>
 </div>

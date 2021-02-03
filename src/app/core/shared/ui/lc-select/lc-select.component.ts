@@ -13,6 +13,8 @@ interface SelectInterface {
 export class LcSelectComponent implements OnInit {
   @Input() currentKey: string;
   @Input() selectData: SelectInterface[];
+  @Input() selectWidthClass: string;
+  @Input() dropdownWidthClass: string;
 
   @Output() onOptionSelectEmit: EventEmitter<string> = new EventEmitter<string>();
 

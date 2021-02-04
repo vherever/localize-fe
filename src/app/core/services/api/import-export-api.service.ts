@@ -10,8 +10,8 @@ export class ImportExportApiService {
   ) {
   }
 
-  public exportAssets(projectUuid: string, assetsType: string, languages: string, responseType: string): Observable<any> {
+  public exportAssets(projectUuid: string, fileFormat: string, assetType: string, languages: string, responseType: string): Observable<any> {
     // @ts-ignore
-    return this.http.get(`${environment.apiUrl}/projects/${projectUuid}/export?t=${assetsType}&l=${languages}`, { responseType, observe: 'response' });
+    return this.http.get(`${environment.apiUrl}/projects/${projectUuid}/export?f=${fileFormat}&t=${assetType}&l=${languages}`, { responseType, observe: 'response' });
   }
 }

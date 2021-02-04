@@ -78,6 +78,7 @@ export class ExportAssetsSettingsDialogComponent implements OnInit, OnDestroy {
     this.importExportService.exportAssets(
       this.dialogData.projectUuid,
       this.fileFormatControl.value,
+      this.assetTypeControl.value,
       languages,
       responseType,
     )

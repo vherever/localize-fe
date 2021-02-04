@@ -5,25 +5,42 @@
     <div class="lc-form-control">
       <label class="lc-form-control-label">Locales to export</label>
       <app-available-languages-list
-                                    [userProjectLocales]="projectLocales"
-                                    [isOnlyLanguagesList]="true"
-                                    (listChangeEventEmit)="onListChangeEventEmit($event)"
+        [userProjectLocales]="projectLocales"
+        [isOnlyLanguagesList]="true"
+        (listChangeEventEmit)="onListChangeEventEmit($event)"
       ></app-available-languages-list>
     </div>
 
-    <div class="lc-form-control">
-      <label class="lc-form-control-label">File format</label>
-      <app-lc-select [selectData]="fileTypes"
-                     [selectWidthClass]="'w-24'"
-                     [dropdownWidthClass]="'w-24'"
-                     [currentKey]="currentSelectValue"
-                     (onOptionSelectEmit)="assetTypeChange($event)"></app-lc-select>
+    <div class="flex">
+      <div class="">
+        <label class="lc-form-control-label">File format</label>
+        <app-lc-select [selectData]="assetFormats"
+                       [selectWidthClass]="'w-24'"
+                       [dropdownWidthClass]="'w-24'"
+                       [currentKey]="currentSelectValue"
+                       (onOptionSelectEmit)="assetTypeChange($event)"></app-lc-select>
+      </div>
+      <div class="w-full ml-2">
+        <label class="lc-form-control-label">Asset type</label>
+        <app-lc-select [selectData]="currentAssetTypes"
+                       [selectWidthClass]="'w-full'"
+                       [dropdownWidthClass]="'w-full'"
+                       [currentKey]="currentSelectAssetOptions"
+                       (onOptionSelectEmit)="assetOptionsChange($event)"></app-lc-select>
+      </div>
+    </div>
+    <div class="my-2">
+      <label class="lc-form-control-label">Asset preview</label>
+      <app-asset-preview
+        [fileType]="currentSelectValue"
+        [assetType]="currentSelectAssetOptions"></app-asset-preview>
     </div>
   </div>
 
   <div class="flex flex-row justify-end">
     <button type="button" mat-dialog-close class="lc-btn-standard">Close</button>
     <button type="submit" (click)="onExportAssetsClick()" class="lc-btn-standard ml-2"
-            [disabled]="!exportAssetsForm.valid">Download</button>
+            [disabled]="!exportAssetsForm.valid">Download
+    </button>
   </div>
 </form>

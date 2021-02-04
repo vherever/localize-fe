@@ -5,21 +5,11 @@ import { untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
 // app imports
 import { FileSaver } from '../../../../../core/helpers/file-saver';
 import { ImportExportService } from '../../../../../core/services/api-interaction/import-export.service';
-
-const fileTypes = [
-  {
-    id: 1,
-    text: 'JSON',
-    value: 'json',
-    description: 'key/value pairs',
-  },
-  {
-    id: 2,
-    text: 'PHP',
-    value: 'php',
-    description: 'PHP array',
-  },
-];
+import {
+  FILE_FORMATS,
+  ASSET_TYPES_JSON,
+  ASSET_TYPES_PHP,
+} from '../../../../../core/app-constants';
 
 interface ProjectLocale {
   code: string;
@@ -35,9 +25,15 @@ interface ProjectLocale {
   styleUrls: ['export-assets-settings-dialog.component.scss'],
 })
 export class ExportAssetsSettingsDialogComponent implements OnInit, OnDestroy {
-  public fileTypes = fileTypes;
+  public assetFormats = FILE_FORMATS;
+  public assetTypesJson = ASSET_TYPES_JSON;
+  public assetTypesPhp = ASSET_TYPES_PHP;
+
+  public currentAssetTypes = this.assetTypesJson;
+
   public exportAssetsForm: FormGroup;
   public currentSelectValue = 'json';
+  public currentSelectAssetOptions = 'key_value_pairs';
   public projectLocales: ProjectLocale[];
 
   constructor(
@@ -54,14 +50,20 @@ export class ExportAssetsSettingsDialogComponent implements OnInit, OnDestroy {
     this.projectLocales = this.dialogData.projectLocales;
     this.exportAssetsForm = this.fb.group({
       localesToExport: ['', Validators.required],
-      assetType: [this.currentSelectValue],
+      fileFormat: [this.currentSelectValue, Validators.required],
+      assetType: [this.currentSelectAssetOptions, Validators.required],
     });
   }
 
-  ngOnDestroy() {}
+  ngOnDestroy() {
+  }
 
   private get localesToExportControl(): FormControl {
     return this.exportAssetsForm.get('localesToExport') as FormControl;
+  }
+
+  private get fileFormatControl(): FormControl {
+    return this.exportAssetsForm.get('fileFormat') as FormControl;
   }
 
   private get assetTypeControl(): FormControl {
@@ -75,7 +77,7 @@ export class ExportAssetsSettingsDialogComponent implements OnInit, OnDestroy {
 
     this.importExportService.exportAssets(
       this.dialogData.projectUuid,
-      this.assetTypeControl.value,
+      this.fileFormatControl.value,
       languages,
       responseType,
     )
@@ -89,11 +91,29 @@ export class ExportAssetsSettingsDialogComponent implements OnInit, OnDestroy {
     const localesToExport: string = data.map((o) => o.checked && o.keyCode)
       .filter((o) => o !== false)
       .join(',');
-    console.log('localesToExport', localesToExport);
     this.localesToExportControl.patchValue(localesToExport);
   }
 
   public assetTypeChange(value: string): void {
+    this.fileFormatControl.patchValue(value);
+    switch (value) {
+      case 'json':
+        this.currentSelectValue = 'json';
+        this.currentAssetTypes = this.assetTypesJson;
+        this.currentSelectAssetOptions = 'key_value_pairs';
+        return;
+      case 'php':
+        this.currentSelectValue = 'php';
+        this.currentAssetTypes = this.assetTypesPhp;
+        this.currentSelectAssetOptions = 'zend_php_array';
+        return;
+      default:
+        return;
+    }
+  }
+
+  public assetOptionsChange(value: string): void {
     this.assetTypeControl.patchValue(value);
+    this.currentSelectAssetOptions = value;
   }
 }

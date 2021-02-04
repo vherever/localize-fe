@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 
 interface SelectInterface {
   id: number;
@@ -10,7 +10,7 @@ interface SelectInterface {
   selector: 'app-lc-select',
   templateUrl: 'lc-select.component.html',
 })
-export class LcSelectComponent implements OnInit {
+export class LcSelectComponent implements OnChanges {
   @Input() currentKey: string;
   @Input() selectData: SelectInterface[];
   @Input() selectWidthClass: string;
@@ -22,9 +22,9 @@ export class LcSelectComponent implements OnInit {
   public selectedOption: string;
   public currentTextValue: string;
 
-  ngOnInit() {
+  ngOnChanges() {
     this.selectedOption = this.currentKey;
-    const foundOption = this.selectData.find((o) => o.value === this.currentKey);
+    const foundOption = this.selectData.find((o) => o.value === this.selectedOption);
     this.currentTextValue = foundOption ? foundOption.text : '';
   }
 

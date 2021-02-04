@@ -8,6 +8,8 @@ import { ImportExportService } from '../../../../../core/services/api-interactio
 import { MatDialogModule } from '@angular/material/dialog';
 import { LcSelectModule } from '../../../../../core/shared/ui/lc-select/lc-select.module';
 import { AvailableLanguagesListModule } from '../../../../../core/shared/available-languages-list/available-languages-list.module';
+import { AssetPreviewComponent } from './asset-preview/asset-preview.component';
+import { KeysPipeModule } from '../../../../../core/pipes/keys/keys-pipe.module';
 
 @NgModule({
   imports: [
@@ -16,9 +18,11 @@ import { AvailableLanguagesListModule } from '../../../../../core/shared/availab
     MatDialogModule,
     LcSelectModule,
     AvailableLanguagesListModule,
+    KeysPipeModule,
   ],
   declarations: [
     ExportAssetsSettingsDialogComponent,
+    AssetPreviewComponent,
   ],
   providers: [
     ImportExportApiService,

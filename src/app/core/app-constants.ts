@@ -40,17 +40,17 @@ export const ASSET_TYPES_JSON = [
 export const ASSET_TYPES_PHP = [
   {
     id: 1,
-    value: 'zend_php_array',
-    text: 'ZEND PHP array',
+    value: 'php_array',
+    text: 'PHP array',
   },
   {
     id: 2,
-    value: 'symfony_php_array',
-    text: 'Symfony PHP array',
+    value: 'php_lang_array',
+    text: 'PHP $lang array',
   },
   {
     id: 3,
-    value: 'constant_definitions',
+    value: 'php_constant_definitions',
     text: 'Constant definitions',
   },
 ];

@@ -73,7 +73,7 @@ export class ExportAssetsSettingsDialogComponent implements OnInit, OnDestroy {
   public onExportAssetsClick(): void {
     const languages = this.localesToExportControl.value;
     const languagesArray = languages.split(',');
-    const responseType = languagesArray.length > 1 ? 'arraybuffer' : 'json';
+    const responseType = languagesArray.length > 1 ? 'arraybuffer' : this.fileFormatControl.value;
 
     this.importExportService.exportAssets(
       this.dialogData.projectUuid,
@@ -106,7 +106,7 @@ export class ExportAssetsSettingsDialogComponent implements OnInit, OnDestroy {
       case 'php':
         this.currentSelectValue = 'php';
         this.currentAssetTypes = this.assetTypesPhp;
-        this.currentSelectAssetOptions = 'zend_php_array';
+        this.currentSelectAssetOptions = 'php_array';
         return;
       default:
         return;

@@ -39,7 +39,6 @@ export class ProjectsListsSwitcherComponent implements OnInit {
       this.onProjectsListToggle('all');
       this.activeTab = 'all';
     }
-    console.log('this.activeTab', this.activeTab);
   }
 
   onProjectsListToggle(value: string): void {

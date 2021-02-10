@@ -1,5 +1,5 @@
 import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
-import { combineLatest, Observable } from 'rxjs';
+import { combineLatest, Observable, Subscription } from 'rxjs';
 import { Store } from '@ngrx/store';
 // app imports
 import { AppStateModel } from '../store/models/app-state.model';
@@ -54,7 +54,7 @@ export class AppRouteRootComponent implements AfterViewInit, OnDestroy {
 
     this.pubSubService
       .subscribe('EVENT:LOAD_PROJECT_BY_ID', (projectId: string) => {
-        this.store.dispatch(new LoadProjectByIdAction(projectId, true));
+        this.store.dispatch(new LoadProjectByIdAction(projectId));
         this.store.dispatch(new LoadTagsAction(projectId));
       });
 

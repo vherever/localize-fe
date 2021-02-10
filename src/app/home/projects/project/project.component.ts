@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { filter, first } from 'rxjs/operators';
 import { select, Store } from '@ngrx/store';
@@ -35,17 +35,6 @@ export class ProjectComponent implements OnInit, OnDestroy {
       .subscribe((params) => {
         this.projectId = params['id'];
       });
-
-    this.router.events
-      .pipe(
-        untilComponentDestroyed(this),
-        filter((rs): rs is NavigationEnd => rs instanceof NavigationEnd),
-      )
-      .subscribe(() => {
-        setTimeout(() => {
-          this.pubSubService.publishEvent('EVENT:LOAD_PROJECT_BY_ID', this.projectId);
-        }, 1);
-      });
   }
 
   ngOnInit() {
@@ -63,6 +52,10 @@ export class ProjectComponent implements OnInit, OnDestroy {
       );
 
     this.projectUpdating$ = this.store.select((store: AppStateModel) => store.project.updating);
+
+    setTimeout(() => {
+      this.pubSubService.publishEvent('EVENT:LOAD_PROJECT_BY_ID', this.projectId);
+    }, 1);
   }
 
   ngOnDestroy() {

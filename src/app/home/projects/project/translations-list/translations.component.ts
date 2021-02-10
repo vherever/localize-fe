@@ -159,7 +159,7 @@ export class TranslationsComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes.activeLocale.currentValue && this.languagesData) {
+    if (this.activeLocale && this.languagesData) {
       this.activeLocaleObj = LanguagesHelper.getActiveLocaleObj(this.activeLocale, this.languagesData);
     }
 

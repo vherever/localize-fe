@@ -1,16 +1,17 @@
-import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
 
 interface SelectInterface {
   id: number;
   text: string;
   value: string;
+  htmlTemplate?: string;
 }
 
 @Component({
   selector: 'app-lc-select',
   templateUrl: 'lc-select.component.html',
 })
-export class LcSelectComponent implements OnChanges {
+export class LcSelectComponent implements OnInit, OnChanges {
   @Input() currentKey: string;
   @Input() selectData: SelectInterface[];
   @Input() selectWidthClass: string;
@@ -21,11 +22,24 @@ export class LcSelectComponent implements OnChanges {
   public selectIsOpened: boolean;
   public selectedOption: string;
   public currentTextValue: string;
+  public currentHtmlTemplate: string;
+  public selectWidthClass_: string;
+  public dropdownWidthClass_: string;
+
+  ngOnInit() {
+    this.selectWidthClass_ = this.dropdownWidthClass || 'w-full';
+    this.dropdownWidthClass_ = this.dropdownWidthClass || 'w-full';
+  }
 
   ngOnChanges() {
     this.selectedOption = this.currentKey;
+    if (!Array.isArray(this.selectData)) {
+      console.error('selectData should be array.');
+      return false;
+    }
     const foundOption = this.selectData.find((o) => o.value === this.selectedOption);
     this.currentTextValue = foundOption ? foundOption.text : '';
+    this.currentHtmlTemplate = foundOption && foundOption.htmlTemplate ? foundOption.htmlTemplate : '';
   }
 
   public openSelectClick(): void {
@@ -38,7 +52,9 @@ export class LcSelectComponent implements OnChanges {
 
   public onOptionSelected(key: string): void {
     this.selectedOption = key;
-    this.currentTextValue = this.selectData.find((o) => o.value === key).text;
+    const found = this.selectData.find((o) => o.value === key);
+    this.currentTextValue = found.text;
+    this.currentHtmlTemplate = found.htmlTemplate;
     this.onOptionSelectEmit.emit(key);
   }
 }

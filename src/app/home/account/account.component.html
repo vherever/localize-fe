@@ -17,37 +17,30 @@
     <form [formGroup]="accountSettingsForm" (keydown)="onFormChange()"
           (submit)="onFormSave()">
 
-      <div class="lz_form_control">
-        <div fxLayout>
-          <label for="s_account_name">My Name:</label>
-          <input type="text" id="s_account_name" formControlName="name" autocomplete="off" #nameFieldRef>
-        </div>
+      <div class="lc-form-control">
+        <label for="s_account_name" class="lc-form-control-label">
+          <span class="mr-1">*</span>
+          My Name
+        </label>
+        <input type="text" id="s_account_name" formControlName="name" autocomplete="off" #nameFieldRef class="lc-input">
         <div class="lz_error_message" *ngIf="(nameField.dirty || nameField.touched) && nameField.hasError('required')">
           Name name is required.
         </div>
       </div>
 
-      <div class="lz_form_control">
-        <div fxLayout>
-          <label>My Email:</label>
-          <input type="text" formControlName="email">
-          <button type="button" class="change_email">Change</button>
-        </div>
+      <div class="lc-form-control">
+        <label class="lc-form-control-label">My Email</label>
+        <input type="text" formControlName="email" disabled class="lc-input">
       </div>
 
 
-      <div class="lz_form_control">
-        <div fxLayout>
-          <label>My Password:</label>
-          <input type="text" disabled value="**********">
-          <button type="button" class="change_password">Change</button>
-        </div>
+      <div class="lc-form-control">
+        <label class="lc-form-control-label">My Password</label>
+        <input type="text" disabled value="**********" class="lc-input">
       </div>
 
-      <br>
-      <div class="lz_form_control">
-        <label></label>
-        <button type="submit" [disabled]="!accountSettingsForm.valid || !formChanged">SAVE</button>
+      <div class="flex flex-row justify-end">
+        <button type="submit" [disabled]="!accountSettingsForm.valid || !formChanged" class="lc-btn-standard">Save</button>
       </div>
     </form>
   </div>

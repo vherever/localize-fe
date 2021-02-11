@@ -50,6 +50,11 @@ export function ProjectReducer(state: ProjectState = initialState, action: Proje
         ...state,
         data: null,
       };
+    case ProjectActionTypes.LOAD_PROJECT_CACHED:
+      return {
+        ...state,
+        data: action.payload,
+      };
     default:
       return state;
   }

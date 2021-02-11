@@ -5,7 +5,6 @@ import { Store } from '@ngrx/store';
 import { AppStateModel } from '../store/models/app-state.model';
 import { NgxPubSubService } from '@pscoped/ngx-pub-sub';
 import { LoadProjectByIdAction } from '../store/actions/project.actions';
-import { ProjectModel } from '../core/models/project.model';
 import { LoadLocalesAction } from '../store/actions/locales.actions';
 import { LoadDefaultLocaleAction } from '../store/actions/locale.actions';
 import { LocaleHelper } from '../core/helpers/locale-helper';
@@ -42,11 +41,14 @@ export class AppRouteRootComponent implements AfterViewInit, OnDestroy {
       this.store.select((store: AppStateModel) => store.project.data),
       this.store.select((store: AppStateModel) => store.languagesData.data),
     ).subscribe((data: any) => {
+      console.log('data', data);
       if (data[0] && data[1]) {
         const locale = LocaleHelper.getDefaultLocale(data[0], data[1]);
         this.store.dispatch(new LoadDefaultLocaleAction(locale));
         this.store.dispatch(new LoadLocalesAction(
-          this.prepareLocales(data[0],
+          LocaleHelper.prepareLocales(
+            data[0].translationsLocales,
+            data[0].availableTranslationLocales,
             data[1],
           )));
       }
@@ -63,31 +65,6 @@ export class AppRouteRootComponent implements AfterViewInit, OnDestroy {
     //     this.store.dispatch(new LoadTagsAction(projectUuid));
     //   });
     this.cdr.detectChanges();
-  }
-
-  private prepareLocales(projectData: ProjectModel, languagesData: any): any[] {
-    return this.prepareAvailableTranslations(
-      projectData.translationsLocales,
-      projectData.availableTranslationLocales.split(','),
-      languagesData,
-    );
-  }
-
-  private prepareAvailableTranslations(projectLocales: string, availableTranslations: string[], languagesData: any) {
-    const result: any[] = [];
-    projectLocales.split(',').forEach((loc1: string) => {
-      let found: any = languagesData.find((l) => l.keyCode === loc1);
-      found = { ...found, editable: false };
-      result.push(found);
-      const d = result.find((loc) => loc.keyCode === loc1);
-      availableTranslations.forEach((loc2: string) => {
-        if (loc1 === loc2) {
-          d.editable = true;
-        }
-      });
-    });
-
-    return result;
   }
 
   ngOnDestroy() {}

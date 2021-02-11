@@ -1,8 +1,9 @@
-<div class="relative flex {{ selectWidthClass }}">
+<div class="relative flex {{ selectWidthClass_ }}">
   <button type="button" (click)="openSelectClick()" appClickOutside (clickOutsideEmitter)="onClickedOutside()"
           class="lc-select"
           id="options-menu" aria-haspopup="true" aria-expanded="true">
-    <span>{{ currentTextValue }}</span>
+    <span *ngIf="!currentHtmlTemplate">{{ currentTextValue }}</span>
+    <span *ngIf="currentHtmlTemplate" [innerHTML]="currentHtmlTemplate"></span>
     <!-- Heroicon: chevron-down -->
     <svg *ngIf="!selectIsOpened" class="-mr-1 ml-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
          fill="currentColor"
@@ -24,12 +25,14 @@
   <input type="hidden" [(ngModel)]="selectedOption">
 
   <div *ngIf="selectIsOpened && selectData.length"
-       class="animate-growDown origin-top-right absolute right-0 mt-10 {{ dropdownWidthClass }} rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-10">
+       class="animate-growDown origin-top-right absolute right-0 mt-10 {{ dropdownWidthClass_ }} rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-10">
     <div class="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
       <a *ngFor="let menuItem of selectData" href="javascript:;" (click)="onOptionSelected(menuItem.value)"
          [ngClass]="{ 'bg-gray-200': selectedOption === menuItem.value }"
          class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900" role="menuitem">
-        {{ menuItem.text }}</a>
+        <span *ngIf="menuItem.htmlTemplate" [innerHTML]="menuItem.htmlTemplate"></span>
+        <span *ngIf="!menuItem.htmlTemplate">{{ menuItem.text }}</span>
+      </a>
     </div>
   </div>
 </div>

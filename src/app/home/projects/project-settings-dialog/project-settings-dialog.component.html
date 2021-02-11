@@ -19,14 +19,10 @@
 
   <div class="lc-form-control">
     <label for="default_locale" class="lc-form-control-label">Starting locale</label>
-    <ng-select appearance="outline"
-               labelForId="default_locale"
-               [searchable]="false"
-               [clearable]="false"
-               [dropdownPosition]="'top'"
-               formControlName="defaultLocale">
-      <ng-option *ngFor="let locale of locales" [value]="locale">{{ locale }}</ng-option>
-    </ng-select>
+    <app-lc-select [selectData]="localesData$ | async"
+                   [currentKey]="defaultLocaleControl.value"
+                   (onOptionSelectEmit)="selectOption($event)"
+    ></app-lc-select>
   </div>
 
   <div class="flex flex-row justify-end">

@@ -17,6 +17,7 @@ import { ProjectSettingsDialogComponent } from './project-settings-dialog/projec
 import { AppStateModel } from '../../store/models/app-state.model';
 import { CancelProjectsLoadingAction, DeleteProjectAction, LoadProjectsAction } from '../../store/actions/projects.actions';
 import { UPLOADS_ENDPOINT } from '../../core/app-constants';
+import { LoadProjectCachedAction } from '../../store/actions/project.actions';
 
 @Component({
   selector: 'app-projects',
@@ -224,6 +225,7 @@ export class ProjectsComponent extends SortingHelper implements OnInit, OnDestro
   }
 
   private projectSettingsAction(project: ProjectModel): void {
+    this.store.dispatch(new LoadProjectCachedAction(project));
     this.dialogProjectUpdateRef =
       this.dialog.open(ProjectSettingsDialogComponent, {
         width: '500px',
